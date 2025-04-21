@@ -20,7 +20,7 @@ Rive\index.html -->
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
             width: 90%;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
         }
         .full-width {
@@ -39,7 +39,8 @@ Rive\index.html -->
       <div><canvas id="canvas2" width="100" height="100"></canvas></div>
       <div><canvas id="canvas3" width="100" height="100"></canvas></div>
       <div><canvas id="canvas4" width="100" height="100"></canvas></div>
-      <div class="full-width"><canvas id="canvas5" width="500" height="100"></canvas></div>
+      <div><canvas id="canvas5" width="100" height="100"></canvas></div>
+      <div class="full-width"><canvas id="canvas6" width="500" height="100"></canvas></div>
     </div>
 
     <script src="https://unpkg.com/@rive-app/canvas"></script>
@@ -55,7 +56,7 @@ Rive\index.html -->
       });
       
       const r2 = new rive.Rive({
-        src: "EyeLoader_v1.riv",
+        src: "EyeLoader_v2.riv",
         canvas: document.getElementById("canvas2"),
         autoplay: true,
         onLoad: () => {
@@ -73,7 +74,7 @@ Rive\index.html -->
       });
 
       const r4 = new rive.Rive({
-        src: "WaveLoader_v1.riv",
+        src: "SpiralLoader_v1.riv",
         canvas: document.getElementById("canvas4"),
         autoplay: true,
         onLoad: () => {
@@ -82,11 +83,20 @@ Rive\index.html -->
       });
 
       const r5 = new rive.Rive({
-        src: "PulseWave_lc_v4.riv",
+        src: "WaveLoader_v2.riv",
         canvas: document.getElementById("canvas5"),
         autoplay: true,
         onLoad: () => {
           r5.resizeDrawingSurfaceToCanvas();
+        },
+      });
+
+      const r6 = new rive.Rive({
+        src: "PulseWave_lc_v4.riv",
+        canvas: document.getElementById("canvas6"),
+        autoplay: true,
+        onLoad: () => {
+          r6.resizeDrawingSurfaceToCanvas();
         },
       });
     </script>
