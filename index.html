@@ -5,14 +5,22 @@ index.html -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rive Hello World</title>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <style>
         body {
+            font-family: 'Roboto', sans-serif; /* Apply modern font */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 10vh;
             background-color: #000000;
+            background-image: 
+                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
+                linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f);
+            background-size: 20px 20px; /* Adjust size of the checkered pattern */
+            background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
             padding: 10px 0;
         }
         .animation-wrapper {
@@ -26,7 +34,7 @@ index.html -->
             padding: 20px;
         }
         canvas {
-            border: 1px solid #1a1a1a;
+            border: 1px solid #292929;
             width: auto; /* Ensure the CSS width matches the HTML width */
             height: auto; /* Ensure the CSS height matches the HTML height */
         }
@@ -36,7 +44,7 @@ index.html -->
             margin-bottom: 20px;
         }
         .description {
-            color: rgb(206, 206, 206);
+            color: rgb(120, 120, 120);
             font-size: 0.9rem;
             margin-top: 8px;
             line-height: 1.4;
@@ -62,52 +70,52 @@ index.html -->
         <canvas id="canvas2" width="200" height="200"></canvas>
         <div class="description">
           Position: 0px 0px<br>
-          Size: 100px 100px<br>
+          Size: 200px 200px<br>
           Layout: Centered<br>
-          Animation: Eye Loader<br>
+          Animation: EYE timeline<br>
           FPS: 60<br>
-          Duration: 3.0s<br>
+          Duration: 4.0s<br>
           Loop: Yes<br>
-          Background: Transparent<br>
+          Background: Black<br>
         </div>
       </div>
       <div class="animation-container">
         <canvas id="canvas3" width="200" height="200"></canvas>
         <div class="description">
           Position: 0px 0px<br>
-          Size: 100px 100px<br>
+          Size: 200px 200px<br>
           Layout: Centered<br>
           Animation: Circle Loader<br>
           FPS: 60<br>
-          Duration: 2.5s<br>
+          Duration: 3.0s<br>
           Loop: Yes<br>
-          Background: Transparent<br>
+          Background: Black<br>
         </div>
       </div>
       <div class="animation-container">
         <canvas id="canvas4" width="200" height="200"></canvas>
         <div class="description">
           Position: 0px 0px<br>
-          Size: 100px 100px<br>
+          Size: 200px 200px<br>
           Layout: Centered<br>
           Animation: Spiral Loader<br>
           FPS: 60<br>
           Duration: 3.0s<br>
           Loop: Yes<br>
-          Background: Transparent<br>
+          Background: Black<br>
         </div>
       </div>
       <div class="animation-container">
         <canvas id="canvas5" width="200" height="200"></canvas>
         <div class="description">
           Position: 0px 0px<br>
-          Size: 100px 100px<br>
+          Size: 250px 250px<br>
           Layout: Centered<br>
           Animation: Wave Loader<br>
           FPS: 60<br>
-          Duration: 2.0s<br>
+          Duration: 6.0s<br>
           Loop: Yes<br>
-          Background: Transparent<br>
+          Background: Black<br>
         </div>
       </div>
       <div class="animation-container">
@@ -152,7 +160,7 @@ index.html -->
       
       // Rest of your script remains the same
       const r2 = new rive.Rive({
-        src: "EyeLoader_v2.riv",
+        src: "EyeLoader_v3.riv",
         canvas: document.getElementById("canvas2"),
         autoplay: true,
         onLoad: () => {
@@ -161,7 +169,7 @@ index.html -->
       });
       
       const r3 = new rive.Rive({
-        src: "CircleLoader_v1.riv",
+        src: "CircleLoader_v2.riv",
         canvas: document.getElementById("canvas3"),
         autoplay: true,
         onLoad: () => {
@@ -170,7 +178,7 @@ index.html -->
       });
 
       const r4 = new rive.Rive({
-        src: "SpiralLoader_v1.riv",
+        src: "SpiralLoader_v2.riv",
         canvas: document.getElementById("canvas4"),
         autoplay: true,
         onLoad: () => {
@@ -179,7 +187,7 @@ index.html -->
       });
 
       const r5 = new rive.Rive({
-        src: "WaveLoader_v2.riv",
+        src: "WaveLoader_v3.riv",
         canvas: document.getElementById("canvas5"),
         autoplay: true,
         onLoad: () => {
