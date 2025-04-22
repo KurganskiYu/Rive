@@ -1,4 +1,4 @@
-Rive\index.html -->
+index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,39 +15,134 @@ Rive\index.html -->
             background-color: #000000;
             padding: 10px 0;
         }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            width: 90%;
-            max-width: 700px;
+        .animation-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 30px;
+            width: 95%;
+            max-width: 900px;
             margin: 0 auto;
-        }
-        .full-width {
-            grid-column: 1 / -1; /* Spans full width */
+            padding: 20px;
         }
         canvas {
-            width: 100%;
-            height: 100%;
-            border: 0px solid #333;
+            border: 1px solid #1a1a1a;
+            width: auto; /* Ensure the CSS width matches the HTML width */
+            height: auto; /* Ensure the CSS height matches the HTML height */
+        }
+        .animation-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .description {
+            color: rgb(206, 206, 206);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            line-height: 1.4;
         }
     </style>
   </head>
   <body>
-    <div class="grid-container">
-      <div><canvas id="canvas" width="100" height="100"></canvas></div>
-      <div><canvas id="canvas2" width="100" height="100"></canvas></div>
-      <div><canvas id="canvas3" width="100" height="100"></canvas></div>
-      <div><canvas id="canvas4" width="100" height="100"></canvas></div>
-      <div><canvas id="canvas5" width="100" height="100"></canvas></div>
-      <div class="full-width"><canvas id="canvas6" width="500" height="100"></canvas></div>
+    <div class="animation-wrapper">
+      <div class="animation-container">
+        <canvas id="canvas" width="200" height="200"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 80px 60px<br>
+          Layout: Centered<br>
+          Animation: EYE Timeline<br>
+          FPS: 60<br>
+          Duration: 7.5s<br>
+          Loop: No<br>
+          Background: Transparent<br>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="canvas2" width="200" height="200"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 100px 100px<br>
+          Layout: Centered<br>
+          Animation: Eye Loader<br>
+          FPS: 60<br>
+          Duration: 3.0s<br>
+          Loop: Yes<br>
+          Background: Transparent<br>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="canvas3" width="200" height="200"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 100px 100px<br>
+          Layout: Centered<br>
+          Animation: Circle Loader<br>
+          FPS: 60<br>
+          Duration: 2.5s<br>
+          Loop: Yes<br>
+          Background: Transparent<br>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="canvas4" width="200" height="200"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 100px 100px<br>
+          Layout: Centered<br>
+          Animation: Spiral Loader<br>
+          FPS: 60<br>
+          Duration: 3.0s<br>
+          Loop: Yes<br>
+          Background: Transparent<br>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="canvas5" width="200" height="200"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 100px 100px<br>
+          Layout: Centered<br>
+          Animation: Wave Loader<br>
+          FPS: 60<br>
+          Duration: 2.0s<br>
+          Loop: Yes<br>
+          Background: Transparent<br>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="canvas6" width="360" height="80"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 360px 80px<br>
+          Layout: Centered<br>
+          Animation: Pulse 2x<br>
+          FPS: 60<br>
+          Duration: 4.0s<br>
+          Loop: No<br>
+          Background: Transparent<br>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="canvas7" width="274" height="274"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 274px 274px<br>
+          Layout: Centered<br>
+          Animation: Timeline 1<br>
+          FPS: 60<br>
+          Duration: 4.0s<br>
+          Loop: No<br>
+          Background: Transparent<br>
+        </div>
+      </div>
     </div>
 
     <script src="https://unpkg.com/@rive-app/canvas"></script>
     <script>
       // Your existing script remains unchanged
       const r = new rive.Rive({
-        src: "EyeNew_v4.riv",
+        src: "EyeNew_v5.riv",
         canvas: document.getElementById("canvas"),
         autoplay: true,
         onLoad: () => {
@@ -55,6 +150,7 @@ Rive\index.html -->
         },
       });
       
+      // Rest of your script remains the same
       const r2 = new rive.Rive({
         src: "EyeLoader_v2.riv",
         canvas: document.getElementById("canvas2"),
@@ -92,12 +188,26 @@ Rive\index.html -->
       });
 
       const r6 = new rive.Rive({
-        src: "PulseWave_lc_v4.riv",
+        src: "PulseWave_transp_layout-center_v5.riv",
         canvas: document.getElementById("canvas6"),
         autoplay: true,
         onLoad: () => {
           r6.resizeDrawingSurfaceToCanvas();
         },
+      });
+
+      const r7 = new rive.Rive({
+        src: "PulseWave_transp_layout-center_full-circle_v6.riv",
+        canvas: document.getElementById("canvas7"),
+        autoplay: true,
+        onLoad: () => {
+          r7.resizeDrawingSurfaceToCanvas();
+        },
+      });
+
+      document.querySelectorAll('canvas').forEach(canvas => {
+        canvas.style.width = `${canvas.width}px`;
+        canvas.style.height = `${canvas.height}px`;
       });
     </script>
   </body>
