@@ -1,4 +1,3 @@
-index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -74,8 +73,21 @@ index.html -->
           Layout: Centered<br>
           Animation: EYE timeline<br>
           FPS: 60<br>
-          Duration: 4.0s<br>
-          Loop: Yes<br>
+          Duration: 3.5s<br>
+          Loop: No<br>
+          Background: Black<br>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="canvas8" width="200" height="200"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 200px 200px<br>
+          Layout: Centered<br>
+          Animation: EYE timeline<br>
+          FPS: 60<br>
+          Duration: 3.5s<br>
+          Loop: No<br>
           Background: Black<br>
         </div>
       </div>
@@ -148,7 +160,6 @@ index.html -->
 
     <script src="https://unpkg.com/@rive-app/canvas"></script>
     <script>
-      // Your existing script remains unchanged
       const r = new rive.Rive({
         src: "EyeNew_v5.riv",
         canvas: document.getElementById("canvas"),
@@ -157,17 +168,25 @@ index.html -->
           r.resizeDrawingSurfaceToCanvas();
         },
       });
-      
-      // Rest of your script remains the same
+
       const r2 = new rive.Rive({
-        src: "EyeLoader_v3.riv",
+        src: "EyeLoader_v4_eye-A.riv",
         canvas: document.getElementById("canvas2"),
         autoplay: true,
         onLoad: () => {
           r2.resizeDrawingSurfaceToCanvas();
         },
       });
-      
+
+      const r8 = new rive.Rive({
+        src: "EyeLoader_v4_eye-B.riv",
+        canvas: document.getElementById("canvas8"),
+        autoplay: true,
+        onLoad: () => {
+          r8.resizeDrawingSurfaceToCanvas();
+        },
+      });
+
       const r3 = new rive.Rive({
         src: "CircleLoader_v2.riv",
         canvas: document.getElementById("canvas3"),
