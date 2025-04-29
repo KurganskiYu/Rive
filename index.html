@@ -156,6 +156,19 @@
           Background: Transparent<br>
         </div>
       </div>
+      <div class="animation-container">
+        <canvas id="canvas9" width="393" height="852"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 393px 852px<br>
+          Layout: Centered<br>
+          Animation: Timeline 1<br>
+          FPS: 60<br>
+          Duration: 6.0s<br>
+          Loop: No<br>
+          Background: Black<br>
+        </div>
+      </div>
     </div>
 
     <script src="https://unpkg.com/@rive-app/canvas"></script>
@@ -232,6 +245,14 @@
         },
       });
 
+      const r9 = new rive.Rive({
+        src: "NightDay_v7.riv",
+        canvas: document.getElementById("canvas9"),
+        autoplay: true,
+        onLoad: () => {
+          r9.resizeDrawingSurfaceToCanvas();
+        },
+      });
       document.querySelectorAll('canvas').forEach(canvas => {
         canvas.style.width = `${canvas.width}px`;
         canvas.style.height = `${canvas.height}px`;
