@@ -89,6 +89,7 @@
           Duration: 3.5s<br>
           Loop: No<br>
           Background: Black<br>
+          <button id="triggerButton8">Trigger Close</button>
         </div>
       </div>
       <div class="animation-container">
@@ -191,13 +192,29 @@
         },
       });
 
+      let closeTriggerInput;
+
       const r8 = new rive.Rive({
-        src: "EyeLoader_v4_eye-B_loop.riv",
+        src: "EyeLoader_v5_eye-C_trigger.riv",
         canvas: document.getElementById("canvas8"),
         autoplay: true,
+        stateMachines: "State Machine 1",
         onLoad: () => {
           r8.resizeDrawingSurfaceToCanvas();
+
+          // Get the input for "CloseTrigger" from the state machine
+          const inputs = r8.stateMachineInputs("State Machine 1");
+          closeTriggerInput = inputs.find(input => input.name === "CloseTrigger");
         },
+      });
+
+      // Add event listener to trigger the "CloseTrigger" input
+      document.getElementById("triggerButton8").addEventListener("click", () => {
+        if (closeTriggerInput) {
+          closeTriggerInput.fire(); // Fire the trigger input
+        } else {
+          console.error("CloseTrigger input not found.");
+        }
       });
 
       const r3 = new rive.Rive({
