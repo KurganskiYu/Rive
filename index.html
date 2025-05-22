@@ -84,7 +84,8 @@
           Position: 0px 0px<br>
           Size: 200px 200px<br>
           Layout: Centered<br>
-          Animation: EYE timeline<br>
+          State Machine: State Machine 1<br>
+          Trigger: CloseTrigger<br>
           FPS: 60<br>
           Duration: 3.5s<br>
           Loop: No<br>
@@ -158,7 +159,7 @@
         </div>
       </div>
       <div class="animation-container">
-        <canvas id="canvas9" width="393" height="852"></canvas>
+        <canvas id="canvas9" width="196" height="426"></canvas>
         <div class="description">
           Position: 0px 0px<br>
           Size: 393px 852px<br>
@@ -168,6 +169,21 @@
           Duration: 6.0s<br>
           Loop: No<br>
           Background: Black<br>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="canvas10" width="300" height="300"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 930px 930px<br>
+          Layout: Centered<br>
+          State Machine: State Machine 1<br>
+          Trigger Name: Trigger<br>
+          FPS: 60<br>
+          Duration: 1.5s<br>
+          Loop: No<br>
+          Background: Transparent<br>
+          <button id="triggerButton10">Trigger Confetti</button>
         </div>
       </div>
     </div>
@@ -270,6 +286,30 @@
           r9.resizeDrawingSurfaceToCanvas();
         },
       });
+
+      let confettiTriggerInput;
+
+      const r10 = new rive.Rive({
+        src: "Confetti_v1.riv",
+        canvas: document.getElementById("canvas10"),
+        autoplay: true,
+        stateMachines: "State Machine 1",
+        onLoad: () => {
+          r10.resizeDrawingSurfaceToCanvas();
+          // Get the input for "Trigger" from the state machine
+          const inputs = r10.stateMachineInputs("State Machine 1");
+          confettiTriggerInput = inputs.find(input => input.name === "Trigger");
+        },
+      });
+
+      document.getElementById("triggerButton10").addEventListener("click", () => {
+        if (confettiTriggerInput) {
+          confettiTriggerInput.fire();
+        } else {
+          console.error("Confetti Trigger input not found.");
+        }
+      });
+
       document.querySelectorAll('canvas').forEach(canvas => {
         canvas.style.width = `${canvas.width}px`;
         canvas.style.height = `${canvas.height}px`;
