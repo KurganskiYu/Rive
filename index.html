@@ -186,6 +186,19 @@
           <button id="triggerButton10">Trigger Confetti</button>
         </div>
       </div>
+      <div class="animation-container">
+        <canvas id="canvas11" width="393" height="614"></canvas>
+        <div class="description">
+          Position: 0px 0px<br>
+          Size: 393px 614px<br>
+          Layout: Centered<br>
+          State Machine: State Machine 1<br>
+          FPS: 60<br>
+          Duration: 5.0s<br>
+          Loop: Yes<br>
+          Background: Transparent<br>
+        </div>
+      </div>
     </div>
 
     <script src="https://unpkg.com/@rive-app/webgl2"></script>
@@ -308,6 +321,16 @@
         } else {
           console.error("Confetti Trigger input not found.");
         }
+      });
+
+      const r11 = new rive.Rive({
+        src: "GiftBox_v1.riv",
+        canvas: document.getElementById("canvas11"),
+        autoplay: true,
+        stateMachines: "State Machine 1",
+        onLoad: () => {
+          r11.resizeDrawingSurfaceToCanvas();
+        },
       });
 
       document.querySelectorAll('canvas').forEach(canvas => {
