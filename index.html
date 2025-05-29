@@ -193,10 +193,12 @@
           Size: 393px 614px<br>
           Layout: Centered<br>
           State Machine: State Machine 1<br>
+          Trigger: Trigger 1<br>
           FPS: 60<br>
           Duration: 5.0s<br>
           Loop: Yes<br>
           Background: Transparent<br>
+          <button id="triggerButton11">Trigger 1</button>
         </div>
       </div>
     </div>
@@ -323,6 +325,8 @@
         }
       });
 
+      let trigger1Input;
+
       const r11 = new rive.Rive({
         src: "GiftBox_v1.riv",
         canvas: document.getElementById("canvas11"),
@@ -330,7 +334,18 @@
         stateMachines: "State Machine 1",
         onLoad: () => {
           r11.resizeDrawingSurfaceToCanvas();
+          // Get the input for "Trigger 1" from the state machine
+          const inputs = r11.stateMachineInputs("State Machine 1");
+          trigger1Input = inputs.find(input => input.name === "Trigger 1");
         },
+      });
+
+      document.getElementById("triggerButton11").addEventListener("click", () => {
+        if (trigger1Input) {
+          trigger1Input.fire();
+        } else {
+          console.error("Trigger 1 input not found.");
+        }
       });
 
       document.querySelectorAll('canvas').forEach(canvas => {
