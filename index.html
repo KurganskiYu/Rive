@@ -51,6 +51,19 @@
     </style>
   </head>
   <body>
+    <div class="animation-container">
+      <canvas id="canvas12" width="526" height="800"></canvas>
+      <div class="description">
+        Position: 0px 0px<br>
+        Size: 526px 800px<br>
+        Layout: Centered<br>
+        Animation: River_v1<br>
+        FPS: 60<br>
+        Duration: 20.0s<br>
+        Loop: Yes<br>
+        Background: Transparent<br>
+      </div>
+    </div>
     <div class="animation-wrapper">
       <div class="animation-container">
         <canvas id="canvas" width="200" height="200"></canvas>
@@ -346,6 +359,16 @@
         } else {
           console.error("Trigger 1 input not found.");
         }
+      });
+
+      const r12 = new rive.Rive({
+        src: "River_v1.riv",
+        canvas: document.getElementById("canvas12"),
+        autoplay: true,
+        stateMachines: "State Machine 1",
+        onLoad: () => {
+          r12.resizeDrawingSurfaceToCanvas();
+        },
       });
 
       document.querySelectorAll('canvas').forEach(canvas => {
