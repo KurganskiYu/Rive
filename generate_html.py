@@ -16,7 +16,7 @@ html_foot = """
 """
 
 def make_description(row):
-    desc = f'<b>{row["name"]}</b><br>'
+    desc = f'<a href="riv/{row["src"]}" target="_blank" style="color: white;">{row["name"]}</a><br>'
     desc += f'Size: {row["size"]}<br>'
     desc += f'State Machine: {row["state_machine"]}<br>'
     if row["trigger"]:
