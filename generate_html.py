@@ -1,25 +1,13 @@
+import os
 import csv
 
-csv_path = "videos.csv"
-output_html = "index.html"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(script_dir, "videos.csv")
+output_html = os.path.join(script_dir, "index.html")
+head_html_path = os.path.join(script_dir, "head.html")
 
-html_head = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>Rive Animation Gallery</title>
-    <style>
-        body { background: #111; color: #eee; font-family: sans-serif; }
-        .animation-wrapper { display: flex; flex-wrap: wrap; gap: 30px; max-width: 900px; margin: 0 auto; }
-        .animation-container { display: flex; flex-direction: column; margin-bottom: 20px; }
-        .description { color: #888; font-size: 0.9rem; margin-top: 8px; line-height: 1.4; }
-        canvas { border: 1px solid #292929; }
-    </style>
-    <script src="https://unpkg.com/@rive-app/webgl2"></script>
-</head>
-<body>
-    <div class="animation-wrapper">
-"""
+with open(head_html_path, "r", encoding="utf-8") as head_file:
+    html_head = head_file.read()
 
 html_foot = """
     </div>
@@ -28,8 +16,9 @@ html_foot = """
 """
 
 def make_description(row):
-    desc = f'Size: {row["size"]}<br>'
-    desc += f'Animation/State Machine: {row["animation_or_state_machine"]}<br>'
+    desc = f'<b>{row["name"]}</b><br>'
+    desc += f'Size: {row["size"]}<br>'
+    desc += f'State Machine: {row["state_machine"]}<br>'
     if row["trigger"]:
         desc += f'Trigger: {row["trigger"]}<br>'
     desc += f'Duration: {row["duration"]}s<br>'
@@ -54,8 +43,8 @@ def make_script(rows):
     script = "<script>\n"
     for idx, row in enumerate(rows):
         canvas_id = f"canvas{idx}"
-        src = row["src"]
-        state_machine = row["animation_or_state_machine"] if "State Machine" in row["animation_or_state_machine"] else ""
+        src = f"riv/{row['src']}"  # Add "riv/" prefix here
+        state_machine = row["state_machine"] if "State Machine" in row["state_machine"] else ""
         script += f'''
 const r{idx} = new rive.Rive({{
   src: "{src}",
@@ -89,8 +78,9 @@ document.querySelectorAll('canvas').forEach(canvas => {
     return script
 
 with open(csv_path, newline='', encoding='utf-8') as csvfile:
+    #next(csvfile)
     reader = csv.DictReader(csvfile)
-    rows = list(reader)
+    rows = list(reader)[::-1]
 
 with open(output_html, "w", encoding="utf-8") as f:
     f.write(html_head)

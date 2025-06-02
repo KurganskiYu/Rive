@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rive Hello World</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
     <!-- Add Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <style>
@@ -51,330 +52,240 @@
     </style>
   </head>
   <body>
-    <div class="animation-container">
-      <canvas id="canvas12" width="526" height="800"></canvas>
-      <div class="description">
-        Position: 0px 0px<br>
-        Size: 526px 800px<br>
-        Layout: Centered<br>
-        State Machine: State Machine 1<br>
-        FPS: 60<br>
-        Duration: 20.0s<br>
-        Loop: Yes<br>
-        Background: Transparent<br>
-      </div>
-    </div>
     <div class="animation-wrapper">
       <div class="animation-container">
-        <canvas id="canvas" width="200" height="200"></canvas>
+        <canvas id="canvas0" width="395" height="600"></canvas>
         <div class="description">
-          Position: 0px 0px<br>
-          Size: 80px 60px<br>
-          Layout: Centered<br>
-          Animation: EYE Timeline<br>
-          FPS: 60<br>
-          Duration: 7.5s<br>
-          Loop: No<br>
-          Background: Transparent<br>
+          <b>River_v1</b><br>Size: 526px 800px<br>State Machine: State Machine 1<br>Duration: 20.0s<br>Loop: Yes<br>Background: Transparent<br>
         </div>
       </div>
+    
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="200"></canvas>
+        <canvas id="canvas1" width="393" height="614"></canvas>
         <div class="description">
-          Position: 0px 0px<br>
-          Size: 200px 200px<br>
-          Layout: Centered<br>
-          Animation: EYE timeline<br>
-          FPS: 60<br>
-          Duration: 3.5s<br>
-          Loop: No<br>
-          Background: Black<br>
+          <b>GiftBox_v1</b><br>Size: 393px 614px<br>State Machine: State Machine 1<br>Trigger: Trigger 1<br>Duration: 5.0s<br>Loop: Yes<br>Background: Transparent<br><button id="triggerButton11">Trigger</button><br>
         </div>
       </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas2" width="300" height="300"></canvas>
+        <div class="description">
+          <b>Confetti_v1</b><br>Size: 930px 930px<br>State Machine: State Machine 1<br>Trigger: Trigger<br>Duration: 1.5s<br>Loop: No<br>Background: Transparent<br><button id="triggerButton10">Trigger</button><br>
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas3" width="196" height="426"></canvas>
+        <div class="description">
+          <b>NightDay_v8</b><br>Size: 393px 852px<br>State Machine: Timeline 1<br>Duration: 6.0s<br>Loop: No<br>Background: Black<br>
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas4" width="274" height="274"></canvas>
+        <div class="description">
+          <b>PulseWave_v6</b><br>Size: 274px 274px<br>State Machine: Timeline 1<br>Duration: 4.0s<br>Loop: No<br>Background: Transparent<br>
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas5" width="360" height="80"></canvas>
+        <div class="description">
+          <b>PulseWave_v5</b><br>Size: 360px 80px<br>State Machine: Pulse 2x<br>Duration: 4.0s<br>Loop: No<br>Background: Transparent<br>
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas6" width="200" height="200"></canvas>
+        <div class="description">
+          <b>WaveLoader_v3</b><br>Size: 250px 250px<br>State Machine: Wave Loader<br>Duration: 6.0s<br>Loop: Yes<br>Background: Black<br>
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas7" width="200" height="200"></canvas>
+        <div class="description">
+          <b>SpiralLoader_v2</b><br>Size: 200px 200px<br>State Machine: Spiral Loader<br>Duration: 3.0s<br>Loop: Yes<br>Background: Black<br>
+        </div>
+      </div>
+    
       <div class="animation-container">
         <canvas id="canvas8" width="200" height="200"></canvas>
         <div class="description">
-          Position: 0px 0px<br>
-          Size: 200px 200px<br>
-          Layout: Centered<br>
-          State Machine: State Machine 1<br>
-          Trigger: CloseTrigger<br>
-          FPS: 60<br>
-          Duration: 3.5s<br>
-          Loop: No<br>
-          Background: Black<br>
-          <button id="triggerButton8">Trigger Close</button>
+          <b>CircleLoader_v2</b><br>Size: 200px 200px<br>State Machine: Circle Loader<br>Duration: 3.0s<br>Loop: Yes<br>Background: Black<br>
         </div>
       </div>
+    
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="200"></canvas>
+        <canvas id="canvas9" width="200" height="200"></canvas>
         <div class="description">
-          Position: 0px 0px<br>
-          Size: 200px 200px<br>
-          Layout: Centered<br>
-          Animation: Circle Loader<br>
-          FPS: 60<br>
-          Duration: 3.0s<br>
-          Loop: Yes<br>
-          Background: Black<br>
+          <b>EyeLoader_C_v5</b><br>Size: 200px 200px<br>State Machine: State Machine 1<br>Trigger: CloseTrigger<br>Duration: 3.5s<br>Loop: No<br>Background: Black<br><button id="triggerButton8">Trigger</button><br>
         </div>
       </div>
+    
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="200"></canvas>
+        <canvas id="canvas10" width="200" height="200"></canvas>
         <div class="description">
-          Position: 0px 0px<br>
-          Size: 200px 200px<br>
-          Layout: Centered<br>
-          Animation: Spiral Loader<br>
-          FPS: 60<br>
-          Duration: 3.0s<br>
-          Loop: Yes<br>
-          Background: Black<br>
+          <b>EyeLoader_A_v4</b><br>Size: 200px 200px<br>State Machine: EYE timeline<br>Duration: 3.5s<br>Loop: No<br>Background: Black<br>
         </div>
       </div>
+    
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="200"></canvas>
+        <canvas id="canvas11" width="200" height="200"></canvas>
         <div class="description">
-          Position: 0px 0px<br>
-          Size: 250px 250px<br>
-          Layout: Centered<br>
-          Animation: Wave Loader<br>
-          FPS: 60<br>
-          Duration: 6.0s<br>
-          Loop: Yes<br>
-          Background: Black<br>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas id="canvas6" width="360" height="80"></canvas>
-        <div class="description">
-          Position: 0px 0px<br>
-          Size: 360px 80px<br>
-          Layout: Centered<br>
-          Animation: Pulse 2x<br>
-          FPS: 60<br>
-          Duration: 4.0s<br>
-          Loop: No<br>
-          Background: Transparent<br>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas id="canvas7" width="274" height="274"></canvas>
-        <div class="description">
-          Position: 0px 0px<br>
-          Size: 274px 274px<br>
-          Layout: Centered<br>
-          Animation: Timeline 1<br>
-          FPS: 60<br>
-          Duration: 4.0s<br>
-          Loop: No<br>
-          Background: Transparent<br>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas id="canvas9" width="196" height="426"></canvas>
-        <div class="description">
-          Position: 0px 0px<br>
-          Size: 393px 852px<br>
-          Layout: Centered<br>
-          Animation: Timeline 1<br>
-          FPS: 60<br>
-          Duration: 6.0s<br>
-          Loop: No<br>
-          Background: Black<br>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas id="canvas10" width="300" height="300"></canvas>
-        <div class="description">
-          Position: 0px 0px<br>
-          Size: 930px 930px<br>
-          Layout: Centered<br>
-          State Machine: State Machine 1<br>
-          Trigger Name: Trigger<br>
-          FPS: 60<br>
-          Duration: 1.5s<br>
-          Loop: No<br>
-          Background: Transparent<br>
-          <button id="triggerButton10">Trigger Confetti</button>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas id="canvas11" width="393" height="614"></canvas>
-        <div class="description">
-          Position: 0px 0px<br>
-          Size: 393px 614px<br>
-          Layout: Centered<br>
-          State Machine: State Machine 1<br>
-          Trigger: Trigger 1<br>
-          FPS: 60<br>
-          Duration: 5.0s<br>
-          Loop: Yes<br>
-          Background: Transparent<br>
-          <button id="triggerButton11">Trigger 1</button>
+          <b>EyeNew_v5</b><br>Size: 80px 60px<br>State Machine: EYE Timeline<br>Duration: 7.5s<br>Loop: No<br>Background: Transparent<br>
         </div>
       </div>
     </div>
+<script>
 
-    <script src="https://unpkg.com/@rive-app/webgl2"></script>
-    <script>
-      const r = new rive.Rive({
-        src: "video-gallery\\riv\\EyeNew_v5.riv",
-        canvas: document.getElementById("canvas"),
-        autoplay: true,
-        onLoad: () => {
-          r.resizeDrawingSurfaceToCanvas();
-        },
-      });
+const r0 = new rive.Rive({
+  src: "riv/River_v1.riv",
+  canvas: document.getElementById("canvas0"),
+  autoplay: true, stateMachines: "State Machine 1",
+  onLoad: () => {
+    r0.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      const r2 = new rive.Rive({
-        src: "video-gallery\\riv\\EyeLoader_v4_eye-A_loop.riv",
-        canvas: document.getElementById("canvas2"),
-        autoplay: true,
-        onLoad: () => {
-          r2.resizeDrawingSurfaceToCanvas();
-        },
-      });
+const r1 = new rive.Rive({
+  src: "riv/GiftBox_v1.riv",
+  canvas: document.getElementById("canvas1"),
+  autoplay: true, stateMachines: "State Machine 1",
+  onLoad: () => {
+    r1.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      let closeTriggerInput;
+let triggerInput1;
+r1.on("load", () => {
+  const inputs = r1.stateMachineInputs("State Machine 1");
+  triggerInput1 = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("triggerButton11").addEventListener("click", () => {
+  if (triggerInput1) {
+    triggerInput1.fire();
+  }
+});
 
-      const r8 = new rive.Rive({
-        src: "video-gallery\\riv\\EyeLoader_v5_eye-C_trigger.riv",
-        canvas: document.getElementById("canvas8"),
-        autoplay: true,
-        stateMachines: "State Machine 1",
-        onLoad: () => {
-          r8.resizeDrawingSurfaceToCanvas();
+const r2 = new rive.Rive({
+  src: "riv/Confetti_v1.riv",
+  canvas: document.getElementById("canvas2"),
+  autoplay: true, stateMachines: "State Machine 1",
+  onLoad: () => {
+    r2.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-          // Get the input for "CloseTrigger" from the state machine
-          const inputs = r8.stateMachineInputs("State Machine 1");
-          closeTriggerInput = inputs.find(input => input.name === "CloseTrigger");
-        },
-      });
+let triggerInput2;
+r2.on("load", () => {
+  const inputs = r2.stateMachineInputs("State Machine 1");
+  triggerInput2 = inputs.find(input => input.name === "Trigger");
+});
+document.getElementById("triggerButton10").addEventListener("click", () => {
+  if (triggerInput2) {
+    triggerInput2.fire();
+  }
+});
 
-      // Add event listener to trigger the "CloseTrigger" input
-      document.getElementById("triggerButton8").addEventListener("click", () => {
-        if (closeTriggerInput) {
-          closeTriggerInput.fire(); // Fire the trigger input
-        } else {
-          console.error("CloseTrigger input not found.");
-        }
-      });
+const r3 = new rive.Rive({
+  src: "riv/NightDay_v8.riv",
+  canvas: document.getElementById("canvas3"),
+  autoplay: true,
+  onLoad: () => {
+    r3.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      const r3 = new rive.Rive({
-        src: "video-gallery\\riv\\CircleLoader_v2.riv",
-        canvas: document.getElementById("canvas3"),
-        autoplay: true,
-        onLoad: () => {
-          r3.resizeDrawingSurfaceToCanvas();
-        },
-      });
+const r4 = new rive.Rive({
+  src: "riv/PulseWave_transp_layout-center_full-circle_v6.riv",
+  canvas: document.getElementById("canvas4"),
+  autoplay: true,
+  onLoad: () => {
+    r4.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      const r4 = new rive.Rive({
-        src: "video-gallery\\riv\\SpiralLoader_v2.riv",
-        canvas: document.getElementById("canvas4"),
-        autoplay: true,
-        onLoad: () => {
-          r4.resizeDrawingSurfaceToCanvas();
-        },
-      });
+const r5 = new rive.Rive({
+  src: "riv/PulseWave_transp_layout-center_v5.riv",
+  canvas: document.getElementById("canvas5"),
+  autoplay: true,
+  onLoad: () => {
+    r5.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      const r5 = new rive.Rive({
-        src: "video-gallery\\riv\\WaveLoader_v3.riv",
-        canvas: document.getElementById("canvas5"),
-        autoplay: true,
-        onLoad: () => {
-          r5.resizeDrawingSurfaceToCanvas();
-        },
-      });
+const r6 = new rive.Rive({
+  src: "riv/WaveLoader_v3.riv",
+  canvas: document.getElementById("canvas6"),
+  autoplay: true,
+  onLoad: () => {
+    r6.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      const r6 = new rive.Rive({
-        src: "video-gallery\\riv\\PulseWave_transp_layout-center_v5.riv",
-        canvas: document.getElementById("canvas6"),
-        autoplay: true,
-        onLoad: () => {
-          r6.resizeDrawingSurfaceToCanvas();
-        },
-      });
+const r7 = new rive.Rive({
+  src: "riv/SpiralLoader_v2.riv",
+  canvas: document.getElementById("canvas7"),
+  autoplay: true,
+  onLoad: () => {
+    r7.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      const r7 = new rive.Rive({
-        src: "video-gallery\\riv\\PulseWave_transp_layout-center_full-circle_v6.riv",
-        canvas: document.getElementById("canvas7"),
-        autoplay: true,
-        onLoad: () => {
-          r7.resizeDrawingSurfaceToCanvas();
-        },
-      });
+const r8 = new rive.Rive({
+  src: "riv/CircleLoader_v2.riv",
+  canvas: document.getElementById("canvas8"),
+  autoplay: true,
+  onLoad: () => {
+    r8.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      const r9 = new rive.Rive({
-        src: "video-gallery\\riv\\NightDay_v8.riv",
-        canvas: document.getElementById("canvas9"),
-        autoplay: true,
-        onLoad: () => {
-          r9.resizeDrawingSurfaceToCanvas();
-        },
-      });
+const r9 = new rive.Rive({
+  src: "riv/EyeLoader_v5_eye-C_trigger.riv",
+  canvas: document.getElementById("canvas9"),
+  autoplay: true, stateMachines: "State Machine 1",
+  onLoad: () => {
+    r9.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      let confettiTriggerInput;
+let triggerInput9;
+r9.on("load", () => {
+  const inputs = r9.stateMachineInputs("State Machine 1");
+  triggerInput9 = inputs.find(input => input.name === "CloseTrigger");
+});
+document.getElementById("triggerButton8").addEventListener("click", () => {
+  if (triggerInput9) {
+    triggerInput9.fire();
+  }
+});
 
-      const r10 = new rive.Rive({
-        src: "video-gallery\\riv\\Confetti_v1.riv",
-        canvas: document.getElementById("canvas10"),
-        autoplay: true,
-        stateMachines: "State Machine 1",
-        onLoad: () => {
-          r10.resizeDrawingSurfaceToCanvas();
-          // Get the input for "Trigger" from the state machine
-          const inputs = r10.stateMachineInputs("State Machine 1");
-          confettiTriggerInput = inputs.find(input => input.name === "Trigger");
-        },
-      });
+const r10 = new rive.Rive({
+  src: "riv/EyeLoader_v4_eye-A_loop.riv",
+  canvas: document.getElementById("canvas10"),
+  autoplay: true,
+  onLoad: () => {
+    r10.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      document.getElementById("triggerButton10").addEventListener("click", () => {
-        if (confettiTriggerInput) {
-          confettiTriggerInput.fire();
-        } else {
-          console.error("Confetti Trigger input not found.");
-        }
-      });
+const r11 = new rive.Rive({
+  src: "riv/EyeNew_v5.riv",
+  canvas: document.getElementById("canvas11"),
+  autoplay: true,
+  onLoad: () => {
+    r11.resizeDrawingSurfaceToCanvas();
+  },
+});
 
-      let trigger1Input;
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+</script>
 
-      const r11 = new rive.Rive({
-        src: "video-gallery\\riv\\GiftBox_v1.riv",
-        canvas: document.getElementById("canvas11"),
-        autoplay: true,
-        stateMachines: "State Machine 1",
-        onLoad: () => {
-          r11.resizeDrawingSurfaceToCanvas();
-          // Get the input for "Trigger 1" from the state machine
-          const inputs = r11.stateMachineInputs("State Machine 1");
-          trigger1Input = inputs.find(input => input.name === "Trigger 1");
-        },
-      });
-
-      document.getElementById("triggerButton11").addEventListener("click", () => {
-        if (trigger1Input) {
-          trigger1Input.fire();
-        } else {
-          console.error("Trigger 1 input not found.");
-        }
-      });
-
-      const r12 = new rive.Rive({
-        src: "video-gallery\\riv\\River_v1.riv",
-        canvas: document.getElementById("canvas12"),
-        autoplay: true,
-        stateMachines: "State Machine 1",
-        onLoad: () => {
-          r12.resizeDrawingSurfaceToCanvas();
-        },
-      });
-
-      document.querySelectorAll('canvas').forEach(canvas => {
-        canvas.style.width = `${canvas.width}px`;
-        canvas.style.height = `${canvas.height}px`;
-      });
-    </script>
-  </body>
+    </div>
+</body>
 </html>
