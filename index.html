@@ -56,7 +56,7 @@
       <div class="animation-container">
         <canvas id="canvas0" width="274" height="274"></canvas>
         <div class="description">
-          <a href="riv/PulseWaveEye_v7.riv" target="_blank" style="color: white;">PulseWaveEye_v7</a><br>Size: 274px 274px<br>State Machine: Timeline 1<br>Duration: 8.0s<br>Loop: No<br>Background: Transparent<br>
+          <a href="riv/PulseWaveEye_v7_trigger.riv" target="_blank" style="color: white;">PulseWaveEye_v7</a><br>Size: 274px 274px<br>State Machine: State Machine 1<br>Trigger: Trigger 1<br>Duration: 8.0s<br>Loop: No<br>Background: Transparent<br><button id="triggerButton12">Trigger</button><br>
         </div>
       </div>
     
@@ -147,12 +147,23 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/PulseWaveEye_v7.riv",
+  src: "riv/PulseWaveEye_v7_trigger.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true,
+  autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
   },
+});
+
+let triggerInput0;
+r0.on("load", () => {
+  const inputs = r0.stateMachineInputs("State Machine 1");
+  triggerInput0 = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("triggerButton12").addEventListener("click", () => {
+  if (triggerInput0) {
+    triggerInput0.fire();
+  }
 });
 
 const r1 = new rive.Rive({

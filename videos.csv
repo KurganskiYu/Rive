@@ -11,4 +11,4 @@ NightDay_v8.riv,NightDay_v8,196,426,"393px 852px","Timeline 1","",6.0,No,Black,
 Confetti_v1.riv,Confetti_v1,300,300,"930px 930px","State Machine 1","Trigger",1.5,No,Transparent,triggerButton10
 GiftBox_v1.riv,GiftBox_v1,393,614,"393px 614px","State Machine 1","Trigger 1",5.0,Yes,Transparent,triggerButton11
 River_v1.riv,River_v1,395,600,"526px 800px","State Machine 1","",20.0,Yes,Transparent,
-PulseWaveEye_v7.riv,PulseWaveEye_v7,274,274,"274px 274px","Timeline 1","",8.0,No,Transparent,
+PulseWaveEye_v7_trigger.riv,PulseWaveEye_v7,274,274,"274px 274px","State Machine 1","Trigger 1",8.0,No,Transparent,triggerButton12
