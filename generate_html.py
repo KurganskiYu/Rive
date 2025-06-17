@@ -20,17 +20,21 @@ html_foot = """
 def make_main_link(row):
     # Link to the per-animation page
     page_name = os.path.splitext(row["src"])[0] + ".html"
-    return f'<a href="pages/{page_name}" style="color: white;">{row["name"]}</a>'
+    return f'<a href="pages/{page_name}" style="color: #464646;">{row["name"]}</a>'
 
 def make_main_canvas(idx, row):
     canvas_id = f"canvas{idx}"
-    # Only show name as link, canvas, and buttons/inputs
-    desc = make_main_link(row) + "<br>"
+    button_html = ""
     if row["button_id"]:
-        desc += f'<button id="{row["button_id"]}">Trigger</button>'
+        button_html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
         if row["input1"]:
-            desc += f' <input type="number" id="{row["button_id"]}_input" style="width:60px;" />'
-        desc += "<br>"
+            button_html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px; margin-left: 8px;" />'
+    desc = f'''
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div>{make_main_link(row)}</div>
+        <div>{button_html}</div>
+      </div>
+    '''
     return f'''
       <div class="animation-container">
         <canvas id="{canvas_id}" width="{row["width"]}" height="{row["height"]}"></canvas>
@@ -133,9 +137,9 @@ def make_animation_page(row):
           {make_description_html(row)}
 '''
         if row["button_id"]:
-            html += f'<button id="{row["button_id"]}">Trigger</button>'
+            html += f'<button id="{row["button_id"]}" style="background: #ff6600; color: white; border: none; border-radius: 8px; padding: 6px 16px; cursor: pointer;">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_input" style="width:60px;" />'
+                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px;" />'
             html += "<br>"
         html += '''
         </div>
@@ -146,9 +150,9 @@ def make_animation_page(row):
           Preview:<br>
 '''.format(row["width"], row["height"])
         if row["button_id"]:
-            html += f'<button id="{row["button_id"]}_preview">Trigger</button>'
+            html += f'<button id="{row["button_id"]}_preview" style="background: #ff6600; color: white; border: none; border-radius: 8px; padding: 6px 16px; cursor: pointer;">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_preview_input" style="width:60px;" />'
+                html += f' <input type="number" id="{row["button_id"]}_preview_input" value="80" style="width:60px;" />'
             html += "<br>"
         html += '''
         </div>
@@ -163,9 +167,9 @@ def make_animation_page(row):
         {make_description_html(row)}
 '''
         if row["button_id"]:
-            html += f'<button id="{row["button_id"]}">Trigger</button>'
+            html += f'<button id="{row["button_id"]}" style="background: #ff6600; color: white; border: none; border-radius: 8px; padding: 6px 16px; cursor: pointer;">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_input" style="width:60px;" />'
+                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px;" />'
             html += "<br>"
         html += '''
       </div>

@@ -34,7 +34,7 @@
             padding: 20px;
         }
         canvas {
-            border: 1px solid #292929;
+            border: 1px solid #292929; 
             width: auto; /* Ensure the CSS width matches the HTML width */
             height: auto; /* Ensure the CSS height matches the HTML height */
         }
@@ -54,10 +54,30 @@
           gap: 32px;
           align-items: flex-start;
         }
+        .rive-btn {
+            background: #646464;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 16px;
+            cursor: pointer;
+            margin-left: 16px;
+        }
+        input[type="number"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 8px;
+            font-size: 1rem;
+            outline: none;
+        }
     </style>
   </head>
   <body>
     <div class="animation-wrapper">
+
+
+
     <div class="animation-container">
       <canvas id="main_canvas" width="274" height="274"></canvas>
       <div class="description">
