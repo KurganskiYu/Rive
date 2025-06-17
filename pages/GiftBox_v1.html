@@ -58,3 +58,41 @@
   </head>
   <body>
     <div class="animation-wrapper">
+    <div class="animation-container">
+      <canvas id="main_canvas" width="393" height="614"></canvas>
+      <div class="description">
+        <a href="../riv/GiftBox_v1.riv" target="_blank" style="color: white;">GiftBox_v1</a><br>Size: 393px 614px<br>State Machine: State Machine 1<br>Trigger: Trigger 1<br>Duration: 5.0s<br>Loop: Yes<br>Background: Transparent<br>
+<button id="triggerButton11">Trigger</button><br>
+      </div>
+    </div>
+
+<script>
+const mainRive = new rive.Rive({
+  src: "../riv/GiftBox_v1.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true, stateMachines: "State Machine 1",
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+let triggerInputMain;
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  triggerInputMain = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("triggerButton11").addEventListener("click", () => {
+  if (triggerInputMain) {
+    triggerInputMain.fire();
+  }
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>

@@ -58,3 +58,30 @@
   </head>
   <body>
     <div class="animation-wrapper">
+    <div class="animation-container">
+      <canvas id="main_canvas" width="360" height="80"></canvas>
+      <div class="description">
+        <a href="../riv/PulseWave_transp_layout-center_v5.riv" target="_blank" style="color: white;">PulseWave_v5</a><br>Size: 360px 80px<br>State Machine: Pulse 2x<br>Duration: 4.0s<br>Loop: No<br>Background: Transparent<br>
+
+      </div>
+    </div>
+
+<script>
+const mainRive = new rive.Rive({
+  src: "../riv/PulseWave_transp_layout-center_v5.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true, stateMachines: "Pulse 2x",
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>

@@ -58,3 +58,30 @@
   </head>
   <body>
     <div class="animation-wrapper">
+    <div class="animation-container">
+      <canvas id="main_canvas" width="200" height="200"></canvas>
+      <div class="description">
+        <a href="../riv/EyeLoader_v4_eye-A_loop.riv" target="_blank" style="color: white;">EyeLoader_A_v4</a><br>Size: 200px 200px<br>State Machine: EYE timeline<br>Duration: 3.5s<br>Loop: No<br>Background: Black<br>
+
+      </div>
+    </div>
+
+<script>
+const mainRive = new rive.Rive({
+  src: "../riv/EyeLoader_v4_eye-A_loop.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true, stateMachines: "EYE timeline",
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>
