@@ -30,7 +30,7 @@ def make_main_canvas(idx, row):
         if row["input1"]:
             button_html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px; margin-left: 8px;" />'
     desc = f'''
-      <div style="display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
         <div>{make_main_link(row)}</div>
         <div>{button_html}</div>
       </div>
@@ -134,14 +134,17 @@ def make_animation_page(row):
       <div class="animation-container">
         <canvas id="main_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
         <div class="description">
-          {make_description_html(row)}
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div>{make_description_html(row)}</div>
+            <div>
 '''
         if row["button_id"]:
-            html += f'<button id="{row["button_id"]}" style="background: #ff6600; color: white; border: none; border-radius: 8px; padding: 6px 16px; cursor: pointer;">Trigger</button>'
+            html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px;" />'
-            html += "<br>"
+                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px; margin-left: 8px;" />'
         html += '''
+            </div>
+          </div>
         </div>
       </div>
       <div class="animation-container">
@@ -150,10 +153,10 @@ def make_animation_page(row):
           Preview:<br>
 '''.format(row["width"], row["height"])
         if row["button_id"]:
-            html += f'<button id="{row["button_id"]}_preview" style="background: #ff6600; color: white; border: none; border-radius: 8px; padding: 6px 16px; cursor: pointer;">Trigger</button>'
+            html += f'<button id="{row["button_id"]}_preview" class="rive-btn">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_preview_input" value="80" style="width:60px;" />'
-            html += "<br>"
+                html += f' <input type="number" id="{row["button_id"]}_preview_input" value="80" style="width:60px; margin-left: 8px;" />'
+        html += "<br>"
         html += '''
         </div>
       </div>
@@ -164,14 +167,17 @@ def make_animation_page(row):
     <div class="animation-container">
       <canvas id="main_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
       <div class="description">
-        {make_description_html(row)}
+        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+          <div>{make_description_html(row)}</div>
+          <div>
 '''
         if row["button_id"]:
-            html += f'<button id="{row["button_id"]}" style="background: #ff6600; color: white; border: none; border-radius: 8px; padding: 6px 16px; cursor: pointer;">Trigger</button>'
+            html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px;" />'
-            html += "<br>"
+                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px; margin-left: 8px;" />'
         html += '''
+          </div>
+        </div>
       </div>
     </div>
 '''
