@@ -179,7 +179,7 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/WaveLoader_v4.html" style="color: #464646;">WaveLoader_v4</a></div>
+        <div><a href="pages/WaveLoader_v4a.html" style="color: #464646;">WaveLoader_v4a</a></div>
         <div></div>
       </div>
     
@@ -191,7 +191,7 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/SpiralLoader_v2.html" style="color: #464646;">SpiralLoader_v2</a></div>
+        <div><a href="pages/WaveLoader_v4.html" style="color: #464646;">WaveLoader_v4</a></div>
         <div></div>
       </div>
     
@@ -203,7 +203,7 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/CircleLoader_v2.html" style="color: #464646;">CircleLoader_v2</a></div>
+        <div><a href="pages/SpiralLoader_v2.html" style="color: #464646;">SpiralLoader_v2</a></div>
         <div></div>
       </div>
     
@@ -215,6 +215,18 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div><a href="pages/CircleLoader_v2.html" style="color: #464646;">CircleLoader_v2</a></div>
+        <div></div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas12" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
         <div><a href="pages/EyeLoader_v5_eye-C_trigger.html" style="color: #464646;">EyeLoader_C_v5</a></div>
         <div><button id="triggerButton8" class="rive-btn">Trigger</button></div>
       </div>
@@ -223,7 +235,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas12" width="200" height="200"></canvas>
+        <canvas id="canvas13" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -235,7 +247,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas13" width="200" height="200"></canvas>
+        <canvas id="canvas14" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -378,7 +390,7 @@ const r7 = new rive.Rive({
 });
 
 const r8 = new rive.Rive({
-  src: "riv/WaveLoader_v4.riv",
+  src: "riv/WaveLoader_v4a.riv",
   canvas: document.getElementById("canvas8"),
   autoplay: true,
   onLoad: () => {
@@ -387,7 +399,7 @@ const r8 = new rive.Rive({
 });
 
 const r9 = new rive.Rive({
-  src: "riv/SpiralLoader_v2.riv",
+  src: "riv/WaveLoader_v4.riv",
   canvas: document.getElementById("canvas9"),
   autoplay: true,
   onLoad: () => {
@@ -396,7 +408,7 @@ const r9 = new rive.Rive({
 });
 
 const r10 = new rive.Rive({
-  src: "riv/CircleLoader_v2.riv",
+  src: "riv/SpiralLoader_v2.riv",
   canvas: document.getElementById("canvas10"),
   autoplay: true,
   onLoad: () => {
@@ -405,40 +417,49 @@ const r10 = new rive.Rive({
 });
 
 const r11 = new rive.Rive({
-  src: "riv/EyeLoader_v5_eye-C_trigger.riv",
+  src: "riv/CircleLoader_v2.riv",
   canvas: document.getElementById("canvas11"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,
   onLoad: () => {
     r11.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInput11;
-r11.on("load", () => {
-  const inputs = r11.stateMachineInputs("State Machine 1");
-  triggerInput11 = inputs.find(input => input.name === "CloseTrigger");
-});
-document.getElementById("triggerButton8").addEventListener("click", () => {
-  if (triggerInput11) {
-    triggerInput11.fire();
-  }
-});
-
 const r12 = new rive.Rive({
-  src: "riv/EyeLoader_v4_eye-A_loop.riv",
+  src: "riv/EyeLoader_v5_eye-C_trigger.riv",
   canvas: document.getElementById("canvas12"),
-  autoplay: true,
+  autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r12.resizeDrawingSurfaceToCanvas();
   },
 });
 
+let triggerInput12;
+r12.on("load", () => {
+  const inputs = r12.stateMachineInputs("State Machine 1");
+  triggerInput12 = inputs.find(input => input.name === "CloseTrigger");
+});
+document.getElementById("triggerButton8").addEventListener("click", () => {
+  if (triggerInput12) {
+    triggerInput12.fire();
+  }
+});
+
 const r13 = new rive.Rive({
-  src: "riv/EyeNew_v5.riv",
+  src: "riv/EyeLoader_v4_eye-A_loop.riv",
   canvas: document.getElementById("canvas13"),
   autoplay: true,
   onLoad: () => {
     r13.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r14 = new rive.Rive({
+  src: "riv/EyeNew_v5.riv",
+  canvas: document.getElementById("canvas14"),
+  autoplay: true,
+  onLoad: () => {
+    r14.resizeDrawingSurfaceToCanvas();
   },
 });
 
