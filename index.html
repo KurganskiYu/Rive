@@ -83,7 +83,7 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/SleepLines_v1.html" style="color: #464646;">SleepLines_v1</a></div>
+        <div><a href="pages/SleepLines_v2.html" style="color: #464646;">SleepLines_v2</a></div>
         <div><button id="triggerButton14" class="rive-btn">Trigger</button></div>
       </div>
     
@@ -273,9 +273,9 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/SleepLines_v1.riv",
+  src: "riv/SleepLines_v2.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,artboard: "SleepLines", stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
   },
