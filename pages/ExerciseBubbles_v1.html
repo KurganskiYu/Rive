@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rive Hello World</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Apply modern font */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 10vh;
+            background-color: #000000;
+            background-image: 
+                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
+                linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f);
+            background-size: 20px 20px; /* Adjust size of the checkered pattern */
+            background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
+            padding: 10px 0;
+        }
+        .animation-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 30px;
+            width: 95%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #292929; 
+            width: auto; /* Ensure the CSS width matches the HTML width */
+            height: auto; /* Ensure the CSS height matches the HTML height */
+        }
+        .animation-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .description {
+            color: rgb(120, 120, 120);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        .animation-row {
+          display: flex;
+          gap: 32px;
+          align-items: flex-start;
+        }
+        .rive-btn {
+            background: #646464;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 16px;
+            cursor: pointer;
+            margin-left: 16px;
+        }
+        input[type="number"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+
+
+    <div class="animation-container">
+      <canvas id="main_canvas" width="375" height="812"></canvas>
+      <div class="description">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+          <div><a href="../riv/ExerciseBubbles_v1.riv" target="_blank" style="color: white;">ExerciseBubbles_v1</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: ExerciseBubbles<br>Trigger: Trigger 1<br>Duration: 99.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+          <div>
+<button id="triggerButton15" class="rive-btn">Trigger</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<script>
+const mainRive = new rive.Rive({
+  src: "../riv/ExerciseBubbles_v1.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true, artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+let triggerInputMain;
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  triggerInputMain = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("triggerButton15").addEventListener("click", () => {
+  if (triggerInputMain) {
+    triggerInputMain.fire();
+  }
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>
