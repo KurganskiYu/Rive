@@ -15,4 +15,5 @@ River_v1.riv,River_v1,395,600,"526px 800px","State Machine 1","",20.0,Yes,Transp
 PulseWaveEye_v7_trigger.riv,PulseWaveEye_v7,274,274,"274px 274px","State Machine 1","Trigger 1",8.0,No,Transparent,triggerButton12,,
 StressLiquid_v1.riv,StressLiquid_v1,375,812,"375px 812px","State Machine 1","Trigger 1",99.0,Yes,Transparent,triggerButton13,StressLiquid,StressPercent
 SleepLines_v2.riv,SleepLines_v2,375,812,"375px 812px","State Machine 1","Trigger 1",99.0,Yes,Transparent,triggerButton14,SleepLines,
-ExerciseBubbles_v1.riv,ExerciseBubbles_v1,375,812,"375px 812px","State Machine 1","Trigger 1",99.0,Yes,Transparent,triggerButton15,ExerciseBubbles,
+ExerciseBubbles_v1.riv,ExerciseBubbles_v1,375,812,"375px 812px","State Machine 1","Trigger 1",99.0,Yes,Transparent,triggerButton16,ExerciseBubbles,
+OnboardingStrings_v1.riv,OnboardingStrings_v1,375,812,"375px 812px","State Machine 1","",20.0,Yes,Transparent,,OnboardingStrings,

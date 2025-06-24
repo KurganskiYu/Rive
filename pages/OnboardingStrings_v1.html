@@ -78,37 +78,44 @@
 
 
 
-    <div class="animation-container">
-      <canvas id="main_canvas" width="375" height="812"></canvas>
-      <div class="description">
-        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div><a href="../riv/ExerciseBubbles_v1.riv" target="_blank" style="color: white;">ExerciseBubbles_v1</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: ExerciseBubbles<br>Trigger: Trigger 1<br>Duration: 99.0s<br>Loop: Yes<br>Background: Transparent<br></div>
-          <div>
-<button id="triggerButton16" class="rive-btn">Trigger</button>
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
+      <div class="animation-container">
+        <canvas id="main_canvas" width="375" height="812"></canvas>
+        <div class="description">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div><a href="../riv/OnboardingStrings_v1.riv" target="_blank" style="color: white;">OnboardingStrings_v1</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: OnboardingStrings<br>Duration: 20.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+            <div>
+
+            </div>
           </div>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="preview_canvas" width="375" height="812"></canvas>
+        <div class="description">
+          Preview:<br>
+<br>
         </div>
       </div>
     </div>
 
 <script>
 const mainRive = new rive.Rive({
-  src: "../riv/ExerciseBubbles_v1.riv",
+  src: "../riv/OnboardingStrings_v1.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
+  autoplay: true, artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInputMain;
-mainRive.on("load", () => {
-  const inputs = mainRive.stateMachineInputs("State Machine 1");
-  triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("triggerButton16").addEventListener("click", () => {
-  if (triggerInputMain) {
-    triggerInputMain.fire();
-  }
+const previewRive = new rive.Rive({
+  src: "../riv/OnboardingStrings_v1_preview.riv",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, artboard: "OnboardingStrings", stateMachines: "State Machine 1",
+  onLoad: () => {
+    previewRive.resizeDrawingSurfaceToCanvas();
+  },
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {
