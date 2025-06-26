@@ -79,23 +79,11 @@
 
 
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="433"></canvas>
+        <canvas id="canvas0" width="200" height="304"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/Welcome_v1.html" style="color: #464646;">Welcome</a></div>
-        <div><button id="triggerButton17" class="rive-btn">Trigger</button></div>
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas1" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/Exercise_v1.html" style="color: #464646;">Exercise</a></div>
+        <div><a href="pages/River_v1.html" style="color: #464646;">River</a></div>
         <div></div>
       </div>
     
@@ -103,11 +91,35 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="433"></canvas>
+        <canvas id="canvas1" width="200" height="312"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/DeepRest_v1.html" style="color: #464646;">DeepRest</a></div>
+        <div><a href="pages/GiftBox_v1.html" style="color: #464646;">GiftBox</a></div>
+        <div><button id="triggerButton11" class="rive-btn">Trigger</button></div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas2" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div><a href="pages/Confetti_v1.html" style="color: #464646;">Confetti</a></div>
+        <div><button id="triggerButton10" class="rive-btn">Trigger</button></div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas3" width="200" height="435"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div><a href="pages/NightDay_v8.html" style="color: #464646;">NightDay</a></div>
         <div></div>
       </div>
     
@@ -115,11 +127,11 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="433"></canvas>
+        <canvas id="canvas4" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/OnboardingStrings_v1.html" style="color: #464646;">OnboardingStrings</a></div>
+        <div><a href="pages/PulseWave_transp_layout-center_full-circle_v6.html" style="color: #464646;">PulseWave</a></div>
         <div></div>
       </div>
     
@@ -127,36 +139,24 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="433"></canvas>
+        <canvas id="canvas5" width="200" height="44"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/ExerciseBubbles_v1.html" style="color: #464646;">ExerciseBubbles</a></div>
-        <div><button id="triggerButton16" class="rive-btn">Trigger</button></div>
+        <div><a href="pages/PulseWave_transp_layout-center_v5.html" style="color: #464646;">PulseWave</a></div>
+        <div></div>
       </div>
     
         </div>
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="433"></canvas>
+        <canvas id="canvas6" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/SleepLines_v2.html" style="color: #464646;">SleepLines</a></div>
-        <div><button id="triggerButton14" class="rive-btn">Trigger</button></div>
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas6" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/StressLiquid_v1.html" style="color: #464646;">StressLiquid</a></div>
-        <div><button id="triggerButton13" class="rive-btn">Trigger</button> <input type="number" id="triggerButton13_input" value="80" style="width:30px; margin-left: 8px;" /></div>
+        <div><a href="pages/WaveLoader_v4a.html" style="color: #464646;">WaveLoader_v4a</a></div>
+        <div></div>
       </div>
     
         </div>
@@ -167,8 +167,8 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/PulseWaveEye_v7_trigger.html" style="color: #464646;">PulseWaveEye</a></div>
-        <div><button id="triggerButton12" class="rive-btn">Trigger</button></div>
+        <div><a href="pages/WaveLoader_v4.html" style="color: #464646;">WaveLoader</a></div>
+        <div></div>
       </div>
     
         </div>
@@ -177,27 +177,16 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/Welcome_v1.riv",
+  src: "riv/River_v1.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true,artboard: "Welcome", stateMachines: "State Machine 1",
+  autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInput0;
-r0.on("load", () => {
-  const inputs = r0.stateMachineInputs("State Machine 1");
-  triggerInput0 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("triggerButton17").addEventListener("click", () => {
-  if (triggerInput0) {
-    triggerInput0.fire();
-  }
-});
-
 const r1 = new rive.Rive({
-  src: "riv/Exercise_v1.riv",
+  src: "riv/GiftBox_v1.riv",
   canvas: document.getElementById("canvas1"),
   autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
@@ -205,8 +194,19 @@ const r1 = new rive.Rive({
   },
 });
 
+let triggerInput1;
+r1.on("load", () => {
+  const inputs = r1.stateMachineInputs("State Machine 1");
+  triggerInput1 = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("triggerButton11").addEventListener("click", () => {
+  if (triggerInput1) {
+    triggerInput1.fire();
+  }
+});
+
 const r2 = new rive.Rive({
-  src: "riv/DeepRest_v1.riv",
+  src: "riv/Confetti_v1.riv",
   canvas: document.getElementById("canvas2"),
   autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
@@ -214,106 +214,60 @@ const r2 = new rive.Rive({
   },
 });
 
+let triggerInput2;
+r2.on("load", () => {
+  const inputs = r2.stateMachineInputs("State Machine 1");
+  triggerInput2 = inputs.find(input => input.name === "Trigger");
+});
+document.getElementById("triggerButton10").addEventListener("click", () => {
+  if (triggerInput2) {
+    triggerInput2.fire();
+  }
+});
+
 const r3 = new rive.Rive({
-  src: "riv/OnboardingStrings_v1.riv",
+  src: "riv/NightDay_v8.riv",
   canvas: document.getElementById("canvas3"),
-  autoplay: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
+  autoplay: true,
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
   },
 });
 
 const r4 = new rive.Rive({
-  src: "riv/ExerciseBubbles_v1.riv",
+  src: "riv/PulseWave_transp_layout-center_full-circle_v6.riv",
   canvas: document.getElementById("canvas4"),
-  autoplay: true,artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
+  autoplay: true,
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInput4;
-r4.on("load", () => {
-  const inputs = r4.stateMachineInputs("State Machine 1");
-  triggerInput4 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("triggerButton16").addEventListener("click", () => {
-  if (triggerInput4) {
-    triggerInput4.fire();
-  }
-});
-
 const r5 = new rive.Rive({
-  src: "riv/SleepLines_v2.riv",
+  src: "riv/PulseWave_transp_layout-center_v5.riv",
   canvas: document.getElementById("canvas5"),
-  autoplay: true,artboard: "SleepLines", stateMachines: "State Machine 1",
+  autoplay: true,
   onLoad: () => {
     r5.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInput5;
-r5.on("load", () => {
-  const inputs = r5.stateMachineInputs("State Machine 1");
-  triggerInput5 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("triggerButton14").addEventListener("click", () => {
-  if (triggerInput5) {
-    triggerInput5.fire();
-  }
-});
-
 const r6 = new rive.Rive({
-  src: "riv/StressLiquid_v1.riv",
+  src: "riv/WaveLoader_v4a.riv",
   canvas: document.getElementById("canvas6"),
-  autoplay: true,artboard: "StressLiquid", stateMachines: "State Machine 1",
+  autoplay: true,
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInput6;
-r6.on("load", () => {
-  const inputs = r6.stateMachineInputs("State Machine 1");
-  triggerInput6 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("triggerButton13").addEventListener("click", () => {
-  if (triggerInput6) {
-    triggerInput6.fire();
-  }
-});
-
-let numberInput6;
-let inputField6 = document.getElementById("triggerButton13_input");
-r6.on("load", () => {
-  const inputs = r6.stateMachineInputs("State Machine 1");
-  numberInput6 = inputs.find(input => input.name === "StressPercent");
-  if (inputField6 && numberInput6) {
-    inputField6.addEventListener("input", () => {
-      let val = parseFloat(inputField6.value);
-      if (!isNaN(val)) numberInput6.value = val;
-    });
-  }
-});
-
 const r7 = new rive.Rive({
-  src: "riv/PulseWaveEye_v7_trigger.riv",
+  src: "riv/WaveLoader_v4.riv",
   canvas: document.getElementById("canvas7"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,
   onLoad: () => {
     r7.resizeDrawingSurfaceToCanvas();
   },
-});
-
-let triggerInput7;
-r7.on("load", () => {
-  const inputs = r7.stateMachineInputs("State Machine 1");
-  triggerInput7 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("triggerButton12").addEventListener("click", () => {
-  if (triggerInput7) {
-    triggerInput7.fire();
-  }
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {
@@ -321,7 +275,7 @@ document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.height = canvas.height + "px";
 });
 </script>
-<div style="margin: 24px 0; text-align:center;"><button class="rive-btn" style="background:#e0e0e0;color:#333;">1</button> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a></div>
+<div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">2</button> <a href="page2.html"><button class="rive-btn">3</button></a></div>
     </div>
 </body>
 </html>

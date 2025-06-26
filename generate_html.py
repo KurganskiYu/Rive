@@ -1,5 +1,6 @@
 import os
 import csv
+import re
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, "videos.csv")
@@ -17,10 +18,27 @@ html_foot = """
 </html>
 """
 
+SCALE_TO_200PX = True  # Set to True to scale all animations to 200px width proportionally (main page only)
+
+def scale_dimensions(width, height):
+    if not SCALE_TO_200PX:
+        return width, height
+    try:
+        width = int(width)
+        height = int(height)
+    except Exception:
+        return width, height
+    if width == 200:
+        return width, height
+    scale = 200 / width
+    return 200, int(round(height * scale))
+
 def make_main_link(row):
     # Link to the per-animation page
     page_name = os.path.splitext(row["src"])[0] + ".html"
-    return f'<a href="pages/{page_name}" style="color: #464646;">{row["name"]}</a>'
+    # Remove version suffix like _v1, _v12, _v123 from the name for display
+    display_name = re.sub(r'_v\d+$', '', row["name"])
+    return f'<a href="pages/{page_name}" style="color: #464646;">{display_name}</a>'
 
 def make_main_canvas(idx, row):
     canvas_id = f"canvas{idx}"
@@ -28,7 +46,8 @@ def make_main_canvas(idx, row):
     if row["button_id"]:
         button_html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
         if row["input1"]:
-            button_html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px; margin-left: 8px;" />'
+            button_html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-left: 8px;" />'
+    width, height = scale_dimensions(row["width"], row["height"])
     desc = f'''
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
         <div>{make_main_link(row)}</div>
@@ -37,7 +56,7 @@ def make_main_canvas(idx, row):
     '''
     return f'''
       <div class="animation-container">
-        <canvas id="{canvas_id}" width="{row["width"]}" height="{row["height"]}"></canvas>
+        <canvas id="{canvas_id}" width="{width}" height="{height}"></canvas>
         <div class="description">
           {desc}
         </div>
@@ -141,7 +160,7 @@ def make_animation_page(row):
         if row["button_id"]:
             html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px; margin-left: 8px;" />'
+                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-left: 8px;" />'
         html += '''
             </div>
           </div>
@@ -155,7 +174,7 @@ def make_animation_page(row):
         if row["button_id"]:
             html += f'<button id="{row["button_id"]}_preview" class="rive-btn">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_preview_input" value="80" style="width:60px; margin-left: 8px;" />'
+                html += f' <input type="number" id="{row["button_id"]}_preview_input" value="80" style="width:30px; margin-left: 8px;" />'
         html += "<br>"
         html += '''
         </div>
@@ -174,7 +193,7 @@ def make_animation_page(row):
         if row["button_id"]:
             html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:60px; margin-left: 8px;" />'
+                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-left: 8px;" />'
         html += '''
           </div>
         </div>
@@ -284,6 +303,38 @@ document.querySelectorAll('canvas').forEach(canvas => {
     with open(os.path.join(pages_dir, page_name), "w", encoding="utf-8") as f:
         f.write(html)
 
+ANIMATIONS_PER_PAGE = 8
+
+def make_pagination_buttons(current_page, total_pages):
+    buttons = []
+    for i in range(total_pages):
+        if i == 0:
+            filename = "index.html"
+        else:
+            filename = f"page{i}.html"
+        label = str(i + 1)
+        if i == current_page:
+            # Highlight current page
+            buttons.append(f'<button class="rive-btn" style="background:#e0e0e0;color:#333;">{label}</button>')
+        else:
+            buttons.append(f'<a href="{filename}"><button class="rive-btn">{label}</button></a>')
+    return '<div style="margin: 24px 0; text-align:center;">' + " ".join(buttons) + "</div>"
+
+def write_main_page(page_rows, page_idx, total_pages):
+    if page_idx == 0:
+        filename = output_html
+    else:
+        filename = os.path.join(script_dir, f"page{page_idx}.html")
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(html_head)
+        # Removed top pagination buttons
+        for idx, row in enumerate(page_rows):
+            f.write(make_main_canvas(idx, row))
+        f.write("</div>\n")
+        f.write(make_script(page_rows))
+        f.write(make_pagination_buttons(page_idx, total_pages))
+        f.write(html_foot)
+
 with open(csv_path, newline='', encoding='utf-8') as csvfile:
     reader = csv.DictReader(csvfile)
     rows = list(reader)[::-1]
@@ -292,13 +343,12 @@ with open(csv_path, newline='', encoding='utf-8') as csvfile:
 for row in rows:
     make_animation_page(row)
 
-# Generate main page
-with open(output_html, "w", encoding="utf-8") as f:
-    f.write(html_head)
-    for idx, row in enumerate(rows):
-        f.write(make_main_canvas(idx, row))
-    f.write("</div>\n")
-    f.write(make_script(rows))
-    f.write(html_foot)
+# Pagination logic
+total_pages = (len(rows) + ANIMATIONS_PER_PAGE - 1) // ANIMATIONS_PER_PAGE
+for page_idx in range(total_pages):
+    start = page_idx * ANIMATIONS_PER_PAGE
+    end = start + ANIMATIONS_PER_PAGE
+    page_rows = rows[start:end]
+    write_main_page(page_rows, page_idx, total_pages)
 
-print(f"Generated {output_html} and {len(rows)} animation pages in 'pages/'")
+print(f"Generated {output_html}, {total_pages-1} extra pages, and {len(rows)} animation pages in 'pages/'")
