@@ -17,3 +17,5 @@ StressLiquid_v1.riv,StressLiquid_v1,375,812,"375px 812px","State Machine 1","Tri
 SleepLines_v2.riv,SleepLines_v2,375,812,"375px 812px","State Machine 1","Trigger 1",99.0,Yes,Transparent,triggerButton14,SleepLines,
 ExerciseBubbles_v1.riv,ExerciseBubbles_v1,375,812,"375px 812px","State Machine 1","Trigger 1",99.0,Yes,Transparent,triggerButton16,ExerciseBubbles,
 OnboardingStrings_v1.riv,OnboardingStrings_v1,375,812,"375px 812px","State Machine 1","",20.0,Yes,Transparent,,OnboardingStrings,
+DeepRest_v1.riv,DeepRest_v1,375,812,"375px 812px","State Machine 1","",5.0,No,Transparent,,,
+Exercise_v1.riv,Exercise_v1,375,812,"375px 812px","State Machine 1","",5.0,No,Transparent,,,
