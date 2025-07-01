@@ -79,14 +79,23 @@
 
 
 
-    <div class="animation-container">
-      <canvas id="main_canvas" width="375" height="812"></canvas>
-      <div class="description">
-        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div><a href="../riv/SleepLines_v3.riv" target="_blank" style="color: white;">SleepLines_v3</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: SleepLines<br>Trigger: Trigger 1<br>Duration: 99.0s<br>Loop: Yes<br>Background: Transparent<br></div>
-          <div>
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
+      <div class="animation-container">
+        <canvas id="main_canvas" width="375" height="812"></canvas>
+        <div class="description">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+            <div><a href="../riv/SleepLines_v3.riv" target="_blank" style="color: white;">SleepLines_v3</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: SleepLines<br>Trigger: Trigger 1<br>Duration: 99.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+            <div>
 <button id="triggerButton14" class="rive-btn">Trigger</button>
+            </div>
           </div>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="preview_canvas" width="375" height="812"></canvas>
+        <div class="description">
+          Preview:<br>
+<button id="triggerButton14_preview" class="rive-btn">Trigger</button><br>
         </div>
       </div>
     </div>
@@ -109,6 +118,26 @@ mainRive.on("load", () => {
 document.getElementById("triggerButton14").addEventListener("click", () => {
   if (triggerInputMain) {
     triggerInputMain.fire();
+  }
+});
+
+const previewRive = new rive.Rive({
+  src: "../riv/SleepLines_v3_preview.riv",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, artboard: "SleepLines", stateMachines: "State Machine 1",
+  onLoad: () => {
+    previewRive.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+let triggerInputPreview;
+previewRive.on("load", () => {
+  const inputs = previewRive.stateMachineInputs("State Machine 1");
+  triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("triggerButton14_preview").addEventListener("click", () => {
+  if (triggerInputPreview) {
+    triggerInputPreview.fire();
   }
 });
 
