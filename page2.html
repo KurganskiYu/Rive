@@ -156,6 +156,18 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div><a href="pages/New_v1.html" style="color: #464646;">New</a></div>
+        <div></div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas7" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
         <div><a href="pages/EyeNew_v5.html" style="color: #464646;">EyeNew</a></div>
         <div></div>
       </div>
@@ -231,11 +243,20 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-  src: "riv/EyeNew_v5.riv",
+  src: "riv/New_v1.riv",
   canvas: document.getElementById("canvas6"),
   autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r7 = new rive.Rive({
+  src: "riv/EyeNew_v5.riv",
+  canvas: document.getElementById("canvas7"),
+  autoplay: true, stateMachines: "State Machine 1",
+  onLoad: () => {
+    r7.resizeDrawingSurfaceToCanvas();
   },
 });
 

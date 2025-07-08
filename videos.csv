@@ -1,5 +1,6 @@
 src,name,width,height,size,state_machine,trigger,duration,loop,background,button_id,artboard,input1
 EyeNew_v5.riv,EyeNew_v5,200,200,"80px 80px","State Machine 1","",7.5,No,Transparent,,,
+New_v1.riv,New_v1,200,200,"80px 80px","State Machine 1","",2.0,No,Transparent,,,
 EyeLoader_v4_eye-A_loop.riv,EyeLoader_A_v4,200,200,"200px 200px","EYE timeline","",3.5,No,Black,,,
 EyeLoader_v5_eye-C_trigger.riv,EyeLoader_C_v5,200,200,"200px 200px","State Machine 1","CloseTrigger",3.5,No,Black,triggerButton8,,
 CircleLoader_v2.riv,CircleLoader_v2,200,200,"200px 200px","Circle Loader","",3.0,Yes,Black,,,
