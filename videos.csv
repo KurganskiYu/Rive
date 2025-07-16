@@ -18,6 +18,7 @@ StressLiquid_v1.riv,StressLiquid_v1,375,812,"375px 812px","State Machine 1","Tri
 SleepLines_v3.riv,SleepLines_v3,375,812,"375px 812px","State Machine 1","Trigger 1",99.0,Yes,Transparent,triggerButton14,SleepLines,
 ExerciseBubbles_v3.riv,ExerciseBubbles_v3,500,812,"500px 812px","State Machine 1","Trigger 1",99.0,Yes,Transparent,triggerButton16,ExerciseBubbles,
 OnboardingStrings_v2.riv,OnboardingStrings_v2,375,812,"375px 812px","State Machine 1","",20.0,Yes,Transparent,,OnboardingStrings,
+OnboardingStrings_v3.riv,OnboardingStrings_v3,375,812,"375px 812px","State Machine 1","",20.0,Yes,Transparent,,OnboardingStrings,
 DeepRest_v2.riv,DeepRest_v2,375,812,"375px 812px","State Machine 1","",5.0,No,Transparent,,,
 Exercise_v2.riv,Exercise_v2,375,812,"375px 812px","State Machine 1","",5.0,No,Transparent,,,
 Welcome_v2.riv,Welcome_v2,375,812,"375px 812px","State Machine 1","Trigger 1",7.0,Yes,Image,triggerButton17,Welcome,

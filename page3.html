@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="RiveIcon.svg" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Apply modern font */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 10vh;
+            background-color: #000000;
+            background-image: 
+                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
+                linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f);
+            background-size: 20px 20px; /* Adjust size of the checkered pattern */
+            background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
+            padding: 10px 0;
+        }
+        .animation-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 30px;
+            width: 95%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #292929; 
+            width: auto; /* Ensure the CSS width matches the HTML width */
+            height: auto; /* Ensure the CSS height matches the HTML height */
+        }
+        .animation-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .description {
+            color: rgb(120, 120, 120);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        .animation-row {
+          display: flex;
+          gap: 32px;
+          align-items: flex-start;
+        }
+        .rive-btn {
+            background: #646464;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 8px;
+            cursor: pointer;
+            margin-left: 16px;
+        }
+        input[type="number"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+
+
+      <div class="animation-container">
+        <canvas id="canvas0" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div><a href="pages/EyeNew_v5.html" style="color: #464646;">EyeNew</a></div>
+        <div></div>
+      </div>
+    
+        </div>
+      </div>
+    </div>
+<script>
+
+const r0 = new rive.Rive({
+  src: "riv/EyeNew_v5.riv",
+  canvas: document.getElementById("canvas0"),
+  autoplay: true, stateMachines: "State Machine 1",
+  onLoad: () => {
+    r0.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+</script>
+<div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">4</button></div>
+    </div>
+</body>
+</html>

@@ -144,6 +144,18 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div><a href="pages/OnboardingStrings_v3.html" style="color: #464646;">OnboardingStrings</a></div>
+        <div></div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas6" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
         <div><a href="pages/OnboardingStrings_v2.html" style="color: #464646;">OnboardingStrings</a></div>
         <div></div>
       </div>
@@ -152,24 +164,12 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="325"></canvas>
+        <canvas id="canvas7" width="200" height="325"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
         <div><a href="pages/ExerciseBubbles_v3.html" style="color: #464646;">ExerciseBubbles</a></div>
         <div><button id="triggerButton16" class="rive-btn">Trigger</button></div>
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/SleepLines_v3.html" style="color: #464646;">SleepLines</a></div>
-        <div><button id="triggerButton14" class="rive-btn">Trigger</button></div>
       </div>
     
         </div>
@@ -234,7 +234,7 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-  src: "riv/OnboardingStrings_v2.riv",
+  src: "riv/OnboardingStrings_v3.riv",
   canvas: document.getElementById("canvas5"),
   autoplay: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -243,29 +243,18 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-  src: "riv/ExerciseBubbles_v3.riv",
+  src: "riv/OnboardingStrings_v2.riv",
   canvas: document.getElementById("canvas6"),
-  autoplay: true,artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
+  autoplay: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInput6;
-r6.on("load", () => {
-  const inputs = r6.stateMachineInputs("State Machine 1");
-  triggerInput6 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("triggerButton16").addEventListener("click", () => {
-  if (triggerInput6) {
-    triggerInput6.fire();
-  }
-});
-
 const r7 = new rive.Rive({
-  src: "riv/SleepLines_v3.riv",
+  src: "riv/ExerciseBubbles_v3.riv",
   canvas: document.getElementById("canvas7"),
-  autoplay: true,artboard: "SleepLines", stateMachines: "State Machine 1",
+  autoplay: true,artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
   onLoad: () => {
     r7.resizeDrawingSurfaceToCanvas();
   },
@@ -276,7 +265,7 @@ r7.on("load", () => {
   const inputs = r7.stateMachineInputs("State Machine 1");
   triggerInput7 = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton14").addEventListener("click", () => {
+document.getElementById("triggerButton16").addEventListener("click", () => {
   if (triggerInput7) {
     triggerInput7.fire();
   }
@@ -287,7 +276,7 @@ document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.height = canvas.height + "px";
 });
 </script>
-<div style="margin: 24px 0; text-align:center;"><button class="rive-btn" style="background:#e0e0e0;color:#333;">1</button> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a></div>
+<div style="margin: 24px 0; text-align:center;"><button class="rive-btn" style="background:#e0e0e0;color:#333;">1</button> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a> <a href="page3.html"><button class="rive-btn">4</button></a></div>
     </div>
 </body>
 </html>
