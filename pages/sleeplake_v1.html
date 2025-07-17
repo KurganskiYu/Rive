@@ -79,47 +79,25 @@
 
 
 
-      <div class="animation-container">
-        <canvas id="canvas0" width="200" height="200"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/New_v1.html" style="color: #464646;">New</a></div>
-        <div></div>
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas1" width="200" height="200"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/EyeNew_v5.html" style="color: #464646;">EyeNew</a></div>
-        <div></div>
-      </div>
-    
+    <div class="animation-container">
+      <canvas id="main_canvas" width="375" height="812"></canvas>
+      <div class="description">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+          <div><a href="../riv/sleeplake_v1.riv" target="_blank" style="color: white;">sleeplake_v1</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Duration: 2.0s<br>Loop: No<br>Background: Image<br></div>
+          <div>
+
+          </div>
         </div>
       </div>
     </div>
+
 <script>
-
-const r0 = new rive.Rive({
-  src: "riv/New_v1.riv",
-  canvas: document.getElementById("canvas0"),
+const mainRive = new rive.Rive({
+  src: "../riv/sleeplake_v1.riv",
+  canvas: document.getElementById("main_canvas"),
   autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
-    r0.resizeDrawingSurfaceToCanvas();
-  },
-});
-
-const r1 = new rive.Rive({
-  src: "riv/EyeNew_v5.riv",
-  canvas: document.getElementById("canvas1"),
-  autoplay: true, stateMachines: "State Machine 1",
-  onLoad: () => {
-    r1.resizeDrawingSurfaceToCanvas();
+    mainRive.resizeDrawingSurfaceToCanvas();
   },
 });
 
@@ -128,7 +106,7 @@ document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.height = canvas.height + "px";
 });
 </script>
-<div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">4</button></div>
+
     </div>
 </body>
 </html>
