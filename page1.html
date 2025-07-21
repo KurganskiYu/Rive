@@ -84,7 +84,7 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/OnboardingStrings_v3.html" style="color: #464646;">OnboardingStrings</a></div>
+        <div><a href="pages/Exercise_v2.html" style="color: #464646;">Exercise</a></div>
         <div></div>
       </div>
     
@@ -96,6 +96,30 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div><a href="pages/DeepRest_v2.html" style="color: #464646;">DeepRest</a></div>
+        <div></div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas2" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div><a href="pages/OnboardingStrings_v3.html" style="color: #464646;">OnboardingStrings</a></div>
+        <div></div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas3" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
         <div><a href="pages/OnboardingStrings_v2.html" style="color: #464646;">OnboardingStrings</a></div>
         <div></div>
       </div>
@@ -104,7 +128,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="325"></canvas>
+        <canvas id="canvas4" width="200" height="325"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -116,7 +140,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="433"></canvas>
+        <canvas id="canvas5" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -128,7 +152,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="433"></canvas>
+        <canvas id="canvas6" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -140,7 +164,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="200"></canvas>
+        <canvas id="canvas7" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -150,95 +174,49 @@
     
         </div>
       </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas6" width="200" height="304"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/River_v1.html" style="color: #464646;">River</a></div>
-        <div></div>
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="312"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/GiftBox_v1.html" style="color: #464646;">GiftBox</a></div>
-        <div><button id="triggerButton11" class="rive-btn">Trigger</button></div>
-      </div>
-    
-        </div>
-      </div>
     </div>
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/OnboardingStrings_v3.riv",
+  src: "riv/Exercise_v2.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
+  autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
   },
 });
 
 const r1 = new rive.Rive({
-  src: "riv/OnboardingStrings_v2.riv",
+  src: "riv/DeepRest_v2.riv",
   canvas: document.getElementById("canvas1"),
-  autoplay: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
+  autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
   },
 });
 
 const r2 = new rive.Rive({
-  src: "riv/ExerciseBubbles_v3.riv",
+  src: "riv/OnboardingStrings_v3.riv",
   canvas: document.getElementById("canvas2"),
-  autoplay: true,artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
+  autoplay: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
     r2.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInput2;
-r2.on("load", () => {
-  const inputs = r2.stateMachineInputs("State Machine 1");
-  triggerInput2 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("triggerButton16").addEventListener("click", () => {
-  if (triggerInput2) {
-    triggerInput2.fire();
-  }
-});
-
 const r3 = new rive.Rive({
-  src: "riv/SleepLines_v3.riv",
+  src: "riv/OnboardingStrings_v2.riv",
   canvas: document.getElementById("canvas3"),
-  autoplay: true,artboard: "SleepLines", stateMachines: "State Machine 1",
+  autoplay: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInput3;
-r3.on("load", () => {
-  const inputs = r3.stateMachineInputs("State Machine 1");
-  triggerInput3 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("triggerButton14").addEventListener("click", () => {
-  if (triggerInput3) {
-    triggerInput3.fire();
-  }
-});
-
 const r4 = new rive.Rive({
-  src: "riv/StressLiquid_v1.riv",
+  src: "riv/ExerciseBubbles_v3.riv",
   canvas: document.getElementById("canvas4"),
-  autoplay: true,artboard: "StressLiquid", stateMachines: "State Machine 1",
+  autoplay: true,artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
   },
@@ -249,29 +227,16 @@ r4.on("load", () => {
   const inputs = r4.stateMachineInputs("State Machine 1");
   triggerInput4 = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton13").addEventListener("click", () => {
+document.getElementById("triggerButton16").addEventListener("click", () => {
   if (triggerInput4) {
     triggerInput4.fire();
   }
 });
 
-let numberInput4;
-let inputField4 = document.getElementById("triggerButton13_input");
-r4.on("load", () => {
-  const inputs = r4.stateMachineInputs("State Machine 1");
-  numberInput4 = inputs.find(input => input.name === "StressPercent");
-  if (inputField4 && numberInput4) {
-    inputField4.addEventListener("input", () => {
-      let val = parseFloat(inputField4.value);
-      if (!isNaN(val)) numberInput4.value = val;
-    });
-  }
-});
-
 const r5 = new rive.Rive({
-  src: "riv/PulseWaveEye_v7_trigger.riv",
+  src: "riv/SleepLines_v3.riv",
   canvas: document.getElementById("canvas5"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,artboard: "SleepLines", stateMachines: "State Machine 1",
   onLoad: () => {
     r5.resizeDrawingSurfaceToCanvas();
   },
@@ -282,23 +247,47 @@ r5.on("load", () => {
   const inputs = r5.stateMachineInputs("State Machine 1");
   triggerInput5 = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton12").addEventListener("click", () => {
+document.getElementById("triggerButton14").addEventListener("click", () => {
   if (triggerInput5) {
     triggerInput5.fire();
   }
 });
 
 const r6 = new rive.Rive({
-  src: "riv/River_v1.riv",
+  src: "riv/StressLiquid_v1.riv",
   canvas: document.getElementById("canvas6"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,artboard: "StressLiquid", stateMachines: "State Machine 1",
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
   },
 });
 
+let triggerInput6;
+r6.on("load", () => {
+  const inputs = r6.stateMachineInputs("State Machine 1");
+  triggerInput6 = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("triggerButton13").addEventListener("click", () => {
+  if (triggerInput6) {
+    triggerInput6.fire();
+  }
+});
+
+let numberInput6;
+let inputField6 = document.getElementById("triggerButton13_input");
+r6.on("load", () => {
+  const inputs = r6.stateMachineInputs("State Machine 1");
+  numberInput6 = inputs.find(input => input.name === "StressPercent");
+  if (inputField6 && numberInput6) {
+    inputField6.addEventListener("input", () => {
+      let val = parseFloat(inputField6.value);
+      if (!isNaN(val)) numberInput6.value = val;
+    });
+  }
+});
+
 const r7 = new rive.Rive({
-  src: "riv/GiftBox_v1.riv",
+  src: "riv/PulseWaveEye_v7_trigger.riv",
   canvas: document.getElementById("canvas7"),
   autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
@@ -311,7 +300,7 @@ r7.on("load", () => {
   const inputs = r7.stateMachineInputs("State Machine 1");
   triggerInput7 = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton11").addEventListener("click", () => {
+document.getElementById("triggerButton12").addEventListener("click", () => {
   if (triggerInput7) {
     triggerInput7.fire();
   }

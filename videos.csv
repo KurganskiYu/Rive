@@ -27,3 +27,5 @@ LightRay_v1.riv,LightRay_v1,375,812,"375px 812px","State Machine 1","",20.0,No,T
 sleeplake_v2.riv,sleeplake_v2,375,812,"375px 812px","State Machine 1","Trigger 1",3.0,No,Image,triggerButton18,SleepLake,LakeSize
 GodRay_v1.riv,GodRay_v1,375,812,"393px 852px","State Machine 1","Trigger 1",4.0,No,Black,triggerButton19,GodRay,
 GodRay_Small_v1.riv,GodRay_Small_v1,375,812,"393px 852px","State Machine 1","Trigger 1",4.0,No,Black,triggerButton20,GodRayS,
+TextAnim_v1.riv,TextAnim_v1,375,812,"393px 852px","State Machine 1","Trigger 1",5.0,No,Black,triggerButton21,TextAnim,
+sleeplake_widget_v2.riv,sleeplake_widget_v2,196,186,"196px 186px","State Machine 1","Trigger 1",3.0,No,Image,triggerButton22,SleepLake,LakeSize
