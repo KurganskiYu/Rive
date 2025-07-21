@@ -80,7 +80,19 @@
 
 
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="435"></canvas>
+        <canvas id="canvas0" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div><a href="pages/Confetti_v1.html" style="color: #464646;">Confetti</a></div>
+        <div><button id="triggerButton10" class="rive-btn">Trigger</button></div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="435"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -92,7 +104,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="200"></canvas>
+        <canvas id="canvas2" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -104,7 +116,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="44"></canvas>
+        <canvas id="canvas3" width="200" height="44"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -116,7 +128,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="200"></canvas>
+        <canvas id="canvas4" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -128,7 +140,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="200"></canvas>
+        <canvas id="canvas5" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -140,7 +152,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="200"></canvas>
+        <canvas id="canvas6" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -152,7 +164,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="200"></canvas>
+        <canvas id="canvas7" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -162,32 +174,31 @@
     
         </div>
       </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="200"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/EyeLoader_v5_eye-C_trigger.html" style="color: #464646;">EyeLoader_C</a></div>
-        <div><button id="triggerButton8" class="rive-btn">Trigger</button></div>
-      </div>
-    
-        </div>
-      </div>
     </div>
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/NightDay_v8.riv",
+  src: "riv/Confetti_v1.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true,
+  autoplay: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
   },
 });
 
+let triggerInput0;
+r0.on("load", () => {
+  const inputs = r0.stateMachineInputs("State Machine 1");
+  triggerInput0 = inputs.find(input => input.name === "Trigger");
+});
+document.getElementById("triggerButton10").addEventListener("click", () => {
+  if (triggerInput0) {
+    triggerInput0.fire();
+  }
+});
+
 const r1 = new rive.Rive({
-  src: "riv/PulseWave_transp_layout-center_full-circle_v6.riv",
+  src: "riv/NightDay_v8.riv",
   canvas: document.getElementById("canvas1"),
   autoplay: true,
   onLoad: () => {
@@ -196,7 +207,7 @@ const r1 = new rive.Rive({
 });
 
 const r2 = new rive.Rive({
-  src: "riv/PulseWave_transp_layout-center_v5.riv",
+  src: "riv/PulseWave_transp_layout-center_full-circle_v6.riv",
   canvas: document.getElementById("canvas2"),
   autoplay: true,
   onLoad: () => {
@@ -205,7 +216,7 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-  src: "riv/WaveLoader_v4a.riv",
+  src: "riv/PulseWave_transp_layout-center_v5.riv",
   canvas: document.getElementById("canvas3"),
   autoplay: true,
   onLoad: () => {
@@ -214,7 +225,7 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-  src: "riv/WaveLoader_v4.riv",
+  src: "riv/WaveLoader_v4a.riv",
   canvas: document.getElementById("canvas4"),
   autoplay: true,
   onLoad: () => {
@@ -223,7 +234,7 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-  src: "riv/SpiralLoader_v2.riv",
+  src: "riv/WaveLoader_v4.riv",
   canvas: document.getElementById("canvas5"),
   autoplay: true,
   onLoad: () => {
@@ -232,7 +243,7 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-  src: "riv/CircleLoader_v2.riv",
+  src: "riv/SpiralLoader_v2.riv",
   canvas: document.getElementById("canvas6"),
   autoplay: true,
   onLoad: () => {
@@ -241,23 +252,12 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-  src: "riv/EyeLoader_v5_eye-C_trigger.riv",
+  src: "riv/CircleLoader_v2.riv",
   canvas: document.getElementById("canvas7"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,
   onLoad: () => {
     r7.resizeDrawingSurfaceToCanvas();
   },
-});
-
-let triggerInput7;
-r7.on("load", () => {
-  const inputs = r7.stateMachineInputs("State Machine 1");
-  triggerInput7 = inputs.find(input => input.name === "CloseTrigger");
-});
-document.getElementById("triggerButton8").addEventListener("click", () => {
-  if (triggerInput7) {
-    triggerInput7.fire();
-  }
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {
