@@ -46,7 +46,7 @@ def make_main_canvas(idx, row):
     if row["button_id"]:
         button_html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
         if row["input1"]:
-            button_html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-left: 8px;" />'
+            button_html += f'<br><input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-top: 8px;" />'
     width, height = scale_dimensions(row["width"], row["height"])
     desc = f'''
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -160,7 +160,7 @@ def make_animation_page(row):
         if row["button_id"]:
             html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-left: 8px;" />'
+                html += f'<br><input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-top: 8px;" />'
         html += '''
             </div>
           </div>
@@ -174,7 +174,7 @@ def make_animation_page(row):
         if row["button_id"]:
             html += f'<button id="{row["button_id"]}_preview" class="rive-btn">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_preview_input" value="80" style="width:30px; margin-left: 8px;" />'
+                html += f'<br><input type="number" id="{row["button_id"]}_preview_input" value="80" style="width:30px; margin-top: 8px;" />'
         html += "<br>"
         html += '''
         </div>
@@ -193,7 +193,7 @@ def make_animation_page(row):
         if row["button_id"]:
             html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
             if row["input1"]:
-                html += f' <input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-left: 8px;" />'
+                html += f'<br><input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-top: 8px;" />'
         html += '''
           </div>
         </div>
