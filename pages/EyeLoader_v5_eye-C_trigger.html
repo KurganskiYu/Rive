@@ -83,9 +83,9 @@
       <canvas id="main_canvas" width="200" height="200"></canvas>
       <div class="description">
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div><a href="../riv/EyeLoader_v5_eye-C_trigger.riv" target="_blank" style="color: white;">EyeLoader_C_v5</a><br>Size: 200px 200px<br>State Machine: State Machine 1<br>Trigger: CloseTrigger<br>Duration: 3.5s<br>Loop: No<br>Background: Black<br></div>
+          <div><a href="../riv/EyeLoader_v5_eye-C_trigger.riv" target="_blank" style="color: white;">EyeLoader eye-C trigger</a><br>Size: 200px 200px<br>State Machine: State Machine 1<br>Trigger: CloseTrigger<br>Duration: 3.5s<br>Loop: No<br>Background: Black<br></div>
           <div>
-<button id="triggerButton8" class="rive-btn">Trigger</button>
+<button id="btn_main" class="rive-btn">Trigger</button>
           </div>
         </div>
       </div>
@@ -95,9 +95,10 @@
 const mainRive = new rive.Rive({
   src: "../riv/EyeLoader_v5_eye-C_trigger.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
@@ -106,7 +107,7 @@ mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
   triggerInputMain = inputs.find(input => input.name === "CloseTrigger");
 });
-document.getElementById("triggerButton8").addEventListener("click", () => {
+document.getElementById("btn_main").addEventListener("click", () => {
   if (triggerInputMain) {
     triggerInputMain.fire();
   }

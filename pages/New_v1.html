@@ -83,7 +83,7 @@
       <canvas id="main_canvas" width="200" height="200"></canvas>
       <div class="description">
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div><a href="../riv/New_v1.riv" target="_blank" style="color: white;">New_v1</a><br>Size: 80px 80px<br>State Machine: State Machine 1<br>Duration: 2.0s<br>Loop: No<br>Background: Transparent<br></div>
+          <div><a href="../riv/New_v1.riv" target="_blank" style="color: white;">New</a><br>Size: 80px 80px<br>State Machine: State Machine 1<br>Duration: 2.0s<br>Loop: No<br>Background: Transparent<br></div>
           <div>
 
           </div>
@@ -95,9 +95,10 @@
 const mainRive = new rive.Rive({
   src: "../riv/New_v1.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 

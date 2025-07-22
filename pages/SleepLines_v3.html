@@ -84,9 +84,9 @@
         <canvas id="main_canvas" width="375" height="812"></canvas>
         <div class="description">
           <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-            <div><a href="../riv/SleepLines_v3.riv" target="_blank" style="color: white;">SleepLines_v3</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: SleepLines<br>Trigger: Trigger 1<br>Duration: 99.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+            <div><a href="../riv/SleepLines_v3.riv" target="_blank" style="color: white;">SleepLines</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: SleepLines<br>Trigger: Trigger 1<br>Duration: 99.0s<br>Loop: Yes<br>Background: Transparent<br></div>
             <div>
-<button id="triggerButton14" class="rive-btn">Trigger</button>
+<button id="btn_main" class="rive-btn">Trigger</button>
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@
         <canvas id="preview_canvas" width="375" height="812"></canvas>
         <div class="description">
           Preview:<br>
-<button id="triggerButton14_preview" class="rive-btn">Trigger</button><br>
+<button id="btn_preview" class="rive-btn">Trigger</button><br>
         </div>
       </div>
     </div>
@@ -104,9 +104,10 @@
 const mainRive = new rive.Rive({
   src: "../riv/SleepLines_v3.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, artboard: "SleepLines", stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, artboard: "SleepLines", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
@@ -115,7 +116,7 @@ mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
   triggerInputMain = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton14").addEventListener("click", () => {
+document.getElementById("btn_main").addEventListener("click", () => {
   if (triggerInputMain) {
     triggerInputMain.fire();
   }
@@ -124,9 +125,10 @@ document.getElementById("triggerButton14").addEventListener("click", () => {
 const previewRive = new rive.Rive({
   src: "../riv/SleepLines_v3_preview.riv",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true, artboard: "SleepLines", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, artboard: "SleepLines", stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
@@ -135,7 +137,7 @@ previewRive.on("load", () => {
   const inputs = previewRive.stateMachineInputs("State Machine 1");
   triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton14_preview").addEventListener("click", () => {
+document.getElementById("btn_preview").addEventListener("click", () => {
   if (triggerInputPreview) {
     triggerInputPreview.fire();
   }

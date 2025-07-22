@@ -84,7 +84,7 @@
         <canvas id="main_canvas" width="375" height="812"></canvas>
         <div class="description">
           <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-            <div><a href="../riv/OnboardingStrings_v3.riv" target="_blank" style="color: white;">OnboardingStrings_v3</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: OnboardingStrings<br>Duration: 20.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+            <div><a href="../riv/OnboardingStrings_v3.riv" target="_blank" style="color: white;">OnboardingStrings</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: OnboardingStrings<br>Duration: 20.0s<br>Loop: Yes<br>Background: Transparent<br></div>
             <div>
 
             </div>
@@ -104,18 +104,20 @@
 const mainRive = new rive.Rive({
   src: "../riv/OnboardingStrings_v3.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, artboard: "OnboardingStrings", stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
 const previewRive = new rive.Rive({
   src: "../riv/OnboardingStrings_v3_preview.riv",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true, artboard: "OnboardingStrings", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 

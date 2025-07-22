@@ -83,7 +83,7 @@
       <canvas id="main_canvas" width="200" height="200"></canvas>
       <div class="description">
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div><a href="../riv/EyeLoader_v4_eye-A_loop.riv" target="_blank" style="color: white;">EyeLoader_A_v4</a><br>Size: 200px 200px<br>State Machine: EYE timeline<br>Duration: 3.5s<br>Loop: No<br>Background: Black<br></div>
+          <div><a href="../riv/EyeLoader_v4_eye-A_loop.riv" target="_blank" style="color: white;">EyeLoader eye-A loop</a><br>Size: 200px 200px<br>State Machine: EYE timeline<br>Duration: 3.5s<br>Loop: No<br>Background: Black<br></div>
           <div>
 
           </div>
@@ -95,9 +95,10 @@
 const mainRive = new rive.Rive({
   src: "../riv/EyeLoader_v4_eye-A_loop.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, stateMachines: "EYE timeline",
+  autoplay: true,autoBind: true, stateMachines: "EYE timeline",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 

@@ -80,10 +80,10 @@
 
 
     <div class="animation-container">
-      <canvas id="main_canvas" width="200" height="200"></canvas>
+      <canvas id="main_canvas" width="250" height="250"></canvas>
       <div class="description">
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div><a href="../riv/WaveLoader_v4a.riv" target="_blank" style="color: white;">WaveLoader_v4a</a><br>Size: 250px 250px<br>State Machine: Wave Loader<br>Duration: 6.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+          <div><a href="../riv/WaveLoader_v4a.riv" target="_blank" style="color: white;">WaveLoader</a><br>Size: 250px 250px<br>State Machine: Wave Loader<br>Duration: 6.0s<br>Loop: Yes<br>Background: Transparent<br></div>
           <div>
 
           </div>
@@ -95,9 +95,10 @@
 const mainRive = new rive.Rive({
   src: "../riv/WaveLoader_v4a.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, stateMachines: "Wave Loader",
+  autoplay: true,autoBind: true, stateMachines: "Wave Loader",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 

@@ -33,20 +33,51 @@ def scale_dimensions(width, height):
     scale = 200 / width
     return 200, int(round(height * scale))
 
+def get_display_name(src):
+    # Remove extension
+    name = os.path.splitext(src)[0]
+    # Remove version patterns like _v1, _v10, _v2a, etc.
+    name = re.sub(r'_v\d+[a-zA-Z0-9]*', '', name)
+    # Replace underscores with spaces
+    name = name.replace('_', ' ')
+    return name
+
 def make_main_link(row):
-    # Link to the per-animation page
     page_name = os.path.splitext(row["src"])[0] + ".html"
-    # Remove version suffix like _v1, _v12, _v123 from the name for display
-    display_name = re.sub(r'_v\d+$', '', row["name"])
+    display_name = get_display_name(row["src"])
     return f'<a href="pages/{page_name}" style="color: #464646;">{display_name}</a>'
+
+def parse_input_field(input_value, input_idx, button_id):
+    if not input_value:
+        return ""
+    if ":" in input_value:
+        input_type, input_name = input_value.split(":", 1)
+    else:
+        input_type, input_name = "num", input_value  # Default to number if no type
+    input_html = ""
+    input_id = f"{button_id}_input{input_idx}"
+    label = input_name
+    if input_type == "num":
+        input_html = f'<label style="margin-right:4px;">{label}:</label><input type="number" id="{input_id}" value="80" style="width:50px; margin-top: 8px;" />'
+    elif input_type == "txt":
+        input_html = f'<label style="margin-right:4px;">{label}:</label><input type="text" id="{input_id}" style="width:80px; margin-top: 8px;" />'
+    elif input_type == "bool":
+        input_html = f'<label style="margin-right:4px;">{label}:</label><input type="checkbox" id="{input_id}" style="margin-top: 8px;" />'
+    return "<br>" + input_html
 
 def make_main_canvas(idx, row):
     canvas_id = f"canvas{idx}"
+    button_id = f"btn{idx}"
     button_html = ""
-    if row["button_id"]:
-        button_html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
-        if row["input1"]:
-            button_html += f'<br><input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-top: 8px;" />'
+    # Always generate button and input if trigger/input1..input5 exists
+    if row.get("trigger"):
+        button_html += f'<button id="{button_id}" class="rive-btn">Trigger</button>'
+    # Handle multiple inputs
+    for i in range(1, 6):
+        input_col = f"input{i}"
+        input_value = row.get(input_col)
+        if input_value:
+            button_html += parse_input_field(input_value, i, button_id)
     width, height = scale_dimensions(row["width"], row["height"])
     desc = f'''
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
@@ -67,6 +98,7 @@ def make_script(rows):
     script = "<script>\n"
     for idx, row in enumerate(rows):
         canvas_id = f"canvas{idx}"
+        button_id = f"btn{idx}"
         src = f"riv/{row['src']}"
         state_machine = row["state_machine"] if "State Machine" in row["state_machine"] else ""
         artboard = row["artboard"] if row.get("artboard") else ""
@@ -76,37 +108,63 @@ def make_script(rows):
 const r{idx} = new rive.Rive({{
   src: "{src}",
   canvas: document.getElementById("{canvas_id}"),
-  autoplay: true,{artboard_line}{state_machine_line}
+  autoplay: true, autoBind: true,{artboard_line}{state_machine_line}
   onLoad: () => {{
     r{idx}.resizeDrawingSurfaceToCanvas();
   }},
 }});
 '''
-        if row["button_id"] and row["trigger"]:
+        if row.get("trigger"):
             script += f'''
 let triggerInput{idx};
 r{idx}.on("load", () => {{
   const inputs = r{idx}.stateMachineInputs("{state_machine}");
   triggerInput{idx} = inputs.find(input => input.name === "{row["trigger"]}");
 }});
-document.getElementById("{row["button_id"]}").addEventListener("click", () => {{
+document.getElementById("{button_id}").addEventListener("click", () => {{
   if (triggerInput{idx}) {{
     triggerInput{idx}.fire();
   }}
 }});
 '''
-        if row["button_id"] and row["input1"]:
-            script += f'''
-let numberInput{idx};
-let inputField{idx} = document.getElementById("{row["button_id"]}_input");
+        # Handle multiple inputs
+        for i in range(1, 6):
+            input_col = f"input{i}"
+            input_value = row.get(input_col)
+            if input_value:
+                if ":" in input_value:
+                    input_type, input_name = input_value.split(":", 1)
+                else:
+                    input_type, input_name = "num", input_value
+                input_id = f"{button_id}_input{i}"
+                script += f'''
+let inputObj{idx}_{i};
+let inputField{idx}_{i} = document.getElementById("{input_id}");
 r{idx}.on("load", () => {{
   const inputs = r{idx}.stateMachineInputs("{state_machine}");
-  numberInput{idx} = inputs.find(input => input.name === "{row["input1"]}");
-  if (inputField{idx} && numberInput{idx}) {{
-    inputField{idx}.addEventListener("input", () => {{
-      let val = parseFloat(inputField{idx}.value);
-      if (!isNaN(val)) numberInput{idx}.value = val;
+  inputObj{idx}_{i} = inputs.find(input => input.name === "{input_name}");
+  if (inputField{idx}_{i} && inputObj{idx}_{i}) {{
+'''
+                if input_type == "num":
+                    script += f'''
+    inputField{idx}_{i}.addEventListener("input", () => {{
+      let val = parseFloat(inputField{idx}_{i}.value);
+      if (!isNaN(val)) inputObj{idx}_{i}.value = val;
     }});
+'''
+                elif input_type == "txt":
+                    script += f'''
+    inputField{idx}_{i}.addEventListener("input", () => {{
+      inputObj{idx}_{i}.value = inputField{idx}_{i}.value;
+    }});
+'''
+                elif input_type == "bool":
+                    script += f'''
+    inputField{idx}_{i}.addEventListener("change", () => {{
+      inputObj{idx}_{i}.value = inputField{idx}_{i}.checked;
+    }});
+'''
+                script += f'''
   }}
 }});
 '''
@@ -120,7 +178,8 @@ document.querySelectorAll('canvas').forEach(canvas => {
     return script
 
 def make_description_html(row):
-    desc = f'<a href="../riv/{row["src"]}" target="_blank" style="color: white;">{row["name"]}</a><br>'
+    display_name = get_display_name(row["src"])
+    desc = f'<a href="../riv/{row["src"]}" target="_blank" style="color: white;">{display_name}</a><br>'
     desc += f'Size: {row["size"]}<br>'
     desc += f'State Machine: {row["state_machine"]}<br>'
     if row["artboard"]:
@@ -133,6 +192,26 @@ def make_description_html(row):
     desc += f'Loop: {row["loop"]}<br>'
     desc += f'Background: {row["background"]}<br>'
     return desc
+
+def make_animation_inputs(row, prefix):
+    html = ""
+    for i in range(1, 6):
+        input_col = f"input{i}"
+        input_value = row.get(input_col)
+        if input_value:
+            if ":" in input_value:
+                input_type, input_name = input_value.split(":", 1)
+            else:
+                input_type, input_name = "num", input_value
+            input_id = f"{prefix}_input{i}"
+            label = input_name
+            if input_type == "num":
+                html += f'<br><label style="margin-right:4px;">{label}:</label><input type="number" id="{input_id}" value="80" style="width:50px; margin-top: 8px;" />'
+            elif input_type == "txt":
+                html += f'<br><label style="margin-right:4px;">{label}:</label><input type="text" id="{input_id}" style="width:80px; margin-top: 8px;" />'
+            elif input_type == "bool":
+                html += f'<br><label style="margin-right:4px;">{label}:</label><input type="checkbox" id="{input_id}" style="margin-top: 8px;" />'
+    return html
 
 def make_animation_page(row):
     # Per-animation HTML page with description and preview if exists
@@ -157,10 +236,9 @@ def make_animation_page(row):
             <div>{make_description_html(row)}</div>
             <div>
 '''
-        if row["button_id"]:
-            html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
-            if row["input1"]:
-                html += f'<br><input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-top: 8px;" />'
+        if row.get("trigger"):
+            html += f'<button id="btn_main" class="rive-btn">Trigger</button>'
+        html += make_animation_inputs(row, "btn_main")
         html += '''
             </div>
           </div>
@@ -171,10 +249,9 @@ def make_animation_page(row):
         <div class="description">
           Preview:<br>
 '''.format(row["width"], row["height"])
-        if row["button_id"]:
-            html += f'<button id="{row["button_id"]}_preview" class="rive-btn">Trigger</button>'
-            if row["input1"]:
-                html += f'<br><input type="number" id="{row["button_id"]}_preview_input" value="80" style="width:30px; margin-top: 8px;" />'
+        if row.get("trigger"):
+            html += f'<button id="btn_preview" class="rive-btn">Trigger</button>'
+        html += make_animation_inputs(row, "btn_preview")
         html += "<br>"
         html += '''
         </div>
@@ -190,10 +267,9 @@ def make_animation_page(row):
           <div>{make_description_html(row)}</div>
           <div>
 '''
-        if row["button_id"]:
-            html += f'<button id="{row["button_id"]}" class="rive-btn">Trigger</button>'
-            if row["input1"]:
-                html += f'<br><input type="number" id="{row["button_id"]}_input" value="80" style="width:30px; margin-top: 8px;" />'
+        if row.get("trigger"):
+            html += f'<button id="btn_main" class="rive-btn">Trigger</button>'
+        html += make_animation_inputs(row, "btn_main")
         html += '''
           </div>
         </div>
@@ -201,96 +277,179 @@ def make_animation_page(row):
     </div>
 '''
 
+    # --- JS Section ---
     html += '''
 <script>
 const mainRive = new rive.Rive({
   src: "%s",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true,%s%s
+  autoplay: true,autoBind: true,%s%s
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-  },
-});
 ''' % (
         main_rive,
         f' artboard: "{row["artboard"]}",' if row.get("artboard") else "",
         f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""
     )
 
-    # Main animation buttons/inputs JS
-    if row["button_id"] and row["trigger"]:
+    # Handle txt inputs directly in onLoad
+    for i in range(1, 6):
+        input_col = f"input{i}"
+        input_value = row.get(input_col)
+        if input_value and ":" in input_value and input_value.split(":", 1)[0] == "txt":
+            input_type, input_name = input_value.split(":", 1)
+            input_id = f"btn_main_input{i}"
+            html += f'''
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldMain_{i} = document.getElementById("{input_id}");
+    if (inputFieldMain_{i} && vmi) {{
+      inputFieldMain_{i}.addEventListener("input", () => {{
+        vmi.string("{input_name}").value = inputFieldMain_{i}.value;
+      }});
+    }}
+'''
+
+    html += '''
+  },
+});
+'''
+
+    # Main animation buttons/inputs JS (trigger and non-txt inputs)
+    if row.get("trigger"):
         html += f'''
 let triggerInputMain;
 mainRive.on("load", () => {{
   const inputs = mainRive.stateMachineInputs("{row["state_machine"]}");
   triggerInputMain = inputs.find(input => input.name === "{row["trigger"]}");
 }});
-document.getElementById("{row["button_id"]}").addEventListener("click", () => {{
+document.getElementById("btn_main").addEventListener("click", () => {{
   if (triggerInputMain) {{
     triggerInputMain.fire();
   }}
 }});
 '''
-    if row["button_id"] and row["input1"]:
-        html += f'''
-let numberInputMain;
-let inputFieldMain = document.getElementById("{row["button_id"]}_input");
+    # Handle num/bool inputs for main animation
+    for i in range(1, 6):
+        input_col = f"input{i}"
+        input_value = row.get(input_col)
+        if input_value:
+            if ":" in input_value:
+                input_type, input_name = input_value.split(":", 1)
+            else:
+                input_type, input_name = "num", input_value
+            input_id = f"btn_main_input{i}"
+            if input_type == "num" or input_type == "bool":
+                html += f'''
+let inputFieldMain_{i} = document.getElementById("{input_id}");
 mainRive.on("load", () => {{
   const inputs = mainRive.stateMachineInputs("{row["state_machine"]}");
-  numberInputMain = inputs.find(input => input.name === "{row["input1"]}");
-  if (inputFieldMain && numberInputMain) {{
-    inputFieldMain.addEventListener("input", () => {{
-      let val = parseFloat(inputFieldMain.value);
-      if (!isNaN(val)) numberInputMain.value = val;
+  let inputObjMain_{i} = inputs.find(input => input.name === "{input_name}");
+  if (inputFieldMain_{i} && inputObjMain_{i}) {{
+'''
+                if input_type == "num":
+                    html += f'''
+    inputFieldMain_{i}.addEventListener("input", () => {{
+      let val = parseFloat(inputFieldMain_{i}.value);
+      if (!isNaN(val)) inputObjMain_{i}.value = val;
     }});
+'''
+                elif input_type == "bool":
+                    html += f'''
+    inputFieldMain_{i}.addEventListener("change", () => {{
+      inputObjMain_{i}.value = inputFieldMain_{i}.checked;
+    }});
+'''
+                html += f'''
   }}
 }});
 '''
 
-    # Preview animation JS and buttons/inputs
+    # --- Preview animation JS and buttons/inputs ---
     if preview_rive:
         html += '''
 const previewRive = new rive.Rive({
   src: "%s",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true,%s%s
+  autoplay: true, autoBind: true,%s%s
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
-  },
-});
 ''' % (
         preview_rive,
         f' artboard: "{row["artboard"]}",' if row.get("artboard") else "",
         f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""
     )
-        if row["button_id"] and row["trigger"]:
+
+        # Handle txt inputs for preview directly in onLoad
+        for i in range(1, 6):
+            input_col = f"input{i}"
+            input_value = row.get(input_col)
+            if input_value and ":" in input_value and input_value.split(":", 1)[0] == "txt":
+                input_type, input_name = input_value.split(":", 1)
+                input_id = f"btn_preview_input{i}"
+                html += f'''
+    const vmi = previewRive.viewModelInstance;
+    let inputFieldPreview_{i} = document.getElementById("{input_id}");
+    if (inputFieldPreview_{i} && vmi) {{
+      inputFieldPreview_{i}.addEventListener("input", () => {{
+        vmi.string("{input_name}").value = inputFieldPreview_{i}.value;
+      }});
+    }}
+'''
+
+        html += '''
+  },
+});
+'''
+
+        if row.get("trigger"):
             html += f'''
 let triggerInputPreview;
 previewRive.on("load", () => {{
   const inputs = previewRive.stateMachineInputs("{row["state_machine"]}");
   triggerInputPreview = inputs.find(input => input.name === "{row["trigger"]}");
 }});
-document.getElementById("{row["button_id"]}_preview").addEventListener("click", () => {{
+document.getElementById("btn_preview").addEventListener("click", () => {{
   if (triggerInputPreview) {{
     triggerInputPreview.fire();
   }}
 }});
 '''
-        if row["button_id"] and row["input1"]:
-            html += f'''
-let numberInputPreview;
-let inputFieldPreview = document.getElementById("{row["button_id"]}_preview_input");
+        # Handle num/bool inputs for preview animation
+        for i in range(1, 6):
+            input_col = f"input{i}"
+            input_value = row.get(input_col)
+            if input_value:
+                if ":" in input_value:
+                    input_type, input_name = input_value.split(":", 1)
+                else:
+                    input_type, input_name = "num", input_value
+                input_id = f"btn_preview_input{i}"
+                if input_type == "num" or input_type == "bool":
+                    html += f'''
+let inputFieldPreview_{i} = document.getElementById("{input_id}");
 previewRive.on("load", () => {{
   const inputs = previewRive.stateMachineInputs("{row["state_machine"]}");
-  numberInputPreview = inputs.find(input => input.name === "{row["input1"]}");
-  if (inputFieldPreview && numberInputPreview) {{
-    inputFieldPreview.addEventListener("input", () => {{
-      let val = parseFloat(inputFieldPreview.value);
-      if (!isNaN(val)) numberInputPreview.value = val;
+  let inputObjPreview_{i} = inputs.find(input => input.name === "{input_name}");
+  if (inputFieldPreview_{i} && inputObjPreview_{i}) {{
+'''
+                    if input_type == "num":
+                        html += f'''
+    inputFieldPreview_{i}.addEventListener("input", () => {{
+      let val = parseFloat(inputFieldPreview_{i}.value);
+      if (!isNaN(val)) inputObjPreview_{i}.value = val;
     }});
+'''
+                    elif input_type == "bool":
+                        html += f'''
+    inputFieldPreview_{i}.addEventListener("change", () => {{
+      inputObjPreview_{i}.value = inputFieldPreview_{i}.checked;
+    }});
+'''
+                    html += f'''
   }}
 }});
 '''
+
     html += '''
 document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";

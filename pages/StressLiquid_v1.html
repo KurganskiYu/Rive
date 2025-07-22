@@ -84,9 +84,9 @@
         <canvas id="main_canvas" width="375" height="812"></canvas>
         <div class="description">
           <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-            <div><a href="../riv/StressLiquid_v1.riv" target="_blank" style="color: white;">StressLiquid_v1</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: StressLiquid<br>Trigger: Trigger 1<br>Input: StressPercent<br>Duration: 99.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+            <div><a href="../riv/StressLiquid_v1.riv" target="_blank" style="color: white;">StressLiquid</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: StressLiquid<br>Trigger: Trigger 1<br>Input: num:StressPercent<br>Duration: 99.0s<br>Loop: Yes<br>Background: Transparent<br></div>
             <div>
-<button id="triggerButton13" class="rive-btn">Trigger</button><br><input type="number" id="triggerButton13_input" value="80" style="width:30px; margin-top: 8px;" />
+<button id="btn_main" class="rive-btn">Trigger</button><br><label style="margin-right:4px;">StressPercent:</label><input type="number" id="btn_main_input1" value="80" style="width:50px; margin-top: 8px;" />
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@
         <canvas id="preview_canvas" width="375" height="812"></canvas>
         <div class="description">
           Preview:<br>
-<button id="triggerButton13_preview" class="rive-btn">Trigger</button><br><input type="number" id="triggerButton13_preview_input" value="80" style="width:30px; margin-top: 8px;" /><br>
+<button id="btn_preview" class="rive-btn">Trigger</button><br><label style="margin-right:4px;">StressPercent:</label><input type="number" id="btn_preview_input1" value="80" style="width:50px; margin-top: 8px;" /><br>
         </div>
       </div>
     </div>
@@ -104,9 +104,10 @@
 const mainRive = new rive.Rive({
   src: "../riv/StressLiquid_v1.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, artboard: "StressLiquid", stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, artboard: "StressLiquid", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
@@ -115,31 +116,33 @@ mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
   triggerInputMain = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton13").addEventListener("click", () => {
+document.getElementById("btn_main").addEventListener("click", () => {
   if (triggerInputMain) {
     triggerInputMain.fire();
   }
 });
 
-let numberInputMain;
-let inputFieldMain = document.getElementById("triggerButton13_input");
+let inputFieldMain_1 = document.getElementById("btn_main_input1");
 mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
-  numberInputMain = inputs.find(input => input.name === "StressPercent");
-  if (inputFieldMain && numberInputMain) {
-    inputFieldMain.addEventListener("input", () => {
-      let val = parseFloat(inputFieldMain.value);
-      if (!isNaN(val)) numberInputMain.value = val;
+  let inputObjMain_1 = inputs.find(input => input.name === "StressPercent");
+  if (inputFieldMain_1 && inputObjMain_1) {
+
+    inputFieldMain_1.addEventListener("input", () => {
+      let val = parseFloat(inputFieldMain_1.value);
+      if (!isNaN(val)) inputObjMain_1.value = val;
     });
+
   }
 });
 
 const previewRive = new rive.Rive({
   src: "../riv/StressLiquid_v1_preview.riv",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true, artboard: "StressLiquid", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, artboard: "StressLiquid", stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
@@ -148,22 +151,23 @@ previewRive.on("load", () => {
   const inputs = previewRive.stateMachineInputs("State Machine 1");
   triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton13_preview").addEventListener("click", () => {
+document.getElementById("btn_preview").addEventListener("click", () => {
   if (triggerInputPreview) {
     triggerInputPreview.fire();
   }
 });
 
-let numberInputPreview;
-let inputFieldPreview = document.getElementById("triggerButton13_preview_input");
+let inputFieldPreview_1 = document.getElementById("btn_preview_input1");
 previewRive.on("load", () => {
   const inputs = previewRive.stateMachineInputs("State Machine 1");
-  numberInputPreview = inputs.find(input => input.name === "StressPercent");
-  if (inputFieldPreview && numberInputPreview) {
-    inputFieldPreview.addEventListener("input", () => {
-      let val = parseFloat(inputFieldPreview.value);
-      if (!isNaN(val)) numberInputPreview.value = val;
+  let inputObjPreview_1 = inputs.find(input => input.name === "StressPercent");
+  if (inputFieldPreview_1 && inputObjPreview_1) {
+
+    inputFieldPreview_1.addEventListener("input", () => {
+      let val = parseFloat(inputFieldPreview_1.value);
+      if (!isNaN(val)) inputObjPreview_1.value = val;
     });
+
   }
 });
 

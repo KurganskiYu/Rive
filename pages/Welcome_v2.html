@@ -84,9 +84,9 @@
         <canvas id="main_canvas" width="375" height="812"></canvas>
         <div class="description">
           <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-            <div><a href="../riv/Welcome_v2.riv" target="_blank" style="color: white;">Welcome_v2</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: Welcome<br>Trigger: Trigger 1<br>Duration: 7.0s<br>Loop: Yes<br>Background: Image<br></div>
+            <div><a href="../riv/Welcome_v2.riv" target="_blank" style="color: white;">Welcome</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: Welcome<br>Trigger: Trigger 1<br>Duration: 7.0s<br>Loop: Yes<br>Background: Image<br></div>
             <div>
-<button id="triggerButton17" class="rive-btn">Trigger</button>
+<button id="btn_main" class="rive-btn">Trigger</button>
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@
         <canvas id="preview_canvas" width="375" height="812"></canvas>
         <div class="description">
           Preview:<br>
-<button id="triggerButton17_preview" class="rive-btn">Trigger</button><br>
+<button id="btn_preview" class="rive-btn">Trigger</button><br>
         </div>
       </div>
     </div>
@@ -104,9 +104,10 @@
 const mainRive = new rive.Rive({
   src: "../riv/Welcome_v2.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, artboard: "Welcome", stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, artboard: "Welcome", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
@@ -115,7 +116,7 @@ mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
   triggerInputMain = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton17").addEventListener("click", () => {
+document.getElementById("btn_main").addEventListener("click", () => {
   if (triggerInputMain) {
     triggerInputMain.fire();
   }
@@ -124,9 +125,10 @@ document.getElementById("triggerButton17").addEventListener("click", () => {
 const previewRive = new rive.Rive({
   src: "../riv/Welcome_v2_preview.riv",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true, artboard: "Welcome", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, artboard: "Welcome", stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
@@ -135,7 +137,7 @@ previewRive.on("load", () => {
   const inputs = previewRive.stateMachineInputs("State Machine 1");
   triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton17_preview").addEventListener("click", () => {
+document.getElementById("btn_preview").addEventListener("click", () => {
   if (triggerInputPreview) {
     triggerInputPreview.fire();
   }

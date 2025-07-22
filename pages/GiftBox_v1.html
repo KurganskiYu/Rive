@@ -83,9 +83,9 @@
       <canvas id="main_canvas" width="393" height="614"></canvas>
       <div class="description">
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div><a href="../riv/GiftBox_v1.riv" target="_blank" style="color: white;">GiftBox_v1</a><br>Size: 393px 614px<br>State Machine: State Machine 1<br>Trigger: Trigger 1<br>Duration: 5.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+          <div><a href="../riv/GiftBox_v1.riv" target="_blank" style="color: white;">GiftBox</a><br>Size: 393px 614px<br>State Machine: State Machine 1<br>Trigger: Trigger 1<br>Duration: 5.0s<br>Loop: Yes<br>Background: Transparent<br></div>
           <div>
-<button id="triggerButton11" class="rive-btn">Trigger</button>
+<button id="btn_main" class="rive-btn">Trigger</button>
           </div>
         </div>
       </div>
@@ -95,9 +95,10 @@
 const mainRive = new rive.Rive({
   src: "../riv/GiftBox_v1.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
@@ -106,7 +107,7 @@ mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
   triggerInputMain = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton11").addEventListener("click", () => {
+document.getElementById("btn_main").addEventListener("click", () => {
   if (triggerInputMain) {
     triggerInputMain.fire();
   }

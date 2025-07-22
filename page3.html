@@ -108,8 +108,8 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/EyeLoader_v5_eye-C_trigger.html" style="color: #464646;">EyeLoader_C</a></div>
-        <div><button id="triggerButton8" class="rive-btn">Trigger</button></div>
+        <div><a href="pages/EyeLoader_v5_eye-C_trigger.html" style="color: #464646;">EyeLoader eye-C trigger</a></div>
+        <div><button id="btn2" class="rive-btn">Trigger</button></div>
       </div>
     
         </div>
@@ -120,7 +120,7 @@
         <div class="description">
           
       <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/EyeLoader_v4_eye-A_loop.html" style="color: #464646;">EyeLoader_A</a></div>
+        <div><a href="pages/EyeLoader_v4_eye-A_loop.html" style="color: #464646;">EyeLoader eye-A loop</a></div>
         <div></div>
       </div>
     
@@ -156,7 +156,7 @@
 const r0 = new rive.Rive({
   src: "riv/SpiralLoader_v2.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true,
+  autoplay: true, autoBind: true,
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
   },
@@ -165,7 +165,7 @@ const r0 = new rive.Rive({
 const r1 = new rive.Rive({
   src: "riv/CircleLoader_v2.riv",
   canvas: document.getElementById("canvas1"),
-  autoplay: true,
+  autoplay: true, autoBind: true,
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
   },
@@ -174,7 +174,7 @@ const r1 = new rive.Rive({
 const r2 = new rive.Rive({
   src: "riv/EyeLoader_v5_eye-C_trigger.riv",
   canvas: document.getElementById("canvas2"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r2.resizeDrawingSurfaceToCanvas();
   },
@@ -185,7 +185,7 @@ r2.on("load", () => {
   const inputs = r2.stateMachineInputs("State Machine 1");
   triggerInput2 = inputs.find(input => input.name === "CloseTrigger");
 });
-document.getElementById("triggerButton8").addEventListener("click", () => {
+document.getElementById("btn2").addEventListener("click", () => {
   if (triggerInput2) {
     triggerInput2.fire();
   }
@@ -194,7 +194,7 @@ document.getElementById("triggerButton8").addEventListener("click", () => {
 const r3 = new rive.Rive({
   src: "riv/EyeLoader_v4_eye-A_loop.riv",
   canvas: document.getElementById("canvas3"),
-  autoplay: true,
+  autoplay: true, autoBind: true,
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
   },
@@ -203,7 +203,7 @@ const r3 = new rive.Rive({
 const r4 = new rive.Rive({
   src: "riv/New_v1.riv",
   canvas: document.getElementById("canvas4"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
   },
@@ -212,7 +212,7 @@ const r4 = new rive.Rive({
 const r5 = new rive.Rive({
   src: "riv/EyeNew_v5.riv",
   canvas: document.getElementById("canvas5"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r5.resizeDrawingSurfaceToCanvas();
   },

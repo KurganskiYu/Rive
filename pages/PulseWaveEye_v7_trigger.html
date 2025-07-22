@@ -83,9 +83,9 @@
       <canvas id="main_canvas" width="274" height="274"></canvas>
       <div class="description">
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div><a href="../riv/PulseWaveEye_v7_trigger.riv" target="_blank" style="color: white;">PulseWaveEye_v7</a><br>Size: 274px 274px<br>State Machine: State Machine 1<br>Trigger: Trigger 1<br>Duration: 8.0s<br>Loop: No<br>Background: Transparent<br></div>
+          <div><a href="../riv/PulseWaveEye_v7_trigger.riv" target="_blank" style="color: white;">PulseWaveEye trigger</a><br>Size: 274px 274px<br>State Machine: State Machine 1<br>Trigger: Trigger 1<br>Duration: 8.0s<br>Loop: No<br>Background: Transparent<br></div>
           <div>
-<button id="triggerButton12" class="rive-btn">Trigger</button>
+<button id="btn_main" class="rive-btn">Trigger</button>
           </div>
         </div>
       </div>
@@ -95,9 +95,10 @@
 const mainRive = new rive.Rive({
   src: "../riv/PulseWaveEye_v7_trigger.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true, stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+
   },
 });
 
@@ -106,7 +107,7 @@ mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
   triggerInputMain = inputs.find(input => input.name === "Trigger 1");
 });
-document.getElementById("triggerButton12").addEventListener("click", () => {
+document.getElementById("btn_main").addEventListener("click", () => {
   if (triggerInputMain) {
     triggerInputMain.fire();
   }
