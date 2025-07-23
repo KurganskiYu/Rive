@@ -127,10 +127,10 @@
 
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
       <div class="animation-container">
-        <canvas id="main_canvas" width="200" height="200"></canvas>
+        <canvas id="main_canvas" width="80" height="80"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/EyeNew_v5.riv" target="_blank" style="color: white;">EyeNew</a><br>Size: 80px 80px<br>State Machine: State Machine 1<br>Duration: 7.5s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/EyeNew_v5.riv" target="_blank" style="color: white;">EyeNew</a><br>Size: 80px × 80px<br>State Machine: State Machine 1<br>Artboard: Transparent<br>Duration: s<br>Loop: 7.5<br>Background: No<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
@@ -139,7 +139,7 @@
         </div>
       </div>
       <div class="animation-container">
-        <canvas id="preview_canvas" width="200" height="200"></canvas>
+        <canvas id="preview_canvas" width="80" height="80"></canvas>
         <div class="description">
           Preview:<br>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
@@ -154,7 +154,7 @@
 const mainRive = new rive.Rive({
   src: "../riv/EyeNew_v5.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true,autoBind: true, stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, artboard: "Transparent", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
   },
@@ -163,7 +163,7 @@ const mainRive = new rive.Rive({
 const previewRive = new rive.Rive({
   src: "../riv/EyeNew_v5_preview.riv",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, artboard: "Transparent", stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
   },

@@ -246,9 +246,11 @@ document.querySelectorAll('canvas').forEach(canvas => {
 
 def make_description_html(row):
     display_name = get_display_name(row["src"])
+    # Compose size from width and height
+    size_str = f'{row["width"]}px × {row["height"]}px'
     parts = [
         f'<a href="../riv/{row["src"]}" target="_blank" style="color: white;">{display_name}</a><br>',
-        f'Size: {row["size"]}<br>',
+        f'Size: {size_str}<br>',
         f'State Machine: {row["state_machine"]}<br>'
     ]
 
@@ -505,6 +507,11 @@ def main():
     with open(csv_path, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         rows = list(reader)[::-1]
+
+    # Normalize state_machine field
+    for row in rows:
+        if not row.get("state_machine") or row["state_machine"].strip() == "":
+            row["state_machine"] = "State Machine 1"
 
     # Generate per-animation pages
     for row in rows:
