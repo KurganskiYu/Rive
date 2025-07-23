@@ -156,7 +156,7 @@
 const r0 = new rive.Rive({
   src: "riv/SpiralLoader_v2.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true, autoBind: true,
+  autoplay: true, autoBind: true, stateMachines: "Spiral Loader",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
   },
@@ -165,7 +165,7 @@ const r0 = new rive.Rive({
 const r1 = new rive.Rive({
   src: "riv/CircleLoader_v2.riv",
   canvas: document.getElementById("canvas1"),
-  autoplay: true, autoBind: true,
+  autoplay: true, autoBind: true, stateMachines: "Circle Loader",
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
   },
@@ -194,7 +194,7 @@ document.getElementById("btn2").addEventListener("click", () => {
 const r3 = new rive.Rive({
   src: "riv/EyeLoader_v4_eye-A_loop.riv",
   canvas: document.getElementById("canvas3"),
-  autoplay: true, autoBind: true,
+  autoplay: true, autoBind: true, stateMachines: "EYE timeline",
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
   },

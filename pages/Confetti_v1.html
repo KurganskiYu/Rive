@@ -85,20 +85,20 @@
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
           <div><a href="../riv/Confetti_v1.riv" target="_blank" style="color: white;">Confetti</a><br>Size: 930px 930px<br>State Machine: State Machine 1<br>Trigger: Trigger<br>Duration: 1.5s<br>Loop: No<br>Background: Transparent<br></div>
           <div>
-<button id="btn_main" class="rive-btn">Trigger</button>
+            <button id="btn_main" class="rive-btn">Trigger</button>
+            
           </div>
         </div>
       </div>
     </div>
-
 <script>
+
 const mainRive = new rive.Rive({
   src: "../riv/Confetti_v1.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-
   },
 });
 

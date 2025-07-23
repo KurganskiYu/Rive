@@ -85,13 +85,14 @@
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
           <div><a href="../riv/TextAnim_v3.riv" target="_blank" style="color: white;">TextAnim</a><br>Size: 393px 852px<br>State Machine: State Machine 1<br>Artboard: TextAnim<br>Trigger: Trigger 1<br>Input: txt:Text<br>Duration: 5.0s<br>Loop: No<br>Background: Black<br></div>
           <div>
-<button id="btn_main" class="rive-btn">Trigger</button><br><label style="margin-right:4px;">Text:</label><input type="text" id="btn_main_input1" style="width:80px; margin-top: 8px;" />
+            <button id="btn_main" class="rive-btn">Trigger</button>
+            <br><label style="margin-right:4px;">Text:</label><input type="text" id="btn_main_input1" style="width:80px; margin-top: 8px;" />
           </div>
         </div>
       </div>
     </div>
-
 <script>
+
 const mainRive = new rive.Rive({
   src: "../riv/TextAnim_v3.riv",
   canvas: document.getElementById("main_canvas"),
@@ -100,13 +101,12 @@ const mainRive = new rive.Rive({
     mainRive.resizeDrawingSurfaceToCanvas();
 
     const vmi = mainRive.viewModelInstance;
-    let inputFieldMain_1 = document.getElementById("btn_main_input1");
-    if (inputFieldMain_1 && vmi) {
-      inputFieldMain_1.addEventListener("input", () => {
-        vmi.string("Text").value = inputFieldMain_1.value;
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        vmi.string("Text").value = inputFieldBtn_Main_1.value;
       });
     }
-
   },
 });
 

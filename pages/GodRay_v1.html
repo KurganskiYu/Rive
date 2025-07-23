@@ -85,20 +85,20 @@
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
           <div><a href="../riv/GodRay_v1.riv" target="_blank" style="color: white;">GodRay</a><br>Size: 393px 852px<br>State Machine: State Machine 1<br>Artboard: GodRay<br>Trigger: Trigger 1<br>Duration: 4.0s<br>Loop: No<br>Background: Black<br></div>
           <div>
-<button id="btn_main" class="rive-btn">Trigger</button>
+            <button id="btn_main" class="rive-btn">Trigger</button>
+            
           </div>
         </div>
       </div>
     </div>
-
 <script>
+
 const mainRive = new rive.Rive({
   src: "../riv/GodRay_v1.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "GodRay", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-
   },
 });
 

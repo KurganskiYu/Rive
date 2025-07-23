@@ -85,20 +85,20 @@
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
           <div><a href="../riv/Exercise_v2.riv" target="_blank" style="color: white;">Exercise</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Duration: 5.0s<br>Loop: No<br>Background: Transparent<br></div>
           <div>
-
+            
+            
           </div>
         </div>
       </div>
     </div>
-
 <script>
+
 const mainRive = new rive.Rive({
   src: "../riv/Exercise_v2.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-
   },
 });
 

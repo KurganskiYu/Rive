@@ -85,20 +85,20 @@
         <div style="display: flex; align-items: flex-start; justify-content: space-between;">
           <div><a href="../riv/sleeplake_v3.riv" target="_blank" style="color: white;">sleeplake</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: SleepLake<br>Trigger: Trigger 1<br>Input: num:LakeSize<br>Duration: 3.0s<br>Loop: No<br>Background: Image<br></div>
           <div>
-<button id="btn_main" class="rive-btn">Trigger</button><br><label style="margin-right:4px;">LakeSize:</label><input type="number" id="btn_main_input1" value="80" style="width:50px; margin-top: 8px;" />
+            <button id="btn_main" class="rive-btn">Trigger</button>
+            <br><label style="margin-right:4px;">LakeSize:</label><input type="number" id="btn_main_input1" value="80" style="width:50px; margin-top: 8px;" />
           </div>
         </div>
       </div>
     </div>
-
 <script>
+
 const mainRive = new rive.Rive({
   src: "../riv/sleeplake_v3.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "SleepLake", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-
   },
 });
 
@@ -123,7 +123,6 @@ mainRive.on("load", () => {
       let val = parseFloat(inputFieldMain_1.value);
       if (!isNaN(val)) inputObjMain_1.value = val;
     });
-
   }
 });
 
