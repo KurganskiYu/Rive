@@ -24,7 +24,7 @@ html_foot = """
 
 SCALE_TO_200PX = True
 ANIMATIONS_PER_PAGE = 8
-INPUT_RANGE = range(1, 5)  # Constant for input iteration
+INPUT_RANGE = range(1, 6)  # Constant for input iteration
 
 def scale_dimensions(width, height):
     if not SCALE_TO_200PX:
@@ -53,26 +53,39 @@ def parse_input_type_name(input_value):
     """Parse input value and return type and name"""
     if not input_value:
         return None, None
+    input_value = input_value.strip()  # <-- Add this line
     if ":" in input_value:
-        return input_value.split(":", 1)
-    return "num", input_value
+        t, n = input_value.split(":", 1)
+        return t.strip(), n.strip()     # <-- And strip both parts
+    return "num", input_value.strip()
 
 def parse_input_field(input_value, input_idx, button_id):
     input_type, input_name = parse_input_type_name(input_value)
     if not input_type:
         return ""
-    
     input_id = f"{button_id}_input{input_idx}"
-    
-    input_configs = {
-        "num": f'<input type="number" id="{input_id}" value="80" style="width:50px; margin-top: 8px;" />',
-        "txt": f'<input type="text" id="{input_id}" style="width:80px; margin-top: 8px;" />',
-        "bool": f'<input type="checkbox" id="{input_id}" style="margin-top: 8px;" />'
-    }
-    
-    input_html = input_configs.get(input_type, "")
-    if input_html:
-        return f'<br><label style="margin-right:4px;">{input_name}:</label>{input_html}'
+    # Each label+input in a row
+    if input_type == "num":
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="number" id="{input_id}" value="80" style="width:50px;" />
+        </div>
+        '''
+    elif input_type == "txt":
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="text" id="{input_id}" style="width:120px;" />
+        </div>
+        '''
+    elif input_type == "bol":
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="checkbox" id="{input_id}" />
+        </div>
+        '''
     return ""
 
 def make_input_js(input_type, input_name, input_id, obj_var, field_var):
@@ -82,7 +95,7 @@ def make_input_js(input_type, input_name, input_id, obj_var, field_var):
       let val = parseFloat({field_var}.value);
       if (!isNaN(val)) {obj_var}.value = val;
     }});''',
-        "bool": f'''
+        "bol": f'''
     {field_var}.addEventListener("change", () => {{
       {obj_var}.value = {field_var}.checked;
     }});''',
@@ -98,26 +111,38 @@ def collect_input_fields(row, button_id):
     inputs_html = []
     for i in INPUT_RANGE:
         input_value = row.get(f"input{i}")
-        if input_value:
+        if input_value is not None and input_value.strip() != "":
             inputs_html.append(parse_input_field(input_value, i, button_id))
     return "".join(inputs_html)
 
 def make_main_canvas(idx, row):
     canvas_id = f"canvas{idx}"
     button_id = f"btn{idx}"
-    
+
     # Build button HTML
     button_html = ""
     if row.get("trigger"):
-        button_html += f'<button id="{button_id}" class="rive-btn">Trigger</button>'
-    
-    button_html += collect_input_fields(row, button_id)
-    
+        button_html = f'<button id="{button_id}" class="rive-btn" style="margin-left:auto;">Trigger</button>'
+
+    # Collect input fields (below the row)
+    inputs_html = collect_input_fields(row, button_id)
+    if inputs_html:
+        inputs_html = f'''
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            {inputs_html}
+        </div>
+        '''
+    else:
+        inputs_html = ""
+
     width, height = scale_dimensions(row["width"], row["height"])
     desc = f'''
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div>{make_main_link(row)}</div>
-        <div>{button_html}</div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div>{make_main_link(row)}</div>
+          {button_html}
+        </div>
+        {inputs_html}
       </div>
     '''
     return f'''
@@ -226,45 +251,37 @@ def make_description_html(row):
         f'Size: {row["size"]}<br>',
         f'State Machine: {row["state_machine"]}<br>'
     ]
-    
+
     optional_fields = [
         ("artboard", "Artboard"),
         ("trigger", "Trigger"),
-        ("input1", "Input")
     ]
-    
+
     for field, label in optional_fields:
         if row.get(field):
             parts.append(f'{label}: {row[field]}<br>')
-    
+
+    # Add all non-empty inputs
+    for i in INPUT_RANGE:
+        input_value = row.get(f"input{i}")
+        if input_value and input_value.strip() != "":
+            parts.append(f'Input: {input_value.strip()}<br>')
+
     parts.extend([
         f'Duration: {row["duration"]}s<br>',
         f'Loop: {row["loop"]}<br>',
         f'Background: {row["background"]}<br>'
     ])
-    
+
     return "".join(parts)
 
 def make_animation_inputs(row, prefix):
     """Generate animation input HTML"""
     html_parts = []
-    
     for i in INPUT_RANGE:
         input_value = row.get(f"input{i}")
-        if not input_value:
-            continue
-            
-        input_type, input_name = parse_input_type_name(input_value)
-        input_id = f"{prefix}_input{i}"
-        
-        input_configs = {
-            "num": f'<br><label style="margin-right:4px;">{input_name}:</label><input type="number" id="{input_id}" value="80" style="width:50px; margin-top: 8px;" />',
-            "txt": f'<br><label style="margin-right:4px;">{input_name}:</label><input type="text" id="{input_id}" style="width:80px; margin-top: 8px;" />',
-            "bool": f'<br><label style="margin-right:4px;">{input_name}:</label><input type="checkbox" id="{input_id}" style="margin-top: 8px;" />'
-        }
-        
-        html_parts.append(input_configs.get(input_type, ""))
-    
+        if input_value is not None and input_value.strip() != "":
+            html_parts.append(parse_input_field(input_value, i, prefix))
     return "".join(html_parts)
 
 def check_preview_exists(row):
@@ -295,6 +312,23 @@ def make_animation_page(row):
     with open(os.path.join(pages_dir, page_name), "w", encoding="utf-8") as f:
         f.write("".join(html_parts))
 
+def generate_single_animation_html(row):
+    """Generate HTML for single animation layout"""
+    return f'''
+    <div class="animation-container">
+      <canvas id="main_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
+      <div class="description">
+        <div>
+          <div>{make_description_html(row)}</div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
+            {make_animation_inputs(row, "btn_main")}
+          </div>
+        </div>
+      </div>
+    </div>
+'''
+
 def generate_dual_animation_html(row, preview_rive):
     """Generate HTML for dual animation layout"""
     return f'''
@@ -302,9 +336,9 @@ def generate_dual_animation_html(row, preview_rive):
       <div class="animation-container">
         <canvas id="main_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
         <div class="description">
-          <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+          <div>
             <div>{make_description_html(row)}</div>
-            <div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
               {make_animation_inputs(row, "btn_main")}
             </div>
@@ -315,24 +349,9 @@ def generate_dual_animation_html(row, preview_rive):
         <canvas id="preview_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
         <div class="description">
           Preview:<br>
-          {'<button id="btn_preview" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-          {make_animation_inputs(row, "btn_preview")}<br>
-        </div>
-      </div>
-    </div>
-'''
-
-def generate_single_animation_html(row):
-    """Generate HTML for single animation layout"""
-    return f'''
-    <div class="animation-container">
-      <canvas id="main_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
-      <div class="description">
-        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div>{make_description_html(row)}</div>
-          <div>
-            {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-            {make_animation_inputs(row, "btn_main")}
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            {'<button id="btn_preview" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
+            {make_animation_inputs(row, "btn_preview")}
           </div>
         </div>
       </div>
@@ -422,7 +441,7 @@ document.getElementById("btn_{canvas_type}").addEventListener("click", () => {{
             continue
         
         input_type, input_name = parse_input_type_name(input_value)
-        if input_type in ["num", "bool"]:
+        if input_type in ["num", "bol"]:
             input_id = f"btn_{canvas_type}_input{i}"
             js_parts.append(f'''
 let inputField{canvas_type.title()}_{i} = document.getElementById("{input_id}");

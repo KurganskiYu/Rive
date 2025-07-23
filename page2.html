@@ -55,6 +55,17 @@
           gap: 32px;
           align-items: flex-start;
         }
+        .controls-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .controls-column > * {
+            width: max-content;
+        }
         .rive-btn {
             background: #646464;
             color: white;
@@ -62,7 +73,7 @@
             border-radius: 8px;
             padding: 6px 8px;
             cursor: pointer;
-            margin-left: 16px;
+            margin-left: 0; /* Remove left margin for perfect right alignment */
         }
         input[type="number"] {
             border-radius: 8px;
@@ -71,6 +82,41 @@
             padding: 4px 4px;
             font-size: 1rem;
             outline: none;
+        }
+        input[type="text"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            outline: none;
+            accent-color: #646464;
+            appearance: none; /* Remove default checkbox style */
+            -webkit-appearance: none;
+            display: inline-block;
+            /*vertical-align: middle; */
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 6px;
+            top: 1px;
+            width: 8px;
+            height: 14px;
+            border: solid #000000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
         }
     </style>
   </head>
@@ -83,9 +129,12 @@
         <canvas id="canvas0" width="200" height="304"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/River_v1.html" style="color: #464646;">River</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/River_v1.html" style="color: #464646;">River</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -95,9 +144,12 @@
         <canvas id="canvas1" width="200" height="312"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/GiftBox_v1.html" style="color: #464646;">GiftBox</a></div>
-        <div><button id="btn1" class="rive-btn">Trigger</button></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/GiftBox_v1.html" style="color: #464646;">GiftBox</a></div>
+          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
       </div>
     
         </div>
@@ -107,9 +159,12 @@
         <canvas id="canvas2" width="200" height="200"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/Confetti_v1.html" style="color: #464646;">Confetti</a></div>
-        <div><button id="btn2" class="rive-btn">Trigger</button></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/Confetti_v1.html" style="color: #464646;">Confetti</a></div>
+          <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
       </div>
     
         </div>
@@ -119,9 +174,12 @@
         <canvas id="canvas3" width="200" height="435"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/NightDay_v8.html" style="color: #464646;">NightDay</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/NightDay_v8.html" style="color: #464646;">NightDay</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -131,9 +189,12 @@
         <canvas id="canvas4" width="200" height="200"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/PulseWave_transp_layout-center_full-circle_v6.html" style="color: #464646;">PulseWave transp layout-center full-circle</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/PulseWave_transp_layout-center_full-circle_v6.html" style="color: #464646;">PulseWave transp layout-center full-circle</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -143,9 +204,12 @@
         <canvas id="canvas5" width="200" height="44"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/PulseWave_transp_layout-center_v5.html" style="color: #464646;">PulseWave transp layout-center</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/PulseWave_transp_layout-center_v5.html" style="color: #464646;">PulseWave transp layout-center</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -155,9 +219,12 @@
         <canvas id="canvas6" width="200" height="200"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/WaveLoader_v4a.html" style="color: #464646;">WaveLoader</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/WaveLoader_v4a.html" style="color: #464646;">WaveLoader</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -167,9 +234,12 @@
         <canvas id="canvas7" width="200" height="200"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/WaveLoader_v4.html" style="color: #464646;">WaveLoader</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/WaveLoader_v4.html" style="color: #464646;">WaveLoader</a></div>
+          
+        </div>
+        
       </div>
     
         </div>

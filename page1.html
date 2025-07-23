@@ -55,6 +55,17 @@
           gap: 32px;
           align-items: flex-start;
         }
+        .controls-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .controls-column > * {
+            width: max-content;
+        }
         .rive-btn {
             background: #646464;
             color: white;
@@ -62,7 +73,7 @@
             border-radius: 8px;
             padding: 6px 8px;
             cursor: pointer;
-            margin-left: 16px;
+            margin-left: 0; /* Remove left margin for perfect right alignment */
         }
         input[type="number"] {
             border-radius: 8px;
@@ -71,6 +82,41 @@
             padding: 4px 4px;
             font-size: 1rem;
             outline: none;
+        }
+        input[type="text"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            outline: none;
+            accent-color: #646464;
+            appearance: none; /* Remove default checkbox style */
+            -webkit-appearance: none;
+            display: inline-block;
+            /*vertical-align: middle; */
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 6px;
+            top: 1px;
+            width: 8px;
+            height: 14px;
+            border: solid #000000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
         }
     </style>
   </head>
@@ -83,9 +129,12 @@
         <canvas id="canvas0" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/Exercise_v2.html" style="color: #464646;">Exercise</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/Activity_v2.html" style="color: #464646;">Activity</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -95,9 +144,12 @@
         <canvas id="canvas1" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/DeepRest_v2.html" style="color: #464646;">DeepRest</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/DeepRest_v2.html" style="color: #464646;">DeepRest</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -107,9 +159,12 @@
         <canvas id="canvas2" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/OnboardingStrings_v3.html" style="color: #464646;">OnboardingStrings</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/OnboardingStrings_v3.html" style="color: #464646;">OnboardingStrings</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -119,9 +174,12 @@
         <canvas id="canvas3" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/OnboardingStrings_v2.html" style="color: #464646;">OnboardingStrings</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/OnboardingStrings_v2.html" style="color: #464646;">OnboardingStrings</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -131,9 +189,12 @@
         <canvas id="canvas4" width="200" height="325"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/ExerciseBubbles_v3.html" style="color: #464646;">ExerciseBubbles</a></div>
-        <div><button id="btn4" class="rive-btn">Trigger</button></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/ExerciseBubbles_v3.html" style="color: #464646;">ExerciseBubbles</a></div>
+          <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
       </div>
     
         </div>
@@ -143,9 +204,12 @@
         <canvas id="canvas5" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/SleepLines_v3.html" style="color: #464646;">SleepLines</a></div>
-        <div><button id="btn5" class="rive-btn">Trigger</button></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/SleepLines_v3.html" style="color: #464646;">SleepLines</a></div>
+          <button id="btn5" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
       </div>
     
         </div>
@@ -155,9 +219,21 @@
         <canvas id="canvas6" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/StressLiquid_v1.html" style="color: #464646;">StressLiquid</a></div>
-        <div><button id="btn6" class="rive-btn">Trigger</button><br><label style="margin-right:4px;">StressPercent:</label><input type="number" id="btn6_input1" value="80" style="width:50px; margin-top: 8px;" /></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/StressLiquid_v1.html" style="color: #464646;">StressLiquid</a></div>
+          <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn6_input1">StressPercent:</label>
+            <input type="number" id="btn6_input1" value="80" style="width:50px;" />
+        </div>
+        
+        </div>
+        
       </div>
     
         </div>
@@ -167,9 +243,12 @@
         <canvas id="canvas7" width="200" height="200"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/PulseWaveEye_v7_trigger.html" style="color: #464646;">PulseWaveEye trigger</a></div>
-        <div><button id="btn7" class="rive-btn">Trigger</button></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/PulseWaveEye_v7_trigger.html" style="color: #464646;">PulseWaveEye trigger</a></div>
+          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
       </div>
     
         </div>
@@ -178,7 +257,7 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/Exercise_v2.riv",
+  src: "riv/Activity_v2.riv",
   canvas: document.getElementById("canvas0"),
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {

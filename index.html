@@ -55,6 +55,17 @@
           gap: 32px;
           align-items: flex-start;
         }
+        .controls-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .controls-column > * {
+            width: max-content;
+        }
         .rive-btn {
             background: #646464;
             color: white;
@@ -62,7 +73,7 @@
             border-radius: 8px;
             padding: 6px 8px;
             cursor: pointer;
-            margin-left: 16px;
+            margin-left: 0; /* Remove left margin for perfect right alignment */
         }
         input[type="number"] {
             border-radius: 8px;
@@ -71,6 +82,41 @@
             padding: 4px 4px;
             font-size: 1rem;
             outline: none;
+        }
+        input[type="text"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            outline: none;
+            accent-color: #646464;
+            appearance: none; /* Remove default checkbox style */
+            -webkit-appearance: none;
+            display: inline-block;
+            /*vertical-align: middle; */
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 6px;
+            top: 1px;
+            width: 8px;
+            height: 14px;
+            border: solid #000000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
         }
     </style>
   </head>
@@ -83,9 +129,26 @@
         <canvas id="canvas0" width="200" height="190"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/sleeplake_widget_v3.html" style="color: #464646;">sleeplake widget</a></div>
-        <div><button id="btn0" class="rive-btn">Trigger</button><br><label style="margin-right:4px;">LakeSize:</label><input type="number" id="btn0_input1" value="80" style="width:50px; margin-top: 8px;" /></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/sleeplake_widget_v3.html" style="color: #464646;">sleeplake widget</a></div>
+          <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input1">LakeSize:</label>
+            <input type="number" id="btn0_input1" value="80" style="width:50px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input2">NoAnimation:</label>
+            <input type="checkbox" id="btn0_input2" />
+        </div>
+        
+        </div>
+        
       </div>
     
         </div>
@@ -95,9 +158,21 @@
         <canvas id="canvas1" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/TextAnim_v3.html" style="color: #464646;">TextAnim</a></div>
-        <div><button id="btn1" class="rive-btn">Trigger</button><br><label style="margin-right:4px;">Text:</label><input type="text" id="btn1_input1" style="width:80px; margin-top: 8px;" /></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/TextAnim_v3.html" style="color: #464646;">TextAnim</a></div>
+          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn1_input1">Text:</label>
+            <input type="text" id="btn1_input1" style="width:120px;" />
+        </div>
+        
+        </div>
+        
       </div>
     
         </div>
@@ -107,9 +182,12 @@
         <canvas id="canvas2" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/GodRay_Small_v1.html" style="color: #464646;">GodRay Small</a></div>
-        <div><button id="btn2" class="rive-btn">Trigger</button></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/GodRay_Small_v1.html" style="color: #464646;">GodRay Small</a></div>
+          <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
       </div>
     
         </div>
@@ -119,9 +197,12 @@
         <canvas id="canvas3" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/GodRay_v1.html" style="color: #464646;">GodRay</a></div>
-        <div><button id="btn3" class="rive-btn">Trigger</button></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/GodRay_v1.html" style="color: #464646;">GodRay</a></div>
+          <button id="btn3" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
       </div>
     
         </div>
@@ -131,9 +212,26 @@
         <canvas id="canvas4" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/sleeplake_v3.html" style="color: #464646;">sleeplake</a></div>
-        <div><button id="btn4" class="rive-btn">Trigger</button><br><label style="margin-right:4px;">LakeSize:</label><input type="number" id="btn4_input1" value="80" style="width:50px; margin-top: 8px;" /></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/sleeplake_v3.html" style="color: #464646;">sleeplake</a></div>
+          <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn4_input1">LakeSize:</label>
+            <input type="number" id="btn4_input1" value="80" style="width:50px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn4_input2">NoAnimation:</label>
+            <input type="checkbox" id="btn4_input2" />
+        </div>
+        
+        </div>
+        
       </div>
     
         </div>
@@ -143,9 +241,12 @@
         <canvas id="canvas5" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/LightRay_v1.html" style="color: #464646;">LightRay</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/LightRay_v1.html" style="color: #464646;">LightRay</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -155,9 +256,12 @@
         <canvas id="canvas6" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/Particles_v1.html" style="color: #464646;">Particles</a></div>
-        <div></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/Particles_v1.html" style="color: #464646;">Particles</a></div>
+          
+        </div>
+        
       </div>
     
         </div>
@@ -167,9 +271,12 @@
         <canvas id="canvas7" width="200" height="433"></canvas>
         <div class="description">
           
-      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-        <div><a href="pages/Welcome_v2.html" style="color: #464646;">Welcome</a></div>
-        <div><button id="btn7" class="rive-btn">Trigger</button></div>
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/Welcome_v2.html" style="color: #464646;">Welcome</a></div>
+          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
       </div>
     
         </div>
@@ -207,6 +314,19 @@ r0.on("load", () => {
     inputField0_1.addEventListener("input", () => {
       let val = parseFloat(inputField0_1.value);
       if (!isNaN(val)) inputObj0_1.value = val;
+    });
+  }
+});
+
+let inputObj0_2;
+let inputField0_2 = document.getElementById("btn0_input2");
+r0.on("load", () => {
+  const inputs = r0.stateMachineInputs("State Machine 1");
+  inputObj0_2 = inputs.find(input => input.name === "NoAnimation");
+  if (inputField0_2 && inputObj0_2) {
+
+    inputField0_2.addEventListener("change", () => {
+      inputObj0_2.value = inputField0_2.checked;
     });
   }
 });
@@ -314,6 +434,19 @@ r4.on("load", () => {
     inputField4_1.addEventListener("input", () => {
       let val = parseFloat(inputField4_1.value);
       if (!isNaN(val)) inputObj4_1.value = val;
+    });
+  }
+});
+
+let inputObj4_2;
+let inputField4_2 = document.getElementById("btn4_input2");
+r4.on("load", () => {
+  const inputs = r4.stateMachineInputs("State Machine 1");
+  inputObj4_2 = inputs.find(input => input.name === "NoAnimation");
+  if (inputField4_2 && inputObj4_2) {
+
+    inputField4_2.addEventListener("change", () => {
+      inputObj4_2.value = inputField4_2.checked;
     });
   }
 });

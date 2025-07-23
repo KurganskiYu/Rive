@@ -126,10 +126,10 @@
 
 
     <div class="animation-container">
-      <canvas id="main_canvas" width="274" height="274"></canvas>
+      <canvas id="main_canvas" width="375" height="812"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/PulseWave_transp_layout-center_full-circle_v6.riv" target="_blank" style="color: white;">PulseWave transp layout-center full-circle</a><br>Size: 274px 274px<br>State Machine: Timeline 1<br>Duration: 4.0s<br>Loop: No<br>Background: Transparent<br></div>
+          <div><a href="../riv/Activity_v2.riv" target="_blank" style="color: white;">Activity</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Duration: 5.0s<br>Loop: No<br>Background: Transparent<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
@@ -140,9 +140,9 @@
 <script>
 
 const mainRive = new rive.Rive({
-  src: "../riv/PulseWave_transp_layout-center_full-circle_v6.riv",
+  src: "../riv/Activity_v2.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true,autoBind: true, stateMachines: "Timeline 1",
+  autoplay: true,autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
   },

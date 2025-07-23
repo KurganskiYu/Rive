@@ -55,6 +55,17 @@
           gap: 32px;
           align-items: flex-start;
         }
+        .controls-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .controls-column > * {
+            width: max-content;
+        }
         .rive-btn {
             background: #646464;
             color: white;
@@ -62,7 +73,7 @@
             border-radius: 8px;
             padding: 6px 8px;
             cursor: pointer;
-            margin-left: 16px;
+            margin-left: 0; /* Remove left margin for perfect right alignment */
         }
         input[type="number"] {
             border-radius: 8px;
@@ -71,6 +82,41 @@
             padding: 4px 4px;
             font-size: 1rem;
             outline: none;
+        }
+        input[type="text"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            outline: none;
+            accent-color: #646464;
+            appearance: none; /* Remove default checkbox style */
+            -webkit-appearance: none;
+            display: inline-block;
+            /*vertical-align: middle; */
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 6px;
+            top: 1px;
+            width: 8px;
+            height: 14px;
+            border: solid #000000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
         }
     </style>
   </head>
@@ -82,9 +128,9 @@
     <div class="animation-container">
       <canvas id="main_canvas" width="395" height="600"></canvas>
       <div class="description">
-        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div>
           <div><a href="../riv/River_v1.riv" target="_blank" style="color: white;">River</a><br>Size: 526px 800px<br>State Machine: State Machine 1<br>Duration: 20.0s<br>Loop: Yes<br>Background: Transparent<br></div>
-          <div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
           </div>

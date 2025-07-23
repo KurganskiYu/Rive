@@ -55,6 +55,17 @@
           gap: 32px;
           align-items: flex-start;
         }
+        .controls-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .controls-column > * {
+            width: max-content;
+        }
         .rive-btn {
             background: #646464;
             color: white;
@@ -62,7 +73,7 @@
             border-radius: 8px;
             padding: 6px 8px;
             cursor: pointer;
-            margin-left: 16px;
+            margin-left: 0; /* Remove left margin for perfect right alignment */
         }
         input[type="number"] {
             border-radius: 8px;
@@ -71,6 +82,41 @@
             padding: 4px 4px;
             font-size: 1rem;
             outline: none;
+        }
+        input[type="text"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            outline: none;
+            accent-color: #646464;
+            appearance: none; /* Remove default checkbox style */
+            -webkit-appearance: none;
+            display: inline-block;
+            /*vertical-align: middle; */
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 6px;
+            top: 1px;
+            width: 8px;
+            height: 14px;
+            border: solid #000000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
         }
     </style>
   </head>
@@ -82,11 +128,21 @@
     <div class="animation-container">
       <canvas id="main_canvas" width="375" height="812"></canvas>
       <div class="description">
-        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-          <div><a href="../riv/sleeplake_v3.riv" target="_blank" style="color: white;">sleeplake</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: SleepLake<br>Trigger: Trigger 1<br>Input: num:LakeSize<br>Duration: 3.0s<br>Loop: No<br>Background: Image<br></div>
-          <div>
+        <div>
+          <div><a href="../riv/sleeplake_v3.riv" target="_blank" style="color: white;">sleeplake</a><br>Size: 375px 812px<br>State Machine: State Machine 1<br>Artboard: SleepLake<br>Trigger: Trigger 1<br>Input: num:LakeSize<br>Input: bol:NoAnimation<br>Duration: 3.0s<br>Loop: No<br>Background: Image<br></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
-            <br><label style="margin-right:4px;">LakeSize:</label><input type="number" id="btn_main_input1" value="80" style="width:50px; margin-top: 8px;" />
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input1">LakeSize:</label>
+            <input type="number" id="btn_main_input1" value="80" style="width:50px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input2">NoAnimation:</label>
+            <input type="checkbox" id="btn_main_input2" />
+        </div>
+        
           </div>
         </div>
       </div>
@@ -122,6 +178,18 @@ mainRive.on("load", () => {
     inputFieldMain_1.addEventListener("input", () => {
       let val = parseFloat(inputFieldMain_1.value);
       if (!isNaN(val)) inputObjMain_1.value = val;
+    });
+  }
+});
+
+let inputFieldMain_2 = document.getElementById("btn_main_input2");
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  let inputObjMain_2 = inputs.find(input => input.name === "NoAnimation");
+  if (inputFieldMain_2 && inputObjMain_2) {
+
+    inputFieldMain_2.addEventListener("change", () => {
+      inputObjMain_2.value = inputFieldMain_2.checked;
     });
   }
 });
