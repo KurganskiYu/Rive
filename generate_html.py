@@ -2,6 +2,8 @@ import os
 import csv
 import re
 from functools import lru_cache
+import shutil
+import time
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, "videos.csv")
@@ -502,6 +504,21 @@ def write_main_page(page_rows, page_idx, total_pages):
         ]
         f.write("".join(content_parts))
 
+def copy_recent_riv_files(src_dir, dst_dir, age_seconds=300):
+    """Recursively copy .riv files less than `age_seconds` old from src_dir to dst_dir."""
+    now = time.time()
+    for root, _, files in os.walk(src_dir):
+        for file in files:
+            if file.lower().endswith('.riv'):
+                src_path = os.path.join(root, file)
+                if now - os.path.getmtime(src_path) < age_seconds:
+                    dst_path = os.path.join(dst_dir, file)
+                    try:
+                        shutil.copy2(src_path, dst_path)
+                        print(f"Copied {src_path} to {dst_path}")
+                    except Exception as e:
+                        print(f"Failed to copy {src_path} to {dst_path}: {e}")
+
 # Main execution
 def main():
     with open(csv_path, newline='', encoding='utf-8') as csvfile:
@@ -528,4 +545,10 @@ def main():
     print(f"Generated {output_html}, {total_pages-1} extra pages, and {len(rows)} animation pages in 'pages/'")
 
 if __name__ == "__main__":
+    # Copy recent .riv files before generating HTML
+    copy_recent_riv_files(
+        r"c:\Dropbox\_Job\_Welltory",
+        os.path.join(script_dir, "riv"),
+        age_seconds=300
+    )
     main()
