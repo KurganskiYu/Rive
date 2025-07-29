@@ -193,8 +193,6 @@ const mainRive = new rive.Rive({
   autoplay: true,autoBind: true, artboard: "StressLiquid", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-    const vmi = mainRive.viewModelInstance;
-    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
   },
 });
 
@@ -228,8 +226,6 @@ const previewRive = new rive.Rive({
   autoplay: true, autoBind: true, artboard: "StressLiquid", stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
-    const vmi = previewRive.viewModelInstance;
-    let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
   },
 });
 

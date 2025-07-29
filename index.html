@@ -213,32 +213,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input1">color1:</label>
-            <input type="color" id="btn2_input1" value="#4f1e30" />
+            <input type="color" id="btn2_input1" value="#629d24" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input2">color2:</label>
-            <input type="color" id="btn2_input2" value="#90daf0" />
+            <input type="color" id="btn2_input2" value="#52a17f" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input3">color3:</label>
-            <input type="color" id="btn2_input3" value="#f77db2" />
+            <input type="color" id="btn2_input3" value="#e00945" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input4">color4:</label>
-            <input type="color" id="btn2_input4" value="#387a67" />
+            <input type="color" id="btn2_input4" value="#076dc6" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input5">color5:</label>
-            <input type="color" id="btn2_input5" value="#6156d8" />
+            <input type="color" id="btn2_input5" value="#009820" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input6">color6:</label>
-            <input type="color" id="btn2_input6" value="#2687c2" />
+            <input type="color" id="btn2_input6" value="#029519" />
         </div>
         
         </div>
@@ -359,31 +359,21 @@ const r0 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "HeaderTextAnim", stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      inputFieldBtn0_1.addEventListener("input", () => {
+        vmi.string("Text").value = inputFieldBtn0_1.value;
+      });
+    }
+    const inputs = r0.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn0").addEventListener("click", () => triggerInput.fire());
+    }
+    let inputField_btn0_1 = document.getElementById("btn0_input1");
+    let inputObj_btn0_1 = inputs.find(input => input.name === "Text");
   },
-});
-
-let triggerInput0;
-r0.on("load", () => {
-  const inputs = r0.stateMachineInputs("State Machine 1");
-  triggerInput0 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn0").addEventListener("click", () => {
-  if (triggerInput0) {
-    triggerInput0.fire();
-  }
-});
-
-let inputObj0_1;
-let inputField0_1 = document.getElementById("btn0_input1");
-r0.on("load", () => {
-  const inputs = r0.stateMachineInputs("State Machine 1");
-  inputObj0_1 = inputs.find(input => input.name === "Text");
-  if (inputField0_1 && inputObj0_1) {
-
-    inputField0_1.addEventListener("input", () => {
-      inputObj0_1.value = inputField0_1.value;
-    });
-  }
 });
 
 const r1 = new rive.Rive({
@@ -392,31 +382,21 @@ const r1 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "TextAnim", stateMachines: "State Machine 1",
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
+    const vmi = r1.viewModelInstance;
+    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
+    if (inputFieldBtn1_1 && vmi) {
+      inputFieldBtn1_1.addEventListener("input", () => {
+        vmi.string("Text").value = inputFieldBtn1_1.value;
+      });
+    }
+    const inputs = r1.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn1").addEventListener("click", () => triggerInput.fire());
+    }
+    let inputField_btn1_1 = document.getElementById("btn1_input1");
+    let inputObj_btn1_1 = inputs.find(input => input.name === "Text");
   },
-});
-
-let triggerInput1;
-r1.on("load", () => {
-  const inputs = r1.stateMachineInputs("State Machine 1");
-  triggerInput1 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn1").addEventListener("click", () => {
-  if (triggerInput1) {
-    triggerInput1.fire();
-  }
-});
-
-let inputObj1_1;
-let inputField1_1 = document.getElementById("btn1_input1");
-r1.on("load", () => {
-  const inputs = r1.stateMachineInputs("State Machine 1");
-  inputObj1_1 = inputs.find(input => input.name === "Text");
-  if (inputField1_1 && inputObj1_1) {
-
-    inputField1_1.addEventListener("input", () => {
-      inputObj1_1.value = inputField1_1.value;
-    });
-  }
 });
 
 const r2 = new rive.Rive({
@@ -425,108 +405,97 @@ const r2 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "FlowerParticles", stateMachines: "State Machine 1",
   onLoad: () => {
     r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
+    let inputFieldBtn2_1 = document.getElementById("btn2_input1");
+    if (inputFieldBtn2_1 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn2_1.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color1").value = argb;
+      inputFieldBtn2_1.addEventListener("input", () => {
+        let hex = inputFieldBtn2_1.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color1").value = argb;
+      });
+    }
+    let inputFieldBtn2_2 = document.getElementById("btn2_input2");
+    if (inputFieldBtn2_2 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn2_2.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color2").value = argb;
+      inputFieldBtn2_2.addEventListener("input", () => {
+        let hex = inputFieldBtn2_2.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color2").value = argb;
+      });
+    }
+    let inputFieldBtn2_3 = document.getElementById("btn2_input3");
+    if (inputFieldBtn2_3 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn2_3.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color3").value = argb;
+      inputFieldBtn2_3.addEventListener("input", () => {
+        let hex = inputFieldBtn2_3.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color3").value = argb;
+      });
+    }
+    let inputFieldBtn2_4 = document.getElementById("btn2_input4");
+    if (inputFieldBtn2_4 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn2_4.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color4").value = argb;
+      inputFieldBtn2_4.addEventListener("input", () => {
+        let hex = inputFieldBtn2_4.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color4").value = argb;
+      });
+    }
+    let inputFieldBtn2_5 = document.getElementById("btn2_input5");
+    if (inputFieldBtn2_5 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn2_5.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color5").value = argb;
+      inputFieldBtn2_5.addEventListener("input", () => {
+        let hex = inputFieldBtn2_5.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color5").value = argb;
+      });
+    }
+    let inputFieldBtn2_6 = document.getElementById("btn2_input6");
+    if (inputFieldBtn2_6 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn2_6.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color6").value = argb;
+      inputFieldBtn2_6.addEventListener("input", () => {
+        let hex = inputFieldBtn2_6.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color6").value = argb;
+      });
+    }
+    const inputs = r2.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn2").addEventListener("click", () => triggerInput.fire());
+    }
+    let inputField_btn2_1 = document.getElementById("btn2_input1");
+    let inputObj_btn2_1 = inputs.find(input => input.name === "color1");
+    let inputField_btn2_2 = document.getElementById("btn2_input2");
+    let inputObj_btn2_2 = inputs.find(input => input.name === "color2");
+    let inputField_btn2_3 = document.getElementById("btn2_input3");
+    let inputObj_btn2_3 = inputs.find(input => input.name === "color3");
+    let inputField_btn2_4 = document.getElementById("btn2_input4");
+    let inputObj_btn2_4 = inputs.find(input => input.name === "color4");
+    let inputField_btn2_5 = document.getElementById("btn2_input5");
+    let inputObj_btn2_5 = inputs.find(input => input.name === "color5");
+    let inputField_btn2_6 = document.getElementById("btn2_input6");
+    let inputObj_btn2_6 = inputs.find(input => input.name === "color6");
   },
-});
-
-let triggerInput2;
-r2.on("load", () => {
-  const inputs = r2.stateMachineInputs("State Machine 1");
-  triggerInput2 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn2").addEventListener("click", () => {
-  if (triggerInput2) {
-    triggerInput2.fire();
-  }
-});
-
-let inputObj2_1;
-let inputField2_1 = document.getElementById("btn2_input1");
-r2.on("load", () => {
-  const inputs = r2.stateMachineInputs("State Machine 1");
-  inputObj2_1 = inputs.find(input => input.name === "color1");
-  if (inputField2_1 && inputObj2_1) {
-
-    inputField2_1.addEventListener("input", () => {
-      let hex = inputField2_1.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      inputObj2_1.value = argb;
-    });
-  }
-});
-
-let inputObj2_2;
-let inputField2_2 = document.getElementById("btn2_input2");
-r2.on("load", () => {
-  const inputs = r2.stateMachineInputs("State Machine 1");
-  inputObj2_2 = inputs.find(input => input.name === "color2");
-  if (inputField2_2 && inputObj2_2) {
-
-    inputField2_2.addEventListener("input", () => {
-      let hex = inputField2_2.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      inputObj2_2.value = argb;
-    });
-  }
-});
-
-let inputObj2_3;
-let inputField2_3 = document.getElementById("btn2_input3");
-r2.on("load", () => {
-  const inputs = r2.stateMachineInputs("State Machine 1");
-  inputObj2_3 = inputs.find(input => input.name === "color3");
-  if (inputField2_3 && inputObj2_3) {
-
-    inputField2_3.addEventListener("input", () => {
-      let hex = inputField2_3.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      inputObj2_3.value = argb;
-    });
-  }
-});
-
-let inputObj2_4;
-let inputField2_4 = document.getElementById("btn2_input4");
-r2.on("load", () => {
-  const inputs = r2.stateMachineInputs("State Machine 1");
-  inputObj2_4 = inputs.find(input => input.name === "color4");
-  if (inputField2_4 && inputObj2_4) {
-
-    inputField2_4.addEventListener("input", () => {
-      let hex = inputField2_4.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      inputObj2_4.value = argb;
-    });
-  }
-});
-
-let inputObj2_5;
-let inputField2_5 = document.getElementById("btn2_input5");
-r2.on("load", () => {
-  const inputs = r2.stateMachineInputs("State Machine 1");
-  inputObj2_5 = inputs.find(input => input.name === "color5");
-  if (inputField2_5 && inputObj2_5) {
-
-    inputField2_5.addEventListener("input", () => {
-      let hex = inputField2_5.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      inputObj2_5.value = argb;
-    });
-  }
-});
-
-let inputObj2_6;
-let inputField2_6 = document.getElementById("btn2_input6");
-r2.on("load", () => {
-  const inputs = r2.stateMachineInputs("State Machine 1");
-  inputObj2_6 = inputs.find(input => input.name === "color6");
-  if (inputField2_6 && inputObj2_6) {
-
-    inputField2_6.addEventListener("input", () => {
-      let hex = inputField2_6.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      inputObj2_6.value = argb;
-    });
-  }
 });
 
 const r3 = new rive.Rive({
@@ -535,45 +504,27 @@ const r3 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "SleepLake", stateMachines: "State Machine 1",
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
+    const inputs = r3.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn3").addEventListener("click", () => triggerInput.fire());
+    }
+    let inputField_btn3_1 = document.getElementById("btn3_input1");
+    let inputObj_btn3_1 = inputs.find(input => input.name === "LakeSize");
+    if (inputField_btn3_1 && inputObj_btn3_1) {
+      inputField_btn3_1.addEventListener("input", () => {
+        let val = parseFloat(inputField_btn3_1.value);
+        if (!isNaN(val)) inputObj_btn3_1.value = val;
+      });
+    }
+    let inputField_btn3_2 = document.getElementById("btn3_input2");
+    let inputObj_btn3_2 = inputs.find(input => input.name === "NoAnimation");
+    if (inputField_btn3_2 && inputObj_btn3_2) {
+      inputField_btn3_2.addEventListener("change", () => {
+        inputObj_btn3_2.value = inputField_btn3_2.checked;
+      });
+    }
   },
-});
-
-let triggerInput3;
-r3.on("load", () => {
-  const inputs = r3.stateMachineInputs("State Machine 1");
-  triggerInput3 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn3").addEventListener("click", () => {
-  if (triggerInput3) {
-    triggerInput3.fire();
-  }
-});
-
-let inputObj3_1;
-let inputField3_1 = document.getElementById("btn3_input1");
-r3.on("load", () => {
-  const inputs = r3.stateMachineInputs("State Machine 1");
-  inputObj3_1 = inputs.find(input => input.name === "LakeSize");
-  if (inputField3_1 && inputObj3_1) {
-
-    inputField3_1.addEventListener("input", () => {
-      let val = parseFloat(inputField3_1.value);
-      if (!isNaN(val)) inputObj3_1.value = val;
-    });
-  }
-});
-
-let inputObj3_2;
-let inputField3_2 = document.getElementById("btn3_input2");
-r3.on("load", () => {
-  const inputs = r3.stateMachineInputs("State Machine 1");
-  inputObj3_2 = inputs.find(input => input.name === "NoAnimation");
-  if (inputField3_2 && inputObj3_2) {
-
-    inputField3_2.addEventListener("change", () => {
-      inputObj3_2.value = inputField3_2.checked;
-    });
-  }
 });
 
 const r4 = new rive.Rive({
@@ -582,18 +533,12 @@ const r4 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "GodRayS", stateMachines: "State Machine 1",
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
+    const inputs = r4.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn4").addEventListener("click", () => triggerInput.fire());
+    }
   },
-});
-
-let triggerInput4;
-r4.on("load", () => {
-  const inputs = r4.stateMachineInputs("State Machine 1");
-  triggerInput4 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn4").addEventListener("click", () => {
-  if (triggerInput4) {
-    triggerInput4.fire();
-  }
 });
 
 const r5 = new rive.Rive({
@@ -602,18 +547,12 @@ const r5 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "GodRay", stateMachines: "State Machine 1",
   onLoad: () => {
     r5.resizeDrawingSurfaceToCanvas();
+    const inputs = r5.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn5").addEventListener("click", () => triggerInput.fire());
+    }
   },
-});
-
-let triggerInput5;
-r5.on("load", () => {
-  const inputs = r5.stateMachineInputs("State Machine 1");
-  triggerInput5 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn5").addEventListener("click", () => {
-  if (triggerInput5) {
-    triggerInput5.fire();
-  }
 });
 
 const r6 = new rive.Rive({
@@ -622,45 +561,27 @@ const r6 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "SleepLake", stateMachines: "State Machine 1",
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
+    const inputs = r6.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn6").addEventListener("click", () => triggerInput.fire());
+    }
+    let inputField_btn6_1 = document.getElementById("btn6_input1");
+    let inputObj_btn6_1 = inputs.find(input => input.name === "LakeSize");
+    if (inputField_btn6_1 && inputObj_btn6_1) {
+      inputField_btn6_1.addEventListener("input", () => {
+        let val = parseFloat(inputField_btn6_1.value);
+        if (!isNaN(val)) inputObj_btn6_1.value = val;
+      });
+    }
+    let inputField_btn6_2 = document.getElementById("btn6_input2");
+    let inputObj_btn6_2 = inputs.find(input => input.name === "NoAnimation");
+    if (inputField_btn6_2 && inputObj_btn6_2) {
+      inputField_btn6_2.addEventListener("change", () => {
+        inputObj_btn6_2.value = inputField_btn6_2.checked;
+      });
+    }
   },
-});
-
-let triggerInput6;
-r6.on("load", () => {
-  const inputs = r6.stateMachineInputs("State Machine 1");
-  triggerInput6 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn6").addEventListener("click", () => {
-  if (triggerInput6) {
-    triggerInput6.fire();
-  }
-});
-
-let inputObj6_1;
-let inputField6_1 = document.getElementById("btn6_input1");
-r6.on("load", () => {
-  const inputs = r6.stateMachineInputs("State Machine 1");
-  inputObj6_1 = inputs.find(input => input.name === "LakeSize");
-  if (inputField6_1 && inputObj6_1) {
-
-    inputField6_1.addEventListener("input", () => {
-      let val = parseFloat(inputField6_1.value);
-      if (!isNaN(val)) inputObj6_1.value = val;
-    });
-  }
-});
-
-let inputObj6_2;
-let inputField6_2 = document.getElementById("btn6_input2");
-r6.on("load", () => {
-  const inputs = r6.stateMachineInputs("State Machine 1");
-  inputObj6_2 = inputs.find(input => input.name === "NoAnimation");
-  if (inputField6_2 && inputObj6_2) {
-
-    inputField6_2.addEventListener("change", () => {
-      inputObj6_2.value = inputField6_2.checked;
-    });
-  }
 });
 
 const r7 = new rive.Rive({
@@ -669,6 +590,7 @@ const r7 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r7.resizeDrawingSurfaceToCanvas();
+    const inputs = r7.stateMachineInputs("State Machine 1");
   },
 });
 
@@ -676,6 +598,13 @@ document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";
   canvas.style.height = canvas.height + "px";
 });
+
+// Fire all triggers 2 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 2000);
 </script>
 <div style="margin: 24px 0; text-align:center;"><button class="rive-btn" style="background:#e0e0e0;color:#333;">1</button> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a> <a href="page3.html"><button class="rive-btn">4</button></a></div>
     </div>

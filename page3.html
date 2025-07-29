@@ -279,6 +279,7 @@ const r0 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "Wave Loader",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
+    const inputs = r0.stateMachineInputs("Wave Loader");
   },
 });
 
@@ -288,6 +289,7 @@ const r1 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "Wave Loader",
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
+    const inputs = r1.stateMachineInputs("Wave Loader");
   },
 });
 
@@ -297,6 +299,7 @@ const r2 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "Spiral Loader",
   onLoad: () => {
     r2.resizeDrawingSurfaceToCanvas();
+    const inputs = r2.stateMachineInputs("Spiral Loader");
   },
 });
 
@@ -306,6 +309,7 @@ const r3 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "Circle Loader",
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
+    const inputs = r3.stateMachineInputs("Circle Loader");
   },
 });
 
@@ -315,18 +319,12 @@ const r4 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
+    const inputs = r4.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "CloseTrigger");
+    if (triggerInput) {
+      document.getElementById("btn4").addEventListener("click", () => triggerInput.fire());
+    }
   },
-});
-
-let triggerInput4;
-r4.on("load", () => {
-  const inputs = r4.stateMachineInputs("State Machine 1");
-  triggerInput4 = inputs.find(input => input.name === "CloseTrigger");
-});
-document.getElementById("btn4").addEventListener("click", () => {
-  if (triggerInput4) {
-    triggerInput4.fire();
-  }
 });
 
 const r5 = new rive.Rive({
@@ -335,6 +333,7 @@ const r5 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "EYE timeline",
   onLoad: () => {
     r5.resizeDrawingSurfaceToCanvas();
+    const inputs = r5.stateMachineInputs("EYE timeline");
   },
 });
 
@@ -344,6 +343,7 @@ const r6 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
+    const inputs = r6.stateMachineInputs("State Machine 1");
   },
 });
 
@@ -353,6 +353,7 @@ const r7 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
   onLoad: () => {
     r7.resizeDrawingSurfaceToCanvas();
+    const inputs = r7.stateMachineInputs("State Machine 1");
   },
 });
 
@@ -360,6 +361,13 @@ document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";
   canvas.style.height = canvas.height + "px";
 });
+
+// Fire all triggers 2 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 2000);
 </script>
 <div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">4</button></div>
     </div>

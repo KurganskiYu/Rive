@@ -196,71 +196,141 @@ const r{idx} = new rive.Rive({{
 }});
 '''
 
-def generate_trigger_js(idx, row):
-    """Generate trigger JavaScript"""
-    if not row.get("trigger"):
-        return ""
-    
-    button_id = f"btn{idx}"
-    state_machine = row.get("state_machine", "")
-    
-    return f'''
-let triggerInput{idx};
-r{idx}.on("load", () => {{
-  const inputs = r{idx}.stateMachineInputs("{state_machine}");
-  triggerInput{idx} = inputs.find(input => input.name === "{row["trigger"]}");
-}});
-document.getElementById("{button_id}").addEventListener("click", () => {{
-  if (triggerInput{idx}) {{
-    triggerInput{idx}.fire();
-  }}
-}});
-'''
-
-def generate_inputs_js(idx, row):
-    """Generate input handling JavaScript"""
-    button_id = f"btn{idx}"
-    state_machine = row.get("state_machine", "")
+def generate_text_input_js(row, prefix, rive_var):
+    """Generate text and color input handling JavaScript"""
     js_parts = []
-    
+    has_text_or_color = False
     for i in INPUT_RANGE:
         input_value = row.get(f"input{i}")
         if not input_value:
             continue
-            
+
         input_type, input_name = parse_input_type_name(input_value)
-        input_id = f"{button_id}_input{i}"
-        
-        js_part = f'''
-let inputObj{idx}_{i};
-let inputField{idx}_{i} = document.getElementById("{input_id}");
-r{idx}.on("load", () => {{
-  const inputs = r{idx}.stateMachineInputs("{state_machine}");
-  inputObj{idx}_{i} = inputs.find(input => input.name === "{input_name}");
-  if (inputField{idx}_{i} && inputObj{idx}_{i}) {{
-{make_input_js(input_type, input_name, input_id, f"inputObj{idx}_{i}", f"inputField{idx}_{i}")}
-  }}
-}});
-'''
-        js_parts.append(js_part)
-    
+        input_id = f"{prefix}_input{i}"
+        field_var = f"inputField{prefix.title()}_{i}"
+        if input_type in ("txt", "col"):
+            has_text_or_color = True
+            js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+            if input_type == "txt":
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      {field_var}.addEventListener("input", () => {{
+        vmi.string("{input_name}").value = {field_var}.value;
+      }});
+    }}
+""")
+            elif input_type == "col":
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      // Set initial color value
+      let hex = {field_var}.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("{input_name}").value = argb;
+      {field_var}.addEventListener("input", () => {{
+        let hex = {field_var}.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("{input_name}").value = argb;
+      }});
+    }}
+""")
+    if has_text_or_color:
+        # Insert vmi declaration at the top if needed
+        js_parts.insert(0, f"    const vmi = {rive_var}.viewModelInstance;\n")
     return "".join(js_parts)
+
+def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, input_prefix, row):
+    artboard_line = f'artboard: "{artboard}",' if artboard else ""
+    state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
+    js = [f'''
+const {var_name} = new rive.Rive({{
+  src: "{src}",
+  canvas: document.getElementById("{canvas_id}"),
+  autoplay: true, autoBind: true,{artboard_line}{state_machine_line}
+  onLoad: () => {{
+    {var_name}.resizeDrawingSurfaceToCanvas();
+''']
+
+    # Text and color input handling (will only emit vmi if needed)
+    js.append(generate_text_input_js(row, input_prefix, var_name))
+
+    # State machine inputs and triggers
+    if state_machine:
+        js.append(f'    const inputs = {var_name}.stateMachineInputs("{state_machine}");\n')
+        if trigger:
+            js.append(f'''    let triggerInput = inputs.find(input => input.name === "{trigger}");
+    if (triggerInput) {{
+      document.getElementById("{input_prefix}").addEventListener("click", () => triggerInput.fire());
+    }}
+''')
+        for i in INPUT_RANGE:
+            input_value = row.get(f"input{i}")
+            if not input_value or input_value.strip() == "":
+                continue
+            input_type, input_name = parse_input_type_name(input_value)
+            input_id = f"{input_prefix}_input{i}"
+            field_var = f'inputField_{input_prefix}_{i}'
+            obj_var = f'inputObj_{input_prefix}_{i}'
+            js.append(f'    let {field_var} = document.getElementById("{input_id}");\n')
+            js.append(f'    let {obj_var} = inputs.find(input => input.name === "{input_name}");\n')
+            if input_type == "num":
+                js.append(f'''    if ({field_var} && {obj_var}) {{
+      {field_var}.addEventListener("input", () => {{
+        let val = parseFloat({field_var}.value);
+        if (!isNaN(val)) {obj_var}.value = val;
+      }});
+    }}
+''')
+            elif input_type == "bol":
+                js.append(f'''    if ({field_var} && {obj_var}) {{
+      {field_var}.addEventListener("change", () => {{
+        {obj_var}.value = {field_var}.checked;
+      }});
+    }}
+''')
+            elif input_type == "txt":
+                # Already handled by vmi above, skip here
+                continue
+            elif input_type == "col":
+                # Already handled by vmi above, skip here
+                continue
+    js.append('  },\n});\n')
+    return "".join(js)
 
 def make_script(rows):
     script_parts = ["<script>\n"]
-    
     for idx, row in enumerate(rows):
-        script_parts.extend([
-            generate_rive_config(idx, row),
-            generate_trigger_js(idx, row),
-            generate_inputs_js(idx, row)
-        ])
-    
+        canvas_id = f"canvas{idx}"
+        button_id = f"btn{idx}"
+        src = f"riv/{row['src']}"
+        artboard = row.get("artboard", "")
+        state_machine = row.get("state_machine", "")
+        trigger = row.get("trigger", "")
+
+        # Use unified function
+        script_parts.append(
+            generate_rive_js_block(
+                var_name=f"r{idx}",
+                canvas_id=canvas_id,
+                src=src,
+                artboard=artboard,
+                state_machine=state_machine,
+                trigger=trigger,
+                input_prefix=button_id,
+                row=row
+            )
+        )
+
+    # Canvas sizing and auto-trigger
     script_parts.append('''
 document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";
   canvas.style.height = canvas.height + "px";
 });
+
+// Fire all triggers 3 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 3000);
 </script>
 ''')
     return "".join(script_parts)
@@ -414,42 +484,6 @@ document.querySelectorAll('canvas').forEach(canvas => {
 </script>
 ''')
     
-    return "".join(js_parts)
-
-def generate_text_input_js(row, prefix, rive_var):
-    """Generate text and color input handling JavaScript"""
-    js_parts = []
-    # Only declare vmi once per onLoad!
-    js_parts.append(f"    const vmi = {rive_var}.viewModelInstance;\n")
-    for i in INPUT_RANGE:
-        input_value = row.get(f"input{i}")
-        if not input_value:
-            continue
-
-        input_type, input_name = parse_input_type_name(input_value)
-        input_id = f"{prefix}_input{i}"
-        field_var = f"inputField{prefix.title()}_{i}"
-        js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
-        if input_type == "txt":
-            js_parts.append(f"""    if ({field_var} && vmi) {{
-      {field_var}.addEventListener("input", () => {{
-        vmi.string("{input_name}").value = {field_var}.value;
-      }});
-    }}
-""")
-        elif input_type == "col":
-            js_parts.append(f"""    if ({field_var} && vmi) {{
-      // Set initial color value
-      let hex = {field_var}.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("{input_name}").value = argb;
-      {field_var}.addEventListener("input", () => {{
-        let hex = {field_var}.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("{input_name}").value = argb;
-      }});
-    }}
-""")
     return "".join(js_parts)
 
 def generate_animation_controls_js(row, canvas_type, rive_var):

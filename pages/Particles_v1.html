@@ -183,7 +183,6 @@ const mainRive = new rive.Rive({
   autoplay: true,autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-    const vmi = mainRive.viewModelInstance;
   },
 });
 
@@ -193,7 +192,6 @@ const previewRive = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
-    const vmi = previewRive.viewModelInstance;
   },
 });
 

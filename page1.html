@@ -279,6 +279,7 @@ const r0 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
+    const inputs = r0.stateMachineInputs("State Machine 1");
   },
 });
 
@@ -288,18 +289,12 @@ const r1 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "Welcome", stateMachines: "State Machine 1",
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
+    const inputs = r1.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn1").addEventListener("click", () => triggerInput.fire());
+    }
   },
-});
-
-let triggerInput1;
-r1.on("load", () => {
-  const inputs = r1.stateMachineInputs("State Machine 1");
-  triggerInput1 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn1").addEventListener("click", () => {
-  if (triggerInput1) {
-    triggerInput1.fire();
-  }
 });
 
 const r2 = new rive.Rive({
@@ -308,6 +303,7 @@ const r2 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r2.resizeDrawingSurfaceToCanvas();
+    const inputs = r2.stateMachineInputs("State Machine 1");
   },
 });
 
@@ -317,6 +313,7 @@ const r3 = new rive.Rive({
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
+    const inputs = r3.stateMachineInputs("State Machine 1");
   },
 });
 
@@ -326,6 +323,7 @@ const r4 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
+    const inputs = r4.stateMachineInputs("State Machine 1");
   },
 });
 
@@ -335,6 +333,7 @@ const r5 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
     r5.resizeDrawingSurfaceToCanvas();
+    const inputs = r5.stateMachineInputs("State Machine 1");
   },
 });
 
@@ -344,18 +343,12 @@ const r6 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
+    const inputs = r6.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn6").addEventListener("click", () => triggerInput.fire());
+    }
   },
-});
-
-let triggerInput6;
-r6.on("load", () => {
-  const inputs = r6.stateMachineInputs("State Machine 1");
-  triggerInput6 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn6").addEventListener("click", () => {
-  if (triggerInput6) {
-    triggerInput6.fire();
-  }
 });
 
 const r7 = new rive.Rive({
@@ -364,24 +357,25 @@ const r7 = new rive.Rive({
   autoplay: true, autoBind: true,artboard: "SleepLines", stateMachines: "State Machine 1",
   onLoad: () => {
     r7.resizeDrawingSurfaceToCanvas();
+    const inputs = r7.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn7").addEventListener("click", () => triggerInput.fire());
+    }
   },
-});
-
-let triggerInput7;
-r7.on("load", () => {
-  const inputs = r7.stateMachineInputs("State Machine 1");
-  triggerInput7 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn7").addEventListener("click", () => {
-  if (triggerInput7) {
-    triggerInput7.fire();
-  }
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";
   canvas.style.height = canvas.height + "px";
 });
+
+// Fire all triggers 2 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 2000);
 </script>
 <div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">2</button> <a href="page2.html"><button class="rive-btn">3</button></a> <a href="page3.html"><button class="rive-btn">4</button></a></div>
     </div>
