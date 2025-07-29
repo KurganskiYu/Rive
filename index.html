@@ -157,7 +157,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/flowerparticles_v2.html" style="color: #464646;">flowerparticles</a></div>
+          <div><a href="pages/flowerparticles_v3.html" style="color: #464646;">flowerparticles</a></div>
           <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -165,32 +165,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn0_input1">color1:</label>
-            <input type="color" id="btn0_input1" value="#37567e" />
+            <input type="color" id="btn0_input1" value="#d22f2b" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn0_input2">color2:</label>
-            <input type="color" id="btn0_input2" value="#63d834" />
+            <input type="color" id="btn0_input2" value="#7498af" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn0_input3">color3:</label>
-            <input type="color" id="btn0_input3" value="#887cdc" />
+            <input type="color" id="btn0_input3" value="#5da8c7" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn0_input4">color4:</label>
-            <input type="color" id="btn0_input4" value="#c1ac28" />
+            <input type="color" id="btn0_input4" value="#e00cfe" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn0_input5">color5:</label>
-            <input type="color" id="btn0_input5" value="#40c3bc" />
+            <input type="color" id="btn0_input5" value="#0d0804" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn0_input6">color6:</label>
-            <input type="color" id="btn0_input6" value="#dc8588" />
+            <input type="color" id="btn0_input6" value="#6404f6" />
         </div>
         
         </div>
@@ -345,7 +345,7 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/flowerparticles_v2.riv",
+  src: "riv/flowerparticles_v3.riv",
   canvas: document.getElementById("canvas0"),
   autoplay: true, autoBind: true,artboard: "FlowerParticles", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -357,11 +357,11 @@ let triggerInput0;
 r0.on("load", () => {
   const inputs = r0.stateMachineInputs("State Machine 1");
   triggerInput0 = inputs.find(input => input.name === "Trigger 1");
-  document.getElementById("btn0").addEventListener("click", () => {
-    if (triggerInput0) {
-      triggerInput0.fire();
-    }
-  });
+});
+document.getElementById("btn0").addEventListener("click", () => {
+  if (triggerInput0) {
+    triggerInput0.fire();
+  }
 });
 
 let inputObj0_1;
@@ -372,7 +372,6 @@ r0.on("load", () => {
   if (inputField0_1 && inputObj0_1) {
 
     inputField0_1.addEventListener("input", () => {
-      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
       let hex = inputField0_1.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
       inputObj0_1.value = argb;
@@ -388,7 +387,6 @@ r0.on("load", () => {
   if (inputField0_2 && inputObj0_2) {
 
     inputField0_2.addEventListener("input", () => {
-      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
       let hex = inputField0_2.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
       inputObj0_2.value = argb;
@@ -404,7 +402,6 @@ r0.on("load", () => {
   if (inputField0_3 && inputObj0_3) {
 
     inputField0_3.addEventListener("input", () => {
-      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
       let hex = inputField0_3.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
       inputObj0_3.value = argb;
@@ -420,7 +417,6 @@ r0.on("load", () => {
   if (inputField0_4 && inputObj0_4) {
 
     inputField0_4.addEventListener("input", () => {
-      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
       let hex = inputField0_4.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
       inputObj0_4.value = argb;
@@ -436,7 +432,6 @@ r0.on("load", () => {
   if (inputField0_5 && inputObj0_5) {
 
     inputField0_5.addEventListener("input", () => {
-      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
       let hex = inputField0_5.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
       inputObj0_5.value = argb;
@@ -452,7 +447,6 @@ r0.on("load", () => {
   if (inputField0_6 && inputObj0_6) {
 
     inputField0_6.addEventListener("input", () => {
-      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
       let hex = inputField0_6.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
       inputObj0_6.value = argb;
