@@ -370,12 +370,12 @@ document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.height = canvas.height + "px";
 });
 
-// Fire all triggers 2 seconds after page load
+// Fire all triggers 3 seconds after page load
 setTimeout(() => {
   document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
     btn.click();
   });
-}, 2000);
+}, 3000);
 </script>
 <div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">2</button> <a href="page2.html"><button class="rive-btn">3</button></a> <a href="page3.html"><button class="rive-btn">4</button></a></div>
     </div>
