@@ -118,6 +118,32 @@
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
         }
+        input[type="color"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            width: 40px;
+            height: 32px;
+            padding: 0;
+            outline: none;
+            cursor: pointer;
+            /* Remove default appearance for consistency */
+            -webkit-appearance: none;
+            appearance: none;
+            /* Optional: add a subtle box-shadow for focus */
+            box-shadow: 0 0 0 1.5px #646464 inset;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 8px;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border-radius: 8px;
+            border: none;
+        }
+        input[type="color"]:focus {
+            box-shadow: 0 0 0 2px #464646;
+        }
     </style>
   </head>
   <body>
@@ -127,6 +153,21 @@
 
       <div class="animation-container">
         <canvas id="canvas0" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/Welcome_v2.html" style="color: #464646;">Welcome</a></div>
+          <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -141,7 +182,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="433"></canvas>
+        <canvas id="canvas2" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -156,7 +197,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="433"></canvas>
+        <canvas id="canvas3" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -171,7 +212,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="433"></canvas>
+        <canvas id="canvas4" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -186,27 +227,12 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="325"></canvas>
+        <canvas id="canvas5" width="200" height="325"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
           <div><a href="pages/ExerciseBubbles_v3.html" style="color: #464646;">ExerciseBubbles</a></div>
-          <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas5" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/SleepLines_v4.html" style="color: #464646;">SleepLines</a></div>
           <button id="btn5" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -221,17 +247,8 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/StressLiquid_v1.html" style="color: #464646;">StressLiquid</a></div>
+          <div><a href="pages/SleepLines_v4.html" style="color: #464646;">SleepLines</a></div>
           <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input1">StressPercent:</label>
-            <input type="number" id="btn6_input1" value="80" style="width:50px;" />
-        </div>
-        
         </div>
         
       </div>
@@ -240,13 +257,22 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas7" width="200" height="200"></canvas>
+        <canvas id="canvas7" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/PulseWaveEye_v7_trigger.html" style="color: #464646;">PulseWaveEye trigger</a></div>
+          <div><a href="pages/StressLiquid_v1.html" style="color: #464646;">StressLiquid</a></div>
           <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn7_input1">StressPercent:</label>
+            <input type="number" id="btn7_input1" value="80" style="width:50px;" />
+        </div>
+        
         </div>
         
       </div>
@@ -257,16 +283,27 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/Activity_v2.riv",
+  src: "riv/Welcome_v2.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "Welcome", stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
   },
 });
 
+let triggerInput0;
+r0.on("load", () => {
+  const inputs = r0.stateMachineInputs("State Machine 1");
+  triggerInput0 = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("btn0").addEventListener("click", () => {
+  if (triggerInput0) {
+    triggerInput0.fire();
+  }
+});
+
 const r1 = new rive.Rive({
-  src: "riv/DeepRest_v2.riv",
+  src: "riv/Activity_v2.riv",
   canvas: document.getElementById("canvas1"),
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
@@ -275,16 +312,16 @@ const r1 = new rive.Rive({
 });
 
 const r2 = new rive.Rive({
-  src: "riv/OnboardingStrings_v3.riv",
+  src: "riv/DeepRest_v2.riv",
   canvas: document.getElementById("canvas2"),
-  autoplay: true, autoBind: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r2.resizeDrawingSurfaceToCanvas();
   },
 });
 
 const r3 = new rive.Rive({
-  src: "riv/OnboardingStrings_v2.riv",
+  src: "riv/OnboardingStrings_v3.riv",
   canvas: document.getElementById("canvas3"),
   autoplay: true, autoBind: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -293,29 +330,18 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-  src: "riv/ExerciseBubbles_v3.riv",
+  src: "riv/OnboardingStrings_v2.riv",
   canvas: document.getElementById("canvas4"),
-  autoplay: true, autoBind: true,artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
   },
 });
 
-let triggerInput4;
-r4.on("load", () => {
-  const inputs = r4.stateMachineInputs("State Machine 1");
-  triggerInput4 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn4").addEventListener("click", () => {
-  if (triggerInput4) {
-    triggerInput4.fire();
-  }
-});
-
 const r5 = new rive.Rive({
-  src: "riv/SleepLines_v4.riv",
+  src: "riv/ExerciseBubbles_v3.riv",
   canvas: document.getElementById("canvas5"),
-  autoplay: true, autoBind: true,artboard: "SleepLines", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
   onLoad: () => {
     r5.resizeDrawingSurfaceToCanvas();
   },
@@ -333,9 +359,9 @@ document.getElementById("btn5").addEventListener("click", () => {
 });
 
 const r6 = new rive.Rive({
-  src: "riv/StressLiquid_v1.riv",
+  src: "riv/SleepLines_v4.riv",
   canvas: document.getElementById("canvas6"),
-  autoplay: true, autoBind: true,artboard: "StressLiquid", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "SleepLines", stateMachines: "State Machine 1",
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
   },
@@ -352,24 +378,10 @@ document.getElementById("btn6").addEventListener("click", () => {
   }
 });
 
-let inputObj6_1;
-let inputField6_1 = document.getElementById("btn6_input1");
-r6.on("load", () => {
-  const inputs = r6.stateMachineInputs("State Machine 1");
-  inputObj6_1 = inputs.find(input => input.name === "StressPercent");
-  if (inputField6_1 && inputObj6_1) {
-
-    inputField6_1.addEventListener("input", () => {
-      let val = parseFloat(inputField6_1.value);
-      if (!isNaN(val)) inputObj6_1.value = val;
-    });
-  }
-});
-
 const r7 = new rive.Rive({
-  src: "riv/PulseWaveEye_v7_trigger.riv",
+  src: "riv/StressLiquid_v1.riv",
   canvas: document.getElementById("canvas7"),
-  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "StressLiquid", stateMachines: "State Machine 1",
   onLoad: () => {
     r7.resizeDrawingSurfaceToCanvas();
   },
@@ -383,6 +395,20 @@ r7.on("load", () => {
 document.getElementById("btn7").addEventListener("click", () => {
   if (triggerInput7) {
     triggerInput7.fire();
+  }
+});
+
+let inputObj7_1;
+let inputField7_1 = document.getElementById("btn7_input1");
+r7.on("load", () => {
+  const inputs = r7.stateMachineInputs("State Machine 1");
+  inputObj7_1 = inputs.find(input => input.name === "StressPercent");
+  if (inputField7_1 && inputObj7_1) {
+
+    inputField7_1.addEventListener("input", () => {
+      let val = parseFloat(inputField7_1.value);
+      if (!isNaN(val)) inputObj7_1.value = val;
+    });
   }
 });
 

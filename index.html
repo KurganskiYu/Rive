@@ -118,6 +118,32 @@
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
         }
+        input[type="color"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            width: 40px;
+            height: 32px;
+            padding: 0;
+            outline: none;
+            cursor: pointer;
+            /* Remove default appearance for consistency */
+            -webkit-appearance: none;
+            appearance: none;
+            /* Optional: add a subtle box-shadow for focus */
+            box-shadow: 0 0 0 1.5px #646464 inset;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 8px;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border-radius: 8px;
+            border: none;
+        }
+        input[type="color"]:focus {
+            box-shadow: 0 0 0 2px #464646;
+        }
     </style>
   </head>
   <body>
@@ -126,25 +152,45 @@
 
 
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="190"></canvas>
+        <canvas id="canvas0" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/sleeplake_widget_v3.html" style="color: #464646;">sleeplake widget</a></div>
+          <div><a href="pages/flowerparticles_v2.html" style="color: #464646;">flowerparticles</a></div>
           <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn0_input1">LakeSize:</label>
-            <input type="number" id="btn0_input1" value="80" style="width:50px;" />
+            <label for="btn0_input1">color1:</label>
+            <input type="color" id="btn0_input1" value="#37567e" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn0_input2">NoAnimation:</label>
-            <input type="checkbox" id="btn0_input2" />
+            <label for="btn0_input2">color2:</label>
+            <input type="color" id="btn0_input2" value="#63d834" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input3">color3:</label>
+            <input type="color" id="btn0_input3" value="#887cdc" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input4">color4:</label>
+            <input type="color" id="btn0_input4" value="#c1ac28" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input5">color5:</label>
+            <input type="color" id="btn0_input5" value="#40c3bc" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input6">color6:</label>
+            <input type="color" id="btn0_input6" value="#dc8588" />
         </div>
         
         </div>
@@ -155,20 +201,25 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="434"></canvas>
+        <canvas id="canvas1" width="200" height="190"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/TextAnim_v3.html" style="color: #464646;">TextAnim</a></div>
+          <div><a href="pages/sleeplake_widget_v3.html" style="color: #464646;">sleeplake widget</a></div>
           <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input1">Text:</label>
-            <input type="text" id="btn1_input1" style="width:120px;" />
+            <label for="btn1_input1">LakeSize:</label>
+            <input type="number" id="btn1_input1" value="80" style="width:50px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn1_input2">NoAnimation:</label>
+            <input type="checkbox" id="btn1_input2" />
         </div>
         
         </div>
@@ -184,8 +235,17 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/GodRay_Small_v1.html" style="color: #464646;">GodRay Small</a></div>
+          <div><a href="pages/TextAnim_v3.html" style="color: #464646;">TextAnim</a></div>
           <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn2_input1">Text:</label>
+            <input type="text" id="btn2_input1" style="width:120px;" />
+        </div>
+        
         </div>
         
       </div>
@@ -199,7 +259,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/GodRay_v1.html" style="color: #464646;">GodRay</a></div>
+          <div><a href="pages/GodRay_Small_v1.html" style="color: #464646;">GodRay Small</a></div>
           <button id="btn3" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -209,25 +269,40 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="433"></canvas>
+        <canvas id="canvas4" width="200" height="434"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/GodRay_v1.html" style="color: #464646;">GodRay</a></div>
+          <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas5" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
           <div><a href="pages/sleeplake_v7.html" style="color: #464646;">sleeplake</a></div>
-          <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <button id="btn5" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input1">LakeSize:</label>
-            <input type="number" id="btn4_input1" value="80" style="width:50px;" />
+            <label for="btn5_input1">LakeSize:</label>
+            <input type="number" id="btn5_input1" value="80" style="width:50px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input2">NoAnimation:</label>
-            <input type="checkbox" id="btn4_input2" />
+            <label for="btn5_input2">NoAnimation:</label>
+            <input type="checkbox" id="btn5_input2" />
         </div>
         
         </div>
@@ -238,7 +313,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="433"></canvas>
+        <canvas id="canvas6" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -253,7 +328,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="433"></canvas>
+        <canvas id="canvas7" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -266,28 +341,13 @@
     
         </div>
       </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/Welcome_v2.html" style="color: #464646;">Welcome</a></div>
-          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
     </div>
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/sleeplake_widget_v3.riv",
+  src: "riv/flowerparticles_v2.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true, autoBind: true,artboard: "SleepLake", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "FlowerParticles", stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
   },
@@ -297,23 +357,25 @@ let triggerInput0;
 r0.on("load", () => {
   const inputs = r0.stateMachineInputs("State Machine 1");
   triggerInput0 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn0").addEventListener("click", () => {
-  if (triggerInput0) {
-    triggerInput0.fire();
-  }
+  document.getElementById("btn0").addEventListener("click", () => {
+    if (triggerInput0) {
+      triggerInput0.fire();
+    }
+  });
 });
 
 let inputObj0_1;
 let inputField0_1 = document.getElementById("btn0_input1");
 r0.on("load", () => {
   const inputs = r0.stateMachineInputs("State Machine 1");
-  inputObj0_1 = inputs.find(input => input.name === "LakeSize");
+  inputObj0_1 = inputs.find(input => input.name === "color1");
   if (inputField0_1 && inputObj0_1) {
 
     inputField0_1.addEventListener("input", () => {
-      let val = parseFloat(inputField0_1.value);
-      if (!isNaN(val)) inputObj0_1.value = val;
+      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
+      let hex = inputField0_1.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      inputObj0_1.value = argb;
     });
   }
 });
@@ -322,19 +384,86 @@ let inputObj0_2;
 let inputField0_2 = document.getElementById("btn0_input2");
 r0.on("load", () => {
   const inputs = r0.stateMachineInputs("State Machine 1");
-  inputObj0_2 = inputs.find(input => input.name === "NoAnimation");
+  inputObj0_2 = inputs.find(input => input.name === "color2");
   if (inputField0_2 && inputObj0_2) {
 
-    inputField0_2.addEventListener("change", () => {
-      inputObj0_2.value = inputField0_2.checked;
+    inputField0_2.addEventListener("input", () => {
+      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
+      let hex = inputField0_2.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      inputObj0_2.value = argb;
+    });
+  }
+});
+
+let inputObj0_3;
+let inputField0_3 = document.getElementById("btn0_input3");
+r0.on("load", () => {
+  const inputs = r0.stateMachineInputs("State Machine 1");
+  inputObj0_3 = inputs.find(input => input.name === "color3");
+  if (inputField0_3 && inputObj0_3) {
+
+    inputField0_3.addEventListener("input", () => {
+      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
+      let hex = inputField0_3.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      inputObj0_3.value = argb;
+    });
+  }
+});
+
+let inputObj0_4;
+let inputField0_4 = document.getElementById("btn0_input4");
+r0.on("load", () => {
+  const inputs = r0.stateMachineInputs("State Machine 1");
+  inputObj0_4 = inputs.find(input => input.name === "color4");
+  if (inputField0_4 && inputObj0_4) {
+
+    inputField0_4.addEventListener("input", () => {
+      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
+      let hex = inputField0_4.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      inputObj0_4.value = argb;
+    });
+  }
+});
+
+let inputObj0_5;
+let inputField0_5 = document.getElementById("btn0_input5");
+r0.on("load", () => {
+  const inputs = r0.stateMachineInputs("State Machine 1");
+  inputObj0_5 = inputs.find(input => input.name === "color5");
+  if (inputField0_5 && inputObj0_5) {
+
+    inputField0_5.addEventListener("input", () => {
+      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
+      let hex = inputField0_5.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      inputObj0_5.value = argb;
+    });
+  }
+});
+
+let inputObj0_6;
+let inputField0_6 = document.getElementById("btn0_input6");
+r0.on("load", () => {
+  const inputs = r0.stateMachineInputs("State Machine 1");
+  inputObj0_6 = inputs.find(input => input.name === "color6");
+  if (inputField0_6 && inputObj0_6) {
+
+    inputField0_6.addEventListener("input", () => {
+      // Convert #RRGGBB to 0xFFRRGGBB (ARGB, alpha=FF)
+      let hex = inputField0_6.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      inputObj0_6.value = argb;
     });
   }
 });
 
 const r1 = new rive.Rive({
-  src: "riv/TextAnim_v3.riv",
+  src: "riv/sleeplake_widget_v3.riv",
   canvas: document.getElementById("canvas1"),
-  autoplay: true, autoBind: true,artboard: "TextAnim", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "SleepLake", stateMachines: "State Machine 1",
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
   },
@@ -355,19 +484,33 @@ let inputObj1_1;
 let inputField1_1 = document.getElementById("btn1_input1");
 r1.on("load", () => {
   const inputs = r1.stateMachineInputs("State Machine 1");
-  inputObj1_1 = inputs.find(input => input.name === "Text");
+  inputObj1_1 = inputs.find(input => input.name === "LakeSize");
   if (inputField1_1 && inputObj1_1) {
 
     inputField1_1.addEventListener("input", () => {
-      inputObj1_1.value = inputField1_1.value;
+      let val = parseFloat(inputField1_1.value);
+      if (!isNaN(val)) inputObj1_1.value = val;
+    });
+  }
+});
+
+let inputObj1_2;
+let inputField1_2 = document.getElementById("btn1_input2");
+r1.on("load", () => {
+  const inputs = r1.stateMachineInputs("State Machine 1");
+  inputObj1_2 = inputs.find(input => input.name === "NoAnimation");
+  if (inputField1_2 && inputObj1_2) {
+
+    inputField1_2.addEventListener("change", () => {
+      inputObj1_2.value = inputField1_2.checked;
     });
   }
 });
 
 const r2 = new rive.Rive({
-  src: "riv/GodRay_Small_v1.riv",
+  src: "riv/TextAnim_v3.riv",
   canvas: document.getElementById("canvas2"),
-  autoplay: true, autoBind: true,artboard: "GodRayS", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "TextAnim", stateMachines: "State Machine 1",
   onLoad: () => {
     r2.resizeDrawingSurfaceToCanvas();
   },
@@ -384,10 +527,23 @@ document.getElementById("btn2").addEventListener("click", () => {
   }
 });
 
+let inputObj2_1;
+let inputField2_1 = document.getElementById("btn2_input1");
+r2.on("load", () => {
+  const inputs = r2.stateMachineInputs("State Machine 1");
+  inputObj2_1 = inputs.find(input => input.name === "Text");
+  if (inputField2_1 && inputObj2_1) {
+
+    inputField2_1.addEventListener("input", () => {
+      inputObj2_1.value = inputField2_1.value;
+    });
+  }
+});
+
 const r3 = new rive.Rive({
-  src: "riv/GodRay_v1.riv",
+  src: "riv/GodRay_Small_v1.riv",
   canvas: document.getElementById("canvas3"),
-  autoplay: true, autoBind: true,artboard: "GodRay", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "GodRayS", stateMachines: "State Machine 1",
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
   },
@@ -405,9 +561,9 @@ document.getElementById("btn3").addEventListener("click", () => {
 });
 
 const r4 = new rive.Rive({
-  src: "riv/sleeplake_v7.riv",
+  src: "riv/GodRay_v1.riv",
   canvas: document.getElementById("canvas4"),
-  autoplay: true, autoBind: true,artboard: "SleepLake", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "GodRay", stateMachines: "State Machine 1",
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
   },
@@ -424,44 +580,55 @@ document.getElementById("btn4").addEventListener("click", () => {
   }
 });
 
-let inputObj4_1;
-let inputField4_1 = document.getElementById("btn4_input1");
-r4.on("load", () => {
-  const inputs = r4.stateMachineInputs("State Machine 1");
-  inputObj4_1 = inputs.find(input => input.name === "LakeSize");
-  if (inputField4_1 && inputObj4_1) {
-
-    inputField4_1.addEventListener("input", () => {
-      let val = parseFloat(inputField4_1.value);
-      if (!isNaN(val)) inputObj4_1.value = val;
-    });
-  }
-});
-
-let inputObj4_2;
-let inputField4_2 = document.getElementById("btn4_input2");
-r4.on("load", () => {
-  const inputs = r4.stateMachineInputs("State Machine 1");
-  inputObj4_2 = inputs.find(input => input.name === "NoAnimation");
-  if (inputField4_2 && inputObj4_2) {
-
-    inputField4_2.addEventListener("change", () => {
-      inputObj4_2.value = inputField4_2.checked;
-    });
-  }
-});
-
 const r5 = new rive.Rive({
-  src: "riv/LightRay_v1.riv",
+  src: "riv/sleeplake_v7.riv",
   canvas: document.getElementById("canvas5"),
-  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "SleepLake", stateMachines: "State Machine 1",
   onLoad: () => {
     r5.resizeDrawingSurfaceToCanvas();
   },
 });
 
+let triggerInput5;
+r5.on("load", () => {
+  const inputs = r5.stateMachineInputs("State Machine 1");
+  triggerInput5 = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("btn5").addEventListener("click", () => {
+  if (triggerInput5) {
+    triggerInput5.fire();
+  }
+});
+
+let inputObj5_1;
+let inputField5_1 = document.getElementById("btn5_input1");
+r5.on("load", () => {
+  const inputs = r5.stateMachineInputs("State Machine 1");
+  inputObj5_1 = inputs.find(input => input.name === "LakeSize");
+  if (inputField5_1 && inputObj5_1) {
+
+    inputField5_1.addEventListener("input", () => {
+      let val = parseFloat(inputField5_1.value);
+      if (!isNaN(val)) inputObj5_1.value = val;
+    });
+  }
+});
+
+let inputObj5_2;
+let inputField5_2 = document.getElementById("btn5_input2");
+r5.on("load", () => {
+  const inputs = r5.stateMachineInputs("State Machine 1");
+  inputObj5_2 = inputs.find(input => input.name === "NoAnimation");
+  if (inputField5_2 && inputObj5_2) {
+
+    inputField5_2.addEventListener("change", () => {
+      inputObj5_2.value = inputField5_2.checked;
+    });
+  }
+});
+
 const r6 = new rive.Rive({
-  src: "riv/Particles_v1.riv",
+  src: "riv/LightRay_v1.riv",
   canvas: document.getElementById("canvas6"),
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
@@ -470,23 +637,12 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-  src: "riv/Welcome_v2.riv",
+  src: "riv/Particles_v1.riv",
   canvas: document.getElementById("canvas7"),
-  autoplay: true, autoBind: true,artboard: "Welcome", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r7.resizeDrawingSurfaceToCanvas();
   },
-});
-
-let triggerInput7;
-r7.on("load", () => {
-  const inputs = r7.stateMachineInputs("State Machine 1");
-  triggerInput7 = inputs.find(input => input.name === "Trigger 1");
-});
-document.getElementById("btn7").addEventListener("click", () => {
-  if (triggerInput7) {
-    triggerInput7.fire();
-  }
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {

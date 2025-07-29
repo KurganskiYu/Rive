@@ -4,6 +4,7 @@ import re
 from functools import lru_cache
 import shutil
 import time
+import random
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, "videos.csv")
@@ -26,7 +27,7 @@ html_foot = """
 
 SCALE_TO_200PX = True
 ANIMATIONS_PER_PAGE = 8
-INPUT_RANGE = range(1, 6)  # Constant for input iteration
+INPUT_RANGE = range(1, 7)  # Constant for input iteration
 
 def scale_dimensions(width, height):
     if not SCALE_TO_200PX:
@@ -61,6 +62,10 @@ def parse_input_type_name(input_value):
         return t.strip(), n.strip()     # <-- And strip both parts
     return "num", input_value.strip()
 
+def random_color_hex():
+    # Returns a random color in #RRGGBB format
+    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+
 def parse_input_field(input_value, input_idx, button_id):
     input_type, input_name = parse_input_type_name(input_value)
     if not input_type:
@@ -88,6 +93,14 @@ def parse_input_field(input_value, input_idx, button_id):
             <input type="checkbox" id="{input_id}" />
         </div>
         '''
+    elif input_type == "col":
+        default_color = random_color_hex()
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="color" id="{input_id}" value="{default_color}" />
+        </div>
+        '''
     return ""
 
 def make_input_js(input_type, input_name, input_id, obj_var, field_var):
@@ -104,6 +117,12 @@ def make_input_js(input_type, input_name, input_id, obj_var, field_var):
         "txt": f'''
     {field_var}.addEventListener("input", () => {{
       {obj_var}.value = {field_var}.value;
+    }});''',
+        "col": f'''
+    {field_var}.addEventListener("input", () => {{
+      let hex = {field_var}.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      {obj_var}.value = argb;
     }});'''
     }
     return js_configs.get(input_type, "")
@@ -398,25 +417,39 @@ document.querySelectorAll('canvas').forEach(canvas => {
     return "".join(js_parts)
 
 def generate_text_input_js(row, prefix, rive_var):
-    """Generate text input handling JavaScript"""
+    """Generate text and color input handling JavaScript"""
     js_parts = []
+    # Only declare vmi once per onLoad!
+    js_parts.append(f"    const vmi = {rive_var}.viewModelInstance;\n")
     for i in INPUT_RANGE:
         input_value = row.get(f"input{i}")
         if not input_value:
             continue
-        
+
         input_type, input_name = parse_input_type_name(input_value)
+        input_id = f"{prefix}_input{i}"
+        field_var = f"inputField{prefix.title()}_{i}"
+        js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
         if input_type == "txt":
-            input_id = f"{prefix}_input{i}"
-            js_parts.append(f'''
-    const vmi = {rive_var}.viewModelInstance;
-    let inputField{prefix.title()}_{i} = document.getElementById("{input_id}");
-    if (inputField{prefix.title()}_{i} && vmi) {{
-      inputField{prefix.title()}_{i}.addEventListener("input", () => {{
-        vmi.string("{input_name}").value = inputField{prefix.title()}_{i}.value;
+            js_parts.append(f"""    if ({field_var} && vmi) {{
+      {field_var}.addEventListener("input", () => {{
+        vmi.string("{input_name}").value = {field_var}.value;
       }});
     }}
-''')
+""")
+        elif input_type == "col":
+            js_parts.append(f"""    if ({field_var} && vmi) {{
+      // Set initial color value
+      let hex = {field_var}.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("{input_name}").value = argb;
+      {field_var}.addEventListener("input", () => {{
+        let hex = {field_var}.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("{input_name}").value = argb;
+      }});
+    }}
+""")
     return "".join(js_parts)
 
 def generate_animation_controls_js(row, canvas_type, rive_var):
