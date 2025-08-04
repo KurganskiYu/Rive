@@ -211,8 +211,22 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/GiftBox_v1.html" style="color: #464646;">GiftBox</a></div>
+          <div><a href="pages/GiftBox_v5.html" style="color: #464646;">GiftBox</a></div>
           <button id="btn3" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input1">text1:</label>
+            <input type="text" id="btn3_input1" style="width:120px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input2">text2:</label>
+            <input type="text" id="btn3_input2" style="width:120px;" />
+        </div>
+        
         </div>
         
       </div>
@@ -329,16 +343,33 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-  src: "riv/GiftBox_v1.riv",
+  src: "riv/GiftBox_v5.riv",
   canvas: document.getElementById("canvas3"),
-  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "GiftBox", stateMachines: "State Machine 1",
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
+    const vmi = r3.viewModelInstance;
+    let inputFieldBtn3_1 = document.getElementById("btn3_input1");
+    if (inputFieldBtn3_1 && vmi) {
+      inputFieldBtn3_1.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn3_1.value;
+      });
+    }
+    let inputFieldBtn3_2 = document.getElementById("btn3_input2");
+    if (inputFieldBtn3_2 && vmi) {
+      inputFieldBtn3_2.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn3_2.value;
+      });
+    }
     const inputs = r3.stateMachineInputs("State Machine 1");
     let triggerInput = inputs.find(input => input.name === "Trigger 1");
     if (triggerInput) {
       document.getElementById("btn3").addEventListener("click", () => triggerInput.fire());
     }
+    let inputField_btn3_1 = document.getElementById("btn3_input1");
+    let inputObj_btn3_1 = inputs.find(input => input.name === "text1");
+    let inputField_btn3_2 = document.getElementById("btn3_input2");
+    let inputObj_btn3_2 = inputs.find(input => input.name === "text2");
   },
 });
 
