@@ -178,43 +178,46 @@
 const mainRive = new rive.Rive({
   src: "../riv/sleeplake_v10.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true,
-  artboard: "SleepLake",
-  stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, artboard: "SleepLake", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-
-    // Setup NoAnimation checkbox, force true on load
-    const inputFieldMain_2 = document.getElementById("btn_main_input2");
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    const inputObjMain_2 = inputs.find(input => input.name === "NoAnimation");
-    if (inputFieldMain_2 && inputObjMain_2) {
-      //inputFieldMain_2.checked = true;
-      //inputObjMain_2.value = true;
-      inputFieldMain_2.addEventListener("change", () => {
-        inputObjMain_2.value = inputFieldMain_2.checked;
-      });
-    }
-
-    // Setup LakeSize input
-    const inputFieldMain_1 = document.getElementById("btn_main_input1");
-    const inputObjMain_1 = inputs.find(input => input.name === "LakeSize");
-    if (inputFieldMain_1 && inputObjMain_1) {
-      inputFieldMain_1.value = inputObjMain_1.value;
-      inputFieldMain_1.addEventListener("input", () => {
-        const val = parseFloat(inputFieldMain_1.value);
-        if (!isNaN(val)) inputObjMain_1.value = val;
-      });
-    }
-
-    // Setup Trigger button
-    const triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-    document.getElementById("btn_main").addEventListener("click", () => {
-      if (triggerInputMain) {
-        triggerInputMain.fire();
-      }
-    });
   },
+});
+
+let triggerInputMain;
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  triggerInputMain = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("btn_main").addEventListener("click", () => {
+  if (triggerInputMain) {
+    triggerInputMain.fire();
+  }
+});
+
+let inputFieldMain_1 = document.getElementById("btn_main_input1");
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  let inputObjMain_1 = inputs.find(input => input.name === "LakeSize");
+  if (inputFieldMain_1 && inputObjMain_1) {
+
+    inputFieldMain_1.addEventListener("input", () => {
+      let val = parseFloat(inputFieldMain_1.value);
+      if (!isNaN(val)) inputObjMain_1.value = val;
+    });
+  }
+});
+
+let inputFieldMain_2 = document.getElementById("btn_main_input2");
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  let inputObjMain_2 = inputs.find(input => input.name === "NoAnimation");
+  if (inputFieldMain_2 && inputObjMain_2) {
+
+    inputFieldMain_2.addEventListener("change", () => {
+      inputObjMain_2.value = inputFieldMain_2.checked;
+    });
+  }
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {

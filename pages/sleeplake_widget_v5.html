@@ -152,10 +152,10 @@
 
 
     <div class="animation-container">
-      <canvas id="main_canvas" width="375" height="812"></canvas>
+      <canvas id="main_canvas" width="196" height="186"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/sleeplake_v10.riv" target="_blank" style="color: white;">sleeplake</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: SleepLake<br>Trigger: Trigger 1<br>Input: num:LakeSize<br>Input: bol:NoAnimation<br>Duration: 3.0s<br>Loop: No<br>Background: Image<br></div>
+          <div><a href="../riv/sleeplake_widget_v5.riv" target="_blank" style="color: white;">sleeplake widget</a><br>Size: 196px × 186px<br>State Machine: State Machine 1<br>Artboard: SleepLake<br>Trigger: Trigger 1<br>Input: num:LakeSize<br>Input: bol:NoAnimation<br>Duration: 3.0s<br>Loop: No<br>Background: Image<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
             
@@ -176,45 +176,48 @@
 <script>
 
 const mainRive = new rive.Rive({
-  src: "../riv/sleeplake_v10.riv",
+  src: "../riv/sleeplake_widget_v5.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true,
-  artboard: "SleepLake",
-  stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, artboard: "SleepLake", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-
-    // Setup NoAnimation checkbox, force true on load
-    const inputFieldMain_2 = document.getElementById("btn_main_input2");
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    const inputObjMain_2 = inputs.find(input => input.name === "NoAnimation");
-    if (inputFieldMain_2 && inputObjMain_2) {
-      //inputFieldMain_2.checked = true;
-      //inputObjMain_2.value = true;
-      inputFieldMain_2.addEventListener("change", () => {
-        inputObjMain_2.value = inputFieldMain_2.checked;
-      });
-    }
-
-    // Setup LakeSize input
-    const inputFieldMain_1 = document.getElementById("btn_main_input1");
-    const inputObjMain_1 = inputs.find(input => input.name === "LakeSize");
-    if (inputFieldMain_1 && inputObjMain_1) {
-      inputFieldMain_1.value = inputObjMain_1.value;
-      inputFieldMain_1.addEventListener("input", () => {
-        const val = parseFloat(inputFieldMain_1.value);
-        if (!isNaN(val)) inputObjMain_1.value = val;
-      });
-    }
-
-    // Setup Trigger button
-    const triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-    document.getElementById("btn_main").addEventListener("click", () => {
-      if (triggerInputMain) {
-        triggerInputMain.fire();
-      }
-    });
   },
+});
+
+let triggerInputMain;
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  triggerInputMain = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("btn_main").addEventListener("click", () => {
+  if (triggerInputMain) {
+    triggerInputMain.fire();
+  }
+});
+
+let inputFieldMain_1 = document.getElementById("btn_main_input1");
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  let inputObjMain_1 = inputs.find(input => input.name === "LakeSize");
+  if (inputFieldMain_1 && inputObjMain_1) {
+
+    inputFieldMain_1.addEventListener("input", () => {
+      let val = parseFloat(inputFieldMain_1.value);
+      if (!isNaN(val)) inputObjMain_1.value = val;
+    });
+  }
+});
+
+let inputFieldMain_2 = document.getElementById("btn_main_input2");
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  let inputObjMain_2 = inputs.find(input => input.name === "NoAnimation");
+  if (inputFieldMain_2 && inputObjMain_2) {
+
+    inputFieldMain_2.addEventListener("change", () => {
+      inputObjMain_2.value = inputFieldMain_2.checked;
+    });
+  }
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {
