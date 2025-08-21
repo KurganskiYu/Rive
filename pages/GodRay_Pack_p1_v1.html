@@ -156,10 +156,15 @@
         <canvas id="main_canvas" width="393" height="852"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/GodRay_Pack_p1_v1.riv" target="_blank" style="color: white;">GodRay Pack p1</a><br>Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: Light1<br>Trigger: Trigger 1<br>Duration: 4.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/GodRay_Pack_p1_v1.riv" target="_blank" style="color: white;">GodRay Pack p1</a><br>Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: Light1<br>Trigger: Trigger 1<br>Input: bol:Flip<br>Duration: 4.0s<br>Loop: No<br>Background: Transparent<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               <button id="btn_main" class="rive-btn">Trigger</button>
               
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input1">Flip:</label>
+            <input type="checkbox" id="btn_main_input1" />
+        </div>
+        
             </div>
           </div>
         </div>
@@ -171,6 +176,11 @@
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_preview" class="rive-btn">Trigger</button>
             
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_preview_input1">Flip:</label>
+            <input type="checkbox" id="btn_preview_input1" />
+        </div>
+        
           </div>
         </div>
       </div>
@@ -197,6 +207,18 @@ document.getElementById("btn_main").addEventListener("click", () => {
   }
 });
 
+let inputFieldMain_1 = document.getElementById("btn_main_input1");
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  let inputObjMain_1 = inputs.find(input => input.name === "Flip");
+  if (inputFieldMain_1 && inputObjMain_1) {
+
+    inputFieldMain_1.addEventListener("change", () => {
+      inputObjMain_1.value = inputFieldMain_1.checked;
+    });
+  }
+});
+
 const previewRive = new rive.Rive({
   src: "../riv/GodRay_Pack_p1_v1_preview.riv",
   canvas: document.getElementById("preview_canvas"),
@@ -214,6 +236,18 @@ previewRive.on("load", () => {
 document.getElementById("btn_preview").addEventListener("click", () => {
   if (triggerInputPreview) {
     triggerInputPreview.fire();
+  }
+});
+
+let inputFieldPreview_1 = document.getElementById("btn_preview_input1");
+previewRive.on("load", () => {
+  const inputs = previewRive.stateMachineInputs("State Machine 1");
+  let inputObjPreview_1 = inputs.find(input => input.name === "Flip");
+  if (inputFieldPreview_1 && inputObjPreview_1) {
+
+    inputFieldPreview_1.addEventListener("change", () => {
+      inputObjPreview_1.value = inputFieldPreview_1.checked;
+    });
   }
 });
 

@@ -161,6 +161,15 @@
           <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input1">Flip:</label>
+            <input type="checkbox" id="btn0_input1" />
+        </div>
+        
+        </div>
+        
       </div>
     
         </div>
@@ -174,6 +183,15 @@
         <div style="display: flex; align-items: center; width: 100%;">
           <div><a href="pages/GodRay_Pack_p1_v1.html" style="color: #464646;">GodRay Pack p1</a></div>
           <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn1_input1">Flip:</label>
+            <input type="checkbox" id="btn1_input1" />
+        </div>
+        
         </div>
         
       </div>
@@ -267,32 +285,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input1">color1:</label>
-            <input type="color" id="btn5_input1" value="#c6606f" />
+            <input type="color" id="btn5_input1" value="#5460af" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input2">color2:</label>
-            <input type="color" id="btn5_input2" value="#e00bea" />
+            <input type="color" id="btn5_input2" value="#5329a4" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input3">color3:</label>
-            <input type="color" id="btn5_input3" value="#8ec0e5" />
+            <input type="color" id="btn5_input3" value="#287614" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input4">color4:</label>
-            <input type="color" id="btn5_input4" value="#2cbbb6" />
+            <input type="color" id="btn5_input4" value="#8aca1c" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input5">color5:</label>
-            <input type="color" id="btn5_input5" value="#671196" />
+            <input type="color" id="btn5_input5" value="#d04f79" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input6">color6:</label>
-            <input type="color" id="btn5_input6" value="#3c4f5d" />
+            <input type="color" id="btn5_input6" value="#f47bda" />
         </div>
         
         </div>
@@ -359,6 +377,13 @@ const r0 = new rive.Rive({
     if (triggerInput) {
       document.getElementById("btn0").addEventListener("click", () => triggerInput.fire());
     }
+    let inputField_btn0_1 = document.getElementById("btn0_input1");
+    let inputObj_btn0_1 = inputs.find(input => input.name === "Flip");
+    if (inputField_btn0_1 && inputObj_btn0_1) {
+      inputField_btn0_1.addEventListener("change", () => {
+        inputObj_btn0_1.value = inputField_btn0_1.checked;
+      });
+    }
   },
 });
 
@@ -372,6 +397,13 @@ const r1 = new rive.Rive({
     let triggerInput = inputs.find(input => input.name === "Trigger 1");
     if (triggerInput) {
       document.getElementById("btn1").addEventListener("click", () => triggerInput.fire());
+    }
+    let inputField_btn1_1 = document.getElementById("btn1_input1");
+    let inputObj_btn1_1 = inputs.find(input => input.name === "Flip");
+    if (inputField_btn1_1 && inputObj_btn1_1) {
+      inputField_btn1_1.addEventListener("change", () => {
+        inputObj_btn1_1.value = inputField_btn1_1.checked;
+      });
     }
   },
 });
