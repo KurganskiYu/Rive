@@ -155,7 +155,7 @@
       <canvas id="main_canvas" width="375" height="396"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/liquidanimation_v1" target="_blank" style="color: white;">liquidanimation</a><br>Size: 375px × 396px<br>State Machine: State Machine 1<br>Artboard: LiquidAnimation<br>Trigger: Trigger 1<br>Duration: 2.0s<br>Loop: Yes<br>Background: Black<br></div>
+          <div><a href="../riv/liquidanimation_v1.riv" target="_blank" style="color: white;">liquidanimation</a><br>Size: 375px × 396px<br>State Machine: State Machine 1<br>Artboard: LiquidAnimation<br>Trigger: Trigger 1<br>Duration: 2.0s<br>Loop: Yes<br>Background: Black<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
             
@@ -166,7 +166,7 @@
 <script>
 
 const mainRive = new rive.Rive({
-  src: "../riv/liquidanimation_v1",
+  src: "../riv/liquidanimation_v1.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "LiquidAnimation", stateMachines: "State Machine 1",
   onLoad: () => {
