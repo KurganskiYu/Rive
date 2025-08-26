@@ -75,7 +75,7 @@ def parse_input_spec(input_value):
 
 # NEW helpers for list input
 def camel_to_words(name: str):
-    return re.sub(r'(?<!^)(?=[A-Z])', ' ', name).strip()
+    return re.sub(r'(?<!^)(?=[A-Z])', '', name).strip()
 
 def parse_list_inner(spec: str):
     """
