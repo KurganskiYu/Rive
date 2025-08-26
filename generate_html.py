@@ -56,27 +56,65 @@ def parse_input_type_name(input_value):
     """Parse input value and return type and name"""
     if not input_value:
         return None, None
-    input_value = input_value.strip()  # <-- Add this line
+    input_value = input_value.strip()
     if ":" in input_value:
         t, n = input_value.split(":", 1)
-        return t.strip(), n.strip()     # <-- And strip both parts
+        return t.strip(), n.strip()
     return "num", input_value.strip()
+
+def parse_input_spec(input_value):
+    """Return (type, name_without_default, default_value_or_None). Supports name(default)."""
+    t, name = parse_input_type_name(input_value)
+    default = None
+    if name and name.endswith(")") and "(" in name:
+        m = re.match(r'^(.*)\(([^()]*)\)\s*$', name)
+        if m:
+            name = m.group(1).strip()
+            default = m.group(2).strip()
+    return t, name, default
+
+# NEW helpers for list input
+def camel_to_words(name: str):
+    return re.sub(r'(?<!^)(?=[A-Z])', ' ', name).strip()
+
+def parse_list_inner(spec: str):
+    """
+    Parse inner spec like num:BarHeight (only num supported now).
+    Returns (inner_type, inner_name)
+    """
+    spec = spec.strip()
+    if ":" in spec:
+        t, n = spec.split(":", 1)
+        return t.strip(), n.strip()
+    return "num", spec
 
 def random_color_hex():
     # Returns a random color in #RRGGBB format
     return "#{:06x}".format(random.randint(0, 0xFFFFFF))
 
 def parse_input_field(input_value, input_idx, button_id):
-    input_type, input_name = parse_input_type_name(input_value)
+    input_type, input_name, default_val = parse_input_spec(input_value)
+    # Handle list:Name[innerSpec] -> no direct HTML, skip rendering
+    if input_type == "list":
+        return ""
     if not input_type:
         return ""
     input_id = f"{button_id}_input{input_idx}"
     # Each label+input in a row
     if input_type == "num":
+        value_attr = default_val if default_val is not None else "80"
         return f'''
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="{input_id}">{input_name}:</label>
-            <input type="number" id="{input_id}" value="80" style="width:50px;" />
+            <input type="number" id="{input_id}" value="{value_attr}" style="width:50px;" />
+        </div>
+        '''
+    elif input_type == "v_num":  # NEW: view model number variable
+        value_attr = default_val if default_val is not None else "0"
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="number" id="{input_id}" value="{value_attr}" style="width:60px;" />
         </div>
         '''
     elif input_type == "txt":
@@ -106,6 +144,9 @@ def parse_input_field(input_value, input_idx, button_id):
 def make_input_js(input_type, input_name, input_id, obj_var, field_var):
     js_configs = {
         "num": f'''
+    // Initial assignment from default value (if any)
+    let initVal = parseFloat({field_var}.value);
+    if (!isNaN(initVal)) {obj_var}.value = initVal;
     {field_var}.addEventListener("input", () => {{
       let val = parseFloat({field_var}.value);
       if (!isNaN(val)) {obj_var}.value = val;
@@ -197,21 +238,24 @@ const r{idx} = new rive.Rive({{
 '''
 
 def generate_text_input_js(row, prefix, rive_var):
-    """Generate text and color input handling JavaScript"""
+    """Generate JS for ViewModel-based inputs (txt, col, v_num, list)."""
     js_parts = []
-    has_text_or_color = False
+    has_vmi_inputs = False
     for i in INPUT_RANGE:
         input_value = row.get(f"input{i}")
         if not input_value:
             continue
-
-        input_type, input_name = parse_input_type_name(input_value)
+        input_type, name_spec, _default = parse_input_spec(input_value)
+        input_name = name_spec  # ensure name available for non-list types
+        list_match = None
+        if input_type == "list" and name_spec:
+            list_match = re.match(r'^([^\[]+)\[(.+)\]$', name_spec)
         input_id = f"{prefix}_input{i}"
         field_var = f"inputField{prefix.title()}_{i}"
-        if input_type in ("txt", "col"):
-            has_text_or_color = True
-            js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+        if input_type in ("txt", "col", "v_num"):
+            has_vmi_inputs = True
             if input_type == "txt":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
                 js_parts.append(f"""    if ({field_var} && vmi) {{
       {field_var}.addEventListener("input", () => {{
         vmi.string("{input_name}").value = {field_var}.value;
@@ -219,6 +263,7 @@ def generate_text_input_js(row, prefix, rive_var):
     }}
 """)
             elif input_type == "col":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
                 js_parts.append(f"""    if ({field_var} && vmi) {{
       // Set initial color value
       let hex = {field_var}.value.replace("#", "");
@@ -231,8 +276,41 @@ def generate_text_input_js(row, prefix, rive_var):
       }});
     }}
 """)
-    if has_text_or_color:
-        # Insert vmi declaration at the top if needed
+            elif input_type == "v_num":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      // Update numeric ViewModel variable
+      {field_var}.addEventListener("input", () => {{
+        let val = parseFloat({field_var}.value);
+        if (!isNaN(val)) vmi.number("{input_name}").value = val;
+      }});
+      // Set initial value if present
+      let initVal = parseFloat({field_var}.value);
+      if (!isNaN(initVal)) vmi.number("{input_name}").value = initVal;
+    }}
+""")
+        elif input_type == "list" and list_match:
+            has_vmi_inputs = True
+            list_name_raw = list_match.group(1).strip()
+            inner_spec = list_match.group(2).strip()
+            inner_t, inner_name = parse_list_inner(inner_spec)
+            list_name_vmi = camel_to_words(list_name_raw)
+            if inner_t == "num":
+                js_parts.append(f"""    if (vmi) {{
+      const listVar_{i} = vmi.list("{list_name_vmi}");
+      if (listVar_{i}) {{
+        for (let idx = 0; idx < listVar_{i}.length; idx++) {{
+          const inst = listVar_{i}.instanceAt(idx);
+          if (inst) {{
+            // Demo assignment; replace with real data source as needed
+            //const randomVal = Math.random() * 100;
+            //inst.number("{inner_name}").value = randomVal;
+          }}
+        }}
+      }}
+    }}
+""")
+    if has_vmi_inputs:
         js_parts.insert(0, f"    const vmi = {rive_var}.viewModelInstance;\n")
     return "".join(js_parts)
 
@@ -264,7 +342,10 @@ const {var_name} = new rive.Rive({{
             input_value = row.get(f"input{i}")
             if not input_value or input_value.strip() == "":
                 continue
-            input_type, input_name = parse_input_type_name(input_value)
+            input_type, input_name, _default = parse_input_spec(input_value)
+            # Skip ViewModel & list handled above
+            if input_type in ("txt", "col", "v_num", "list"):
+                continue
             input_id = f"{input_prefix}_input{i}"
             field_var = f'inputField_{input_prefix}_{i}'
             obj_var = f'inputObj_{input_prefix}_{i}'
@@ -392,7 +473,7 @@ def make_animation_page(row):
     html_parts = [get_html_head()]
     
     # Generate main content based on preview existence
-    if preview_rive:
+    if (preview_rive):
         html_parts.append(generate_dual_animation_html(row, preview_rive))
     else:
         html_parts.append(generate_single_animation_html(row))
@@ -511,7 +592,7 @@ document.getElementById("btn_{canvas_type}").addEventListener("click", () => {{
         if not input_value:
             continue
         
-        input_type, input_name = parse_input_type_name(input_value)
+        input_type, input_name, _default = parse_input_spec(input_value)
         if input_type in ["num", "bol"]:
             input_id = f"btn_{canvas_type}_input{i}"
             js_parts.append(f'''
@@ -524,7 +605,7 @@ let inputField{canvas_type.title()}_{i} = document.getElementById("{input_id}");
   }}
 }});
 ''')
-    
+        # v_num, txt, col, list skipped (handled via ViewModel)
     return "".join(js_parts)
 
 def generate_preview_animation_js(row, preview_rive):

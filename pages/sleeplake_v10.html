@@ -201,6 +201,9 @@ mainRive.on("load", () => {
   let inputObjMain_1 = inputs.find(input => input.name === "LakeSize");
   if (inputFieldMain_1 && inputObjMain_1) {
 
+    // Initial assignment from default value (if any)
+    let initVal = parseFloat(inputFieldMain_1.value);
+    if (!isNaN(initVal)) inputObjMain_1.value = initVal;
     inputFieldMain_1.addEventListener("input", () => {
       let val = parseFloat(inputFieldMain_1.value);
       if (!isNaN(val)) inputObjMain_1.value = val;

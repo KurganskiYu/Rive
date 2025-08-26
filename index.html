@@ -172,8 +172,8 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/BatteryReport_v3.html" style="color: #464646;">BatteryReport</a></div>
-          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <div><a href="pages/BatteryReport_v4.html" style="color: #464646;">BatteryReport</a></div>
+          
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
@@ -191,6 +191,16 @@
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn1_input3">SleepTime:</label>
             <input type="text" id="btn1_input3" style="width:120px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn1_input4">CurrentPosition:</label>
+            <input type="number" id="btn1_input4" value="79.4" style="width:60px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn1_input5">NightPosition:</label>
+            <input type="number" id="btn1_input5" value="34.7" style="width:60px;" />
         </div>
         
         </div>
@@ -334,32 +344,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input1">color1:</label>
-            <input type="color" id="btn7_input1" value="#3b838f" />
+            <input type="color" id="btn7_input1" value="#4311fa" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input2">color2:</label>
-            <input type="color" id="btn7_input2" value="#565972" />
+            <input type="color" id="btn7_input2" value="#c4409d" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input3">color3:</label>
-            <input type="color" id="btn7_input3" value="#19fff2" />
+            <input type="color" id="btn7_input3" value="#15fe61" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input4">color4:</label>
-            <input type="color" id="btn7_input4" value="#d2b98e" />
+            <input type="color" id="btn7_input4" value="#943f77" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input5">color5:</label>
-            <input type="color" id="btn7_input5" value="#3f25ea" />
+            <input type="color" id="btn7_input5" value="#984aef" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input6">color6:</label>
-            <input type="color" id="btn7_input6" value="#a62e84" />
+            <input type="color" id="btn7_input6" value="#0c871e" />
         </div>
         
         </div>
@@ -386,7 +396,7 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-  src: "riv/BatteryReport_v3.riv",
+  src: "riv/BatteryReport_v4.riv",
   canvas: document.getElementById("canvas1"),
   autoplay: true, autoBind: true,artboard: "BatteryReport", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -410,17 +420,42 @@ const r1 = new rive.Rive({
         vmi.string("SleepTime").value = inputFieldBtn1_3.value;
       });
     }
-    const inputs = r1.stateMachineInputs("State Machine 1");
-    let triggerInput = inputs.find(input => input.name === "Trigger 1");
-    if (triggerInput) {
-      document.getElementById("btn1").addEventListener("click", () => triggerInput.fire());
+    let inputFieldBtn1_4 = document.getElementById("btn1_input4");
+    if (inputFieldBtn1_4 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn1_4.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn1_4.value);
+        if (!isNaN(val)) vmi.number("CurrentPosition").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn1_4.value);
+      if (!isNaN(initVal)) vmi.number("CurrentPosition").value = initVal;
     }
-    let inputField_btn1_1 = document.getElementById("btn1_input1");
-    let inputObj_btn1_1 = inputs.find(input => input.name === "CurrentTime");
-    let inputField_btn1_2 = document.getElementById("btn1_input2");
-    let inputObj_btn1_2 = inputs.find(input => input.name === "CurrentPercent");
-    let inputField_btn1_3 = document.getElementById("btn1_input3");
-    let inputObj_btn1_3 = inputs.find(input => input.name === "SleepTime");
+    let inputFieldBtn1_5 = document.getElementById("btn1_input5");
+    if (inputFieldBtn1_5 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn1_5.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn1_5.value);
+        if (!isNaN(val)) vmi.number("NightPosition").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn1_5.value);
+      if (!isNaN(initVal)) vmi.number("NightPosition").value = initVal;
+    }
+    if (vmi) {
+      const listVar_6 = vmi.list("Bar List");
+      if (listVar_6) {
+        for (let idx = 0; idx < listVar_6.length; idx++) {
+          const inst = listVar_6.instanceAt(idx);
+          if (inst) {
+            // Demo assignment; replace with real data source as needed
+            //const randomVal = Math.random() * 100;
+            //inst.number("BarHeight").value = randomVal;
+          }
+        }
+      }
+    }
+    const inputs = r1.stateMachineInputs("State Machine 1");
   },
 });
 
@@ -506,8 +541,6 @@ const r5 = new rive.Rive({
     if (triggerInput) {
       document.getElementById("btn5").addEventListener("click", () => triggerInput.fire());
     }
-    let inputField_btn5_1 = document.getElementById("btn5_input1");
-    let inputObj_btn5_1 = inputs.find(input => input.name === "Text");
   },
 });
 
@@ -529,8 +562,6 @@ const r6 = new rive.Rive({
     if (triggerInput) {
       document.getElementById("btn6").addEventListener("click", () => triggerInput.fire());
     }
-    let inputField_btn6_1 = document.getElementById("btn6_input1");
-    let inputObj_btn6_1 = inputs.find(input => input.name === "Text");
   },
 });
 
@@ -618,18 +649,6 @@ const r7 = new rive.Rive({
     if (triggerInput) {
       document.getElementById("btn7").addEventListener("click", () => triggerInput.fire());
     }
-    let inputField_btn7_1 = document.getElementById("btn7_input1");
-    let inputObj_btn7_1 = inputs.find(input => input.name === "color1");
-    let inputField_btn7_2 = document.getElementById("btn7_input2");
-    let inputObj_btn7_2 = inputs.find(input => input.name === "color2");
-    let inputField_btn7_3 = document.getElementById("btn7_input3");
-    let inputObj_btn7_3 = inputs.find(input => input.name === "color3");
-    let inputField_btn7_4 = document.getElementById("btn7_input4");
-    let inputObj_btn7_4 = inputs.find(input => input.name === "color4");
-    let inputField_btn7_5 = document.getElementById("btn7_input5");
-    let inputObj_btn7_5 = inputs.find(input => input.name === "color5");
-    let inputField_btn7_6 = document.getElementById("btn7_input6");
-    let inputObj_btn7_6 = inputs.find(input => input.name === "color6");
   },
 });
 
