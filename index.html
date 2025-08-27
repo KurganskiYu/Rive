@@ -264,7 +264,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/BatteryWidget_v1.html" style="color: #464646;">BatteryWidget</a></div>
+          <div><a href="pages/BatteryWidget_v2.html" style="color: #464646;">BatteryWidget</a></div>
           <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -273,6 +273,16 @@
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn4_input1">BatteryPercent:</label>
             <input type="number" id="btn4_input1" value="80" style="width:50px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn4_input2">BatteryPercent2:</label>
+            <input type="number" id="btn4_input2" value="80" style="width:50px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn4_input3">Correction:</label>
+            <input type="checkbox" id="btn4_input3" />
         </div>
         
         </div>
@@ -344,32 +354,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input1">color1:</label>
-            <input type="color" id="btn7_input1" value="#aa633e" />
+            <input type="color" id="btn7_input1" value="#de117f" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input2">color2:</label>
-            <input type="color" id="btn7_input2" value="#568276" />
+            <input type="color" id="btn7_input2" value="#5b1de7" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input3">color3:</label>
-            <input type="color" id="btn7_input3" value="#dff286" />
+            <input type="color" id="btn7_input3" value="#eeaf5e" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input4">color4:</label>
-            <input type="color" id="btn7_input4" value="#ff271d" />
+            <input type="color" id="btn7_input4" value="#3fa979" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input5">color5:</label>
-            <input type="color" id="btn7_input5" value="#a66f6d" />
+            <input type="color" id="btn7_input5" value="#9fd21e" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input6">color6:</label>
-            <input type="color" id="btn7_input6" value="#41baa8" />
+            <input type="color" id="btn7_input6" value="#19c124" />
         </div>
         
         </div>
@@ -502,7 +512,7 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-  src: "riv/BatteryWidget_v1.riv",
+  src: "riv/BatteryWidget_v2.riv",
   canvas: document.getElementById("canvas4"),
   autoplay: true, autoBind: true,artboard: "BatteryWidget", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -518,6 +528,21 @@ const r4 = new rive.Rive({
       inputField_btn4_1.addEventListener("input", () => {
         let val = parseFloat(inputField_btn4_1.value);
         if (!isNaN(val)) inputObj_btn4_1.value = val;
+      });
+    }
+    let inputField_btn4_2 = document.getElementById("btn4_input2");
+    let inputObj_btn4_2 = inputs.find(input => input.name === "BatteryPercent2");
+    if (inputField_btn4_2 && inputObj_btn4_2) {
+      inputField_btn4_2.addEventListener("input", () => {
+        let val = parseFloat(inputField_btn4_2.value);
+        if (!isNaN(val)) inputObj_btn4_2.value = val;
+      });
+    }
+    let inputField_btn4_3 = document.getElementById("btn4_input3");
+    let inputObj_btn4_3 = inputs.find(input => input.name === "Correction");
+    if (inputField_btn4_3 && inputObj_btn4_3) {
+      inputField_btn4_3.addEventListener("change", () => {
+        inputObj_btn4_3.value = inputField_btn4_3.checked;
       });
     }
   },
