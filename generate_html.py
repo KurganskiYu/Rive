@@ -121,7 +121,7 @@ def parse_input_field(input_value, input_idx, button_id):
         return f'''
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="{input_id}">{input_name}:</label>
-            <input type="text" id="{input_id}" style="width:120px;" />
+            <input type="text" id="{input_id}" style="width:90px;" />
         </div>
         '''
     elif input_type == "bol":
