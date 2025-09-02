@@ -264,25 +264,20 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/BatteryWidget_v2.html" style="color: #464646;">BatteryWidget</a></div>
+          <div><a href="pages/BatteryWidget_v3.html" style="color: #464646;">BatteryWidget</a></div>
           <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input1">BatteryPercent:</label>
+            <label for="btn4_input1">BatteryPercentFrom:</label>
             <input type="number" id="btn4_input1" value="80" style="width:50px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input2">BatteryPercent2:</label>
+            <label for="btn4_input2">BatteryPercentTo:</label>
             <input type="number" id="btn4_input2" value="80" style="width:50px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input3">Correction:</label>
-            <input type="checkbox" id="btn4_input3" />
         </div>
         
         </div>
@@ -354,32 +349,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input1">color1:</label>
-            <input type="color" id="btn7_input1" value="#2cf9bb" />
+            <input type="color" id="btn7_input1" value="#6f4093" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input2">color2:</label>
-            <input type="color" id="btn7_input2" value="#fbd640" />
+            <input type="color" id="btn7_input2" value="#8a538a" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input3">color3:</label>
-            <input type="color" id="btn7_input3" value="#525d51" />
+            <input type="color" id="btn7_input3" value="#c36404" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input4">color4:</label>
-            <input type="color" id="btn7_input4" value="#d0be49" />
+            <input type="color" id="btn7_input4" value="#ab59e5" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input5">color5:</label>
-            <input type="color" id="btn7_input5" value="#6610c3" />
+            <input type="color" id="btn7_input5" value="#f9cd02" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input6">color6:</label>
-            <input type="color" id="btn7_input6" value="#f9b3c8" />
+            <input type="color" id="btn7_input6" value="#bfc7b0" />
         </div>
         
         </div>
@@ -512,7 +507,7 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-  src: "riv/BatteryWidget_v2.riv",
+  src: "riv/BatteryWidget_v3.riv",
   canvas: document.getElementById("canvas4"),
   autoplay: true, autoBind: true,artboard: "BatteryWidget", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -523,7 +518,7 @@ const r4 = new rive.Rive({
       document.getElementById("btn4").addEventListener("click", () => triggerInput.fire());
     }
     let inputField_btn4_1 = document.getElementById("btn4_input1");
-    let inputObj_btn4_1 = inputs.find(input => input.name === "BatteryPercent");
+    let inputObj_btn4_1 = inputs.find(input => input.name === "BatteryPercentFrom");
     if (inputField_btn4_1 && inputObj_btn4_1) {
       inputField_btn4_1.addEventListener("input", () => {
         let val = parseFloat(inputField_btn4_1.value);
@@ -531,18 +526,11 @@ const r4 = new rive.Rive({
       });
     }
     let inputField_btn4_2 = document.getElementById("btn4_input2");
-    let inputObj_btn4_2 = inputs.find(input => input.name === "BatteryPercent2");
+    let inputObj_btn4_2 = inputs.find(input => input.name === "BatteryPercentTo");
     if (inputField_btn4_2 && inputObj_btn4_2) {
       inputField_btn4_2.addEventListener("input", () => {
         let val = parseFloat(inputField_btn4_2.value);
         if (!isNaN(val)) inputObj_btn4_2.value = val;
-      });
-    }
-    let inputField_btn4_3 = document.getElementById("btn4_input3");
-    let inputObj_btn4_3 = inputs.find(input => input.name === "Correction");
-    if (inputField_btn4_3 && inputObj_btn4_3) {
-      inputField_btn4_3.addEventListener("change", () => {
-        inputObj_btn4_3.value = inputField_btn4_3.checked;
       });
     }
   },
