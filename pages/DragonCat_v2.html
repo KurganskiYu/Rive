@@ -156,7 +156,7 @@
         <canvas id="main_canvas" width="500" height="500"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/DragonCat_v2.riv" target="_blank" style="color: white;">DragonCat</a><br>Size: 500px × 500px<br>State Machine: State Machine 1<br>Artboard: DragonCat1<br>Duration: 6.0s<br>Loop: Yes<br>Background: Black<br></div>
+            <div><a href="../riv/DragonCat_v2.riv" target="_blank" style="color: white;">DragonCat</a><br>Size: 500px × 500px<br>State Machine: State Machine 1<br>Artboard: DragonCat<br>Duration: 6.0s<br>Loop: Yes<br>Background: Black<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
@@ -180,7 +180,7 @@
 const mainRive = new rive.Rive({
   src: "../riv/DragonCat_v2.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true,autoBind: true, artboard: "DragonCat1", stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, artboard: "DragonCat", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
   },
@@ -189,7 +189,7 @@ const mainRive = new rive.Rive({
 const previewRive = new rive.Rive({
   src: "../riv/DragonCat_v2_preview.riv",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true, autoBind: true, artboard: "DragonCat1", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, artboard: "DragonCat", stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
   },
