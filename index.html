@@ -202,7 +202,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/BatteryReport_v11.html" style="color: #464646;">BatteryReport</a></div>
+          <div><a href="pages/BatteryReport_v12.html" style="color: #464646;">BatteryReport</a></div>
           <button id="btn3" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -219,8 +219,8 @@
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn3_input3">SleepTime:</label>
-            <input type="text" id="btn3_input3" style="width:90px;" />
+            <label for="btn3_input3">12h:</label>
+            <input type="checkbox" id="btn3_input3" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
@@ -382,7 +382,7 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-  src: "riv/BatteryReport_v11.riv",
+  src: "riv/BatteryReport_v12.riv",
   canvas: document.getElementById("canvas3"),
   autoplay: true, autoBind: true,artboard: "BatteryReport", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -398,12 +398,6 @@ const r3 = new rive.Rive({
     if (inputFieldBtn3_2 && vmi) {
       inputFieldBtn3_2.addEventListener("input", () => {
         vmi.string("CurrentPercent").value = inputFieldBtn3_2.value;
-      });
-    }
-    let inputFieldBtn3_3 = document.getElementById("btn3_input3");
-    if (inputFieldBtn3_3 && vmi) {
-      inputFieldBtn3_3.addEventListener("input", () => {
-        vmi.string("SleepTime").value = inputFieldBtn3_3.value;
       });
     }
     let inputFieldBtn3_4 = document.getElementById("btn3_input4");
@@ -445,6 +439,13 @@ const r3 = new rive.Rive({
     let triggerInput = inputs.find(input => input.name === "Trigger 1");
     if (triggerInput) {
       document.getElementById("btn3").addEventListener("click", () => triggerInput.fire());
+    }
+    let inputField_btn3_3 = document.getElementById("btn3_input3");
+    let inputObj_btn3_3 = inputs.find(input => input.name === "12h");
+    if (inputField_btn3_3 && inputObj_btn3_3) {
+      inputField_btn3_3.addEventListener("change", () => {
+        inputObj_btn3_3.value = inputField_btn3_3.checked;
+      });
     }
   },
 });
