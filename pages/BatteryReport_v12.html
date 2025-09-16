@@ -155,7 +155,7 @@
       <canvas id="main_canvas" width="346" height="336"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/BatteryReport_v12.riv" target="_blank" style="color: white;">BatteryReport</a><br>Size: 346px × 336px<br>State Machine: State Machine 1<br>Artboard: BatteryReport<br>Trigger: Trigger 1<br>Input: txt:CurrentTime<br>Input: txt:CurrentPercent<br>Input: bol:12h<br>Input: v_num:CurrentPosition(79.4)<br>Input: v_num:NightPosition(34.7)<br>Input: list:BarList[num:BarHeight]<br>Duration: 3.0s<br>Loop: No<br>Background: Black<br></div>
+          <div><a href="../riv/BatteryReport_v12.riv" target="_blank" style="color: white;">BatteryReport</a><br>Size: 346px × 336px<br>State Machine: State Machine 1<br>Artboard: BatteryReport<br>Trigger: Trigger 1<br>Input: txt:CurrentTime<br>Input: txt:CurrentPercent<br>Input: v_bol:12h<br>Input: v_num:CurrentPosition(79.4)<br>Input: v_num:NightPosition(34.7)<br>Input: list:BarList[num:BarHeight]<br>Duration: 3.0s<br>Loop: No<br>Background: Black<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
             
@@ -209,6 +209,15 @@ const mainRive = new rive.Rive({
         vmi.string("CurrentPercent").value = inputFieldBtn_Main_2.value;
       });
     }
+    let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
+    if (inputFieldBtn_Main_3 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn_Main_3.addEventListener("change", () => {
+        vmi.boolean("12h").value = inputFieldBtn_Main_3.checked;
+      });
+      // Set initial value
+      vmi.boolean("12h").value = inputFieldBtn_Main_3.checked;
+    }
     let inputFieldBtn_Main_4 = document.getElementById("btn_main_input4");
     if (inputFieldBtn_Main_4 && vmi) {
       // Update numeric ViewModel variable
@@ -255,18 +264,6 @@ mainRive.on("load", () => {
 document.getElementById("btn_main").addEventListener("click", () => {
   if (triggerInputMain) {
     triggerInputMain.fire();
-  }
-});
-
-let inputFieldMain_3 = document.getElementById("btn_main_input3");
-mainRive.on("load", () => {
-  const inputs = mainRive.stateMachineInputs("State Machine 1");
-  let inputObjMain_3 = inputs.find(input => input.name === "12h");
-  if (inputFieldMain_3 && inputObjMain_3) {
-
-    inputFieldMain_3.addEventListener("change", () => {
-      inputObjMain_3.value = inputFieldMain_3.checked;
-    });
   }
 });
 

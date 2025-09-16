@@ -139,6 +139,19 @@ def parse_input_field(input_value, input_idx, button_id):
             <input type="color" id="{input_id}" value="{default_color}" />
         </div>
         '''
+    elif input_type == "v_bol":  # NEW: view model boolean variable
+        # Support defaults via name(true)/name(false)
+        checked = False
+        if default_val is not None:
+            if str(default_val).strip().lower() in ("true", "1", "yes", "y", "on", "checked"):
+                checked = True
+        checked_attr = " checked" if checked else ""
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="checkbox" id="{input_id}"{checked_attr} />
+        </div>
+        '''
     return ""
 
 def make_input_js(input_type, input_name, input_id, obj_var, field_var):
@@ -252,7 +265,7 @@ def generate_text_input_js(row, prefix, rive_var):
             list_match = re.match(r'^([^\[]+)\[(.+)\]$', name_spec)
         input_id = f"{prefix}_input{i}"
         field_var = f"inputField{prefix.title()}_{i}"
-        if input_type in ("txt", "col", "v_num"):
+        if input_type in ("txt", "col", "v_num", "v_bol"):
             has_vmi_inputs = True
             if input_type == "txt":
                 js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
@@ -287,6 +300,17 @@ def generate_text_input_js(row, prefix, rive_var):
       // Set initial value if present
       let initVal = parseFloat({field_var}.value);
       if (!isNaN(initVal)) vmi.number("{input_name}").value = initVal;
+    }}
+""")
+            elif input_type == "v_bol":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      // Update boolean ViewModel variable
+      {field_var}.addEventListener("change", () => {{
+        vmi.boolean("{input_name}").value = {field_var}.checked;
+      }});
+      // Set initial value
+      vmi.boolean("{input_name}").value = {field_var}.checked;
     }}
 """)
         elif input_type == "list" and list_match:
@@ -344,7 +368,7 @@ const {var_name} = new rive.Rive({{
                 continue
             input_type, input_name, _default = parse_input_spec(input_value)
             # Skip ViewModel & list handled above
-            if input_type in ("txt", "col", "v_num", "list"):
+            if input_type in ("txt", "col", "v_num", "v_bol", "list"):
                 continue
             input_id = f"{input_prefix}_input{i}"
             field_var = f'inputField_{input_prefix}_{i}'
