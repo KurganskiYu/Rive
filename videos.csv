@@ -32,7 +32,7 @@ sleeplake_widget_v5.riv,196,186,"","Trigger 1",3.0,No,Image,SleepLake,num:LakeSi
 flowerparticles_v3.riv,375,375,"","Trigger 1",8.0,No,Transparent,FlowerParticles,col:color1,col:color2,col:color3,col:color4,col:color5,col:color6,
 TextAnim_v4.riv,393,393,"","Trigger 1",5.0,No,Transparent,TextAnim,txt:Text,,,,,, 
 HeaderTextAnim_v4.riv,393,393,"","Trigger 1",5.0,No,Transparent,HeaderTextAnim,txt:Text,,,,,, 
-BatteryWidget_v4.riv,196,187,"","Trigger 1",3.0,No,Transparent,BatteryWidget,num:BatteryPercentFrom,num:BatteryPercentTo,,,,,
+BatteryWidget_v5.riv,196,187,"","Trigger 1",3.0,No,Transparent,BatteryWidget,num:BatteryPercentFrom,num:BatteryPercentTo,,,,,
 GodRay_Pack_p1_v1.riv,393,852,"","Trigger 1",4.0,No,Transparent,Light1,bol:Flip,,,,,, 
 GodRay_Pack_p2_v1.riv,393,852,"","Trigger 1",4.0,No,Transparent,Light2,bol:Flip,,,,,, 
 BatteryReport_v12.riv,346,336,"","Trigger 1",3.0,No,Black,BatteryReport,txt:CurrentTime,txt:CurrentPercent,v_bol:12h,v_num:CurrentPosition(79.4),v_num:NightPosition(34.7),list:BarList[num:BarHeight],
