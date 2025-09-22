@@ -151,71 +151,46 @@
 
 
 
-      <div class="animation-container">
-        <canvas id="canvas0" width="200" height="200"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/New_v1.html" style="color: #464646;">New</a></div>
-          
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas1" width="200" height="200"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/EyeNew_v5.html" style="color: #464646;">EyeNew</a></div>
-          
-        </div>
-        
-      </div>
-    
+    <div class="animation-container">
+      <canvas id="main_canvas" width="375" height="812"></canvas>
+      <div class="description">
+        <div>
+          <div><a href="../riv/SleepWavesNew_v1.riv" target="_blank" style="color: white;">SleepWavesNew</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: SleepWavesNew<br>Trigger: Trigger 1<br>Duration: 3.0s<br>Loop: Yes<br>Background: Black<br></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            <button id="btn_main" class="rive-btn">Trigger</button>
+            
+          </div>
         </div>
       </div>
     </div>
 <script>
 
-const r0 = new rive.Rive({
-  src: "riv/New_v1.riv",
-  canvas: document.getElementById("canvas0"),
-  autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
+const mainRive = new rive.Rive({
+  src: "../riv/SleepWavesNew_v1.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true,autoBind: true, artboard: "SleepWavesNew", stateMachines: "State Machine 1",
   onLoad: () => {
-    r0.resizeDrawingSurfaceToCanvas();
-    const inputs = r0.stateMachineInputs("State Machine 1");
+    mainRive.resizeDrawingSurfaceToCanvas();
   },
 });
 
-const r1 = new rive.Rive({
-  src: "riv/EyeNew_v5.riv",
-  canvas: document.getElementById("canvas1"),
-  autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
-  onLoad: () => {
-    r1.resizeDrawingSurfaceToCanvas();
-    const inputs = r1.stateMachineInputs("State Machine 1");
-  },
+let triggerInputMain;
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  triggerInputMain = inputs.find(input => input.name === "Trigger 1");
+});
+document.getElementById("btn_main").addEventListener("click", () => {
+  if (triggerInputMain) {
+    triggerInputMain.fire();
+  }
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";
   canvas.style.height = canvas.height + "px";
 });
-
-// Fire all triggers 3 seconds after page load
-setTimeout(() => {
-  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
-    btn.click();
-  });
-}, 3000);
 </script>
-<div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a> <a href="page3.html"><button class="rive-btn">4</button></a> <a href="page4.html"><button class="rive-btn">5</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">6</button></div>
+
     </div>
 </body>
 </html>
