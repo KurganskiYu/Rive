@@ -231,7 +231,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/Activity_v2.html" style="color: #464646;">Activity</a></div>
+          <div><a href="pages/Recovery_v3.html" style="color: #464646;">Recovery</a></div>
           
         </div>
         
@@ -246,7 +246,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/DeepRest_v2.html" style="color: #464646;">DeepRest</a></div>
+          <div><a href="pages/Activity_v3.html" style="color: #464646;">Activity</a></div>
           
         </div>
         
@@ -261,7 +261,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/OnboardingStrings_v3.html" style="color: #464646;">OnboardingStrings</a></div>
+          <div><a href="pages/DeepRest_v2.html" style="color: #464646;">DeepRest</a></div>
           
         </div>
         
@@ -276,7 +276,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/OnboardingStrings_v2.html" style="color: #464646;">OnboardingStrings</a></div>
+          <div><a href="pages/OnboardingStrings_v3.html" style="color: #464646;">OnboardingStrings</a></div>
           
         </div>
         
@@ -351,7 +351,7 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-  src: "riv/Activity_v2.riv",
+  src: "riv/Recovery_v3.riv",
   canvas: document.getElementById("canvas4"),
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
@@ -361,7 +361,7 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-  src: "riv/DeepRest_v2.riv",
+  src: "riv/Activity_v3.riv",
   canvas: document.getElementById("canvas5"),
   autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
@@ -371,9 +371,9 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-  src: "riv/OnboardingStrings_v3.riv",
+  src: "riv/DeepRest_v2.riv",
   canvas: document.getElementById("canvas6"),
-  autoplay: true, autoBind: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
     const inputs = r6.stateMachineInputs("State Machine 1");
@@ -381,7 +381,7 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-  src: "riv/OnboardingStrings_v2.riv",
+  src: "riv/OnboardingStrings_v3.riv",
   canvas: document.getElementById("canvas7"),
   autoplay: true, autoBind: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
   onLoad: () => {
