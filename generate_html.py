@@ -152,6 +152,14 @@ def parse_input_field(input_value, input_idx, button_id):
             <input type="checkbox" id="{input_id}"{checked_attr} />
         </div>
         '''
+    elif input_type == "img":  # NEW: ViewModel image variable (expects filename in img folder)
+        value_attr = default_val if default_val is not None else ""
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="text" id="{input_id}" placeholder="filename.ext" value="{value_attr}" style="width:180px;" />
+        </div>
+        '''
     return ""
 
 def make_input_js(input_type, input_name, input_id, obj_var, field_var):
@@ -251,7 +259,7 @@ const r{idx} = new rive.Rive({{
 '''
 
 def generate_text_input_js(row, prefix, rive_var):
-    """Generate JS for ViewModel-based inputs (txt, col, v_num, list)."""
+    """Generate JS for ViewModel-based inputs (txt, col, v_num, v_bol, img, list)."""
     js_parts = []
     has_vmi_inputs = False
     for i in INPUT_RANGE:
@@ -265,7 +273,7 @@ def generate_text_input_js(row, prefix, rive_var):
             list_match = re.match(r'^([^\[]+)\[(.+)\]$', name_spec)
         input_id = f"{prefix}_input{i}"
         field_var = f"inputField{prefix.title()}_{i}"
-        if input_type in ("txt", "col", "v_num", "v_bol"):
+        if input_type in ("txt", "col", "v_num", "v_bol", "img"):
             has_vmi_inputs = True
             if input_type == "txt":
                 js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
@@ -311,6 +319,42 @@ def generate_text_input_js(row, prefix, rive_var):
       }});
       // Set initial value
       vmi.boolean("{input_name}").value = {field_var}.checked;
+    }}
+""")
+            elif input_type == "img":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      const imgProp_{prefix}_{i} = vmi.image("{input_name}");
+      let lastImg_{prefix}_{i} = null;
+      const imgBase_{prefix}_{i} = location.pathname.includes('/pages/') ? '../img/' : 'img/';
+
+      async function loadImg_{prefix}_{i}(filename) {{
+        const name = (filename || "").trim();
+        if (!name) return;
+        try {{
+          const res = await fetch(imgBase_{prefix}_{i} + name);
+          const bytes = new Uint8Array(await res.arrayBuffer());
+          if (!rive.decodeImage) {{
+            console.warn("rive.decodeImage is not available.");
+            return;
+          }}
+          const decoded = await rive.decodeImage(bytes);
+          if (lastImg_{prefix}_{i}) lastImg_{prefix}_{i}.unref();
+          imgProp_{prefix}_{i}.value = decoded;
+          lastImg_{prefix}_{i} = decoded;
+        }} catch (e) {{
+          console.error("Failed to load image:", name, e);
+        }}
+      }}
+
+      {field_var}.addEventListener("change", () => {{
+        loadImg_{prefix}_{i}({field_var}.value);
+      }});
+
+      // Initial load if a default or preset value exists
+      if ({field_var}.value && {field_var}.value.trim() !== "") {{
+        loadImg_{prefix}_{i}({field_var}.value);
+      }}
     }}
 """)
         elif input_type == "list" and list_match:
