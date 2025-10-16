@@ -156,7 +156,7 @@
         <canvas id="main_canvas" width="375" height="812"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/BatteryLiquid_v1.riv" target="_blank" style="color: white;">BatteryLiquid</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: Liquid<br>Trigger: Trigger 1<br>Input: num:Percent<br>Duration: 2.0s<br>Loop: Yes<br>Background: Black<br></div>
+            <div><a href="../riv/batteryliquid_v1.riv" target="_blank" style="color: white;">batteryliquid</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: Liquid<br>Trigger: Trigger 1<br>Input: num:Percent<br>Duration: 2.0s<br>Loop: Yes<br>Background: Black<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               <button id="btn_main" class="rive-btn">Trigger</button>
               
@@ -188,7 +188,7 @@
 <script>
 
 const mainRive = new rive.Rive({
-  src: "../riv/BatteryLiquid_v1.riv",
+  src: "../riv/batteryliquid_v1.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "Liquid", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -224,7 +224,7 @@ mainRive.on("load", () => {
 });
 
 const previewRive = new rive.Rive({
-  src: "../riv/BatteryLiquid_v1_preview.riv",
+  src: "../riv/batteryliquid_v1_preview.riv",
   canvas: document.getElementById("preview_canvas"),
   autoplay: true, autoBind: true, artboard: "Liquid", stateMachines: "State Machine 1",
   onLoad: () => {
