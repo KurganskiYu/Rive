@@ -152,13 +152,27 @@
 
 
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="200"></canvas>
+        <canvas id="canvas0" width="200" height="312"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/Confetti_v1.html" style="color: #464646;">Confetti</a></div>
+          <div><a href="pages/GiftBox_v5.html" style="color: #464646;">GiftBox</a></div>
           <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input1">text1:</label>
+            <input type="text" id="btn0_input1" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input2">text2:</label>
+            <input type="text" id="btn0_input2" style="width:90px;" />
+        </div>
+        
         </div>
         
       </div>
@@ -167,7 +181,22 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="434"></canvas>
+        <canvas id="canvas1" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/Confetti_v1.html" style="color: #464646;">Confetti</a></div>
+          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas2" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -182,7 +211,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="200"></canvas>
+        <canvas id="canvas3" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -197,7 +226,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="44"></canvas>
+        <canvas id="canvas4" width="200" height="44"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -212,7 +241,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="200"></canvas>
+        <canvas id="canvas5" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -227,7 +256,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="200"></canvas>
+        <canvas id="canvas6" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -242,7 +271,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="200"></canvas>
+        <canvas id="canvas7" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -255,32 +284,30 @@
     
         </div>
       </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="200"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/CircleLoader_v2.html" style="color: #464646;">CircleLoader</a></div>
-          
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
     </div>
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/Confetti_v1.riv",
+  src: "riv/GiftBox_v5.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "GiftBox", stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      inputFieldBtn0_1.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn0_1.value;
+      });
+    }
+    let inputFieldBtn0_2 = document.getElementById("btn0_input2");
+    if (inputFieldBtn0_2 && vmi) {
+      inputFieldBtn0_2.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn0_2.value;
+      });
+    }
     const inputs = r0.stateMachineInputs("State Machine 1");
-    let triggerInput = inputs.find(input => input.name === "Trigger");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
     if (triggerInput) {
       document.getElementById("btn0").addEventListener("click", () => triggerInput.fire());
     }
@@ -288,17 +315,21 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-  src: "riv/NightDay_v8.riv",
+  src: "riv/Confetti_v1.riv",
   canvas: document.getElementById("canvas1"),
-  autoplay: true, autoBind: true, stateMachines: "Timeline 1",
+  autoplay: true, autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
-    const inputs = r1.stateMachineInputs("Timeline 1");
+    const inputs = r1.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger");
+    if (triggerInput) {
+      document.getElementById("btn1").addEventListener("click", () => triggerInput.fire());
+    }
   },
 });
 
 const r2 = new rive.Rive({
-  src: "riv/PulseWave_full-circle_v6.riv",
+  src: "riv/NightDay_v8.riv",
   canvas: document.getElementById("canvas2"),
   autoplay: true, autoBind: true, stateMachines: "Timeline 1",
   onLoad: () => {
@@ -308,27 +339,27 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-  src: "riv/PulseWave_v5.riv",
+  src: "riv/PulseWave_full-circle_v6.riv",
   canvas: document.getElementById("canvas3"),
-  autoplay: true, autoBind: true, stateMachines: "Pulse 2x",
+  autoplay: true, autoBind: true, stateMachines: "Timeline 1",
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
-    const inputs = r3.stateMachineInputs("Pulse 2x");
+    const inputs = r3.stateMachineInputs("Timeline 1");
   },
 });
 
 const r4 = new rive.Rive({
-  src: "riv/WaveLoader_v4a.riv",
+  src: "riv/PulseWave_v5.riv",
   canvas: document.getElementById("canvas4"),
-  autoplay: true, autoBind: true, stateMachines: "Wave Loader",
+  autoplay: true, autoBind: true, stateMachines: "Pulse 2x",
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
-    const inputs = r4.stateMachineInputs("Wave Loader");
+    const inputs = r4.stateMachineInputs("Pulse 2x");
   },
 });
 
 const r5 = new rive.Rive({
-  src: "riv/WaveLoader_v4.riv",
+  src: "riv/WaveLoader_v4a.riv",
   canvas: document.getElementById("canvas5"),
   autoplay: true, autoBind: true, stateMachines: "Wave Loader",
   onLoad: () => {
@@ -338,22 +369,22 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-  src: "riv/SpiralLoader_v2.riv",
+  src: "riv/WaveLoader_v4.riv",
   canvas: document.getElementById("canvas6"),
-  autoplay: true, autoBind: true, stateMachines: "Spiral Loader",
+  autoplay: true, autoBind: true, stateMachines: "Wave Loader",
   onLoad: () => {
     r6.resizeDrawingSurfaceToCanvas();
-    const inputs = r6.stateMachineInputs("Spiral Loader");
+    const inputs = r6.stateMachineInputs("Wave Loader");
   },
 });
 
 const r7 = new rive.Rive({
-  src: "riv/CircleLoader_v2.riv",
+  src: "riv/SpiralLoader_v2.riv",
   canvas: document.getElementById("canvas7"),
-  autoplay: true, autoBind: true, stateMachines: "Circle Loader",
+  autoplay: true, autoBind: true, stateMachines: "Spiral Loader",
   onLoad: () => {
     r7.resizeDrawingSurfaceToCanvas();
-    const inputs = r7.stateMachineInputs("Circle Loader");
+    const inputs = r7.stateMachineInputs("Spiral Loader");
   },
 });
 
