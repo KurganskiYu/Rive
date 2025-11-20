@@ -157,15 +157,15 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/parametricparticles_v3.html" style="color: #464646;">parametricparticles</a></div>
+          <div><a href="pages/parametricparticles_v4.html" style="color: #464646;">parametricparticles</a></div>
           
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn0_input1">angle:</label>
-            <input type="number" id="btn0_input1" value="30" style="width:60px;" />
+            <label for="btn0_input1">numParticles:</label>
+            <input type="number" id="btn0_input1" value="120" style="width:60px;" />
         </div>
         
         </div>
@@ -320,7 +320,7 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/parametricparticles_v3.riv",
+  src: "riv/parametricparticles_v4.riv",
   canvas: document.getElementById("canvas0"),
   autoplay: true, autoBind: true,artboard: "Emitter", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -331,11 +331,11 @@ const r0 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn0_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn0_1.value);
-        if (!isNaN(val)) vmi.number("angle").value = val;
+        if (!isNaN(val)) vmi.number("numParticles").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn0_1.value);
-      if (!isNaN(initVal)) vmi.number("angle").value = initVal;
+      if (!isNaN(initVal)) vmi.number("numParticles").value = initVal;
     }
     const inputs = r0.stateMachineInputs("State Machine 1");
   },
