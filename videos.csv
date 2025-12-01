@@ -55,6 +55,6 @@ stressfanimpact_v2.riv,375,812,"","",8.0,No,Black,StressImpact,v_num:percent1(12
 stresscontainer_v2.riv,393,518,"","Trigger 1",3.0,No,Transparent,Liquid,num:PercentFrom(5),num:PercentTo(100),,,,,
 cometpluses_v4.riv,375,812,"","",4.0,No,Transparent,CometPluses,,,,,,,
 plustuktuk_v1.riv,375,812,"","",2.0,Yes,Transparent,Main,,,,,,,
-starsfly_v1.riv,393,852,"","Trigger 1",6.0,No,Black,Main,,,,,,, 
+starsfly_v3.riv,393,852,"","Trigger 1",6.0,No,Black,Main,,,,,,, 
 starsflystack_v1.riv,393,852,"","Trigger 1",4.0,No,Transparent,Stacks,,,,,,, 
 parametricparticles_v4.riv,320,320,"","",4.0,No,Transparent,Emitter,v_num:numParticles(120),,,,,, 

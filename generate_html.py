@@ -722,6 +722,10 @@ def write_main_page(page_rows, page_idx, total_pages):
 
 def copy_recent_riv_files(src_dir, dst_dir, age_seconds=300):
     """Recursively copy .riv files less than `age_seconds` old from src_dir to dst_dir."""
+    if not src_dir or not os.path.isdir(src_dir):
+        print(f"Skip copying .riv files: source directory not found: {src_dir}")
+        return
+    os.makedirs(dst_dir, exist_ok=True)
     now = time.time()
     for root, _, files in os.walk(src_dir):
         for file in files:
@@ -734,6 +738,21 @@ def copy_recent_riv_files(src_dir, dst_dir, age_seconds=300):
                         print(f"Copied {src_path} to {dst_path}")
                     except Exception as e:
                         print(f"Failed to copy {src_path} to {dst_path}: {e}")
+
+# NEW: Resolve cross-platform source directory (env var first, then common defaults)
+def resolve_src_dir():
+    env_path = os.environ.get("RIV_SRC_DIR")
+    if env_path and os.path.isdir(env_path):
+        return env_path
+    candidates = [
+        r"c:\Dropbox\_Job\_Welltory",  # Windows default
+        "/Users/yuri/Library/CloudStorage/Dropbox/_Job/_Welltory",  # macOS Dropbox CloudStorage
+        "/Users/yuri/Dropbox/_Job/_Welltory",  # macOS standard Dropbox
+    ]
+    for p in candidates:
+        if os.path.isdir(p):
+            return p
+    return None
 
 # Main execution
 def main():
@@ -761,10 +780,15 @@ def main():
     print(f"Generated {output_html}, {total_pages-1} extra pages, and {len(rows)} animation pages in 'pages/'")
 
 if __name__ == "__main__":
-    # Copy recent .riv files before generating HTML
-    copy_recent_riv_files(
-        r"c:\Dropbox\_Job\_Welltory",
-        os.path.join(script_dir, "riv"),
-        age_seconds=300
-    )
+    # Ensure destination riv folder exists
+    dest_riv_dir = os.path.join(script_dir, "riv")
+    os.makedirs(dest_riv_dir, exist_ok=True)
+
+    # Copy recent .riv files before generating HTML (cross-platform)
+    src_dir = resolve_src_dir()
+    age = int(os.environ.get("RIV_COPY_AGE_SECONDS", "300"))
+    if not src_dir:
+        print("No .riv source directory found. Set RIV_SRC_DIR to your .riv folder to enable auto-copy.")
+    copy_recent_riv_files(src_dir, dest_riv_dir, age_seconds=age)
+
     main()
