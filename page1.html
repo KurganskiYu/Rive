@@ -157,8 +157,27 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/energybyny_v4.html" style="color: #464646;">energybyny</a></div>
+          <div><a href="pages/energybyny_v5.html" style="color: #464646;">energybyny</a></div>
           
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input1">text1:</label>
+            <input type="text" id="btn0_input1" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input2">text2:</label>
+            <input type="text" id="btn0_input2" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input3">text3:</label>
+            <input type="text" id="btn0_input3" style="width:90px;" />
+        </div>
+        
         </div>
         
       </div>
@@ -292,11 +311,30 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/energybyny_v4.riv",
+  src: "riv/energybyny_v5.riv",
   canvas: document.getElementById("canvas0"),
   autoplay: true, autoBind: true,artboard: "EnergyByNY", stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      inputFieldBtn0_1.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn0_1.value;
+      });
+    }
+    let inputFieldBtn0_2 = document.getElementById("btn0_input2");
+    if (inputFieldBtn0_2 && vmi) {
+      inputFieldBtn0_2.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn0_2.value;
+      });
+    }
+    let inputFieldBtn0_3 = document.getElementById("btn0_input3");
+    if (inputFieldBtn0_3 && vmi) {
+      inputFieldBtn0_3.addEventListener("input", () => {
+        vmi.string("text3").value = inputFieldBtn0_3.value;
+      });
+    }
     const inputs = r0.stateMachineInputs("State Machine 1");
   },
 });
