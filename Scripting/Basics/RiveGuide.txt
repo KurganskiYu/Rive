@@ -1,0 +1,188 @@
+// RIVE LUA SCRIPTING GUIDE
+// ========================
+
+// Based on analysis of existing scripts, here is a guide to writing Rive scripts in Lua.
+
+1. SCRIPT STRUCTURE
+-------------------
+Rive scripts generally follow a module pattern where you define a type for your state and return a factory function.
+
+- Use Type Definitions (Teal/Lua syntax): 
+  Define the shape of your script object using `type ClassName = { ... }` at the top.
+  Fields that can be nil must be explicitly typed (e.g., `selectedObject: Particle | nil`).
+
+- Factory Function: 
+  The script must return a function that returns the initial state table.
+  IMPORTANT: The returned table must contain ALL fields defined in the Type definition (including inputs).
+  Example:
+  ```lua
+  return function(): Node<MyType>
+    return {
+      property = 10,
+      init = init,
+      advance = advance,
+      draw = draw,
+    }
+  end
+  ```
+
+2. LIFECYCLE METHODS
+--------------------
+Define these as local functions and assign them in the return table.
+
+- init(self, context) -> boolean
+  Called once on initialization. Use to set up state. 
+  Returns true on success.
+
+- advance(self, seconds) -> boolean
+  Called every frame. Use for logic, physics, and animation updates. 
+  `seconds` is the delta time.
+  Must return true to keep running (?).
+
+- draw(self, renderer)
+  Called every frame to render custom graphics.
+  
+- update(self, path) -> PathData
+  (Specific to PathEffects) Transforms a path geometry.
+
+3. RIVE TYPES AND HELPERS
+-------------------------
+- Vector: 
+  Created via `Vector.xy(x, y)` or `Vector.origin()` (0,0).
+  Properties: `.x`, `.y` (read-only). Access via index `v[1], v[2]` supported.
+  Operators: `+`, `-`, `*` (scalar), `/` (scalar), `-` (negate), `==`.
+  Methods: 
+  `v:length()`, `v:lengthSquared()`, `v:normalized()`
+  `v:distance(other)`, `v:distanceSquared(other)`
+  `v:dot(other)`
+  `v:lerp(other, t)`
+
+- PathMeasure:
+  Used to analyze paths. Created via `local measure = path:measure()`
+  Fields: 
+    `.length` (total length)
+    `.isClosed` (true if exactly one closed contour)
+  Methods:
+    `positionAndTangent(distance)` -> (Vector, Vector)
+      Returns position and normalized tangent at distance.
+    `warp(sourcePoint)` -> Vector
+      Warps point where x=distance, y=offset from path.
+    `extract(startDist, endDist, destPath, startWithMove)`
+      Extracts segment to destination path.
+
+- Color:
+  Hex integers (e.g., `0xFF4DA6FF`) or `Color.rgb(r, g, b)`.
+
+- Mat2D:
+  Matrix operations for transforms.
+  Example: `Mat2D.withTranslation(x, y)`.
+
+- late():
+  Use `late()` in the factory function for inputs that Rive injects after initialization (e.g., artboards, properties linked in the editor).
+
+4. INPUTS AND PROPERTIES
+------------------------
+- Input<T>: 
+  Exposed properties configurable in Rive editor. Access via `self.propName`.
+
+- Property<T>:
+  Used in ViewModels/Data contexts. 
+  Access value: `prop.value`.
+  Set value: `prop.value = newValue`.
+  Listeners: `prop:addListener(function() ... end)`.
+
+- PropertyTrigger:
+  Fire events: `trigger:fire()`.
+
+5. DRAWING APIs
+---------------
+Used inside the `draw(self, renderer)` method.
+
+- Paint:
+  Create styles for drawing.
+  ```lua
+  local myPaint = Paint.with({
+    style = 'fill', -- or 'stroke'
+    color = 0xFF0000FF,
+    thickness = 2, -- for strokes
+  })
+  ```
+
+- Path:
+  Create dynamic geometry.
+  `local p = Path.new()`
+  `p:moveTo(vector)`
+  `p:lineTo(vector)`
+  `p:cubicTo(...)`
+  `p:close()`
+  `p:reset()`
+
+- Renderer:
+  `renderer:drawPath(path, paint)`
+  `renderer:save()` / `renderer:restore()` : Push/pop canvas state.
+  `renderer:transform(matrix)` : Apply transformations.
+
+6. POINTER EVENTS
+-----------------
+Implement these methods to handle user input on the script component.
+
+- pointerDown(self, event)
+- pointerMove(self, event)
+- pointerUp(self, event)
+- pointerExit(self, event)
+
+Event Object:
+  `event.position` -> Vector (mouse/touch coordinates)
+  `event:hit()` -> Mark event as handled (stops propagation?)
+
+Example:
+```lua
+local function handlePointerDown(self, event)
+  local x = event.position.x
+  event:hit()
+end
+```
+
+7. WORKING WITH ARTBOARDS
+-------------------------
+You can nest artboards or use them as assets.
+
+- Instantiation:
+  `local instance = self.sourceArtboard:instance()`
+
+- Fields:
+  `instance.width`, `instance.height`
+  `instance.frameOrigin` (bool)
+
+- Methods:
+  `instance:bounds()` -> min: Vector, max: Vector
+  `instance:node("name")` -> Node (or nil)
+  `instance:animation("name")` -> AnimationInstance
+  `instance:addToPath(path, matrix)`
+  
+  Interaction forwarding (returns non-zero if hit):
+  `instance:pointerDown(vector)`
+  `instance:pointerMove(vector)`
+  `instance:pointerUp(vector)`
+
+- Data Inputs (ViewModels):
+  Access inputs defined in the artboard via `.data`.
+  `instance.data.someInput.value = 10`
+  `instance.data.someTrigger:fire()`
+
+- Lifecycle Delegation:
+  If you manage manual artboards, you must verify they update and draw:
+  In `advance`: `instance:advance(seconds)`
+  In `draw`: 
+    `renderer:save()`
+    `instance:draw(renderer)`
+    `renderer:restore()`
+
+8. COMMON PRACTICES & RESTRICTIONS
+----------------------------------
+- "Safe" Random: Scripts often use `math.random` standard Lua library.
+- Typed Arrays: Use generic syntax in comments like `{ SegmentEntry }` or `{ [number]: number }`.
+- State Management: Keep state in the `self` object or ViewModel types.
+- Modularity: `require('Module')` is supported (e.g., `require('Physics')`).
+- Type Safety: Inputs are strictly typed. 
+- Context: `context:markNeedsUpdate()` can be used to request redraws (seen in PathEffect).
