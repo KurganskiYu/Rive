@@ -185,4 +185,7 @@ You can nest artboards or use them as assets.
 - State Management: Keep state in the `self` object or ViewModel types.
 - Modularity: `require('Module')` is supported (e.g., `require('Physics')`).
 - Type Safety: Inputs are strictly typed. 
+- Local Table Typing: When defining an empty table that will hold structured data or be used with `table.insert`, explicitly type it to aid the compiler.
+  Example: `local groups: { [number]: {Particle} } = {}` ensures `groups` is treated correctly as a map of arrays.
 - Context: `context:markNeedsUpdate()` can be used to request redraws (seen in PathEffect).
+````plaintext
