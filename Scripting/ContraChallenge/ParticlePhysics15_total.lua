@@ -9,8 +9,15 @@
 -- Local Table Typing: When defining an empty table that will hold structured data or be used with `table.insert`, explicitly type it to aid the compiler.
 --  Example: `local groups: { [number]: {Particle} } = {}` ensures `groups` is treated correctly as a map of arrays.
 -- Context: `context:markNeedsUpdate()` can be used to request redraws (seen in PathEffect).
+--
+-- STRICT TYPE ENFORCEMENT: 
+-- 1. Struct Constructors: When creating a table typed as a class (e.g. `local p: Particle = {...}`), 
+--    you MUST initialize ALL fields defined in the type definition. Missing fields cause errors.
+-- 2. Sort Comparators: Anonymous functions in `table.sort` require explicit argument types 
+--    (e.g. `function(a: Particle, b: Particle)`).
+-- 3. Factory Return: The table returned by the main factory function MUST contain initialized values 
+--    (or `late()`) for EVERY field defined in the script's main Type definition.
 ----------------------------------
-
 
 -- Type definitions
 type ParticleVM = {
@@ -46,6 +53,10 @@ type Particle = {
 	-- Animation
 	currentT: number, -- 0.0 to 1.0 interpolation factor
     
+    -- Stats Layout
+    statsX: number,
+    statsY: number,
+
     -- Transient (Runtime optimization)
     colRadius: number, -- Pre-calculated collision radius (size + padding)
     nextInCell: Particle | nil, -- Optimizing grid to linked list
@@ -124,6 +135,13 @@ type ParticleSystemNode = {
 	globalClusterStrength: Input<number>,
 	activeClusterStrength: Input<number>,
 
+    -- Stats Inputs
+    stats: Input<boolean>,
+    statsStartX: Input<number>,
+    statsStartY: Input<number>,
+    statsGapX: Input<number>,
+    statsScaleY: Input<number>,
+
 	boxWidth: Input<number>,
 	boxHeight: Input<number>,
 	boxY: Input<number>,        -- Vertical center of the box
@@ -163,6 +181,8 @@ type ParticleSystemNode = {
     groupPointsCreated: boolean, -- Flag to only spawn group points once (prep phase)
 	groupPointShiftX: number,
     
+    statsCalculated: boolean,
+
     started: boolean, -- New state to track system activation
 
     -- Cache
@@ -284,6 +304,7 @@ local function init(self: ParticleSystemNode, context: Context): boolean
 	self.nextId = 1
 	self.started = false
 	self.groupPointsCreated = false
+    self.statsCalculated = false
 	self.lastSpawnX = -999999
 	self.spawnDirection = 1
     self.groupedClusters = {}
@@ -399,6 +420,8 @@ local function spawnParticle(self: ParticleSystemNode, packet: Packet)
 		currentT = 0,
         colRadius = radius,
         nextInCell = nil,
+        statsX = 0,
+        statsY = 0,
 		birthTime = self.timeMinutes,
 		birthBpm = bpmVal, -- Use pre-calculated BPM
 		isGroupPoint = false,
@@ -553,16 +576,23 @@ local function relax(self: ParticleSystemNode, dt: number)
 	-- Clean grid once at start of frame
 	buildGrid(self, parts)
 
+    local useStats = self.stats
+
     -- Pre-calculate effective collision radius for Relax loop
     local basePadding = self.relaxPadding
     local interactPadding = self.relaxInteractionPadding
     for i = 1, pCount do
         local p = parts[i]
-        p.colRadius = p.radius + basePadding + interactPadding * cubicEase(p.currentT)
+        if useStats and p.isGroupPoint then
+             p.colRadius = 0
+        else
+             p.colRadius = p.radius + basePadding + interactPadding * cubicEase(p.currentT)
+        end
     end
 	
 	-- Cluster Forces: Attract to nearest neighbor in same cluster
-	do
+    -- Disable clustering effects when in Stats mode to keep lines straight
+	if not useStats then
         -- Optimization: Reuse cached cluster grouping
 		local clusters = self.groupedClusters
 		
@@ -649,6 +679,9 @@ local function relax(self: ParticleSystemNode, dt: number)
 				if p.clusterId == actId then
 					cStr = cStr + actStr * intensity
 				end
+				
+				-- In stats mode, ignore cluster strength so homing is full power
+				if useStats then cStr = 0 end
 						
 				-- Proportionally decrease position force when clustering force increases
 				-- If strength >= 1, homing is 0.
@@ -660,8 +693,15 @@ local function relax(self: ParticleSystemNode, dt: number)
 						
 				if strength > 0.01 then
 					local f = factor * strength
-					p.x = p.x + (p.targetX - p.x) * f
-					p.y = p.y + (p.targetY - p.y) * f
+                    local tx, ty = p.targetX, p.targetY
+
+                    if useStats then
+                        tx = p.statsX
+                        ty = p.statsY
+                    end
+
+					p.x = p.x + (tx - p.x) * f
+					p.y = p.y + (ty - p.y) * f
 				end
 			end
 		end
@@ -799,6 +839,8 @@ local function spawnSingleGroupPoint(self: ParticleSystemNode, c: ClusterStat)
             currentT = 0,
             colRadius = radius,
             nextInCell = nil,
+            statsX = 0,
+            statsY = 0,
             birthTime = 0,
             birthBpm = 0,
             isGroupPoint = true,
@@ -878,6 +920,61 @@ local function prepareGroupPointsQueue(self: ParticleSystemNode)
 	end
 end
  
+local function calculateStatsPositions(self: ParticleSystemNode)
+    if self.statsCalculated then return end
+
+    local parts = self._particles
+    local byType: { [number]: {Particle} } = {}
+    
+    -- 1. Bin particles by type
+    for i = 1, #parts do
+        local p = parts[i]
+        if not p.isGroupPoint then
+            local t = p.type
+            local list = byType[t]
+            if not list then 
+                list = {}
+                byType[t] = list
+            end
+            table_insert(list, p)
+        end
+    end
+    
+    -- 2. Sort and Layout
+    local startX = self.statsStartX
+    local startY = self.statsStartY
+    local gapX = self.statsGapX
+    local scaleY = self.statsScaleY
+    
+    for t = 1, 5 do
+        local list = byType[t]
+        if list then
+            -- Sort by birth time (earliest at top)
+            table.sort(list, function(a: Particle, b: Particle)
+                return a.birthTime < b.birthTime
+            end)
+            
+            local colX = startX + (t - 1) * gapX
+            local currentY = startY
+            
+            for k = 1, #list do
+                local p = list[k]
+                local diameter = p.originalRadius * 2 * scaleY -- Apply Y scale
+                
+                -- Stack them (Growth direction -Y means subtracting size)
+                currentY = currentY - (p.originalRadius * scaleY) -- Center offset
+                p.statsX = colX
+                p.statsY = currentY 
+                
+                -- Advance Y for next particle
+                currentY = currentY - (p.originalRadius * scaleY)
+            end
+        end
+    end
+    
+    self.statsCalculated = true
+end
+
 local function spawnSingleTimeMarker(self: ParticleSystemNode, data: PendingTimeMarker)
     local abTime = self.artboardTime
     local instance = abTime:instance()
@@ -1079,6 +1176,7 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 	if allSleeping and #parts >= TOTAL_PARTICLES and not self.positionsCaptured then
         -- Instead of spawning instantly, we prepare the queue
 		prepareGroupPointsQueue(self)
+        calculateStatsPositions(self)
 		generateTimeMarkers(self)
 
 		for i = 1, #parts do
@@ -1131,6 +1229,19 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 
 	-- Force relax if interacting or all asleep (captured)
 	local forceRelax = (self.selectedParticle ~= nil) or self.positionsCaptured
+
+    -- Ensure stats are calculated if we toggle late or params change
+    if self.positionsCaptured and not self.statsCalculated then
+        calculateStatsPositions(self)
+    end
+    -- Recalculate if we force update (optional optimizations could go here)
+    if self.statsCalculated and self.stats then 
+         -- Simple dirty check: Just recalc whenever stats is active to catch param changes
+         -- In a bigger system we'd track param changes. For now, forcing recalc is cheap enough once frozen.
+         self.statsCalculated = false 
+         calculateStatsPositions(self)
+    end
+
 
 	if forceRelax then
 		-- In relax mode: Just emit (if needed) and run relax solver
@@ -1315,12 +1426,20 @@ local function draw(self: ParticleSystemNode, renderer: Renderer)
 	local parts = self._particles
 	if not parts then return end
 	 
+    local useStats = self.stats
 	local mat = self.mat
+
 	for i = 1, #parts do
 		local p = parts[i]
 		renderer:save()
-		mat.xx = p.radius / BASE_RADIUS -- Scale based on radius relative to base
-		mat.yy = mat.xx
+        
+        local scale = p.radius / BASE_RADIUS
+        if useStats and p.isGroupPoint then
+            scale = 0
+        end
+
+		mat.xx = scale -- Scale based on radius relative to base
+		mat.yy = scale
 		mat.tx = p.x
 		mat.ty = p.y
 		renderer:transform(mat)
@@ -1372,6 +1491,12 @@ return function(): Node<ParticleSystemNode>
 		globalClusterStrength = 0.5,
 		activeClusterStrength = 5.0,
 
+        stats = false,
+        statsStartX = -200,
+        statsStartY = 400, -- Adjusted default considering Upward growth
+        statsGapX = 100,
+        statsScaleY = 1.0,
+
 		boxWidth = 150,
 		boxHeight = 700,
 		boxY = 200,
@@ -1395,6 +1520,7 @@ return function(): Node<ParticleSystemNode>
 
         groupedClusters = {},
         timeMarkers = {},
+        statsCalculated = false,
 
 		positionsCaptured = false,
 		selectedParticle = nil,
@@ -1422,4 +1548,3 @@ return function(): Node<ParticleSystemNode>
 	}
 end
 
- 
