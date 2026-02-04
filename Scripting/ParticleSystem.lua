@@ -21,12 +21,14 @@ type ParticleSystemNode = {
 	count: Input<number>,
 	-- Optional explicit emission rate (particles per second). If <= 0, derived from count/life.
 	emitRate: number,
+	emitWidth: Input<number>,
+	emitHeight: Input<number>,
 	speed: Input<number>,
 	speedVar: Input<number>,
 	angle: Input<number>,
 	angleVar: Input<number>,
 	scale: Input<number>,
-	scaleVar: number,
+	scaleVar: Input<number>,
 	life: Input<number>,
 	lifeVar: Input<number>,
 	noiseStrength: Input<number>,
@@ -122,8 +124,8 @@ local function spawn(sys: ParticleSystemNode, p: Particle)
 	local s = randomRange(sys.speed, sys.speedVar)
 	p.vx = mcos(a) * s
 	p.vy = msin(a) * s
-	p.x = 0
-	p.y = 0
+	p.x = randomRange(0, sys.emitWidth)
+	p.y = randomRange(0, sys.emitHeight)
 	p.gravity = randomRange(sys.gravity, sys.gravityVar)
 	p.windX = randomRange(sys.windX, sys.windXVar)
 	p.windY = randomRange(sys.windY, sys.windYVar)
@@ -279,6 +281,8 @@ return function(): Node<ParticleSystemNode>
 	return {
 		count = 100,
 		emitRate = 0, -- 0 => auto (count / life)
+		emitWidth = 0,
+		emitHeight = 0,
 		speed = 10,
 		speedVar = 0,
 		angle = -90,
