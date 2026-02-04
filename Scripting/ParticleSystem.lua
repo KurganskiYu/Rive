@@ -21,6 +21,8 @@ type ParticleSystemNode = {
 	count: Input<number>,
 	-- Optional explicit emission rate (particles per second). If <= 0, derived from count/life.
 	emitRate: number,
+	burst: Input<Trigger>,
+	burstCount: Input<number>,
 	emitWidth: Input<number>,
 	emitHeight: Input<number>,
 	speed: Input<number>,
@@ -51,6 +53,8 @@ type ParticleSystemNode = {
 	time: number,
 	-- Spawning accumulator for stable rate-based emission.
 	emitCarry: number,
+	-- Burst request accumulator
+	burstReq: number,
 }
 -- Math shortcuts for performance
 local mfloor = math.floor
@@ -116,6 +120,25 @@ local function toNoiseFreq(userScale: number): number
 	local s = mmax(0.001, userScale)
 	return 1 / s
 end
+
+local function createRawParticle(): Particle
+	return {
+		x = 0,
+		y = 0,
+		vx = 0,
+		vy = 0,
+		scale = 1,
+		life = 0,
+		maxLife = 1,
+		gravity = 0,
+		windX = 0,
+		windY = 0,
+		noiseStr = 0,
+		noiseFreq = toNoiseFreq(0.01),
+		instance = nil,
+	}
+end
+
 local function spawn(sys: ParticleSystemNode, p: Particle)
 	p.life = 0
 	p.maxLife = mmax(0.1, randomRange(sys.life, sys.lifeVar))
@@ -134,30 +157,23 @@ local function spawn(sys: ParticleSystemNode, p: Particle)
 	-- Each particle gets a fresh artboard instance so animations start from the beginning.
 	p.instance = sys.artboard:instance()
 end
+
+local function burst(self: ParticleSystemNode)
+	-- Accumulate burst request to be processed in advance()
+	self.burstReq = self.burstReq + mfloor(self.burstCount)
+end
+
 local function init(self: ParticleSystemNode, context: Context): boolean
 	self.time = 0
 	self.emitCarry = 0
+	self.burstReq = 0
 	self.particles = {}
 	self.pool = {}
 	-- Template is kept only to ensure artboard input is valid early.
 	self.template = self.artboard:instance()
 	self.mat = Mat2D.identity()
 	for _ = 1, self.count do
-		table.insert(self.pool, {
-			x = 0,
-			y = 0,
-			vx = 0,
-			vy = 0,
-			scale = 1,
-			life = 0,
-			maxLife = 1,
-			gravity = 0,
-			windX = 0,
-			windY = 0,
-			noiseStr = 0,
-			noiseFreq = toNoiseFreq(0.01),
-			instance = nil,
-		})
+		table.insert(self.pool, createRawParticle())
 	end
 	return true
 end
@@ -165,6 +181,21 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 	self.time = self.time + seconds
 	local particles = self.particles
 	local pool = self.pool
+
+	-- Process Burst Requests
+	-- This allows exceeding the 'count' limit temporarily
+	if self.burstReq > 0 then
+		local bCount = self.burstReq
+		self.burstReq = 0
+		
+		for _ = 1, bCount do
+			-- Explicitly type 'p' as Particle to satisfy strict type checker
+			local p: Particle = table.remove(pool) or createRawParticle()
+			spawn(self, p)
+			table.insert(particles, p)
+		end
+	end
+
 	-- Stable emission:
 	-- Emit at a constant rate, carrying fractional particles between frames.
 	-- If emitRate <= 0, derive from count/avgLife (roughly maintains `count` live particles).
@@ -281,6 +312,8 @@ return function(): Node<ParticleSystemNode>
 	return {
 		count = 100,
 		emitRate = 0, -- 0 => auto (count / life)
+		burst = burst,
+		burstCount = 200,
 		emitWidth = 0,
 		emitHeight = 0,
 		speed = 10,
@@ -309,6 +342,7 @@ return function(): Node<ParticleSystemNode>
 		mat = late(),
 		time = 0,
 		emitCarry = 0,
+		burstReq = 0,
 		init = init,
 		advance = advance,
 		draw = draw,
