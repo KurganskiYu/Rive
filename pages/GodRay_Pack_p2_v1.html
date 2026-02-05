@@ -193,6 +193,16 @@ const mainRive = new rive.Rive({
   autoplay: true,autoBind: true, artboard: "Light2", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn_Main_1.addEventListener("change", () => {
+        vmi.boolean("Flip").value = inputFieldBtn_Main_1.checked;
+      });
+      // Set initial value
+      vmi.boolean("Flip").value = inputFieldBtn_Main_1.checked;
+    }
   },
 });
 
@@ -207,24 +217,22 @@ document.getElementById("btn_main").addEventListener("click", () => {
   }
 });
 
-let inputFieldMain_1 = document.getElementById("btn_main_input1");
-mainRive.on("load", () => {
-  const inputs = mainRive.stateMachineInputs("State Machine 1");
-  let inputObjMain_1 = inputs.find(input => input.name === "Flip");
-  if (inputFieldMain_1 && inputObjMain_1) {
-
-    inputFieldMain_1.addEventListener("change", () => {
-      inputObjMain_1.value = inputFieldMain_1.checked;
-    });
-  }
-});
-
 const previewRive = new rive.Rive({
   src: "../riv/GodRay_Pack_p2_v1_preview.riv",
   canvas: document.getElementById("preview_canvas"),
   autoplay: true, autoBind: true, artboard: "Light2", stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
+    const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
+    if (inputFieldBtn_Preview_1 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn_Preview_1.addEventListener("change", () => {
+        vmi.boolean("Flip").value = inputFieldBtn_Preview_1.checked;
+      });
+      // Set initial value
+      vmi.boolean("Flip").value = inputFieldBtn_Preview_1.checked;
+    }
   },
 });
 
@@ -236,18 +244,6 @@ previewRive.on("load", () => {
 document.getElementById("btn_preview").addEventListener("click", () => {
   if (triggerInputPreview) {
     triggerInputPreview.fire();
-  }
-});
-
-let inputFieldPreview_1 = document.getElementById("btn_preview_input1");
-previewRive.on("load", () => {
-  const inputs = previewRive.stateMachineInputs("State Machine 1");
-  let inputObjPreview_1 = inputs.find(input => input.name === "Flip");
-  if (inputFieldPreview_1 && inputObjPreview_1) {
-
-    inputFieldPreview_1.addEventListener("change", () => {
-      inputObjPreview_1.value = inputFieldPreview_1.checked;
-    });
   }
 });
 
