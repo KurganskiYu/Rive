@@ -126,16 +126,10 @@ def parse_input_field(input_value, input_idx, button_id):
         </div>
         '''
     elif input_type == "bol":
-        # Support defaults via name(true)/name(false)
-        checked = False
-        if default_val is not None:
-            if str(default_val).strip().lower() in ("true", "1", "yes", "y", "on", "checked"):
-                checked = True
-        checked_attr = " checked" if checked else ""
         return f'''
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="{input_id}">{input_name}:</label>
-            <input type="checkbox" id="{input_id}"{checked_attr} />
+            <input type="checkbox" id="{input_id}" />
         </div>
         '''
     elif input_type == "col":
@@ -280,7 +274,7 @@ def generate_text_input_js(row, prefix, rive_var):
             list_match = re.match(r'^([^\[]+)\[(.+)\]$', name_spec)
         input_id = f"{prefix}_input{i}"
         field_var = f"inputField{prefix.title()}_{i}"
-        if input_type in ("txt", "col", "v_num", "v_bol", "img", "bol"):
+        if input_type in ("txt", "col", "v_num", "v_bol", "img"):
             has_vmi_inputs = True
             if input_type == "txt":
                 js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
@@ -317,7 +311,7 @@ def generate_text_input_js(row, prefix, rive_var):
       if (!isNaN(initVal)) vmi.number("{input_name}").value = initVal;
     }}
 """)
-            elif input_type == "v_bol" or input_type == "bol":
+            elif input_type == "v_bol":
                 js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
                 js_parts.append(f"""    if ({field_var} && vmi) {{
       // Update boolean ViewModel variable
@@ -419,7 +413,7 @@ const {var_name} = new rive.Rive({{
                 continue
             input_type, input_name, _default = parse_input_spec(input_value)
             # Skip ViewModel & list handled above
-            if input_type in ("txt", "col", "v_num", "v_bol", "list", "bol"):
+            if input_type in ("txt", "col", "v_num", "v_bol", "list"):
                 continue
             input_id = f"{input_prefix}_input{i}"
             field_var = f'inputField_{input_prefix}_{i}'
@@ -434,7 +428,13 @@ const {var_name} = new rive.Rive({{
       }});
     }}
 ''')
-            # 'bol' logic removed here (moved to ViewModel data binding)
+            elif input_type == "bol":
+                js.append(f'''    if ({field_var} && {obj_var}) {{
+      {field_var}.addEventListener("change", () => {{
+        {obj_var}.value = {field_var}.checked;
+      }});
+    }}
+''')
             elif input_type == "txt":
                 # Already handled by vmi above, skip here
                 continue
@@ -663,7 +663,7 @@ document.getElementById("btn_{canvas_type}").addEventListener("click", () => {{
             continue
         
         input_type, input_name, _default = parse_input_spec(input_value)
-        if input_type in ["num"]:
+        if input_type in ["num", "bol"]:
             input_id = f"btn_{canvas_type}_input{i}"
             js_parts.append(f'''
 let inputField{canvas_type.title()}_{i} = document.getElementById("{input_id}");

@@ -181,16 +181,6 @@ const mainRive = new rive.Rive({
   autoplay: true,autoBind: true, artboard: "SleepLake", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
-    const vmi = mainRive.viewModelInstance;
-    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
-    if (inputFieldBtn_Main_2 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn_Main_2.addEventListener("change", () => {
-        vmi.boolean("NoAnimation").value = inputFieldBtn_Main_2.checked;
-      });
-      // Set initial value
-      vmi.boolean("NoAnimation").value = inputFieldBtn_Main_2.checked;
-    }
   },
 });
 
@@ -217,6 +207,18 @@ mainRive.on("load", () => {
     inputFieldMain_1.addEventListener("input", () => {
       let val = parseFloat(inputFieldMain_1.value);
       if (!isNaN(val)) inputObjMain_1.value = val;
+    });
+  }
+});
+
+let inputFieldMain_2 = document.getElementById("btn_main_input2");
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  let inputObjMain_2 = inputs.find(input => input.name === "NoAnimation");
+  if (inputFieldMain_2 && inputObjMain_2) {
+
+    inputFieldMain_2.addEventListener("change", () => {
+      inputObjMain_2.value = inputFieldMain_2.checked;
     });
   }
 });
