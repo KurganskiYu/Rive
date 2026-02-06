@@ -93,7 +93,7 @@ function positionApple(self: SnakeGame, entry: AppleEntry)
     - self.snake.stageHeight.value / 2
 
   --   every time you get an apple, it goes a little faster
-  entry.speed += APPLE_SPEED_INCREASE
+  entry.speed = entry.speed + APPLE_SPEED_INCREASE
 
   -- Update the apple's position with data binding
   entry.artboard.data.x.value = appleX
@@ -119,12 +119,12 @@ end
 
 -- update score when an apple is eaten
 local function updateScore(self: SnakeGame, points: number)
-  points = math.round(points)
+  points = math.floor(points + 0.5)
   self.points.pointsX.value = self.segments[1].artboard.data.x.value
   self.points.pointsY.value = self.segments[1].artboard.data.y.value
   self.points.points.value = points
   self.points.showPoints:fire()
-  self.snake.score.value += points
+  self.snake.score.value = self.snake.score.value + points
 end
 
 -- Fired when the apple is eaten
@@ -161,11 +161,11 @@ end
 
 -- Determine the new positions and advance the state machines
 function advance(self: SnakeGame, seconds: number)
-  self.accumulator += seconds
+  self.accumulator = self.accumulator + seconds
   -- Move elements once every self.fixedStep seconds
   while self.accumulator >= self.fixedStep do
     -- reset the accumulator
-    self.accumulator -= self.fixedStep
+    self.accumulator = self.accumulator - self.fixedStep
 
     -- Keep adding segments every step
     if #self.segments < self.startingSegments then
@@ -184,7 +184,7 @@ function advance(self: SnakeGame, seconds: number)
     local lastDirection = self.direction
 
     -- Adjust the head rotation based on the pointer position
-    self.direction += self.snake.turnRate.value * TURN_SPEED_MULTIPLIER * self.fixedStep
+    self.direction = self.direction + self.snake.turnRate.value * TURN_SPEED_MULTIPLIER * self.fixedStep
 
     -- Get the new head position based on speed and direction
     local newHeadX = headData.x.value + self.speed * math.cos(self.direction)
@@ -275,7 +275,7 @@ function advance(self: SnakeGame, seconds: number)
 
     if self.eatIndex > -1 and self.eatIndex < #self.segments then
       -- Update the eatIndex += 2 so that it fires 2 segment animations on each frame
-      self.eatIndex += EAT_ANIMATION_STEP
+      self.eatIndex = self.eatIndex + EAT_ANIMATION_STEP
     else
       self.eatIndex = -1
     end
