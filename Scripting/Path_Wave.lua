@@ -35,6 +35,7 @@ local mfloor = math.floor
 local msin = math.sin
 local mcos = math.cos
 local twopi = 6.28318530718
+local degToRad = 0.01745329251
 
 local function randomGradient(ix: number, iy: number): (number, number)
     local random = msin(ix * 12.9898 + iy * 78.233) * 43758.5453
@@ -101,17 +102,14 @@ end
 function getOffset(self: RippleEffect, distance: number, pathLength: number, x: number, y: number): number
   local n = 0
   if self.useWorldSpace then
-    local rad = self.rotation * 0.0174533
-    local c = mcos(rad)
-    local s = msin(rad)
+    local rad = self.rotation * degToRad
+    local c, s = mcos(rad), msin(rad)
     
     local rx = x * c - y * s
     local ry = x * s + y * c
 
     local freq = self.frequency * 0.01
-    local sx = rx * freq - (self.time * self.speed)
-    local sy = ry * freq - (self.time * self.noiseSpeed)
-    n = self:noise(sx, sy)
+    n = self:noise(rx * freq - (self.time * self.speed), ry * freq - (self.time * self.noiseSpeed))
   else
     -- The ripples expand from start to end; we shift phase by distance
     local phase = distance * self.frequency * 0.01 - (self.time * self.speed)
@@ -120,20 +118,16 @@ function getOffset(self: RippleEffect, distance: number, pathLength: number, x: 
   end
 
   local fade = 1.0
-  -- Start fade
-  if self.startFade > 0 and pathLength > 0 then
-    local startFadeLen = pathLength * (self.startFade / 100)
-    if distance < startFadeLen then
-      local t = distance / startFadeLen
-      fade = fade * (t * t) -- Quadratic
+  if pathLength > 0 then
+    -- Start fade
+    if self.startFade > 0 then
+      local sf = self.startFade * 0.01 * pathLength
+      if distance < sf then fade = fade * ((distance / sf) ^ 2) end
     end
-  end
-  -- End fade
-  if self.endFade > 0 and pathLength > 0 then
-    local endFadeLen = pathLength * (self.endFade / 100)
-    if distance > (pathLength - endFadeLen) then
-      local t = (pathLength - distance) / endFadeLen
-      fade = fade * (t * t) -- Quadratic
+    -- End fade
+    if self.endFade > 0 then
+      local ef = self.endFade * 0.01 * pathLength
+      if distance > (pathLength - ef) then fade = fade * (((pathLength - distance) / ef) ^ 2) end
     end
   end
 
@@ -142,43 +136,31 @@ end
 
 function update(self: RippleEffect, path: PathData): PathData
   local outPath = Path.new()
-  local lastX, lastY = 0, 0
-  local dist = 0
+  local lastX, lastY, dist, totalLen = 0, 0, 0, 0
   
-  -- Calculate total path length first for fading
-  local totalLen = 0
+  -- Pre-calculate total length
   local px, py = 0, 0
-  local moveX, moveY = 0, 0
   for i = 1, #path do
     local cmd = path[i]
     if cmd.type == 'moveTo' then
         px, py = cmd[1].x, cmd[1].y
-        moveX, moveY = px, py
     elseif cmd.type == 'lineTo' then
         local pt = cmd[1]
         totalLen = totalLen + length(pt.x - px, pt.y - py)
         px, py = pt.x, pt.y
-    elseif cmd.type == 'cubicTo' then
-        -- Approx cubic
-        local cp1, cp2, ep = cmd[1], cmd[2], cmd[3]
-        totalLen = totalLen + length(cp1.x - px, cp1.y - py) + length(cp2.x - cp1.x, cp2.y - cp1.y) + length(ep.x - cp2.x, ep.y - cp2.y)
+    elseif cmd.type == 'cubicTo' or cmd.type == 'quadTo' then
+        local ep = cmd[#cmd]
+        totalLen = totalLen + length(ep.x - px, ep.y - py) -- Simple linear approx for length
         px, py = ep.x, ep.y
-    elseif cmd.type == 'quadTo' then
-        -- Approx quad
-        local cp, ep = cmd[1], cmd[2]
-        totalLen = totalLen + length(cp.x - px, cp.y - py) + length(ep.x - cp.x, ep.y - cp.y)
-        px, py = ep.x, ep.y
-    elseif cmd.type == 'close' then
-         -- Close if needed
     end
   end
   self.totalLength = totalLen
 
-  -- Avoid too low density
   local density = math.max(0.05, self.subdivision * 0.05)
 
   for i = 1, #path do
     local cmd = path[i]
+    local isLast = (i == #path)
 
     if cmd.type == 'moveTo' then
       local pt = cmd[1]
@@ -188,34 +170,22 @@ function update(self: RippleEffect, path: PathData): PathData
 
     elseif cmd.type == 'lineTo' then
       local pt = cmd[1]
-      local dx = pt.x - lastX
-      local dy = pt.y - lastY
+      local dx, dy = pt.x - lastX, pt.y - lastY
       local len = length(dx, dy)
-      
-      -- Calculate number of segments for this line
       local steps = math.ceil(len * density)
       if steps < 1 then steps = 1 end
       
       local nx, ny = normalize(dx, dy)
-      local px, py = -ny, nx -- Perpendicular vector
+      local px, py = -ny, nx 
       
-      -- Skip the last point of intermediate segments to smooth creases
-      local limit = steps
-      if i < #path then
-        limit = steps - 1
-      end
+      local limit = isLast and steps or steps - 1
 
       for s = 1, limit do
         local t = s / steps
-        local currentLen = len * t
-        
-        local bx = lastX + dx * t
-        local by = lastY + dy * t
-        local offset = self:getOffset(dist + currentLen, self.totalLength, bx, by)
-        
-        local x = bx + px * offset
-        local y = by + py * offset
-        outPath:lineTo(Vector.xy(x, y))
+        local cl = len * t
+        local bx, by = lastX + dx * t, lastY + dy * t
+        local offset = self:getOffset(dist + cl, totalLen, bx, by)
+        outPath:lineTo(Vector.xy(bx + px * offset, by + py * offset))
       end
       
       lastX, lastY = pt.x, pt.y
@@ -223,43 +193,27 @@ function update(self: RippleEffect, path: PathData): PathData
 
     elseif cmd.type == 'cubicTo' then
       local cp1, cp2, ep = cmd[1], cmd[2], cmd[3]
-      -- Approximate cubic length
-      local l1 = length(cp1.x - lastX, cp1.y - lastY)
-      local l2 = length(cp2.x - cp1.x, cp2.y - cp1.y)
-      local l3 = length(ep.x - cp2.x, ep.y - cp2.y)
-      local approxLen = l1 + l2 + l3
-      
+      local approxLen = length(ep.x - lastX, ep.y - lastY)
       local steps = math.ceil(approxLen * density)
       if steps < 1 then steps = 1 end
       
-      local startX, startY = lastX, lastY
-      
-      local limit = steps
-      if i < #path then
-        limit = steps - 1
-      end
+      local sx, sy = lastX, lastY
+      local limit = isLast and steps or steps - 1
        
       for s = 1, limit do
         local t = s / steps
         local mt = 1 - t
-        local mt2 = mt * mt
-        local mt3 = mt2 * mt
-        local t2 = t * t
-        local t3 = t2 * t
+        local mt2, t2 = mt * mt, t * t
         
-        -- Point on curve
-        local x = mt3*startX + 3*mt2*t*cp1.x + 3*mt*t2*cp2.x + t3*ep.x
-        local y = mt3*startY + 3*mt2*t*cp1.y + 3*mt*t2*cp2.y + t3*ep.y
+        local x = mt2*mt*sx + 3*mt2*t*cp1.x + 3*mt*t2*cp2.x + t2*t*ep.x
+        local y = mt2*mt*sy + 3*mt2*t*cp1.y + 3*mt*t2*cp2.y + t2*t*ep.y
         
-        -- Derivative for normal
-        local dx = 3*mt2*(cp1.x - startX) + 6*mt*t*(cp2.x - cp1.x) + 3*t2*(ep.x - cp2.x)
-        local dy = 3*mt2*(cp1.y - startY) + 6*mt*t*(cp2.y - cp1.y) + 3*t2*(ep.y - cp2.y)
+        local dx = 3*mt2*(cp1.x - sx) + 6*mt*t*(cp2.x - cp1.x) + 3*t2*(ep.x - cp2.x)
+        local dy = 3*mt2*(cp1.y - sy) + 6*mt*t*(cp2.y - cp1.y) + 3*t2*(ep.y - cp2.y)
         
         local nx, ny = normalize(dx, dy)
-        local px, py = -ny, nx
-        
-        local offset = self:getOffset(dist + approxLen * t, self.totalLength, x, y)
-        outPath:lineTo(Vector.xy(x + px * offset, y + py * offset))
+        local offset = self:getOffset(dist + approxLen * t, totalLen, x, y)
+        outPath:lineTo(Vector.xy(x - ny * offset, y + nx * offset))
       end
 
       lastX, lastY = ep.x, ep.y
