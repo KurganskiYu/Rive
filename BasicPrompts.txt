@@ -1,0 +1,1 @@
+Remove unnecessary empty lines while preserving single blank lines between logical sections and keeping code unchanged.
