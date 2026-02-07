@@ -178,14 +178,25 @@ You can nest artboards or use them as assets.
     `instance:draw(renderer)`
     `renderer:restore()`
 
-8. COMMON PRACTICES & RESTRICTIONS
-----------------------------------
+8. BEST PRACTICES & TROUBLESHOOTING
+-----------------------------------
+- Type Safety with Maps & Tables:
+  When defining empty tables intended as maps (dictionaries), explicitly type them. Otherwise, the compiler may infer them as arrays or generic tables, causing errors on assignment.
+  Example: `local segments: { [string]: { Vector } } = {}`
+
+- Fixing `next()` iterator errors:
+  The compiler often fails to infer types when using `next()` manually.
+  1. The key return can be nil, so type it as optional (e.g., `string?`).
+  2. Explicitly annotate the variable receiving the key.
+  Example: `local key: string? = next(myMap)`
+
+- Drawing Quality:
+  1. Gaps in Lines: When drawing paths built from multiple connected segments (e.g., procedural meshes), set `cap = 'round'` and `join = 'round'` in your `Paint` object. This fills the visual gaps that verify/butt caps leave at vertices.
+  2. Smoothing: Procedural geometry often looks jagged ("cornery").
+     - Increase simulation resolution if possible.
+     - Implement subdivision/smoothing algorithms (like Chaikin's corner cutting) on the point data before submitting to `Path`.
+
 - "Safe" Random: Scripts often use `math.random` standard Lua library.
-- Typed Arrays: Use generic syntax in comments like `{ SegmentEntry }` or `{ [number]: number }`.
 - State Management: Keep state in the `self` object or ViewModel types.
-- Modularity: `require('Module')` is supported (e.g., `require('Physics')`).
-- Type Safety: Inputs are strictly typed. 
-- Local Table Typing: When defining an empty table that will hold structured data or be used with `table.insert`, explicitly type it to aid the compiler.
-  Example: `local groups: { [number]: {Particle} } = {}` ensures `groups` is treated correctly as a map of arrays.
-- Context: `context:markNeedsUpdate()` can be used to request redraws (seen in PathEffect).
-````plaintext
+- Modularity: `require('Module')` is supported.
+- Context: Use `context:markNeedsUpdate()` to ensure procedural animations redraw every frame.
