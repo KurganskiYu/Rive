@@ -42,6 +42,8 @@ type MetaballEffect = {
 
   inputDensity: Input<number>, -- Distance to sample points along input path (0 = vertices only)
 
+  throttle: Input<number>,
+
   
 
 }
@@ -506,14 +508,23 @@ local function update(self: MetaballEffect, path: PathData, node: NodeReadData):
 end
 
 local _context: Context? = nil
+local _frame = 0
+
 local function init(self: MetaballEffect, context: Context)
   _context = context
+  _frame = 0
   return true
 end
 
 local function advance(self: MetaballEffect, dt: number)
-  -- Always dirty to respond to input path changes
-  if _context then _context:markNeedsUpdate() end
+  _frame = _frame + 1
+  local skip = mfloor(self.throttle)
+  if skip < 1 then skip = 1 end
+  
+  -- Update dirty state based on throttle to improve performance
+  if _context and (_frame % skip == 0) then 
+    _context:markNeedsUpdate() 
+  end
   return true
 end
 
@@ -525,6 +536,7 @@ return function(): PathEffect<MetaballEffect>
     smoothness = 2, 
     resampleDist = 5, -- Output resampling
     inputDensity = 50, -- Input path sampling (0 = vertices only)
+    throttle = 1,
     init = init,
     advance = advance,
     update = update,

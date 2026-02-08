@@ -1,1 +1,3 @@
 Remove unnecessary empty lines while preserving single blank lines between logical sections and keeping code unchanged.
+
+Add throttle param to update every N frames to improve performance
