@@ -156,7 +156,7 @@
         <canvas id="main_canvas" width="325" height="352"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/stresscalendar_v4.riv" target="_blank" style="color: white;">stresscalendar</a><br>Size: 325px × 352px<br>State Machine: State Machine 1<br>Artboard: calendar<br>Input: v_num:daysAmount(31)<br>Input: v_num:delay(40)<br>Input: txt:percentToData("65 80 65 99 31 10 ")<br>Duration: 3.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/stresscalendar_v5.riv" target="_blank" style="color: white;">stresscalendar</a><br>Size: 325px × 352px<br>State Machine: State Machine 1<br>Artboard: calendar<br>Input: v_num:daysAmount(31)<br>Input: v_num:delay(40)<br>Input: txt:percentToData("65 80 65 99 31 10 ")<br>Duration: 3.0s<br>Loop: No<br>Background: Transparent<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
@@ -208,7 +208,7 @@
 <script>
 
 const mainRive = new rive.Rive({
-  src: "../riv/stresscalendar_v4.riv",
+  src: "../riv/stresscalendar_v5.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "calendar", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -246,7 +246,7 @@ const mainRive = new rive.Rive({
 });
 
 const previewRive = new rive.Rive({
-  src: "../riv/stresscalendar_v4.riv",
+  src: "../riv/stresscalendar_v5.riv",
   canvas: document.getElementById("preview_canvas"),
   autoplay: true, autoBind: true, artboard: "preview", stateMachines: "State Machine 1",
   onLoad: () => {

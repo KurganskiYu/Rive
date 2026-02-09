@@ -29,6 +29,15 @@ SCALE_TO_200PX = True
 ANIMATIONS_PER_PAGE = 8
 INPUT_RANGE = range(1, 7)  # Constant for input iteration
 
+def parse_size(size_str):
+    if not size_str:
+        return 0, 0
+    try:
+        parts = size_str.lower().split('x')
+        return int(parts[0]), int(parts[1])
+    except:
+        return 0, 0
+
 def scale_dimensions(width, height):
     if not SCALE_TO_200PX:
         return width, height
@@ -538,18 +547,39 @@ def check_preview_exists(row):
 def make_animation_page(row):
     page_name = os.path.splitext(row["src"])[0] + ".html"
     main_rive = f'../riv/{row["src"]}'
-    preview_rive = check_preview_exists(row)
     
+    # Determine preview configuration
+    preview_ctx = None
+    if row.get("preview") and row["preview"].strip():
+        # Internal preview
+        w, h = parse_size(row["preview"])
+        preview_ctx = {
+            "src": main_rive,
+            "width": w,
+            "height": h,
+            "artboard": "preview" 
+        }
+    else:
+        # External preview check
+        preview_path = check_preview_exists(row)
+        if preview_path:
+            preview_ctx = {
+                "src": preview_path,
+                "width": row["width"],
+                "height": row["height"],
+                "artboard": row.get("artboard", "")
+            }
+
     html_parts = [get_html_head()]
     
     # Generate main content based on preview existence
-    if (preview_rive):
-        html_parts.append(generate_dual_animation_html(row, preview_rive))
+    if preview_ctx:
+        html_parts.append(generate_dual_animation_html(row, preview_ctx))
     else:
         html_parts.append(generate_single_animation_html(row))
     
     # Generate JavaScript
-    html_parts.append(generate_animation_js(row, main_rive, preview_rive))
+    html_parts.append(generate_animation_js(row, main_rive, preview_ctx))
     html_parts.append(html_foot)
     
     # Write file
@@ -573,7 +603,7 @@ def generate_single_animation_html(row):
     </div>
 '''
 
-def generate_dual_animation_html(row, preview_rive):
+def generate_dual_animation_html(row, preview_ctx):
     """Generate HTML for dual animation layout"""
     return f'''
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
@@ -590,7 +620,7 @@ def generate_dual_animation_html(row, preview_rive):
         </div>
       </div>
       <div class="animation-container">
-        <canvas id="preview_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
+        <canvas id="preview_canvas" width="{preview_ctx["width"]}" height="{preview_ctx["height"]}"></canvas>
         <div class="description">
           Preview:<br>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
@@ -602,7 +632,7 @@ def generate_dual_animation_html(row, preview_rive):
     </div>
 '''
 
-def generate_animation_js(row, main_rive, preview_rive):
+def generate_animation_js(row, main_rive, preview_ctx):
     """Generate JavaScript for animation page"""
     js_parts = ['<script>\n']
     
@@ -624,8 +654,8 @@ const mainRive = new rive.Rive({{
     js_parts.append(generate_animation_controls_js(row, "main", "mainRive"))
     
     # Preview animation if exists
-    if preview_rive:
-        js_parts.append(generate_preview_animation_js(row, preview_rive))
+    if preview_ctx:
+        js_parts.append(generate_preview_animation_js(row, preview_ctx))
     
     js_parts.append('''
 document.querySelectorAll('canvas').forEach(canvas => {
@@ -678,13 +708,16 @@ let inputField{canvas_type.title()}_{i} = document.getElementById("{input_id}");
         # v_num, txt, col, list skipped (handled via ViewModel)
     return "".join(js_parts)
 
-def generate_preview_animation_js(row, preview_rive):
+def generate_preview_animation_js(row, preview_ctx):
     """Generate preview animation JavaScript"""
+    artboard_val = preview_ctx.get("artboard", "")
+    artboard_prop = f' artboard: "{artboard_val}",' if artboard_val else ""
+
     js_parts = [f'''
 const previewRive = new rive.Rive({{
-  src: "{preview_rive}",
+  src: "{preview_ctx["src"]}",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true, autoBind: true,{f' artboard: "{row["artboard"]}",' if row.get("artboard") else ""}{f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""}
+  autoplay: true, autoBind: true,{artboard_prop}{f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""}
   onLoad: () => {{
     previewRive.resizeDrawingSurfaceToCanvas();
 ''']
@@ -773,6 +806,11 @@ def main():
     for row in rows:
         if not row.get("state_machine") or row["state_machine"].strip() == "":
             row["state_machine"] = "State Machine 1"
+        
+        # Parse size column into width/height for backward compatibility
+        w, h = parse_size(row.get("size"))
+        row["width"] = w
+        row["height"] = h
 
     # Generate per-animation pages
     for row in rows:
