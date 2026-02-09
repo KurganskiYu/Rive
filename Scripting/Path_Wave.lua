@@ -12,12 +12,13 @@ type RippleEffect = {
   endFade: Input<number>,
   useWorldSpace: Input<boolean>,
   rotation: Input<number>,
+  useNoiseDirection: Input<boolean>,
   time: number,
   totalLength: number,
   context: Context,
   -- Methods
   noise: (self: RippleEffect, x: number, y: number) -> number,
-  getOffset: (self: RippleEffect, distance: number, pathLength: number, x: number, y: number) -> number,
+  getOffset: (self: RippleEffect, distance: number, pathLength: number, x: number, y: number, nx: number, ny: number) -> (number, number),
 }
 
 local function length(x: number, y: number): number
@@ -99,8 +100,8 @@ function noise(self: RippleEffect, x: number, y: number): number
   return fbm(x, y, 0.5, self.octaves)
 end
 
-function getOffset(self: RippleEffect, distance: number, pathLength: number, x: number, y: number): number
-  local n = 0
+function getOffset(self: RippleEffect, distance: number, pathLength: number, x: number, y: number, nx: number, ny: number): (number, number)
+  local u, v = 0, 0
   if self.useWorldSpace then
     local rad = self.rotation * degToRad
     local c, s = mcos(rad), msin(rad)
@@ -109,12 +110,12 @@ function getOffset(self: RippleEffect, distance: number, pathLength: number, x: 
     local ry = x * s + y * c
 
     local freq = self.frequency * 0.01
-    n = self:noise(rx * freq - (self.time * self.speed), ry * freq - (self.time * self.noiseSpeed))
+    u = rx * freq - (self.time * self.speed)
+    v = ry * freq - (self.time * self.noiseSpeed)
   else
     -- The ripples expand from start to end; we shift phase by distance
-    local phase = distance * self.frequency * 0.01 - (self.time * self.speed)
-    local ny = self.time * self.noiseSpeed
-    n = self:noise(phase, ny)
+    u = distance * self.frequency * 0.01 - (self.time * self.speed)
+    v = self.time * self.noiseSpeed
   end
 
   local fade = 1.0
@@ -131,7 +132,16 @@ function getOffset(self: RippleEffect, distance: number, pathLength: number, x: 
     end
   end
 
-  return n * self.amplitude * fade
+  local amp = self.amplitude * fade
+  
+  if self.useNoiseDirection then
+    local n1 = self:noise(u, v)
+    local n2 = self:noise(u + 52.1, v + 17.3)
+    return n1 * amp, n2 * amp
+  else
+    local n = self:noise(u, v)
+    return nx * n * amp, ny * n * amp
+  end
 end
 
 function update(self: RippleEffect, path: PathData): PathData
@@ -155,6 +165,73 @@ function update(self: RippleEffect, path: PathData): PathData
     end
   end
   self.totalLength = totalLen
+
+  if self.subdivision <= 0 then
+    -- No subdivision: preserve original path commands but deform points
+    for i = 1, #path do
+      local cmd = path[i]
+      if cmd.type == 'moveTo' then
+        local pt = cmd[1]
+        outPath:moveTo(pt)
+        lastX, lastY = pt.x, pt.y
+        dist = 0
+      elseif cmd.type == 'lineTo' then
+        local pt = cmd[1]
+        local dx, dy = pt.x - lastX, pt.y - lastY
+        local len = length(dx, dy)
+        -- Normal based on segment
+        local nx, ny = normalize(dx, dy)
+        local px, py = -ny, nx
+        
+        local offX, offY = self:getOffset(dist + len, totalLen, pt.x, pt.y, px, py)
+        outPath:lineTo(Vector.xy(pt.x + offX, pt.y + offY))
+        
+        lastX, lastY = pt.x, pt.y
+        dist = dist + len
+      elseif cmd.type == 'cubicTo' then
+        local cp1, cp2, ep = cmd[1], cmd[2], cmd[3]
+        -- Use chord for approximate normal
+        local dx, dy = ep.x - lastX, ep.y - lastY
+        local len = length(dx, dy)
+        local nx, ny = normalize(dx, dy)
+        local px, py = -ny, nx
+        
+        -- Apply offset to control points at estimated distances
+        local o1x, o1y = self:getOffset(dist + len * 0.33, totalLen, cp1.x, cp1.y, px, py)
+        local o2x, o2y = self:getOffset(dist + len * 0.66, totalLen, cp2.x, cp2.y, px, py)
+        local o3x, o3y = self:getOffset(dist + len, totalLen, ep.x, ep.y, px, py)
+        
+        outPath:cubicTo(
+          Vector.xy(cp1.x + o1x, cp1.y + o1y),
+          Vector.xy(cp2.x + o2x, cp2.y + o2y),
+          Vector.xy(ep.x + o3x, ep.y + o3y)
+        )
+        
+        lastX, lastY = ep.x, ep.y
+        dist = dist + len
+      elseif cmd.type == 'quadTo' then
+        local cp, ep = cmd[1], cmd[2]
+        local dx, dy = ep.x - lastX, ep.y - lastY
+        local len = length(dx, dy)
+        local nx, ny = normalize(dx, dy)
+        local px, py = -ny, nx
+        
+        local o1x, o1y = self:getOffset(dist + len * 0.5, totalLen, cp.x, cp.y, px, py)
+        local o2x, o2y = self:getOffset(dist + len, totalLen, ep.x, ep.y, px, py)
+        
+        outPath:quadTo(
+           Vector.xy(cp.x + o1x, cp.y + o1y),
+           Vector.xy(ep.x + o2x, ep.y + o2y)
+        )
+        
+        lastX, lastY = ep.x, ep.y
+        dist = dist + len
+      elseif cmd.type == 'close' then
+        outPath:close()
+      end
+    end
+    return outPath
+  end
 
   local density = math.max(0.05, self.subdivision * 0.05)
 
@@ -184,8 +261,8 @@ function update(self: RippleEffect, path: PathData): PathData
         local t = s / steps
         local cl = len * t
         local bx, by = lastX + dx * t, lastY + dy * t
-        local offset = self:getOffset(dist + cl, totalLen, bx, by)
-        outPath:lineTo(Vector.xy(bx + px * offset, by + py * offset))
+        local offX, offY = self:getOffset(dist + cl, totalLen, bx, by, px, py)
+        outPath:lineTo(Vector.xy(bx + offX, by + offY))
       end
       
       lastX, lastY = pt.x, pt.y
@@ -212,8 +289,9 @@ function update(self: RippleEffect, path: PathData): PathData
         local dy = 3*mt2*(cp1.y - sy) + 6*mt*t*(cp2.y - cp1.y) + 3*t2*(ep.y - cp2.y)
         
         local nx, ny = normalize(dx, dy)
-        local offset = self:getOffset(dist + approxLen * t, totalLen, x, y)
-        outPath:lineTo(Vector.xy(x - ny * offset, y + nx * offset))
+        local px, py = -ny, nx
+        local offX, offY = self:getOffset(dist + approxLen * t, totalLen, x, y, px, py)
+        outPath:lineTo(Vector.xy(x + offX, y + offY))
       end
 
       lastX, lastY = ep.x, ep.y
@@ -248,8 +326,8 @@ function update(self: RippleEffect, path: PathData): PathData
          local nx, ny = normalize(dx, dy)
          local px, py = -ny, nx
          
-         local offset = self:getOffset(dist + approxLen * t, self.totalLength, x, y)
-         outPath:lineTo(Vector.xy(x + px * offset, y + py * offset))
+         local offX, offY = self:getOffset(dist + approxLen * t, self.totalLength, x, y, px, py)
+         outPath:lineTo(Vector.xy(x + offX, y + offY))
        end
 
        lastX, lastY = ep.x, ep.y
@@ -287,6 +365,7 @@ return function(): PathEffect<RippleEffect>
     endFade = 5,
     useWorldSpace = false,
     rotation = 0,
+    useNoiseDirection = false,
     time = 0,
     totalLength = 0,
     context = late(),
