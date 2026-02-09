@@ -6,6 +6,7 @@ type PointVM = {
 	percentFrom: Property<number>, 
 	percentTo: Property<number>,
 	active: Property<boolean>,
+	today: Property<boolean>,
 }
 
 type Point = {
@@ -16,6 +17,7 @@ type Point = {
 	-- NEW: metadata to track how/when point was created
 	creationOrder: number?,
 	isActive: boolean?, -- Local tracking of active property
+	today: boolean?, -- Local tracking of today property
 }
 
 type ScatterNode = {
@@ -30,6 +32,7 @@ type ScatterNode = {
 
 	-- Main View Model parameters
 	daysAmount: number,
+	daysShift: number,
 	percentToData: string,
 	percentToValues: { number }, -- NEW: parsed values used for lookup
 
@@ -63,6 +66,11 @@ local function init(self: ScatterNode, context: Context): boolean
 		local percentToDataProp = vm:getString('percentToData')
 		if percentToDataProp then
 			self.percentToData = percentToDataProp.value
+		end
+
+		local daysShiftProp = vm:getNumber('daysShift')
+		if daysShiftProp then
+			self.daysShift = daysShiftProp.value
 		end
 	end
 
@@ -143,11 +151,12 @@ local function createPoint(self: ScatterNode, index: number)
 
 	if inst.data then
 		if inst.data.active then inst.data.active.value = false end
+		if inst.data.today then inst.data.today.value = false end
 		if inst.data.percentFrom then inst.data.percentFrom.value = 0 end
 		if inst.data.percentTo then inst.data.percentTo.value = pToVal end
 	end
 
-	updatePointPosition(self, pt, index)
+	updatePointPosition(self, pt, index + (self.daysShift or 0))
 	minsert(self.points, pt)
 	self.created[index] = true
 end
@@ -171,14 +180,25 @@ local function advance(self: ScatterNode, seconds: number): boolean
 	-- Global frame counter for activation logic
 	self.frameCounter = self.frameCounter + 1
 	local delay = mfloor(self.delayFrames)
+	local shift = self.daysShift or 0
 
 	-- 3. Update Active Points: update positions and handle delayed activation
 	for i, pt in ipairs(self.points) do
-		updatePointPosition(self, pt, pt.index)
+		local shiftedIndex = pt.index + shift
+		updatePointPosition(self, pt, shiftedIndex)
+
+		-- Today Logic: Is this the last point?
+		local isLast = (pt.index == totalPoints - 1)
+		if pt.today ~= isLast then
+			pt.today = isLast
+			if pt.instance.data and pt.instance.data.today then
+				pt.instance.data.today.value = isLast
+			end
+		end
 
 		-- Activation Logic
 		if not pt.isActive then
-			local activationFrame = pt.index * delay
+			local activationFrame = shiftedIndex * delay
 			if self.frameCounter >= activationFrame then
 				pt.isActive = true
 				if pt.instance.data and pt.instance.data.active then
@@ -237,6 +257,7 @@ return function(): Node<ScatterNode>
 		percentToValues = {},
 		percentToData = "",
 		daysAmount = 31,
+		daysShift = 3,
 
 		init = init,
 		advance = advance,

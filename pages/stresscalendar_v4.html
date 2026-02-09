@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="RiveIcon.svg" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Apply modern font */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 10vh;
+            background-color: #000000;
+            background-image: 
+                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
+                linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f);
+            background-size: 20px 20px; /* Adjust size of the checkered pattern */
+            background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
+            padding: 10px 0;
+        }
+        .animation-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 30px;
+            width: 95%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #292929; 
+            width: auto; /* Ensure the CSS width matches the HTML width */
+            height: auto; /* Ensure the CSS height matches the HTML height */
+        }
+        .animation-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .description {
+            color: rgb(120, 120, 120);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        .animation-row {
+          display: flex;
+          gap: 32px;
+          align-items: flex-start;
+        }
+        .controls-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .controls-column > * {
+            width: max-content;
+        }
+        .rive-btn {
+            background: #646464;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 8px;
+            cursor: pointer;
+            margin-left: 0; /* Remove left margin for perfect right alignment */
+        }
+        input[type="number"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="text"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            outline: none;
+            accent-color: #646464;
+            appearance: none; /* Remove default checkbox style */
+            -webkit-appearance: none;
+            display: inline-block;
+            /*vertical-align: middle; */
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 6px;
+            top: 1px;
+            width: 8px;
+            height: 14px;
+            border: solid #000000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+        input[type="color"] {
+            border-radius: 8px;
+            background: #000000;
+            border: none;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            outline: none;
+            cursor: pointer;
+            /* Remove default appearance for consistency */
+            -webkit-appearance: none;
+            appearance: none;
+            /* Optional: add a subtle box-shadow for focus */
+            box-shadow: 0 0 0 0px #646464 inset;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 8px;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border-radius: 8px;
+            border: none;
+        }
+        input[type="color"]:focus {
+            box-shadow: 0 0 0 2px #464646;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+
+
+    <div class="animation-container">
+      <canvas id="main_canvas" width="325" height="352"></canvas>
+      <div class="description">
+        <div>
+          <div><a href="../riv/stresscalendar_v4.riv" target="_blank" style="color: white;">stresscalendar</a><br>Size: 325px × 352px<br>State Machine: State Machine 1<br>Artboard: calendar<br>Input: v_num:daysAmount(31)<br>Input: v_num:delay(40)<br>Input: txt:percentToData("65 80 65 99 31 10 ")<br>Duration: 3.0s<br>Loop: No<br>Background: Transparent<br></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input1">daysAmount:</label>
+            <input type="number" id="btn_main_input1" value="31" style="width:60px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input2">delay:</label>
+            <input type="number" id="btn_main_input2" value="40" style="width:60px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input3">percentToData:</label>
+            <input type="text" id="btn_main_input3" style="width:90px;" />
+        </div>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+<script>
+
+const mainRive = new rive.Rive({
+  src: "../riv/stresscalendar_v4.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true,autoBind: true, artboard: "calendar", stateMachines: "State Machine 1",
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_1.value);
+        if (!isNaN(val)) vmi.number("daysAmount").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_1.value);
+      if (!isNaN(initVal)) vmi.number("daysAmount").value = initVal;
+    }
+    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
+    if (inputFieldBtn_Main_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_2.value);
+        if (!isNaN(val)) vmi.number("delay").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_2.value);
+      if (!isNaN(initVal)) vmi.number("delay").value = initVal;
+    }
+    let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
+    if (inputFieldBtn_Main_3 && vmi) {
+      inputFieldBtn_Main_3.addEventListener("input", () => {
+        vmi.string("percentToData").value = inputFieldBtn_Main_3.value;
+      });
+    }
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>
