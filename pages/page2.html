@@ -329,6 +329,8 @@ const r2 = new rive.Rive({
     let inputField_btn2_1 = document.getElementById("btn2_input1");
     let inputObj_btn2_1 = inputs.find(input => input.name === "Percent");
     if (inputField_btn2_1 && inputObj_btn2_1) {
+      let val = parseFloat(inputField_btn2_1.value);
+      if (!isNaN(val)) inputObj_btn2_1.value = val;
       inputField_btn2_1.addEventListener("input", () => {
         let val = parseFloat(inputField_btn2_1.value);
         if (!isNaN(val)) inputObj_btn2_1.value = val;

@@ -32,9 +32,13 @@ type ScatterNode = {
 
 	-- Main View Model parameters
 	daysAmount: number,
+	daysAmountProp: Property<number>?, -- Added prop reference
 	daysShift: number,
 	percentToData: string,
+	percentToDataProp: Property<string>?, -- Added prop reference
 	percentToValues: { number }, -- NEW: parsed values used for lookup
+	delay: number?, -- NEW: VM delay override
+	delayProp: Property<number>?, -- NEW
 
 	-- State
 	points: { Point },
@@ -60,17 +64,25 @@ local function init(self: ScatterNode, context: Context): boolean
   		-- Get properties from the main view model
   		local daysAmountProp = vm:getNumber('daysAmount')
 		if daysAmountProp then
+			self.daysAmountProp = daysAmountProp -- Store reference
 			self.daysAmount = daysAmountProp.value
 		end
 
 		local percentToDataProp = vm:getString('percentToData')
 		if percentToDataProp then
+			self.percentToDataProp = percentToDataProp -- Store reference
 			self.percentToData = percentToDataProp.value
 		end
 
 		local daysShiftProp = vm:getNumber('daysShift')
 		if daysShiftProp then
 			self.daysShift = daysShiftProp.value
+		end
+
+		local delayProp = vm:getNumber('delay')
+		if delayProp then
+			self.delayProp = delayProp
+			self.delay = delayProp.value
 		end
 	end
 
@@ -162,6 +174,39 @@ local function createPoint(self: ScatterNode, index: number)
 end
 
 local function advance(self: ScatterNode, seconds: number): boolean
+	-- Sync properties from JS updates
+	if self.daysAmountProp and self.daysAmountProp.value ~= self.daysAmount then
+		self.daysAmount = self.daysAmountProp.value
+	end
+
+	if self.delayProp and self.delayProp.value ~= self.delay then
+		self.delay = self.delayProp.value
+	end
+
+	-- Check if percentToData has changed (e.g. from JS initialization)
+	if self.percentToDataProp and self.percentToDataProp.value ~= self.percentToData then
+		self.percentToData = self.percentToDataProp.value
+		-- Re-parse
+		self.percentToValues = {}
+		for val in self.percentToData:gmatch("%S+") do
+			val = val:gsub("[,;]", "")
+			local num = tonumber(val)
+			if num then
+				minsert(self.percentToValues, num)
+			end
+		end
+		-- Construct update for existing points
+		for _, pt in ipairs(self.points) do
+			local pToVal = 0
+			if self.percentToValues[pt.index + 1] then
+				pToVal = self.percentToValues[pt.index + 1]
+			end
+			if pt.instance and pt.instance.data and pt.instance.data.percentTo then
+				pt.instance.data.percentTo.value = pToVal
+			end
+		end
+	end
+
 	local cx = mmax(1, mfloor(self.countX))
 	local cy = mmax(1, mfloor(self.countY))
 	local totalPoints = cx * cy -- grid capacity
@@ -179,7 +224,7 @@ local function advance(self: ScatterNode, seconds: number): boolean
 
 	-- Global frame counter for activation logic
 	self.frameCounter = self.frameCounter + 1
-	local delay = mfloor(self.delayFrames)
+	local delay = mfloor(self.delay or self.delayFrames)
 	local shift = self.daysShift or 0
 
 	-- 3. Update Active Points: update positions and handle delayed activation

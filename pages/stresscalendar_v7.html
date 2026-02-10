@@ -153,31 +153,26 @@
 
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
       <div class="animation-container">
-        <canvas id="main_canvas" width="375" height="812"></canvas>
+        <canvas id="main_canvas" width="325" height="352"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/energybyny_v6.riv" target="_blank" style="color: white;">energybyny</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: EnergyByNY<br>Input: txt:text1("Nov")<br>Input: txt:text2("Dec")<br>Input: txt:text3("2026")<br>Input: txt:textReclaim("Reclaim your energy by spring")<br>Duration: 6.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/stresscalendar_v7.riv" target="_blank" style="color: white;">stresscalendar</a><br>Size: 325px × 352px<br>State Machine: State Machine 1<br>Artboard: calendar<br>Input: v_num:daysAmount(31)<br>Input: v_num:delay(40)<br>Input: txt:percentToData("99 80 65 99 31 10 ")<br>Duration: 3.0s<br>Loop: No<br>Background: Transparent<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">text1:</label>
-            <input type="text" id="btn_main_input1" value="Nov" style="width:90px;" />
+            <label for="btn_main_input1">daysAmount:</label>
+            <input type="number" id="btn_main_input1" value="21" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">text2:</label>
-            <input type="text" id="btn_main_input2" value="Dec" style="width:90px;" />
+            <label for="btn_main_input2">delay:</label>
+            <input type="number" id="btn_main_input2" value="40" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input3">text3:</label>
-            <input type="text" id="btn_main_input3" value="2026" style="width:90px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input4">textReclaim:</label>
-            <input type="text" id="btn_main_input4" value="Reclaim your energy by spring" style="width:90px;" />
+            <label for="btn_main_input3">percentToData:</label>
+            <input type="text" id="btn_main_input3" value="99 80 65 99 31 10 " style="width:90px;" />
         </div>
         
             </div>
@@ -192,23 +187,18 @@
             
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">text1:</label>
-            <input type="text" id="btn_preview_input1" value="Nov" style="width:90px;" />
+            <label for="btn_preview_input1">daysAmount:</label>
+            <input type="number" id="btn_preview_input1" value="31" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input2">text2:</label>
-            <input type="text" id="btn_preview_input2" value="Dec" style="width:90px;" />
+            <label for="btn_preview_input2">delay:</label>
+            <input type="number" id="btn_preview_input2" value="40" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input3">text3:</label>
-            <input type="text" id="btn_preview_input3" value="2026" style="width:90px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input4">textReclaim:</label>
-            <input type="text" id="btn_preview_input4" value="Reclaim your energy by spring" style="width:90px;" />
+            <label for="btn_preview_input3">percentToData:</label>
+            <input type="text" id="btn_preview_input3" value="99 80 65 99 31 10 " style="width:90px;" />
         </div>
         
           </div>
@@ -218,76 +208,78 @@
 <script>
 
 const mainRive = new rive.Rive({
-  src: "../riv/energybyny_v6.riv",
+  src: "../riv/stresscalendar_v7.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true,autoBind: true, artboard: "EnergyByNY", stateMachines: "State Machine 1",
+  autoplay: true,autoBind: true, artboard: "calendar", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
     let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
     if (inputFieldBtn_Main_1 && vmi) {
-      vmi.string("text1").value = inputFieldBtn_Main_1.value;
+      // Update numeric ViewModel variable
       inputFieldBtn_Main_1.addEventListener("input", () => {
-        vmi.string("text1").value = inputFieldBtn_Main_1.value;
+        let val = parseFloat(inputFieldBtn_Main_1.value);
+        if (!isNaN(val)) vmi.number("daysAmount").value = val;
       });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_1.value);
+      if (!isNaN(initVal)) vmi.number("daysAmount").value = initVal;
     }
     let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
     if (inputFieldBtn_Main_2 && vmi) {
-      vmi.string("text2").value = inputFieldBtn_Main_2.value;
+      // Update numeric ViewModel variable
       inputFieldBtn_Main_2.addEventListener("input", () => {
-        vmi.string("text2").value = inputFieldBtn_Main_2.value;
+        let val = parseFloat(inputFieldBtn_Main_2.value);
+        if (!isNaN(val)) vmi.number("delay").value = val;
       });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_2.value);
+      if (!isNaN(initVal)) vmi.number("delay").value = initVal;
     }
     let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
     if (inputFieldBtn_Main_3 && vmi) {
-      vmi.string("text3").value = inputFieldBtn_Main_3.value;
+      vmi.string("percentToData").value = inputFieldBtn_Main_3.value;
       inputFieldBtn_Main_3.addEventListener("input", () => {
-        vmi.string("text3").value = inputFieldBtn_Main_3.value;
-      });
-    }
-    let inputFieldBtn_Main_4 = document.getElementById("btn_main_input4");
-    if (inputFieldBtn_Main_4 && vmi) {
-      vmi.string("textReclaim").value = inputFieldBtn_Main_4.value;
-      inputFieldBtn_Main_4.addEventListener("input", () => {
-        vmi.string("textReclaim").value = inputFieldBtn_Main_4.value;
+        vmi.string("percentToData").value = inputFieldBtn_Main_3.value;
       });
     }
   },
 });
 
 const previewRive = new rive.Rive({
-  src: "../riv/energybyny_v6_preview.riv",
+  src: "../riv/stresscalendar_v7.riv",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true, autoBind: true, artboard: "EnergyByNY", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, artboard: "preview", stateMachines: "State Machine 1",
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
     const vmi = previewRive.viewModelInstance;
     let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
     if (inputFieldBtn_Preview_1 && vmi) {
-      vmi.string("text1").value = inputFieldBtn_Preview_1.value;
+      // Update numeric ViewModel variable
       inputFieldBtn_Preview_1.addEventListener("input", () => {
-        vmi.string("text1").value = inputFieldBtn_Preview_1.value;
+        let val = parseFloat(inputFieldBtn_Preview_1.value);
+        if (!isNaN(val)) vmi.number("daysAmount").value = val;
       });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_1.value);
+      if (!isNaN(initVal)) vmi.number("daysAmount").value = initVal;
     }
     let inputFieldBtn_Preview_2 = document.getElementById("btn_preview_input2");
     if (inputFieldBtn_Preview_2 && vmi) {
-      vmi.string("text2").value = inputFieldBtn_Preview_2.value;
+      // Update numeric ViewModel variable
       inputFieldBtn_Preview_2.addEventListener("input", () => {
-        vmi.string("text2").value = inputFieldBtn_Preview_2.value;
+        let val = parseFloat(inputFieldBtn_Preview_2.value);
+        if (!isNaN(val)) vmi.number("delay").value = val;
       });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_2.value);
+      if (!isNaN(initVal)) vmi.number("delay").value = initVal;
     }
     let inputFieldBtn_Preview_3 = document.getElementById("btn_preview_input3");
     if (inputFieldBtn_Preview_3 && vmi) {
-      vmi.string("text3").value = inputFieldBtn_Preview_3.value;
+      vmi.string("percentToData").value = inputFieldBtn_Preview_3.value;
       inputFieldBtn_Preview_3.addEventListener("input", () => {
-        vmi.string("text3").value = inputFieldBtn_Preview_3.value;
-      });
-    }
-    let inputFieldBtn_Preview_4 = document.getElementById("btn_preview_input4");
-    if (inputFieldBtn_Preview_4 && vmi) {
-      vmi.string("textReclaim").value = inputFieldBtn_Preview_4.value;
-      inputFieldBtn_Preview_4.addEventListener("input", () => {
-        vmi.string("textReclaim").value = inputFieldBtn_Preview_4.value;
+        vmi.string("percentToData").value = inputFieldBtn_Preview_3.value;
       });
     }
   },

@@ -217,6 +217,7 @@ mainRive.on("load", () => {
   let inputObjMain_2 = inputs.find(input => input.name === "NoAnimation");
   if (inputFieldMain_2 && inputObjMain_2) {
 
+    inputObjMain_2.value = inputFieldMain_2.checked;
     inputFieldMain_2.addEventListener("change", () => {
       inputObjMain_2.value = inputFieldMain_2.checked;
     });

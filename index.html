@@ -172,7 +172,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/stresscalendar_v5.html" style="color: #464646;">stresscalendar</a></div>
+          <div><a href="pages/stresscalendar_v7.html" style="color: #464646;">stresscalendar</a></div>
           
         </div>
         
@@ -190,7 +190,7 @@
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn1_input3">percentToData:</label>
-            <input type="text" id="btn1_input3" style="width:90px;" />
+            <input type="text" id="btn1_input3" value="99 80 65 99 31 10 " style="width:90px;" />
         </div>
         
         </div>
@@ -330,7 +330,7 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-  src: "riv/stresscalendar_v5.riv",
+  src: "riv/stresscalendar_v7.riv",
   canvas: document.getElementById("canvas1"),
   autoplay: true, autoBind: true,artboard: "calendar", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -360,6 +360,7 @@ const r1 = new rive.Rive({
     }
     let inputFieldBtn1_3 = document.getElementById("btn1_input3");
     if (inputFieldBtn1_3 && vmi) {
+      vmi.string("percentToData").value = inputFieldBtn1_3.value;
       inputFieldBtn1_3.addEventListener("input", () => {
         vmi.string("percentToData").value = inputFieldBtn1_3.value;
       });

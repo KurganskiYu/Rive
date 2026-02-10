@@ -81,6 +81,9 @@ def parse_input_spec(input_value):
         if m:
             name = m.group(1).strip()
             default = m.group(2).strip()
+            # Strip wrapping quotes if present (e.g. from name("value"))
+            if len(default) >= 2 and ((default.startswith('"') and default.endswith('"')) or (default.startswith("'") and default.endswith("'"))):
+                default = default[1:-1]
     return t, name, default
 
 # NEW helpers for list input
@@ -128,10 +131,12 @@ def parse_input_field(input_value, input_idx, button_id):
         </div>
         '''
     elif input_type == "txt":
+        value_attr = default_val if default_val is not None else ""
+        value_attr = value_attr.replace('"', '&quot;')
         return f'''
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="{input_id}">{input_name}:</label>
-            <input type="text" id="{input_id}" style="width:90px;" />
+            <input type="text" id="{input_id}" value="{value_attr}" style="width:90px;" />
         </div>
         '''
     elif input_type == "bol":
@@ -183,14 +188,18 @@ def make_input_js(input_type, input_name, input_id, obj_var, field_var):
       if (!isNaN(val)) {obj_var}.value = val;
     }});''',
         "bol": f'''
+    {obj_var}.value = {field_var}.checked;
     {field_var}.addEventListener("change", () => {{
       {obj_var}.value = {field_var}.checked;
     }});''',
         "txt": f'''
+    {obj_var}.value = {field_var}.value;
     {field_var}.addEventListener("input", () => {{
       {obj_var}.value = {field_var}.value;
     }});''',
         "col": f'''
+    let hex = {field_var}.value.replace("#", "");
+    {obj_var}.value = parseInt("FF" + hex.toUpperCase(), 16);
     {field_var}.addEventListener("input", () => {{
       let hex = {field_var}.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
@@ -288,6 +297,7 @@ def generate_text_input_js(row, prefix, rive_var):
             if input_type == "txt":
                 js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
                 js_parts.append(f"""    if ({field_var} && vmi) {{
+      vmi.string("{input_name}").value = {field_var}.value;
       {field_var}.addEventListener("input", () => {{
         vmi.string("{input_name}").value = {field_var}.value;
       }});
@@ -431,6 +441,8 @@ const {var_name} = new rive.Rive({{
             js.append(f'    let {obj_var} = inputs.find(input => input.name === "{input_name}");\n')
             if input_type == "num":
                 js.append(f'''    if ({field_var} && {obj_var}) {{
+      let val = parseFloat({field_var}.value);
+      if (!isNaN(val)) {obj_var}.value = val;
       {field_var}.addEventListener("input", () => {{
         let val = parseFloat({field_var}.value);
         if (!isNaN(val)) {obj_var}.value = val;
@@ -439,6 +451,7 @@ const {var_name} = new rive.Rive({{
 ''')
             elif input_type == "bol":
                 js.append(f'''    if ({field_var} && {obj_var}) {{
+      {obj_var}.value = {field_var}.checked;
       {field_var}.addEventListener("change", () => {{
         {obj_var}.value = {field_var}.checked;
       }});

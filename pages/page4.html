@@ -165,7 +165,7 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn0_input1">Text:</label>
-            <input type="text" id="btn0_input1" style="width:90px;" />
+            <input type="text" id="btn0_input1" value="" style="width:90px;" />
         </div>
         
         </div>
@@ -189,7 +189,7 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn1_input1">Text:</label>
-            <input type="text" id="btn1_input1" style="width:90px;" />
+            <input type="text" id="btn1_input1" value="" style="width:90px;" />
         </div>
         
         </div>
@@ -213,32 +213,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input1">color1:</label>
-            <input type="color" id="btn2_input1" value="#2f7185" />
+            <input type="color" id="btn2_input1" value="#001fc8" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input2">color2:</label>
-            <input type="color" id="btn2_input2" value="#56b1a5" />
+            <input type="color" id="btn2_input2" value="#0ae772" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input3">color3:</label>
-            <input type="color" id="btn2_input3" value="#92465f" />
+            <input type="color" id="btn2_input3" value="#a4c912" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input4">color4:</label>
-            <input type="color" id="btn2_input4" value="#7d8cfb" />
+            <input type="color" id="btn2_input4" value="#70e898" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input5">color5:</label>
-            <input type="color" id="btn2_input5" value="#291f6c" />
+            <input type="color" id="btn2_input5" value="#34fb97" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn2_input6">color6:</label>
-            <input type="color" id="btn2_input6" value="#9f57e4" />
+            <input type="color" id="btn2_input6" value="#775a3c" />
         </div>
         
         </div>
@@ -362,6 +362,7 @@ const r0 = new rive.Rive({
     const vmi = r0.viewModelInstance;
     let inputFieldBtn0_1 = document.getElementById("btn0_input1");
     if (inputFieldBtn0_1 && vmi) {
+      vmi.string("Text").value = inputFieldBtn0_1.value;
       inputFieldBtn0_1.addEventListener("input", () => {
         vmi.string("Text").value = inputFieldBtn0_1.value;
       });
@@ -383,6 +384,7 @@ const r1 = new rive.Rive({
     const vmi = r1.viewModelInstance;
     let inputFieldBtn1_1 = document.getElementById("btn1_input1");
     if (inputFieldBtn1_1 && vmi) {
+      vmi.string("Text").value = inputFieldBtn1_1.value;
       inputFieldBtn1_1.addEventListener("input", () => {
         vmi.string("Text").value = inputFieldBtn1_1.value;
       });
@@ -496,6 +498,8 @@ const r3 = new rive.Rive({
     let inputField_btn3_1 = document.getElementById("btn3_input1");
     let inputObj_btn3_1 = inputs.find(input => input.name === "LakeSize");
     if (inputField_btn3_1 && inputObj_btn3_1) {
+      let val = parseFloat(inputField_btn3_1.value);
+      if (!isNaN(val)) inputObj_btn3_1.value = val;
       inputField_btn3_1.addEventListener("input", () => {
         let val = parseFloat(inputField_btn3_1.value);
         if (!isNaN(val)) inputObj_btn3_1.value = val;
@@ -504,6 +508,7 @@ const r3 = new rive.Rive({
     let inputField_btn3_2 = document.getElementById("btn3_input2");
     let inputObj_btn3_2 = inputs.find(input => input.name === "NoAnimation");
     if (inputField_btn3_2 && inputObj_btn3_2) {
+      inputObj_btn3_2.value = inputField_btn3_2.checked;
       inputField_btn3_2.addEventListener("change", () => {
         inputObj_btn3_2.value = inputField_btn3_2.checked;
       });
@@ -567,6 +572,8 @@ const r7 = new rive.Rive({
     let inputField_btn7_1 = document.getElementById("btn7_input1");
     let inputObj_btn7_1 = inputs.find(input => input.name === "LakeSize");
     if (inputField_btn7_1 && inputObj_btn7_1) {
+      let val = parseFloat(inputField_btn7_1.value);
+      if (!isNaN(val)) inputObj_btn7_1.value = val;
       inputField_btn7_1.addEventListener("input", () => {
         let val = parseFloat(inputField_btn7_1.value);
         if (!isNaN(val)) inputObj_btn7_1.value = val;
@@ -575,6 +582,7 @@ const r7 = new rive.Rive({
     let inputField_btn7_2 = document.getElementById("btn7_input2");
     let inputObj_btn7_2 = inputs.find(input => input.name === "NoAnimation");
     if (inputField_btn7_2 && inputObj_btn7_2) {
+      inputObj_btn7_2.value = inputField_btn7_2.checked;
       inputField_btn7_2.addEventListener("change", () => {
         inputObj_btn7_2.value = inputField_btn7_2.checked;
       });

@@ -249,12 +249,12 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input1">text1:</label>
-            <input type="text" id="btn5_input1" style="width:90px;" />
+            <input type="text" id="btn5_input1" value="" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input2">text2:</label>
-            <input type="text" id="btn5_input2" style="width:90px;" />
+            <input type="text" id="btn5_input2" value="" style="width:90px;" />
         </div>
         
         </div>
@@ -338,6 +338,8 @@ const r2 = new rive.Rive({
     let inputField_btn2_1 = document.getElementById("btn2_input1");
     let inputObj_btn2_1 = inputs.find(input => input.name === "StressPercent");
     if (inputField_btn2_1 && inputObj_btn2_1) {
+      let val = parseFloat(inputField_btn2_1.value);
+      if (!isNaN(val)) inputObj_btn2_1.value = val;
       inputField_btn2_1.addEventListener("input", () => {
         let val = parseFloat(inputField_btn2_1.value);
         if (!isNaN(val)) inputObj_btn2_1.value = val;
@@ -379,12 +381,14 @@ const r5 = new rive.Rive({
     const vmi = r5.viewModelInstance;
     let inputFieldBtn5_1 = document.getElementById("btn5_input1");
     if (inputFieldBtn5_1 && vmi) {
+      vmi.string("text1").value = inputFieldBtn5_1.value;
       inputFieldBtn5_1.addEventListener("input", () => {
         vmi.string("text1").value = inputFieldBtn5_1.value;
       });
     }
     let inputFieldBtn5_2 = document.getElementById("btn5_input2");
     if (inputFieldBtn5_2 && vmi) {
+      vmi.string("text2").value = inputFieldBtn5_2.value;
       inputFieldBtn5_2.addEventListener("input", () => {
         vmi.string("text2").value = inputFieldBtn5_2.value;
       });

@@ -161,12 +161,12 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input1">text1:</label>
-            <input type="text" id="btn_main_input1" style="width:90px;" />
+            <input type="text" id="btn_main_input1" value="" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input2">text2:</label>
-            <input type="text" id="btn_main_input2" style="width:90px;" />
+            <input type="text" id="btn_main_input2" value="" style="width:90px;" />
         </div>
         
           </div>
@@ -184,12 +184,14 @@ const mainRive = new rive.Rive({
     const vmi = mainRive.viewModelInstance;
     let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
     if (inputFieldBtn_Main_1 && vmi) {
+      vmi.string("text1").value = inputFieldBtn_Main_1.value;
       inputFieldBtn_Main_1.addEventListener("input", () => {
         vmi.string("text1").value = inputFieldBtn_Main_1.value;
       });
     }
     let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
     if (inputFieldBtn_Main_2 && vmi) {
+      vmi.string("text2").value = inputFieldBtn_Main_2.value;
       inputFieldBtn_Main_2.addEventListener("input", () => {
         vmi.string("text2").value = inputFieldBtn_Main_2.value;
       });

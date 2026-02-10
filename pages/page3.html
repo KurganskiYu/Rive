@@ -210,12 +210,12 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn3_input1">CurrentTime:</label>
-            <input type="text" id="btn3_input1" style="width:90px;" />
+            <input type="text" id="btn3_input1" value="" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn3_input2">CurrentPercent:</label>
-            <input type="text" id="btn3_input2" style="width:90px;" />
+            <input type="text" id="btn3_input2" value="" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
@@ -390,12 +390,14 @@ const r3 = new rive.Rive({
     const vmi = r3.viewModelInstance;
     let inputFieldBtn3_1 = document.getElementById("btn3_input1");
     if (inputFieldBtn3_1 && vmi) {
+      vmi.string("CurrentTime").value = inputFieldBtn3_1.value;
       inputFieldBtn3_1.addEventListener("input", () => {
         vmi.string("CurrentTime").value = inputFieldBtn3_1.value;
       });
     }
     let inputFieldBtn3_2 = document.getElementById("btn3_input2");
     if (inputFieldBtn3_2 && vmi) {
+      vmi.string("CurrentPercent").value = inputFieldBtn3_2.value;
       inputFieldBtn3_2.addEventListener("input", () => {
         vmi.string("CurrentPercent").value = inputFieldBtn3_2.value;
       });
@@ -466,6 +468,7 @@ const r4 = new rive.Rive({
     let inputField_btn4_1 = document.getElementById("btn4_input1");
     let inputObj_btn4_1 = inputs.find(input => input.name === "Flip");
     if (inputField_btn4_1 && inputObj_btn4_1) {
+      inputObj_btn4_1.value = inputField_btn4_1.checked;
       inputField_btn4_1.addEventListener("change", () => {
         inputObj_btn4_1.value = inputField_btn4_1.checked;
       });
@@ -487,6 +490,7 @@ const r5 = new rive.Rive({
     let inputField_btn5_1 = document.getElementById("btn5_input1");
     let inputObj_btn5_1 = inputs.find(input => input.name === "Flip");
     if (inputField_btn5_1 && inputObj_btn5_1) {
+      inputObj_btn5_1.value = inputField_btn5_1.checked;
       inputField_btn5_1.addEventListener("change", () => {
         inputObj_btn5_1.value = inputField_btn5_1.checked;
       });
@@ -508,6 +512,7 @@ const r6 = new rive.Rive({
     let inputField_btn6_1 = document.getElementById("btn6_input1");
     let inputObj_btn6_1 = inputs.find(input => input.name === "Flip");
     if (inputField_btn6_1 && inputObj_btn6_1) {
+      inputObj_btn6_1.value = inputField_btn6_1.checked;
       inputField_btn6_1.addEventListener("change", () => {
         inputObj_btn6_1.value = inputField_btn6_1.checked;
       });
@@ -529,6 +534,8 @@ const r7 = new rive.Rive({
     let inputField_btn7_1 = document.getElementById("btn7_input1");
     let inputObj_btn7_1 = inputs.find(input => input.name === "BatteryPercentFrom");
     if (inputField_btn7_1 && inputObj_btn7_1) {
+      let val = parseFloat(inputField_btn7_1.value);
+      if (!isNaN(val)) inputObj_btn7_1.value = val;
       inputField_btn7_1.addEventListener("input", () => {
         let val = parseFloat(inputField_btn7_1.value);
         if (!isNaN(val)) inputObj_btn7_1.value = val;
@@ -537,6 +544,8 @@ const r7 = new rive.Rive({
     let inputField_btn7_2 = document.getElementById("btn7_input2");
     let inputObj_btn7_2 = inputs.find(input => input.name === "BatteryPercentTo");
     if (inputField_btn7_2 && inputObj_btn7_2) {
+      let val = parseFloat(inputField_btn7_2.value);
+      if (!isNaN(val)) inputObj_btn7_2.value = val;
       inputField_btn7_2.addEventListener("input", () => {
         let val = parseFloat(inputField_btn7_2.value);
         if (!isNaN(val)) inputObj_btn7_2.value = val;

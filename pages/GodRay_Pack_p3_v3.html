@@ -213,6 +213,7 @@ mainRive.on("load", () => {
   let inputObjMain_1 = inputs.find(input => input.name === "Flip");
   if (inputFieldMain_1 && inputObjMain_1) {
 
+    inputObjMain_1.value = inputFieldMain_1.checked;
     inputFieldMain_1.addEventListener("change", () => {
       inputObjMain_1.value = inputFieldMain_1.checked;
     });
@@ -245,6 +246,7 @@ previewRive.on("load", () => {
   let inputObjPreview_1 = inputs.find(input => input.name === "Flip");
   if (inputFieldPreview_1 && inputObjPreview_1) {
 
+    inputObjPreview_1.value = inputFieldPreview_1.checked;
     inputFieldPreview_1.addEventListener("change", () => {
       inputObjPreview_1.value = inputFieldPreview_1.checked;
     });
