@@ -299,7 +299,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="energybyny_v5.html" style="color: #464646;">energybyny</a></div>
+          <div><a href="energybyny_v6.html" style="color: #464646;">energybyny</a></div>
           
         </div>
         
@@ -318,6 +318,11 @@
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input3">text3:</label>
             <input type="text" id="btn7_input3" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn7_input4">textReclaim:</label>
+            <input type="text" id="btn7_input4" style="width:90px;" />
         </div>
         
         </div>
@@ -458,7 +463,7 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-  src: "../riv/energybyny_v5.riv",
+  src: "../riv/energybyny_v6.riv",
   canvas: document.getElementById("canvas7"),
   autoplay: true, autoBind: true,artboard: "EnergyByNY", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -480,6 +485,12 @@ const r7 = new rive.Rive({
     if (inputFieldBtn7_3 && vmi) {
       inputFieldBtn7_3.addEventListener("input", () => {
         vmi.string("text3").value = inputFieldBtn7_3.value;
+      });
+    }
+    let inputFieldBtn7_4 = document.getElementById("btn7_input4");
+    if (inputFieldBtn7_4 && vmi) {
+      inputFieldBtn7_4.addEventListener("input", () => {
+        vmi.string("textReclaim").value = inputFieldBtn7_4.value;
       });
     }
     const inputs = r7.stateMachineInputs("State Machine 1");

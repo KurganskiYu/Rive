@@ -1,5 +1,8 @@
 -- ParticleSystem: Noise-based particle system
 -- Type definitions
+type ParticleVM = {
+	pop: Property<boolean>,
+}
 type Particle = {
 	x: number,
 	y: number,
@@ -11,7 +14,8 @@ type Particle = {
 	gravity: number,
 	windX: number,
 	windY: number,
-	noiseStr: number,
+	noiseStrX: number,
+	noiseStrY: number,
 	noiseFreq: number,
 	-- Per-particle artboard instance so animations are independent.
 	instance: Artboard?,
@@ -33,7 +37,9 @@ type ParticleSystemNode = {
 	scaleVar: Input<number>,
 	life: Input<number>,
 	lifeVar: Input<number>,
-	noiseStrength: Input<number>,
+	noiseStrengthX: Input<number>,
+	noiseStrengthY: Input<number>,
+	noiseOctaves: Input<number>,
 	noiseScale: Input<number>,
 	noiseScaleVar: number,
 	noiseTimeScale: Input<number>,
@@ -44,6 +50,7 @@ type ParticleSystemNode = {
 	gravity: Input<number>,
 	gravityVar: number,
 	friction: Input<number>,
+	popOutside: Input<boolean>,
 	artboard: Input<Artboard>,
 	-- Template artboard instance used only as a source for per-particle instancing.
 	template: Artboard,
@@ -133,7 +140,8 @@ local function createRawParticle(): Particle
 		gravity = 0,
 		windX = 0,
 		windY = 0,
-		noiseStr = 0,
+		noiseStrX = 0,
+		noiseStrY = 0,
 		noiseFreq = toNoiseFreq(0.01),
 		instance = nil,
 	}
@@ -152,7 +160,8 @@ local function spawn(sys: ParticleSystemNode, p: Particle)
 	p.gravity = randomRange(sys.gravity, sys.gravityVar)
 	p.windX = randomRange(sys.windX, sys.windXVar)
 	p.windY = randomRange(sys.windY, sys.windYVar)
-	p.noiseStr = sys.noiseStrength
+	p.noiseStrX = sys.noiseStrengthX
+	p.noiseStrY = sys.noiseStrengthY
 	p.noiseFreq = toNoiseFreq(randomRange(sys.noiseScale, sys.noiseScaleVar))
 	-- Each particle gets a fresh artboard instance so animations start from the beginning.
 	p.instance = sys.artboard:instance()
@@ -230,6 +239,7 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 	-- Update existing particles
 	local i = 1
 	local count = #particles
+	local octaves = mfloor(mmax(1, self.noiseOctaves))
 	while i <= count do
 		local p = particles[i]
 		p.life = p.life + seconds
@@ -248,20 +258,21 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 		else
 			-- Apply noise-based forces (noise directly influences velocity for chaotic movement)
 			local timeOffset = self.time * self.noiseTimeScale
-			local nx = fbm(p.x * p.noiseFreq + timeOffset, p.y * p.noiseFreq + timeOffset, 0.5, 2)
-			local ny = fbm(p.x * p.noiseFreq + 100 + timeOffset, p.y * p.noiseFreq + 100 + timeOffset, 0.5, 2)
+			local nx = fbm(p.x * p.noiseFreq + timeOffset, p.y * p.noiseFreq + timeOffset, 0.5, octaves)
+			local ny = fbm(p.x * p.noiseFreq + 100 + timeOffset, p.y * p.noiseFreq + 100 + timeOffset, 0.5, octaves)
 			
 			 -- Normalize noise strength by frequency so scale doesn't affect force magnitude
 			-- Higher frequency (smaller scale) = tighter patterns but same force
 			-- Lower frequency (larger scale) = broader patterns but same force
-			local normalizedStr = p.noiseStr * p.noiseFreq
+			local normalizedStrX = p.noiseStrX * p.noiseFreq
+			local normalizedStrY = p.noiseStrY * p.noiseFreq
 			
 			-- Noise and wind directly set velocity component (chaotic), gravity accumulates
 			p.vy = p.vy + p.gravity * seconds
 			
 			-- Add wind and noise as forces (not accumulating velocity)
-			local windNoiseX = (p.windX + nx * normalizedStr) * seconds
-			local windNoiseY = (p.windY + ny * normalizedStr) * seconds
+			local windNoiseX = (p.windX + nx * normalizedStrX) * seconds
+			local windNoiseY = (p.windY + ny * normalizedStrY) * seconds
 			
 			p.vx = p.vx + windNoiseX
 			p.vy = p.vy + windNoiseY
@@ -274,6 +285,12 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 			
 			p.x = p.x + p.vx * seconds
 			p.y = p.y + p.vy * seconds
+
+			if self.popOutside and p.instance and p.instance.data and p.instance.data.pop then
+				local isOutside = p.x < 0 or p.x > self.emitWidth or p.y < 0 or p.y > self.emitHeight
+				p.instance.data.pop.value = isOutside
+			end
+
 			if p.instance then
 				p.instance:advance(seconds)
 			end
@@ -324,7 +341,9 @@ return function(): Node<ParticleSystemNode>
 		scaleVar = 0.5,
 		life = 2,
 		lifeVar = 1,
-		noiseStrength = 2000,
+		noiseStrengthX = 2000,
+		noiseStrengthY = 2000,
+		noiseOctaves = 2,
 		noiseScale = 5.0,
 		noiseScaleVar = 0,
 		noiseTimeScale = 10.5,
@@ -335,6 +354,7 @@ return function(): Node<ParticleSystemNode>
 		gravity = 0,
 		gravityVar = 0,
 		friction = 0.5,
+		popOutside = false,
 		artboard = late(),
 		template = late(),
 		particles = {},
