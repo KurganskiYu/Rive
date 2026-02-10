@@ -155,8 +155,9 @@ local function spawn(sys: ParticleSystemNode, p: Particle)
 	local s = randomRange(sys.speed, sys.speedVar)
 	p.vx = mcos(a) * s
 	p.vy = msin(a) * s
-	p.x = randomRange(0, sys.emitWidth)
-	p.y = randomRange(0, sys.emitHeight)
+	-- Ensure particles spawn strictly within the emission area (0 to width/height)
+	p.x = mrandom() * sys.emitWidth
+	p.y = mrandom() * sys.emitHeight
 	p.gravity = randomRange(sys.gravity, sys.gravityVar)
 	p.windX = randomRange(sys.windX, sys.windXVar)
 	p.windY = randomRange(sys.windY, sys.windYVar)
@@ -165,6 +166,10 @@ local function spawn(sys: ParticleSystemNode, p: Particle)
 	p.noiseFreq = toNoiseFreq(randomRange(sys.noiseScale, sys.noiseScaleVar))
 	-- Each particle gets a fresh artboard instance so animations start from the beginning.
 	p.instance = sys.artboard:instance()
+	-- Reset pop state to ensure it starts valid on first frame
+	if sys.popOutside and p.instance and p.instance.data and p.instance.data.pop then
+		p.instance.data.pop.value = false
+	end
 end
 
 local function burst(self: ParticleSystemNode)
