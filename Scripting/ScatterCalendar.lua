@@ -157,6 +157,7 @@ local function createPoint(self: ScatterNode, index: number)
 		y = 0,
 		index = index,
 		isActive = false,
+		-- today = nil, (implicit) - forces update in first advance
 	}
 
 	pt.creationOrder = #self.points + 1
@@ -213,8 +214,17 @@ local function advance(self: ScatterNode, seconds: number): boolean
 
 	-- Limit max points by daysAmount if provided
 	if self.daysAmount then
-		totalPoints = mmin(totalPoints, self.daysAmount)
+		totalPoints = mmin(totalPoints, mfloor(self.daysAmount))
 	end
+	
+	-- Handle decreasing daysAmount by removing excessive points
+	while #self.points > totalPoints do
+		local pt = mremove(self.points)
+		if pt then
+			self.created[pt.index] = nil
+		end
+	end
+	self.spawnIndex = #self.points
 	
 	-- 1. Immediate Spawning: Ensure all needed points exist
 	while self.spawnIndex < totalPoints do
@@ -227,19 +237,20 @@ local function advance(self: ScatterNode, seconds: number): boolean
 	local delay = mfloor(self.delay or self.delayFrames)
 	local shift = self.daysShift or 0
 
+	local listCount = #self.points
+
 	-- 3. Update Active Points: update positions and handle delayed activation
 	for i, pt in ipairs(self.points) do
 		local shiftedIndex = pt.index + shift
 		updatePointPosition(self, pt, shiftedIndex)
 
 		-- Today Logic: Is this the last point?
-		local isLast = (pt.index == totalPoints - 1)
-		if pt.today ~= isLast then
-			pt.today = isLast
-			if pt.instance.data and pt.instance.data.today then
-				pt.instance.data.today.value = isLast
-			end
+		local isLast = (i == listCount)
+		
+		if pt.instance.data and pt.instance.data.today then
+			pt.instance.data.today.value = isLast
 		end
+		pt.today = isLast
 
 		-- Activation Logic
 		if not pt.isActive then
