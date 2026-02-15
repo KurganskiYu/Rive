@@ -7,6 +7,7 @@ type PointVM = {
 	percentTo: Property<number>,
 	active: Property<boolean>,
 	today: Property<boolean>,
+	speed: Property<number>,
 }
 
 type Point = {
@@ -39,6 +40,8 @@ type ScatterNode = {
 	percentToValues: { number }, -- NEW: parsed values used for lookup
 	delay: number?, -- NEW: VM delay override
 	delayProp: Property<number>?, -- NEW
+	speed: number?, -- NEW: VM speed override
+	speedProp: Property<number>?, -- NEW
 
 	-- State
 	points: { Point },
@@ -83,6 +86,12 @@ local function init(self: ScatterNode, context: Context): boolean
 		if delayProp then
 			self.delayProp = delayProp
 			self.delay = delayProp.value
+		end
+
+		local speedProp = vm:getNumber('speed')
+		if speedProp then
+			self.speedProp = speedProp
+			self.speed = speedProp.value
 		end
 	end
 
@@ -167,6 +176,7 @@ local function createPoint(self: ScatterNode, index: number)
 		if inst.data.today then inst.data.today.value = false end
 		if inst.data.percentFrom then inst.data.percentFrom.value = 0 end
 		if inst.data.percentTo then inst.data.percentTo.value = pToVal end
+		if inst.data.speed and self.speed then inst.data.speed.value = self.speed end
 	end
 
 	updatePointPosition(self, pt, index + (self.daysShift or 0))
@@ -182,6 +192,10 @@ local function advance(self: ScatterNode, seconds: number): boolean
 
 	if self.delayProp and self.delayProp.value ~= self.delay then
 		self.delay = self.delayProp.value
+	end
+
+	if self.speedProp and self.speedProp.value ~= self.speed then
+		self.speed = self.speedProp.value
 	end
 
 	-- Check if percentToData has changed (e.g. from JS initialization)
@@ -243,6 +257,11 @@ local function advance(self: ScatterNode, seconds: number): boolean
 	for i, pt in ipairs(self.points) do
 		local shiftedIndex = pt.index + shift
 		updatePointPosition(self, pt, shiftedIndex)
+
+		-- Update speed
+		if pt.instance.data and pt.instance.data.speed and self.speed then
+			pt.instance.data.speed.value = self.speed
+		end
 
 		-- Today Logic: Is this the last point?
 		local isLast = (i == listCount)
@@ -314,6 +333,7 @@ return function(): Node<ScatterNode>
 		percentToData = "",
 		daysAmount = 31,
 		daysShift = 3,
+		speed = 1.0,
 
 		init = init,
 		advance = advance,
