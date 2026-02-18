@@ -41,9 +41,17 @@ type ScatterNode = {
 
 	-- State
 	points: { Point },
+	pointsMap: { [number]: Point }, -- NEW: Map for O(1) access
 	spawnIndex: number,
 	frameCounter: number,
 	mat: Mat2D,
+
+	-- NEW caching helpers
+	cx: number,
+	cy: number,
+	sx: number,
+	sy: number,
+	lastTetrahedral: boolean,
 
 	-- NEW state helpers
 	created: { [number]: boolean },
@@ -87,23 +95,14 @@ local typeGrid = {
 }
 
 local function computeGridXY(self: ScatterNode, index: number)
-	local cx = mmax(1, mfloor(self.countX))
-	local cy = mmax(1, mfloor(self.countY))
+	local row = mfloor(index / self.cx)
+	local col = index % self.cx
 
-	local row = mfloor(index / cx)
-	local col = index % cx
-
-	local sx = 0
-	if cx > 1 then sx = self.areaWidth / (cx - 1) end
-
-	local sy = 0
-	if cy > 1 then sy = self.areaHeight / (cy - 1) end
-
-	local x = col * sx
-	local y = row * sy
+	local x = col * self.sx
+	local y = row * self.sy
 
 	if self.tetrahedral and (row % 2 == 1) then
-		x = x + (sx * 0.5)
+		x = x + (self.sx * 0.5)
 	end
 
 	return x, y
@@ -111,6 +110,7 @@ end
 
 local function init(self: ScatterNode, context: Context): boolean
 	self.points = {}
+	self.pointsMap = {}
 	self.spawnIndex = 0
 	self.frameCounter = mfloor(self.delayFrames) -- Start ready if delay is 0
 	self.mat = Mat2D.identity()
@@ -118,6 +118,13 @@ local function init(self: ScatterNode, context: Context): boolean
 	-- NEW: radial spawn helpers
 	self.created = {}
 	self.spawnRadius = 0
+
+	-- Caching
+	self.cx = 0
+	self.cy = 0
+	self.sx = 0
+	self.sy = 0
+	self.lastTetrahedral = false
 
 	-- NEW: clearing state
 	self.creationList = {}
@@ -130,26 +137,16 @@ local function init(self: ScatterNode, context: Context): boolean
 end
 
 local function updatePointPosition(self: ScatterNode, pt: Point, index: number)
-	local cx = mmax(1, mfloor(self.countX))
-	local cy = mmax(1, mfloor(self.countY))
-	
 	-- Map linear index to 2D grid
-	local row = mfloor(index / cx)
-	local col = index % cx
+	local row = mfloor(index / self.cx)
+	local col = index % self.cx
 	
-	-- Calculate grid spacing (distribute evenly across area)
-	local sx = 0
-	if cx > 1 then sx = self.areaWidth / (cx - 1) end
-	
-	local sy = 0
-	if cy > 1 then sy = self.areaHeight / (cy - 1) end
-	
-	local x = col * sx
-	local y = row * sy
+	local x = col * self.sx
+	local y = row * self.sy
 	
 	-- Tetrahedral shift: offset every odd row by half a cell width
 	if self.tetrahedral and (row % 2 == 1) then
-		x = x + (sx * 0.5)
+		x = x + (self.sx * 0.5)
 	end
 	
 	pt.x = x
@@ -158,13 +155,11 @@ end
 
 local function removePointByIndex(self: ScatterNode, index: number)
 	-- Instead of deleting, we deactivate the point instance flag and property
-	for _, pt in ipairs(self.points) do
-		if pt.index == index and not pt.deactivated then
-			pt.deactivated = true
-			if pt.instance.data and pt.instance.data.deactivate then
-				pt.instance.data.deactivate.value = true
-			end
-			break
+	local pt = self.pointsMap[index]
+	if pt and not pt.deactivated then
+		pt.deactivated = true
+		if pt.instance.data and pt.instance.data.deactivate then
+			pt.instance.data.deactivate.value = true
 		end
 	end
 	
@@ -186,13 +181,7 @@ local function createPoint(self: ScatterNode, index: number)
 	if self.created[index] then return end
 
 	-- Reuse check: look for existing point for this index in the pool
-	local reused: Point? = nil
-	for _, pt in ipairs(self.points) do
-		if pt.index == index then
-			reused = pt
-			break
-		end
-	end
+	local reused: Point? = self.pointsMap[index]
 
 	if reused then 
 		reused.deactivated = false
@@ -207,9 +196,11 @@ local function createPoint(self: ScatterNode, index: number)
 		end
 
 		local t = typeGrid[index + 1] or 1
-		reused.pType = t
-		if reused.instance.data and reused.instance.data.pType then
-			reused.instance.data.pType.value = t
+		if reused.pType ~= t then
+			reused.pType = t
+			if reused.instance.data and reused.instance.data.pType then
+				reused.instance.data.pType.value = t
+			end
 		end
 
 		updatePointPosition(self, reused, index)
@@ -246,6 +237,7 @@ local function createPoint(self: ScatterNode, index: number)
 
 	updatePointPosition(self, pt, index)
 	minsert(self.points, pt)
+	self.pointsMap[index] = pt
 	self.created[index] = true
 end
 
@@ -276,6 +268,19 @@ end
 local function advance(self: ScatterNode, seconds: number): boolean
 	local cx = mmax(1, mfloor(self.countX))
 	local cy = mmax(1, mfloor(self.countY))
+	local sx = 0
+	if cx > 1 then sx = self.areaWidth / (cx - 1) end
+	local sy = 0
+	if cy > 1 then sy = self.areaHeight / (cy - 1) end
+
+	local gridChanged = (cx ~= self.cx or cy ~= self.cy or sx ~= self.sx or sy ~= self.sy or self.tetrahedral ~= self.lastTetrahedral)
+	
+	self.cx = cx
+	self.cy = cy
+	self.sx = sx
+	self.sy = sy
+	self.lastTetrahedral = self.tetrahedral
+
 	local totalPoints = cx * cy
 	local delay = mfloor(self.delayFrames)
 	
@@ -306,7 +311,6 @@ local function advance(self: ScatterNode, seconds: number): boolean
 			local clearDelay = mfloor(self.clearDelayFrames)
 			if clearDelay <= 0 then
 				-- remove all remaining sequential-created points immediately
-				-- use while loop to avoid scope issues with idx
 				while #self.creationList > 0 do
 					local idx = mremove(self.creationList)
 					if idx then removePointByIndex(self, idx) end
@@ -344,7 +348,7 @@ local function advance(self: ScatterNode, seconds: number): boolean
 
 		-- Update all pool points (including those playing deactivation animations)
 		for i, pt in ipairs(self.points) do
-			updatePointPosition(self, pt, pt.index)
+			if gridChanged then updatePointPosition(self, pt, pt.index) end
 			if pt.instance then pt.instance:advance(seconds) end
 		end
 
@@ -413,13 +417,11 @@ local function advance(self: ScatterNode, seconds: number): boolean
 
 	-- 3. Update Active Points: update positions using stored index (handles animated grid)
 	for i, pt in ipairs(self.points) do
-		updatePointPosition(self, pt, pt.index)
+		if gridChanged then updatePointPosition(self, pt, pt.index) end
 
 		if pt.instance then
-			if pt.instance.data and pt.instance.data.pType then
-				pt.instance.data.pType.value = pt.pType
-			end
-
+			-- pType set only in createPoint/reactivation unless it needs per-frame sync
+			-- If typeGrid changes dynamically, we'd need this, but it seems static.
 			pt.instance:advance(seconds)
 		end
 	end
@@ -464,9 +466,16 @@ return function(): Node<ScatterNode>
 		clearDelayFrames = 0,
 
 		points = {},
+		pointsMap = {},
 		spawnIndex = 0,
 		frameCounter = 0,
 		mat = late(),
+
+		cx = 0,
+		cy = 0,
+		sx = 0,
+		sy = 0,
+		lastTetrahedral = false,
 
 		created = {},
 		spawnRadius = 0,

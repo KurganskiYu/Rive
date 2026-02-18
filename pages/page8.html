@@ -157,7 +157,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="New_v1.html" style="color: #464646;">New</a></div>
+          <div><a href="EyeLoader_v4_eye-A_loop.html" style="color: #464646;">EyeLoader eye-A loop</a></div>
           
         </div>
         
@@ -168,6 +168,21 @@
     
       <div class="animation-container">
         <canvas id="canvas1" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="New_v1.html" style="color: #464646;">New</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas2" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -184,22 +199,32 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "../riv/New_v1.riv",
+  src: "../riv/EyeLoader_v4_eye-A_loop.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, stateMachines: "EYE timeline",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
-    const inputs = r0.stateMachineInputs("State Machine 1");
+    const inputs = r0.stateMachineInputs("EYE timeline");
   },
 });
 
 const r1 = new rive.Rive({
-  src: "../riv/EyeNew_v5.riv",
+  src: "../riv/New_v1.riv",
   canvas: document.getElementById("canvas1"),
   autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
     const inputs = r1.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r2 = new rive.Rive({
+  src: "../riv/EyeNew_v5.riv",
+  canvas: document.getElementById("canvas2"),
+  autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
+  onLoad: () => {
+    r2.resizeDrawingSurfaceToCanvas();
+    const inputs = r2.stateMachineInputs("State Machine 1");
   },
 });
 
