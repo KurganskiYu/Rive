@@ -252,6 +252,10 @@ local function init(self: ParticleSystemNode, context: Context): boolean
 end
 local function advance(self: ParticleSystemNode, seconds: number): boolean
 	self.time = self.time + seconds
+	-- Wrap noise time to avoid floating point precision issues after long duration.
+	-- 10000 is arbitrary but large enough to not be noticeable, and small enough to keep precision.
+	local noiseTime = self.time % 10000
+	
 	local particles = self.particles
 	local pool = self.pool
 
@@ -323,7 +327,7 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 		else
 			-- Apply noise-based forces (noise directly influences velocity for chaotic movement)
 			-- Use Time as Z dimension to animate noise "bubbling" without directional sliding
-			local timeZ = self.time * self.noiseTimeScale
+			local timeZ = noiseTime * self.noiseTimeScale
 			local nx = fbm(p.x * p.noiseFreq, p.y * p.noiseFreq, timeZ, 0.5, octaves)
 			local ny = fbm(p.x * p.noiseFreq + 100, p.y * p.noiseFreq + 100, timeZ, 0.5, octaves)
 			
