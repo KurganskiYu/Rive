@@ -152,7 +152,22 @@
 
 
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="168"></canvas>
+        <canvas id="canvas0" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="contraTest_v5.html" style="color: #464646;">contraTest</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="168"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -164,25 +179,10 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn0_input1">numParticles:</label>
-            <input type="number" id="btn0_input1" value="120" style="width:60px;" />
+            <label for="btn1_input1">numParticles:</label>
+            <input type="number" id="btn1_input1" value="120" style="width:60px;" />
         </div>
         
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas1" width="200" height="434"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="starsflystack_v1.html" style="color: #464646;">starsflystack</a></div>
-          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
       </div>
@@ -196,7 +196,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="starsfly_v3.html" style="color: #464646;">starsfly</a></div>
+          <div><a href="starsflystack_v1.html" style="color: #464646;">starsflystack</a></div>
           <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -206,13 +206,13 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="433"></canvas>
+        <canvas id="canvas3" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="plustuktuk_v1.html" style="color: #464646;">plustuktuk</a></div>
-          
+          <div><a href="starsfly_v3.html" style="color: #464646;">starsfly</a></div>
+          <button id="btn3" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
       </div>
@@ -226,7 +226,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="cometpluses_v4.html" style="color: #464646;">cometpluses</a></div>
+          <div><a href="plustuktuk_v1.html" style="color: #464646;">plustuktuk</a></div>
           
         </div>
         
@@ -320,45 +320,41 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "../riv/parametricparticles_v9.riv",
+  src: "../riv/contraTest_v5.riv",
   canvas: document.getElementById("canvas0"),
-  autoplay: true, autoBind: true,artboard: "Emitter", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
   onLoad: () => {
     r0.resizeDrawingSurfaceToCanvas();
-    const vmi = r0.viewModelInstance;
-    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
-    if (inputFieldBtn0_1 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn0_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn0_1.value);
-        if (!isNaN(val)) vmi.number("numParticles").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn0_1.value);
-      if (!isNaN(initVal)) vmi.number("numParticles").value = initVal;
-    }
     const inputs = r0.stateMachineInputs("State Machine 1");
   },
 });
 
 const r1 = new rive.Rive({
-  src: "../riv/starsflystack_v1.riv",
+  src: "../riv/parametricparticles_v9.riv",
   canvas: document.getElementById("canvas1"),
-  autoplay: true, autoBind: true,artboard: "Stacks", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "Emitter", stateMachines: "State Machine 1",
   onLoad: () => {
     r1.resizeDrawingSurfaceToCanvas();
-    const inputs = r1.stateMachineInputs("State Machine 1");
-    let triggerInput = inputs.find(input => input.name === "Trigger 1");
-    if (triggerInput) {
-      document.getElementById("btn1").addEventListener("click", () => triggerInput.fire());
+    const vmi = r1.viewModelInstance;
+    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
+    if (inputFieldBtn1_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn1_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn1_1.value);
+        if (!isNaN(val)) vmi.number("numParticles").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn1_1.value);
+      if (!isNaN(initVal)) vmi.number("numParticles").value = initVal;
     }
+    const inputs = r1.stateMachineInputs("State Machine 1");
   },
 });
 
 const r2 = new rive.Rive({
-  src: "../riv/starsfly_v3.riv",
+  src: "../riv/starsflystack_v1.riv",
   canvas: document.getElementById("canvas2"),
-  autoplay: true, autoBind: true,artboard: "Main", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "Stacks", stateMachines: "State Machine 1",
   onLoad: () => {
     r2.resizeDrawingSurfaceToCanvas();
     const inputs = r2.stateMachineInputs("State Machine 1");
@@ -370,19 +366,23 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-  src: "../riv/plustuktuk_v1.riv",
+  src: "../riv/starsfly_v3.riv",
   canvas: document.getElementById("canvas3"),
   autoplay: true, autoBind: true,artboard: "Main", stateMachines: "State Machine 1",
   onLoad: () => {
     r3.resizeDrawingSurfaceToCanvas();
     const inputs = r3.stateMachineInputs("State Machine 1");
+    let triggerInput = inputs.find(input => input.name === "Trigger 1");
+    if (triggerInput) {
+      document.getElementById("btn3").addEventListener("click", () => triggerInput.fire());
+    }
   },
 });
 
 const r4 = new rive.Rive({
-  src: "../riv/cometpluses_v4.riv",
+  src: "../riv/plustuktuk_v1.riv",
   canvas: document.getElementById("canvas4"),
-  autoplay: true, autoBind: true,artboard: "CometPluses", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true,artboard: "Main", stateMachines: "State Machine 1",
   onLoad: () => {
     r4.resizeDrawingSurfaceToCanvas();
     const inputs = r4.stateMachineInputs("State Machine 1");
