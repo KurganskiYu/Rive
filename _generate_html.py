@@ -19,6 +19,99 @@ def get_html_head():
     with open(head_html_path, "r", encoding="utf-8") as head_file:
         return head_file.read()
 
+# NEW: Helper to inject the BG button on every page
+def get_bg_button_html(is_root=True):
+    riv_path = "riv/bg_button.riv" if is_root else "../riv/bg_button.riv"
+    # CSS for top-right fixed position
+    html = f'''
+    <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {{
+        function updatePageBg(mode) {{
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {{
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f), " +
+                    "linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "0 0, 10px 10px";
+            }} else if (mode === 2) {{
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }} else if (mode === 3) {{
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }}
+        }}
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {{
+            updatePageBg(parseInt(storedBg));
+        }}
+
+        const bgRive = new rive.Rive({{
+          src: "{riv_path}",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {{
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {{
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {{
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {{
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    }};
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {{
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {{
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }}
+                    }}, 200);
+                }}
+            }}
+          }} }}); 
+      }})();
+    </script>
+    '''
+    return html
+
 html_foot = """
     </div>
 </body>
@@ -584,6 +677,8 @@ def make_animation_page(row):
             }
 
     html_parts = [get_html_head()]
+    # Inject BG button (is_root=False because this is in pages/)
+    html_parts.append(get_bg_button_html(is_root=False))
     
     # Generate main content based on preview existence
     if preview_ctx:
@@ -767,6 +862,7 @@ def write_main_page(page_rows, page_idx, total_pages):
     with open(filename, "w", encoding="utf-8") as f:
         content_parts = [
             get_html_head(),
+            get_bg_button_html(is_root=is_root),  # Inject BG button
             "".join(make_main_canvas(idx, row, is_root) for idx, row in enumerate(page_rows)),
             "</div>\n",
             make_script(page_rows, is_root),

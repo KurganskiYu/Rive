@@ -39,6 +39,12 @@
             width: auto; /* Ensure the CSS width matches the HTML width */
             height: auto; /* Ensure the CSS height matches the HTML height */
         }
+        #bg_button_canvas {
+            border: none !important;
+        }
+        .bg-btn {
+            border: 0px;
+        }
         .animation-container {
             display: flex;
             flex-direction: column;
@@ -151,6 +157,92 @@
 
 
 
+    <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f), " +
+                    "linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "0 0, 10px 10px";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../riv/bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
     <div class="animation-container">
       <canvas id="main_canvas" width="196" height="186"></canvas>
       <div class="description">
