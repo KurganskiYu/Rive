@@ -19,7 +19,6 @@ type Point = {
 	creationOrder: number?,
 	isActive: boolean?, -- Local tracking of active property
 	today: boolean?, -- Local tracking of today property
-}
 
 type ScatterNode = {
 	-- Inputs
