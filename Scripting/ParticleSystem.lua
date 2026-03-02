@@ -23,6 +23,7 @@ type Particle = {
 	path: Path?,
 }
 type ParticleSystemNode = {
+	artboard: Input<Artboard>,
 	-- Target number of live particles (also used to derive default emission rate).
 	count: Input<number>,
 	-- Optional explicit emission rate (particles per second). If <= 0, derived from count/life.
@@ -33,6 +34,7 @@ type ParticleSystemNode = {
 	emitHeight: Input<number>,
 	speed: Input<number>,
 	speedVar: Input<number>,
+	radialSpeed: Input<boolean>,
 	angle: Input<number>,
 	angleVar: Input<number>,
 	scale: Input<number>,
@@ -60,7 +62,7 @@ type ParticleSystemNode = {
 	drawEmitter: Input<boolean>,
 	emitterPaint: Paint,
 	emitterPath: Path,
-	artboard: Input<Artboard>,
+	
 	-- Template artboard instance used only as a source for per-particle instancing.
 	template: Artboard,
 	particles: { Particle },
@@ -185,13 +187,32 @@ local function spawn(sys: ParticleSystemNode, p: Particle)
 	p.maxLife = mmax(0.1, randomRange(sys.life, sys.lifeVar))
 	p.scale = mmax(0, randomRange(sys.scale, sys.scaleVar))
 	p.mass = mmax(0.1, randomRange(sys.mass, sys.massVar))
-	local a = mrad(randomRange(sys.angle, sys.angleVar))
-	local s = randomRange(sys.speed, sys.speedVar)
-	p.vx = mcos(a) * s
-	p.vy = msin(a) * s
+	
 	-- Ensure particles spawn strictly within the emission area (0 to width/height)
 	p.x = mrandom() * sys.emitWidth
 	p.y = mrandom() * sys.emitHeight
+	
+	local s = randomRange(sys.speed, sys.speedVar)
+	
+	if sys.radialSpeed then
+		local cx = sys.emitWidth * 0.5
+		local cy = sys.emitHeight * 0.5
+		local dx = p.x - cx
+		local dy = p.y - cy
+		local dist = math.sqrt(dx * dx + dy * dy)
+		if dist > 0.0001 then
+			p.vx = (dx / dist) * s
+			p.vy = (dy / dist) * s
+		else
+			p.vx = 0
+			p.vy = 0
+		end
+	else
+		local a = mrad(randomRange(sys.angle, sys.angleVar))
+		p.vx = mcos(a) * s
+		p.vy = msin(a) * s
+	end
+
 	p.gravity = randomRange(sys.gravity, sys.gravityVar)
 	p.windX = randomRange(sys.windX, sys.windXVar)
 	p.windY = randomRange(sys.windY, sys.windYVar)
@@ -434,6 +455,7 @@ return function(): Node<ParticleSystemNode>
 		emitHeight = 0,
 		speed = 10,
 		speedVar = 0,
+		radialSpeed = false,
 		angle = 0,
 		angleVar = 360,
 		scale = 0.7,
