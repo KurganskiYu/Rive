@@ -243,11 +243,23 @@
       })();
     </script>
     
-    <div class="animation-container">
-      <canvas id="main_canvas" width="393" height="206"></canvas>
-      <div class="description">
-        <div>
-          <div><a href="../riv/bannerparticlesbutton_v1.riv" target="_blank" style="color: white;">bannerparticlesbutton</a><br>Size: 393px × 206px<br>State Machine: State Machine 1<br>Artboard: main<br>Duration: 3.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
+      <div class="animation-container">
+        <canvas id="main_canvas" width="393" height="206"></canvas>
+        <div class="description">
+          <div>
+            <div><a href="../riv/bannerparticlesbutton_v1.riv" target="_blank" style="color: white;">bannerparticlesbutton</a><br>Size: 393px × 206px<br>State Machine: State Machine 1<br>Artboard: main<br>Duration: 3.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="preview_canvas" width="393" height="206"></canvas>
+        <div class="description">
+          Preview:<br>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
@@ -263,6 +275,15 @@ const mainRive = new rive.Rive({
   autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const previewRive = new rive.Rive({
+  src: "../riv/bannerparticlesbutton_v1_preview.riv",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+  onLoad: () => {
+    previewRive.resizeDrawingSurfaceToCanvas();
   },
 });
 
