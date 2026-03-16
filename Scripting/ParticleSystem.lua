@@ -24,6 +24,7 @@ type Particle = {
 }
 type ParticleSystemNode = {
 	artboard: Input<Artboard>,
+	fastStart: Input<boolean>,
 	-- Target number of live particles (also used to derive default emission rate).
 	count: Input<number>,
 	-- Optional explicit emission rate (particles per second). If <= 0, derived from count/life.
@@ -43,6 +44,7 @@ type ParticleSystemNode = {
 	massVar: Input<number>,
 	life: Input<number>,
 	lifeVar: Input<number>,
+	fadeTime: Input<number>,
 	noiseStrengthX: Input<number>,
 	noiseStrengthY: Input<number>,
 	noiseOctaves: Input<number>,
@@ -269,6 +271,18 @@ local function init(self: ParticleSystemNode, context: Context): boolean
 	for _ = 1, self.count do
 		table.insert(self.pool, createRawParticle())
 	end
+	
+	if self.fastStart then
+		for _ = 1, self.count do
+			local p = table.remove(self.pool)
+			if p then
+				spawn(self, p)
+				p.life = mrandom() * p.maxLife
+				table.insert(self.particles, p)
+			end
+		end
+	end
+	
 	return true
 end
 local function advance(self: ParticleSystemNode, seconds: number): boolean
@@ -431,11 +445,22 @@ local function draw(self: ParticleSystemNode, renderer: Renderer)
 			p.instance = instance
 		end
 		if instance then
+			local fadeScale = 1
+			if self.fadeTime > 0 then
+				local remain = p.maxLife - p.life
+				if remain < self.fadeTime then
+					local t = mmax(0, remain / self.fadeTime)
+					-- Smoothstep for ease in and out
+					fadeScale = t * t * (3 - 2 * t)
+				end
+			end
+
 			renderer:save()
-			mat.xx = p.scale
+			local finalScale = p.scale * fadeScale
+			mat.xx = finalScale
 			mat.xy = 0
 			mat.yx = 0
-			mat.yy = p.scale
+			mat.yy = finalScale
 			mat.tx = p.x
 			mat.ty = p.y
 			renderer:transform(mat)
@@ -448,6 +473,7 @@ end
 return function(): Node<ParticleSystemNode>
 	return {
 		count = 30,
+		fastStart = false,
 		emitRate = 0, -- 0 => auto (count / life)
 		burst = burst,
 		burstCount = 200,
@@ -464,6 +490,7 @@ return function(): Node<ParticleSystemNode>
 		massVar = 0,
 		life = 5,
 		lifeVar = 0,
+		fadeTime = 1,
 		noiseStrengthX = 20,
 		noiseStrengthY = 20,
 		noiseOctaves = 0,

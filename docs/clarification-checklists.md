@@ -78,8 +78,4 @@ Ask only unresolved questions that materially affect implementation. Skip what i
 - Expected edge cases and boundaries?
 - Case and group naming for diagnostics?
 
-## Approval Gate Wording
 
-Use explicit gate before coding:
-
-- "This is the pending implementation plan. Reply with explicit approval (for example: 同意/开始写/approved/go ahead) and I will generate the script."
