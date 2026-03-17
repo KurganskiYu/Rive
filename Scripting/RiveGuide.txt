@@ -200,3 +200,6 @@ You can nest artboards or use them as assets.
 - State Management: Keep state in the `self` object or ViewModel types.
 - Modularity: `require('Module')` is supported.
 - Context: Use `context:markNeedsUpdate()` to ensure procedural animations redraw every frame.
+
+
+Type annotations!
