@@ -83,6 +83,7 @@ type ParticleSystemNode = {
   goal: Input<number>,
   activeMinutes: Input<number>,
   packingFactor: Input<number>,
+  dynamicPacking: Input<number>,
 
   -- Graphics
   circlePath: Path,
@@ -96,6 +97,7 @@ type ParticleSystemNode = {
   spawnDelayCounter: number,
   pointerPos: { x: number, y: number },
   started: boolean,
+  currentScale: number,
 }
 
 local activate: (self: ParticleSystemNode) -> ()
@@ -157,6 +159,7 @@ local function init(self: ParticleSystemNode, context: Context): boolean
   self.spawnDelayCounter = 0
   self.pointerPos = { x = 0, y = 0 }
   self.started = false
+  self.currentScale = 1.0
 
   math.randomseed(os.time())
   return true
@@ -187,7 +190,7 @@ local function spawnParticle(self: ParticleSystemNode, circleRadius: number)
 
   local inputAb
   local targetRadius
-  
+
   if ptType == 1 then
     inputAb = self.artboard1
     targetRadius = self.size1
@@ -309,8 +312,6 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
   local targetCount = mfloor(self.activeMinutes)
   if targetCount <= 0 then
     targetCount = mfloor(self.goal)
-  elseif targetCount > self.goal then
-    targetCount = mfloor(self.goal)
   end
 
   if self.totalSpawned < targetCount then
@@ -333,6 +334,41 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
   local changeSpeed = dt / growDur
   local px, py = self.pointerPos.x, self.pointerPos.y
 
+  -- Robust Algorithm for dynamic downscaling (Accounting for Interstitial Space AND Boundary Edge Decay)
+  local targetScale = 1.0
+  if pCount > 0 then
+    local totalRSq = 0
+    local avgR = 0
+    for i = 1, pCount do
+      local baseR = parts[i].originalRadius
+      totalRSq = totalRSq + (baseR * baseR)
+      avgR = avgR + baseR
+    end
+    avgR = avgR / pCount
+
+    local pf = self.dynamicPacking
+    local R_c = circleRadius
+
+    -- We solve a Quadratic Equation to find the exact scale `s` where the area constraint matches:
+    -- Sum of areas = Packing Density * Effective Container Area
+    -- s^2 * sum(r_i^2) = pf * (R_c - s * r_avg)^2
+    local A_quad = totalRSq - pf * avgR * avgR
+    local B_quad = 2 * pf * R_c * avgR
+    local C_quad = -pf * R_c * R_c
+
+    local discriminant = B_quad * B_quad - 4 * A_quad * C_quad
+    if discriminant >= 0 and A_quad ~= 0 then
+      local optimalScale = (-B_quad + math.sqrt(discriminant)) / (2 * A_quad)
+      if optimalScale < 1.0 then
+        targetScale = optimalScale
+      end
+    end
+  end
+
+  -- Smoothly transition the internal scale to prevent sudden jumps
+  self.currentScale = self.currentScale
+    + (targetScale - self.currentScale) * dt * 2.5
+
   for i = 1, pCount do
     local p = parts[i]
 
@@ -349,11 +385,13 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
     -- Growth Animation
     if p.currentT < 1.0 then
       p.currentT = mmin(1.0, p.currentT + changeSpeed)
-      local easeT = cubicEaseOut(p.currentT)
-      p.radius = mmax(0.5, p.originalRadius * easeT)
       -- Constantly wake up while growing
       p.sleeping = false
     end
+
+    local easeT = cubicEaseOut(p.currentT)
+    local scaledOriginal = p.originalRadius * self.currentScale
+    p.radius = mmax(0.5, scaledOriginal * easeT)
 
     -- Update physics radius
     p.colRadius = p.radius
@@ -392,7 +430,13 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 
       -- Circular Boundary Constraint
       if not p.sleeping then
-        Physics.applyCircularBoundary(p :: Physics.Particle, 0, 0, circleRadius, friction)
+        Physics.applyCircularBoundary(
+          p :: Physics.Particle,
+          0,
+          0,
+          circleRadius,
+          friction
+        )
       end
     end
 
@@ -512,6 +556,7 @@ return function(): Node<ParticleSystemNode>
     goal = 143,
     activeMinutes = 0,
     packingFactor = 0.85,
+    dynamicPacking = 0.85,
 
     circlePath = Path.new(),
     circlePaint = Paint.new(),
@@ -525,6 +570,7 @@ return function(): Node<ParticleSystemNode>
     pointerPos = { x = 0, y = 0 },
 
     started = false,
+    currentScale = 1.0,
 
     init = init,
     advance = advance,
