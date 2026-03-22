@@ -19,6 +19,8 @@ export type Particle = {
   cy: number,
   colRadius: number,
   sleeping: boolean,
+  isOuter: boolean,
+  escaped: boolean,
   nextInCell: Particle?,
 }
 
@@ -40,11 +42,10 @@ function Physics.buildGrid(particles: { Particle }, cellSize: number): Grid
   return grid
 end
 
-function Physics.solveCollisions(grid: Grid, p: Particle, stiffness: number?)
+function Physics.solveCollisions(grid: Grid, p: Particle, stiffness: number?, selId: number?)
   local cx, cy = p.cx, p.cy
   local pId = p.id
   local pRadius = p.colRadius
-  local pSleeping = p.sleeping
   local st = stiffness or 0.8
 
   for nx = cx - 1, cx + 1 do
@@ -53,7 +54,7 @@ function Physics.solveCollisions(grid: Grid, p: Particle, stiffness: number?)
       local other: Particle? = grid[nKey]
 
       while other do
-        if other.id > pId then
+          if other.id > pId and other.isOuter == p.isOuter then
           local totalRad = pRadius + other.colRadius
           local dx = other.x - p.x
           local dy = other.y - p.y
@@ -67,31 +68,27 @@ function Physics.solveCollisions(grid: Grid, p: Particle, stiffness: number?)
             local moveX = dx * factor
             local moveY = dy * factor
 
-            local oSleeping = other.sleeping
-            if not pSleeping and not oSleeping then
-              local halfX, halfY = moveX * 0.5, moveY * 0.5
-              p.x = p.x - halfX
-              p.y = p.y - halfY
-              other.x = other.x + halfX
-              other.y = other.y + halfY
-            elseif not pSleeping and oSleeping then
-              p.x = p.x - moveX
-              p.y = p.y - moveY
-              -- Natural wake-up applied via velocity integration later
-              other.sleeping = false
-            elseif pSleeping and not oSleeping then
+            local pStatic = (pId == selId)
+            local oStatic = (other.id == selId)
+
+            if pStatic and not oStatic then
               other.x = other.x + moveX
               other.y = other.y + moveY
-              p.sleeping = false
-            else
-              -- Both sleeping but overlapping (can happen during growth)
+            elseif oStatic and not pStatic then
+              p.x = p.x - moveX
+              p.y = p.y - moveY
+            elseif not pStatic and not oStatic then
               local halfX, halfY = moveX * 0.5, moveY * 0.5
               p.x = p.x - halfX
               p.y = p.y - halfY
               other.x = other.x + halfX
               other.y = other.y + halfY
-              p.sleeping = false
-              other.sleeping = false
+            end
+
+            -- Only wake up if it's dynamic physics (stiffness < 1.0), not relax mode
+            if st < 1.0 then
+              if not pStatic then p.sleeping = false end
+              if not oStatic then other.sleeping = false end
             end
           end
         end
@@ -101,30 +98,94 @@ function Physics.solveCollisions(grid: Grid, p: Particle, stiffness: number?)
   end
 end
 
-function Physics.applyCircularBoundary(p: Particle, centerX: number, centerY: number, radius: number, friction: number?)
+function Physics.applyCircularBoundary(p: Particle, centerX: number, centerY: number, radius: number, friction: number?, isOuter: boolean?)
   local dx = p.x - centerX
   local dy = p.y - centerY
   local distSq = dx * dx + dy * dy
-  local maxDist = radius - p.colRadius
   local fr = friction or 0.1
 
-  if maxDist < 0 then
-    -- Particle is too big or circle is too small, force it towards center safely
-    p.x = centerX
-    p.y = centerY
-    return
+  if isOuter then
+    if not p.escaped then
+      return
+    end
+
+    local minDist = radius + p.colRadius
+    if distSq < minDist * minDist then
+      -- It is inside the allowed outer boundary (which means it's pushed outside the circle)
+      local dist = msqrt(distSq)
+      if dist < 0.0001 then
+        dist = 0.0001
+        dx = 1
+        dy = 0
+      end
+      local pushRel = minDist / dist
+      p.x = centerX + dx * pushRel
+      p.y = centerY + dy * pushRel
+
+      local moveX = p.x - p.prevX
+      local moveY = p.y - p.prevY
+      p.x = p.x - moveX * fr
+      p.y = p.y - moveY * fr
+    end
+  else
+    local maxDist = radius - p.colRadius
+
+    if maxDist < 0 then
+      -- Particle is too big or circle is too small, force it towards center safely
+      p.x = centerX
+      p.y = centerY
+      return
+    end
+
+    if distSq > maxDist * maxDist and distSq > 0.0001 then
+      local dist = msqrt(distSq)
+      local pushRel = maxDist / dist
+
+      p.x = centerX + dx * pushRel
+      p.y = centerY + dy * pushRel
+
+      -- Ground friction (tangential dampening)
+      local moveX = p.x - p.prevX
+      local moveY = p.y - p.prevY
+      p.x = p.x - moveX * fr
+      p.y = p.y - moveY * fr
+    end
   end
+end
 
-  if distSq > maxDist * maxDist and distSq > 0.0001 then
-    local dist = msqrt(distSq)
-    local pushRel = maxDist / dist
-
-    p.x = centerX + dx * pushRel
-    p.y = centerY + dy * pushRel
-
-    -- Ground friction (tangential dampening)
-    local moveX = p.x - p.prevX
-    p.x = p.x - moveX * fr
+function Physics.applyRectangularBoundary(p: Particle, centerX: number, centerY: number, width: number, height: number, friction: number?)
+  local fr = friction or 0.1
+  local halfW = width * 0.5
+  local halfH = height * 0.5
+  
+  local minX = centerX - halfW + p.colRadius
+  local maxX = centerX + halfW - p.colRadius
+  local minY = centerY - halfH + p.colRadius
+  local maxY = centerY + halfH - p.colRadius
+  
+  local corrected = false
+  
+  if p.x < minX then
+    p.x = minX
+    corrected = true
+  elseif p.x > maxX then
+    p.x = maxX
+    corrected = true
+  end
+  
+  if p.y < minY then
+    p.y = minY
+    corrected = true
+  elseif p.y > maxY then
+    p.y = maxY
+    corrected = true
+  end
+  
+  if corrected then
+      local moveX = p.x - p.prevX
+      local moveY = p.y - p.prevY
+      p.x = p.x - moveX * fr
+      p.y = p.y - moveY * fr
   end
 end
 
