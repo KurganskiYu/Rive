@@ -171,8 +171,7 @@
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f), " +
-                    "linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f)";
+                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
                 body.style.backgroundSize = "20px 20px";
                 body.style.backgroundPosition = "0 0, 10px 10px";
             } else if (mode === 2) {
@@ -280,14 +279,16 @@ const mainRive = new rive.Rive({
 
 let triggerInputMain;
 mainRive.on("load", () => {
-  const inputs = mainRive.stateMachineInputs("State Machine 1");
-  triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-});
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    if (inputs) {
+        triggerInputMain = inputs.find(input => input.name === "Trigger 1");
+    }
+} );
 document.getElementById("btn_main").addEventListener("click", () => {
-  if (triggerInputMain) {
-    triggerInputMain.fire();
-  }
-});
+    if (triggerInputMain) {
+        triggerInputMain.fire();
+    }
+} );
 
 const previewRive = new rive.Rive({
   src: "../riv/starsflystack_v1_preview.riv",
@@ -300,14 +301,16 @@ const previewRive = new rive.Rive({
 
 let triggerInputPreview;
 previewRive.on("load", () => {
-  const inputs = previewRive.stateMachineInputs("State Machine 1");
-  triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
-});
+    const inputs = previewRive.stateMachineInputs("State Machine 1");
+    if (inputs) {
+        triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
+    }
+} );
 document.getElementById("btn_preview").addEventListener("click", () => {
-  if (triggerInputPreview) {
-    triggerInputPreview.fire();
-  }
-});
+    if (triggerInputPreview) {
+        triggerInputPreview.fire();
+    }
+} );
 
 document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";

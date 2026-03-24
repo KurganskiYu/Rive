@@ -171,8 +171,7 @@
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f), " +
-                    "linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f)";
+                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
                 body.style.backgroundSize = "20px 20px";
                 body.style.backgroundPosition = "0 0, 10px 10px";
             } else if (mode === 2) {
@@ -244,7 +243,36 @@
     </script>
     
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="107"></canvas>
+        <canvas id="canvas0" width="200" height="316"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/activityring_v2.html" style="color: #464646;">activityring</a></div>
+          <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input1">goal:</label>
+            <input type="number" id="btn0_input1" value="35" style="width:60px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input2">activeMinutes:</label>
+            <input type="number" id="btn0_input2" value="66" style="width:60px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="107"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -259,7 +287,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="434"></canvas>
+        <canvas id="canvas2" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -274,7 +302,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="81"></canvas>
+        <canvas id="canvas3" width="200" height="81"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -289,7 +317,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="105"></canvas>
+        <canvas id="canvas4" width="200" height="105"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -304,7 +332,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="433"></canvas>
+        <canvas id="canvas5" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -319,7 +347,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="433"></canvas>
+        <canvas id="canvas6" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -334,37 +362,22 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="219"></canvas>
+        <canvas id="canvas7" width="200" height="219"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
           <div><a href="pages/godraycomment_v5.html" style="color: #464646;">godraycomment</a></div>
-          <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input1">flip:</label>
-            <input type="checkbox" id="btn6_input1" />
+            <label for="btn7_input1">flip:</label>
+            <input type="checkbox" id="btn7_input1" />
         </div>
         
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="311"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/stressvessels_v2.html" style="color: #464646;">stressvessels</a></div>
-          
         </div>
         
       </div>
@@ -375,96 +388,133 @@
 <script>
 
 const r0 = new rive.Rive({
-  src: "riv/particlesstars_v1.riv",
-  canvas: document.getElementById("canvas0"),
-  autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-  onLoad: () => {
-    r0.resizeDrawingSurfaceToCanvas();
+    src: "riv/activityring_v2.riv",
+    canvas: document.getElementById("canvas0"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    onLoad: () => {
+        r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_1.value);
+        if (!isNaN(val)) vmi.number("goal").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_1.value);
+      if (!isNaN(initVal)) vmi.number("goal").value = initVal;
+    }
+    let inputFieldBtn0_2 = document.getElementById("btn0_input2");
+    if (inputFieldBtn0_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_2.value);
+        if (!isNaN(val)) vmi.number("activeMinutes").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_2.value);
+      if (!isNaN(initVal)) vmi.number("activeMinutes").value = initVal;
+    }
     const inputs = r0.stateMachineInputs("State Machine 1");
+    document.getElementById("btn0").addEventListener("click", () => {
+        if (vmi) {
+            const triggerInput = vmi.trigger("start");
+            if (triggerInput) {
+                triggerInput.trigger();
+            } else {
+                console.warn("View model trigger not found: start");
+            }
+        } else {
+            console.warn("ViewModelInstance not found on r0");
+        }
+    });
   },
 });
 
 const r1 = new rive.Rive({
-  src: "riv/playerbird_v3.riv",
-  canvas: document.getElementById("canvas1"),
-  autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-  onLoad: () => {
-    r1.resizeDrawingSurfaceToCanvas();
+    src: "riv/particlesstars_v1.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
     const inputs = r1.stateMachineInputs("State Machine 1");
   },
 });
 
 const r2 = new rive.Rive({
-  src: "riv/bannerparticlessand_v2.riv",
-  canvas: document.getElementById("canvas2"),
-  autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-  onLoad: () => {
-    r2.resizeDrawingSurfaceToCanvas();
+    src: "riv/playerbird_v3.riv",
+    canvas: document.getElementById("canvas2"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    onLoad: () => {
+        r2.resizeDrawingSurfaceToCanvas();
     const inputs = r2.stateMachineInputs("State Machine 1");
   },
 });
 
 const r3 = new rive.Rive({
-  src: "riv/bannerparticlesbutton_v1.riv",
-  canvas: document.getElementById("canvas3"),
-  autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-  onLoad: () => {
-    r3.resizeDrawingSurfaceToCanvas();
+    src: "riv/bannerparticlessand_v2.riv",
+    canvas: document.getElementById("canvas3"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    onLoad: () => {
+        r3.resizeDrawingSurfaceToCanvas();
     const inputs = r3.stateMachineInputs("State Machine 1");
   },
 });
 
 const r4 = new rive.Rive({
-  src: "riv/fatgraph_v2.riv",
-  canvas: document.getElementById("canvas4"),
-  autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-  onLoad: () => {
-    r4.resizeDrawingSurfaceToCanvas();
+    src: "riv/bannerparticlesbutton_v1.riv",
+    canvas: document.getElementById("canvas4"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    onLoad: () => {
+        r4.resizeDrawingSurfaceToCanvas();
     const inputs = r4.stateMachineInputs("State Machine 1");
   },
 });
 
 const r5 = new rive.Rive({
-  src: "riv/energysliders_v2.riv",
-  canvas: document.getElementById("canvas5"),
-  autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-  onLoad: () => {
-    r5.resizeDrawingSurfaceToCanvas();
+    src: "riv/fatgraph_v2.riv",
+    canvas: document.getElementById("canvas5"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    onLoad: () => {
+        r5.resizeDrawingSurfaceToCanvas();
     const inputs = r5.stateMachineInputs("State Machine 1");
   },
 });
 
 const r6 = new rive.Rive({
-  src: "riv/godraycomment_v5.riv",
-  canvas: document.getElementById("canvas6"),
-  autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-  onLoad: () => {
-    r6.resizeDrawingSurfaceToCanvas();
-    const vmi = r6.viewModelInstance;
-    let inputFieldBtn6_1 = document.getElementById("btn6_input1");
-    if (inputFieldBtn6_1 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn6_1.addEventListener("change", () => {
-        vmi.boolean("flip").value = inputFieldBtn6_1.checked;
-      });
-      // Set initial value
-      vmi.boolean("flip").value = inputFieldBtn6_1.checked;
-    }
+    src: "riv/energysliders_v2.riv",
+    canvas: document.getElementById("canvas6"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    onLoad: () => {
+        r6.resizeDrawingSurfaceToCanvas();
     const inputs = r6.stateMachineInputs("State Machine 1");
-    let triggerInput = inputs.find(input => input.name === "Trigger 1");
-    if (triggerInput) {
-      document.getElementById("btn6").addEventListener("click", () => triggerInput.fire());
-    }
   },
 });
 
 const r7 = new rive.Rive({
-  src: "riv/stressvessels_v2.riv",
-  canvas: document.getElementById("canvas7"),
-  autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-  onLoad: () => {
-    r7.resizeDrawingSurfaceToCanvas();
+    src: "riv/godraycomment_v5.riv",
+    canvas: document.getElementById("canvas7"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    onLoad: () => {
+        r7.resizeDrawingSurfaceToCanvas();
+    const vmi = r7.viewModelInstance;
+    let inputFieldBtn7_1 = document.getElementById("btn7_input1");
+    if (inputFieldBtn7_1 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn7_1.addEventListener("change", () => {
+        vmi.boolean("flip").value = inputFieldBtn7_1.checked;
+      });
+      // Set initial value
+      vmi.boolean("flip").value = inputFieldBtn7_1.checked;
+    }
     const inputs = r7.stateMachineInputs("State Machine 1");
+    const triggerInput = inputs.find(input => input.name === "Trigger 1");
+        document.getElementById("btn7").addEventListener("click", () => {
+            if (triggerInput) {
+                triggerInput.fire();
+            }
+        });
   },
 });
 
@@ -480,7 +530,7 @@ setTimeout(() => {
   });
 }, 3000);
 </script>
-<div style="margin: 24px 0; text-align:center;"><button class="rive-btn" style="background:#e0e0e0;color:#333;">1</button> <a href="pages/page1.html"><button class="rive-btn">2</button></a> <a href="pages/page2.html"><button class="rive-btn">3</button></a> <a href="pages/page3.html"><button class="rive-btn">4</button></a> <a href="pages/page4.html"><button class="rive-btn">5</button></a> <a href="pages/page5.html"><button class="rive-btn">6</button></a> <a href="pages/page6.html"><button class="rive-btn">7</button></a> <a href="pages/page7.html"><button class="rive-btn">8</button></a> <a href="pages/page8.html"><button class="rive-btn">9</button></a></div>
+<div style="margin: 24px 0; text-align:center;"><button class="rive-btn" style="background:#e0e0e0;color:#333;">1</button> <a href="pages/page1.html"><button class="rive-btn">2</button></a> <a href="pages/page2.html"><button class="rive-btn">3</button></a> <a href="pages/page3.html"><button class="rive-btn">4</button></a> <a href="pages/page4.html"><button class="rive-btn">5</button></a> <a href="pages/page5.html"><button class="rive-btn">6</button></a> <a href="pages/page6.html"><button class="rive-btn">7</button></a> <a href="pages/page7.html"><button class="rive-btn">8</button></a> <a href="pages/page8.html"><button class="rive-btn">9</button></a> <a href="pages/page9.html"><button class="rive-btn">10</button></a></div>
     </div>
 </body>
 </html>

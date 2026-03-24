@@ -171,8 +171,7 @@
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f), " +
-                    "linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f)";
+                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
                 body.style.backgroundSize = "20px 20px";
                 body.style.backgroundPosition = "0 0, 10px 10px";
             } else if (mode === 2) {
@@ -268,14 +267,16 @@ const mainRive = new rive.Rive({
 
 let triggerInputMain;
 mainRive.on("load", () => {
-  const inputs = mainRive.stateMachineInputs("State Machine 1");
-  triggerInputMain = inputs.find(input => input.name === "Trigger");
-});
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    if (inputs) {
+        triggerInputMain = inputs.find(input => input.name === "Trigger");
+    }
+} );
 document.getElementById("btn_main").addEventListener("click", () => {
-  if (triggerInputMain) {
-    triggerInputMain.fire();
-  }
-});
+    if (triggerInputMain) {
+        triggerInputMain.fire();
+    }
+} );
 
 document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";

@@ -38,8 +38,7 @@ def get_bg_button_html(is_root=True):
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f), " +
-                    "linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f)";
+                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
                 body.style.backgroundSize = "20px 20px";
                 body.style.backgroundPosition = "0 0, 10px 10px";
             }} else if (mode === 2) {{
@@ -130,6 +129,69 @@ def parse_size(size_str):
         return int(parts[0]), int(parts[1])
     except:
         return 0, 0
+
+def parse_csv_line_with_quote_flags(line):
+    fields = []
+    value_chars = []
+    in_quotes = False
+    quoted = False
+    i = 0
+
+    while i < len(line):
+        ch = line[i]
+        if in_quotes:
+            if ch == '"':
+                if i + 1 < len(line) and line[i + 1] == '"':
+                    value_chars.append('"')
+                    i += 1
+                else:
+                    in_quotes = False
+            else:
+                value_chars.append(ch)
+        else:
+            if ch == ',':
+                fields.append((''.join(value_chars), quoted))
+                value_chars = []
+                quoted = False
+            elif ch == '"' and not value_chars:
+                in_quotes = True
+                quoted = True
+            else:
+                value_chars.append(ch)
+        i += 1
+
+    fields.append((''.join(value_chars), quoted))
+    return fields
+
+def load_csv_rows(csv_file_path):
+    with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
+        lines = csvfile.read().splitlines()
+
+    if not lines:
+        return []
+
+    header_fields = next(csv.reader([lines[0]]))
+    trigger_index = header_fields.index("trigger") if "trigger" in header_fields else None
+    rows = []
+
+    for raw_line in lines[1:]:
+        if not raw_line.strip():
+            continue
+
+        values = next(csv.reader([raw_line]))
+        row = {}
+        for idx, header_name in enumerate(header_fields):
+            row[header_name] = values[idx].strip() if idx < len(values) else ""
+
+        row["_trigger_was_quoted"] = False
+        if trigger_index is not None:
+            raw_fields = parse_csv_line_with_quote_flags(raw_line)
+            if trigger_index < len(raw_fields):
+                row["_trigger_was_quoted"] = raw_fields[trigger_index][1]
+
+        rows.append(row)
+
+    return rows
 
 def scale_dimensions(width, height):
     if not SCALE_TO_200PX:
@@ -370,7 +432,7 @@ const r{idx} = new rive.Rive({{
 }});
 '''
 
-def generate_text_input_js(row, prefix, rive_var):
+def generate_text_input_js(row, prefix, rive_var, include_vmi=False):
     """Generate JS for ViewModel-based inputs (txt, col, v_num, v_bol, img, list)."""
     js_parts = []
     has_vmi_inputs = False
@@ -491,73 +553,82 @@ def generate_text_input_js(row, prefix, rive_var):
       }}
     }}
 """)
-    if has_vmi_inputs:
+    if has_vmi_inputs or include_vmi:
         js_parts.insert(0, f"    const vmi = {rive_var}.viewModelInstance;\n")
     return "".join(js_parts)
 
-def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, input_prefix, row):
-    artboard_line = f'artboard: "{artboard}",' if artboard else ""
-    state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
-    js = [f'''
+def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, trigger_kind, input_prefix, row):
+        artboard_line = f'artboard: "{artboard}",' if artboard else ""
+        state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
+        js = [f'''
 const {var_name} = new rive.Rive({{
-  src: "{src}",
-  canvas: document.getElementById("{canvas_id}"),
-  autoplay: true, autoBind: true,{artboard_line}{state_machine_line}
-  onLoad: () => {{
-    {var_name}.resizeDrawingSurfaceToCanvas();
+    src: "{src}",
+    canvas: document.getElementById("{canvas_id}"),
+    autoplay: true, autoBind: true,{artboard_line}{state_machine_line}
+    onLoad: () => {{
+        {var_name}.resizeDrawingSurfaceToCanvas();
 ''']
 
-    # Text and color input handling (will only emit vmi if needed)
-    js.append(generate_text_input_js(row, input_prefix, var_name))
+        js.append(generate_text_input_js(row, input_prefix, var_name, include_vmi=(trigger_kind == "view_model")))
 
-    # State machine inputs and triggers
-    if state_machine:
-        js.append(f'    const inputs = {var_name}.stateMachineInputs("{state_machine}");\n')
-        if trigger:
-            js.append(f'''    let triggerInput = inputs.find(input => input.name === "{trigger}");
-    if (triggerInput) {{
-      document.getElementById("{input_prefix}").addEventListener("click", () => triggerInput.fire());
-    }}
+        if state_machine:
+                js.append(f'    const inputs = {var_name}.stateMachineInputs("{state_machine}");\n')
+                if trigger:
+                        if trigger_kind == "view_model":
+                                js.append(f'''    document.getElementById("{input_prefix}").addEventListener("click", () => {{
+        if (vmi) {{
+            const triggerInput = vmi.trigger("{trigger}");
+            if (triggerInput) {{
+                triggerInput.trigger();
+            }} else {{
+                console.warn("View model trigger not found: {trigger}");
+            }}
+        }} else {{
+            console.warn("ViewModelInstance not found on {var_name}");
+        }}
+    }});
 ''')
-        for i in INPUT_RANGE:
-            input_value = row.get(f"input{i}")
-            if not input_value or input_value.strip() == "":
-                continue
-            input_type, input_name, _default = parse_input_spec(input_value)
-            # Skip ViewModel & list handled above
-            if input_type in ("txt", "col", "v_num", "v_bol", "list"):
-                continue
-            input_id = f"{input_prefix}_input{i}"
-            field_var = f'inputField_{input_prefix}_{i}'
-            obj_var = f'inputObj_{input_prefix}_{i}'
-            js.append(f'    let {field_var} = document.getElementById("{input_id}");\n')
-            js.append(f'    let {obj_var} = inputs.find(input => input.name === "{input_name}");\n')
-            if input_type == "num":
-                js.append(f'''    if ({field_var} && {obj_var}) {{
-      let val = parseFloat({field_var}.value);
-      if (!isNaN(val)) {obj_var}.value = val;
-      {field_var}.addEventListener("input", () => {{
-        let val = parseFloat({field_var}.value);
-        if (!isNaN(val)) {obj_var}.value = val;
-      }});
-    }}
+                        else:
+                                js.append(f'''    const triggerInput = inputs.find(input => input.name === "{trigger}");
+        document.getElementById("{input_prefix}").addEventListener("click", () => {{
+            if (triggerInput) {{
+                triggerInput.fire();
+            }}
+        }});
 ''')
-            elif input_type == "bol":
-                js.append(f'''    if ({field_var} && {obj_var}) {{
-      {obj_var}.value = {field_var}.checked;
-      {field_var}.addEventListener("change", () => {{
-        {obj_var}.value = {field_var}.checked;
-      }});
-    }}
+
+                for i in INPUT_RANGE:
+                        input_value = row.get(f"input{i}")
+                        if not input_value or input_value.strip() == "":
+                                continue
+                        input_type, input_name, _default = parse_input_spec(input_value)
+                        if input_type in ("txt", "col", "v_num", "v_bol", "list"):
+                                continue
+                        input_id = f"{input_prefix}_input{i}"
+                        field_var = f'inputField_{input_prefix}_{i}'
+                        obj_var = f'inputObj_{input_prefix}_{i}'
+                        js.append(f'    let {field_var} = document.getElementById("{input_id}");\n')
+                        js.append(f'    let {obj_var} = inputs.find(input => input.name === "{input_name}");\n')
+                        if input_type == "num":
+                                js.append(f'''    if ({field_var} && {obj_var}) {{
+            let val = parseFloat({field_var}.value);
+            if (!isNaN(val)) {obj_var}.value = val;
+            {field_var}.addEventListener("input", () => {{
+                let val = parseFloat({field_var}.value);
+                if (!isNaN(val)) {obj_var}.value = val;
+            }});
+        }}
 ''')
-            elif input_type == "txt":
-                # Already handled by vmi above, skip here
-                continue
-            elif input_type == "col":
-                # Already handled by vmi above, skip here
-                continue
-    js.append('  },\n});\n')
-    return "".join(js)
+                        elif input_type == "bol":
+                                js.append(f'''    if ({field_var} && {obj_var}) {{
+            {obj_var}.value = {field_var}.checked;
+            {field_var}.addEventListener("change", () => {{
+                {obj_var}.value = {field_var}.checked;
+            }});
+        }}
+''')
+        js.append('  },\n});\n')
+        return "".join(js)
 
 def make_script(rows, is_root=True):
     script_parts = ["<script>\n"]
@@ -569,6 +640,7 @@ def make_script(rows, is_root=True):
         artboard = row.get("artboard", "")
         state_machine = row.get("state_machine", "")
         trigger = row.get("trigger", "")
+        trigger_kind = row.get("_trigger_kind", "state_machine")
 
         # Use unified function
         script_parts.append(
@@ -579,6 +651,7 @@ def make_script(rows, is_root=True):
                 artboard=artboard,
                 state_machine=state_machine,
                 trigger=trigger,
+                trigger_kind=trigger_kind,
                 input_prefix=button_id,
                 row=row
             )
@@ -743,6 +816,7 @@ def generate_dual_animation_html(row, preview_ctx):
 def generate_animation_js(row, main_rive, preview_ctx):
     """Generate JavaScript for animation page"""
     js_parts = ['<script>\n']
+    trigger_kind = row.get("_trigger_kind", "state_machine")
     
     # Main animation
     js_parts.append(f'''
@@ -755,7 +829,7 @@ const mainRive = new rive.Rive({{
 ''')
     
     # Handle text inputs in onLoad for main
-    js_parts.append(generate_text_input_js(row, "btn_main", "mainRive"))
+    js_parts.append(generate_text_input_js(row, "btn_main", "mainRive", include_vmi=(trigger_kind == "view_model")))
     js_parts.append('  },\n});\n')
     
     # Main animation controls
@@ -778,20 +852,40 @@ document.querySelectorAll('canvas').forEach(canvas => {
 def generate_animation_controls_js(row, canvas_type, rive_var):
     """Generate animation control JavaScript"""
     js_parts = []
+    trigger_kind = row.get("_trigger_kind", "state_machine")
     
     # Trigger handling
     if row.get("trigger"):
-        js_parts.append(f'''
+                if trigger_kind == "view_model":
+                        js_parts.append(f'''
+document.getElementById("btn_{canvas_type}").addEventListener("click", () => {{
+    const vmi = {rive_var}.viewModelInstance;
+    if (vmi) {{
+        const triggerInput = vmi.trigger("{row["trigger"]}");
+        if (triggerInput) {{
+            triggerInput.trigger();
+        }} else {{
+            console.warn("View model trigger not found: {row["trigger"]}");
+        }}
+    }} else {{
+        console.warn("ViewModelInstance not found on {rive_var}");
+    }}
+}} );
+''')
+                else:
+                        js_parts.append(f'''
 let triggerInput{canvas_type.title()};
 {rive_var}.on("load", () => {{
-  const inputs = {rive_var}.stateMachineInputs("{row["state_machine"]}");
-  triggerInput{canvas_type.title()} = inputs.find(input => input.name === "{row["trigger"]}");
-}});
+    const inputs = {rive_var}.stateMachineInputs("{row["state_machine"]}");
+    if (inputs) {{
+        triggerInput{canvas_type.title()} = inputs.find(input => input.name === "{row["trigger"]}");
+    }}
+}} );
 document.getElementById("btn_{canvas_type}").addEventListener("click", () => {{
-  if (triggerInput{canvas_type.title()}) {{
-    triggerInput{canvas_type.title()}.fire();
-  }}
-}});
+    if (triggerInput{canvas_type.title()}) {{
+        triggerInput{canvas_type.title()}.fire();
+    }}
+}} );
 ''')
     
     # Input handling for num/bool
@@ -907,14 +1001,15 @@ def resolve_src_dir():
 
 # Main execution
 def main():
-    with open(csv_path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        rows = list(reader)[::-1]
+    rows = load_csv_rows(csv_path)[::-1]
 
     # Normalize state_machine field
     for row in rows:
         if not row.get("state_machine") or row["state_machine"].strip() == "":
             row["state_machine"] = "State Machine 1"
+        trigger_value = row.get("trigger", "").strip()
+        if trigger_value:
+            row["_trigger_kind"] = "state_machine" if row.get("_trigger_was_quoted") else "view_model"
         
         # Parse size column into width/height for backward compatibility
         w, h = parse_size(row.get("size"))

@@ -171,8 +171,7 @@
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f), " +
-                    "linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f)";
+                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
                 body.style.backgroundSize = "20px 20px";
                 body.style.backgroundPosition = "0 0, 10px 10px";
             } else if (mode === 2) {
@@ -254,32 +253,32 @@
               
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input1">color1:</label>
-            <input type="color" id="btn_main_input1" value="#882e05" />
+            <input type="color" id="btn_main_input1" value="#785717" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input2">color2:</label>
-            <input type="color" id="btn_main_input2" value="#aac50b" />
+            <input type="color" id="btn_main_input2" value="#b9309b" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input3">color3:</label>
-            <input type="color" id="btn_main_input3" value="#6670ba" />
+            <input type="color" id="btn_main_input3" value="#7f6798" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input4">color4:</label>
-            <input type="color" id="btn_main_input4" value="#b8b823" />
+            <input type="color" id="btn_main_input4" value="#6f273e" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input5">color5:</label>
-            <input type="color" id="btn_main_input5" value="#5e70a7" />
+            <input type="color" id="btn_main_input5" value="#c4fa18" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input6">color6:</label>
-            <input type="color" id="btn_main_input6" value="#309fb7" />
+            <input type="color" id="btn_main_input6" value="#ca6a79" />
         </div>
         
             </div>
@@ -295,32 +294,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_preview_input1">color1:</label>
-            <input type="color" id="btn_preview_input1" value="#463656" />
+            <input type="color" id="btn_preview_input1" value="#bf09bd" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_preview_input2">color2:</label>
-            <input type="color" id="btn_preview_input2" value="#4ae261" />
+            <input type="color" id="btn_preview_input2" value="#8736f4" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_preview_input3">color3:</label>
-            <input type="color" id="btn_preview_input3" value="#71c96f" />
+            <input type="color" id="btn_preview_input3" value="#53aa72" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_preview_input4">color4:</label>
-            <input type="color" id="btn_preview_input4" value="#411a6c" />
+            <input type="color" id="btn_preview_input4" value="#369b9b" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_preview_input5">color5:</label>
-            <input type="color" id="btn_preview_input5" value="#f47c98" />
+            <input type="color" id="btn_preview_input5" value="#52e8bb" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_preview_input6">color6:</label>
-            <input type="color" id="btn_preview_input6" value="#586e5e" />
+            <input type="color" id="btn_preview_input6" value="#cd2a1c" />
         </div>
         
           </div>
@@ -413,14 +412,16 @@ const mainRive = new rive.Rive({
 
 let triggerInputMain;
 mainRive.on("load", () => {
-  const inputs = mainRive.stateMachineInputs("State Machine 1");
-  triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-});
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    if (inputs) {
+        triggerInputMain = inputs.find(input => input.name === "Trigger 1");
+    }
+} );
 document.getElementById("btn_main").addEventListener("click", () => {
-  if (triggerInputMain) {
-    triggerInputMain.fire();
-  }
-});
+    if (triggerInputMain) {
+        triggerInputMain.fire();
+    }
+} );
 
 const previewRive = new rive.Rive({
   src: "../riv/flowerparticles_v3_preview.riv",
@@ -506,14 +507,16 @@ const previewRive = new rive.Rive({
 
 let triggerInputPreview;
 previewRive.on("load", () => {
-  const inputs = previewRive.stateMachineInputs("State Machine 1");
-  triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
-});
+    const inputs = previewRive.stateMachineInputs("State Machine 1");
+    if (inputs) {
+        triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
+    }
+} );
 document.getElementById("btn_preview").addEventListener("click", () => {
-  if (triggerInputPreview) {
-    triggerInputPreview.fire();
-  }
-});
+    if (triggerInputPreview) {
+        triggerInputPreview.fire();
+    }
+} );
 
 document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";

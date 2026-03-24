@@ -15,7 +15,7 @@ type RoundCorners = {
   radius: Input<number>
 }
 
-local function handle_corner(outPath: Path, p_prev: Vector, p_curr: Vector, p_next: Vector, r: number)
+local function handle_corner(outPath: Path, p_prev_prev: Vector | nil, p_prev: Vector, p_curr: Vector, p_next: Vector, p_next_next: Vector | nil, r: number)
   local v1x = p_prev.x - p_curr.x
   local v1y = p_prev.y - p_curr.y
   local l1 = math.sqrt(v1x * v1x + v1y * v1y)
@@ -44,15 +44,37 @@ local function handle_corner(outPath: Path, p_prev: Vector, p_curr: Vector, p_ne
      return
   end
   
+  local prev_taken = 0
+  if p_prev_prev ~= nil then
+      local d_prev_prev = distance(p_prev_prev, p_prev)
+      if d_prev_prev < l1 then
+          prev_taken = d_prev_prev / 2.0
+      else
+          prev_taken = l1 / 2.0
+      end
+  end
+  
+  local next_taken = 0
+  if p_next_next ~= nil then
+      local d_next_next = distance(p_next, p_next_next)
+      if d_next_next < l2 then
+          next_taken = d_next_next / 2.0
+      else
+          next_taken = l2 / 2.0
+      end
+  end
+  
+  local max_L1 = l1 - prev_taken
+  local max_L2 = l2 - next_taken
+  
+  local max_L = max_L1
+  if max_L2 < max_L then
+      max_L = max_L2
+  end
+   
   local half_theta = theta / 2.0
   local tan_half = math.tan(half_theta)
-  
   local L = r / tan_half
-  
-  local max_L = l1 / 2.0
-  if (l2 / 2.0) < max_L then
-      max_L = l2 / 2.0
-  end
   
   local L_clamped = L
   if max_L < L then
@@ -158,19 +180,28 @@ local function update(self: RoundCorners, inPath: PathData): PathData
          outPath:moveTo(Vector.xy(midX, midY))
          
          for j = 2, n + 1 do
-           local p_prev = get_pt(pts, j - 1, n)
-           local p_curr = get_pt(pts, j, n)
-           local p_next = get_pt(pts, j + 1, n)
-           handle_corner(outPath, p_prev, p_curr, p_next, r)
+           local p_prev_prev = get_pt(pts, j - 2, n)
+           local p_prev      = get_pt(pts, j - 1, n)
+           local p_curr      = get_pt(pts, j, n)
+           local p_next      = get_pt(pts, j + 1, n)
+           local p_next_next = get_pt(pts, j + 2, n)
+           handle_corner(outPath, p_prev_prev, p_prev, p_curr, p_next, p_next_next, r)
          end
          outPath:close()
       else
          outPath:moveTo(pts[1])
          for j = 2, n - 1 do
-           local p_prev = pts[j - 1]
-           local p_curr = pts[j]
-           local p_next = pts[j + 1]
-           handle_corner(outPath, p_prev, p_curr, p_next, r)
+           local p_prev_prev = nil
+           if j > 2 then p_prev_prev = pts[j - 2] end
+           
+           local p_prev      = pts[j - 1]
+           local p_curr      = pts[j]
+           local p_next      = pts[j + 1]
+           
+           local p_next_next = nil
+           if j < n - 1 then p_next_next = pts[j + 2] end
+           
+           handle_corner(outPath, p_prev_prev, p_prev, p_curr, p_next, p_next_next, r)
          end
          outPath:lineTo(pts[n])
       end
