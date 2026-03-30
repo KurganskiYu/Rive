@@ -4,11 +4,13 @@ type PathCloner = {
   usePathMode: Input<boolean>,
 
   pathArtwork: Input<Artboard>,
+  pathNodeName: Input<string>,
   drawPath: Input<boolean>,
 
   cloneArtwork: Input<Artboard>,
   clones: Input<number>,
-  percentage: Input<number>,
+  percentStart: Input<number>,
+  percentEnd: Input<number>,
   slide: Input<number>,
   loop: Input<boolean>,
   invert: Input<boolean>,
@@ -108,7 +110,14 @@ local function draw(self: PathCloner, renderer: Renderer)
     renderer:restore()
 
     -- Find the first node in the artboard that contains path data.
-    local rootNode = self._pathInstance:node("")
+    local targetName = self.pathNodeName or ""
+    local rootNode = self._pathInstance:node(targetName)
+    
+    -- Fallbacks for common default names if custom name fails or isn't provided
+    if not rootNode then
+      rootNode = self._pathInstance:node("Root") or self._pathInstance:node("")
+    end
+    
     if not rootNode then return end
 
     local pathData, xform = findFirstPathData(rootNode)
@@ -144,20 +153,28 @@ local function draw(self: PathCloner, renderer: Renderer)
     local totalLength = measure.length
     if totalLength <= 0.001 then return end
 
-    local pPercentage = self.percentage or 100
+    local pPercentStart = self.percentStart or 0
+    local pPercentEnd = self.percentEnd or 100
+    
+    local startPct = math.clamp(pPercentStart, 0, 100)
+    local endPct = math.clamp(pPercentEnd, 0, 100)
+    local tStart = startPct / 100.0
+    local tEnd = endPct / 100.0
+    
     local pSlide = self.slide or 0
-    local filledPct = math.clamp(pPercentage, 0, 100)
-    local filledLength = totalLength * (filledPct / 100.0)
     local n = math.max(1, math.floor(pClones))
 
     for i = 0, n - 1 do
       local t = if n > 1 then i / (n - 1) else 0
 
-      local dist = t * filledLength
       if self.invert then
-        dist = filledLength - dist
+        t = 1.0 - t
       end
-
+      
+      -- Map normalized t (0-1) to the restricted range between startPct and endPct
+      local mapped_t = tStart + t * (tEnd - tStart)
+      
+      local dist = mapped_t * totalLength
       dist = dist + totalLength * (pSlide / 100.0)
       if self.loop then
         dist = dist % totalLength
@@ -249,11 +266,13 @@ return function(): Node<PathCloner>
     usePathMode = false,
     
     pathArtwork = late(),
+    pathNodeName = "",
     drawPath = true,
 
     cloneArtwork = late(),
     clones = 5,
-    percentage = 100,
+    percentStart = 0,
+    percentEnd = 100,
     slide = 0,
     loop = true,
     invert = false,

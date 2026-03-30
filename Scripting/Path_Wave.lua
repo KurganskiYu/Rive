@@ -146,60 +146,92 @@ end
 
 function update(self: RippleEffect, path: PathData): PathData
   local outPath = Path.new()
-  local lastX, lastY, dist, totalLen = 0, 0, 0, 0
+  local lastX, lastY, dist, sumTotal = 0, 0, 0, 0
   
-  -- Pre-calculate total length
+  -- Pre-calculate length of each sub-path
   local px, py = 0, 0
+  local subPathLengths = {}
+  local currentSubIdx = 0
   for i = 1, #path do
     local cmd = path[i]
     if cmd.type == 'moveTo' then
+        currentSubIdx = currentSubIdx + 1
+        subPathLengths[currentSubIdx] = 0
         px, py = cmd[1].x, cmd[1].y
     elseif cmd.type == 'lineTo' then
         local pt = cmd[1]
-        totalLen = totalLen + length(pt.x - px, pt.y - py)
+        local d = length(pt.x - px, pt.y - py)
+        if currentSubIdx > 0 then subPathLengths[currentSubIdx] = subPathLengths[currentSubIdx] + d end
+        sumTotal = sumTotal + d
         px, py = pt.x, pt.y
-    elseif cmd.type == 'cubicTo' or cmd.type == 'quadTo' then
-        local ep = cmd[#cmd]
-        totalLen = totalLen + length(ep.x - px, ep.y - py) -- Simple linear approx for length
+    elseif cmd.type == 'cubicTo' then
+        local ep = cmd[3]
+        local d = length(ep.x - px, ep.y - py) -- Simple linear approx for length
+        if currentSubIdx > 0 then subPathLengths[currentSubIdx] = subPathLengths[currentSubIdx] + d end
+        sumTotal = sumTotal + d
+        px, py = ep.x, ep.y
+    elseif cmd.type == 'quadTo' then
+        local ep = cmd[2]
+        local d = length(ep.x - px, ep.y - py) -- Simple linear approx for length
+        if currentSubIdx > 0 then subPathLengths[currentSubIdx] = subPathLengths[currentSubIdx] + d end
+        sumTotal = sumTotal + d
         px, py = ep.x, ep.y
     end
   end
-  self.totalLength = totalLen
+  self.totalLength = sumTotal
+
+  currentSubIdx = 0
+  local currentPathLen = 0
 
   if self.subdivision <= 0 then
     -- No subdivision: preserve original path commands but deform points
+    local firstPoint = false
+    local pendingMoveX, pendingMoveY = 0, 0
+    
     for i = 1, #path do
       local cmd = path[i]
       if cmd.type == 'moveTo' then
+        currentSubIdx = currentSubIdx + 1
+        currentPathLen = subPathLengths[currentSubIdx] or 0
         local pt = cmd[1]
-        outPath:moveTo(pt)
+        pendingMoveX, pendingMoveY = pt.x, pt.y
         lastX, lastY = pt.x, pt.y
         dist = 0
+        firstPoint = true
       elseif cmd.type == 'lineTo' then
         local pt = cmd[1]
         local dx, dy = pt.x - lastX, pt.y - lastY
         local len = length(dx, dy)
-        -- Normal based on segment
         local nx, ny = normalize(dx, dy)
-        local px, py = -ny, nx
+        local px2, py2 = -ny, nx
         
-        local offX, offY = self:getOffset(dist + len, totalLen, pt.x, pt.y, px, py)
+        if firstPoint then
+          local offX, offY = self:getOffset(dist, currentPathLen, pendingMoveX, pendingMoveY, px2, py2)
+          outPath:moveTo(Vector.xy(pendingMoveX + offX, pendingMoveY + offY))
+          firstPoint = false
+        end
+        
+        local offX, offY = self:getOffset(dist + len, currentPathLen, pt.x, pt.y, px2, py2)
         outPath:lineTo(Vector.xy(pt.x + offX, pt.y + offY))
         
         lastX, lastY = pt.x, pt.y
         dist = dist + len
       elseif cmd.type == 'cubicTo' then
         local cp1, cp2, ep = cmd[1], cmd[2], cmd[3]
-        -- Use chord for approximate normal
         local dx, dy = ep.x - lastX, ep.y - lastY
         local len = length(dx, dy)
         local nx, ny = normalize(dx, dy)
-        local px, py = -ny, nx
+        local px2, py2 = -ny, nx
         
-        -- Apply offset to control points at estimated distances
-        local o1x, o1y = self:getOffset(dist + len * 0.33, totalLen, cp1.x, cp1.y, px, py)
-        local o2x, o2y = self:getOffset(dist + len * 0.66, totalLen, cp2.x, cp2.y, px, py)
-        local o3x, o3y = self:getOffset(dist + len, totalLen, ep.x, ep.y, px, py)
+        if firstPoint then
+          local offX, offY = self:getOffset(dist, currentPathLen, pendingMoveX, pendingMoveY, px2, py2)
+          outPath:moveTo(Vector.xy(pendingMoveX + offX, pendingMoveY + offY))
+          firstPoint = false
+        end
+        
+        local o1x, o1y = self:getOffset(dist + len * 0.33, currentPathLen, cp1.x, cp1.y, px2, py2)
+        local o2x, o2y = self:getOffset(dist + len * 0.66, currentPathLen, cp2.x, cp2.y, px2, py2)
+        local o3x, o3y = self:getOffset(dist + len, currentPathLen, ep.x, ep.y, px2, py2)
         
         outPath:cubicTo(
           Vector.xy(cp1.x + o1x, cp1.y + o1y),
@@ -214,10 +246,16 @@ function update(self: RippleEffect, path: PathData): PathData
         local dx, dy = ep.x - lastX, ep.y - lastY
         local len = length(dx, dy)
         local nx, ny = normalize(dx, dy)
-        local px, py = -ny, nx
+        local px2, py2 = -ny, nx
         
-        local o1x, o1y = self:getOffset(dist + len * 0.5, totalLen, cp.x, cp.y, px, py)
-        local o2x, o2y = self:getOffset(dist + len, totalLen, ep.x, ep.y, px, py)
+        if firstPoint then
+          local offX, offY = self:getOffset(dist, currentPathLen, pendingMoveX, pendingMoveY, px2, py2)
+          outPath:moveTo(Vector.xy(pendingMoveX + offX, pendingMoveY + offY))
+          firstPoint = false
+        end
+        
+        local o1x, o1y = self:getOffset(dist + len * 0.5, currentPathLen, cp.x, cp.y, px2, py2)
+        local o2x, o2y = self:getOffset(dist + len, currentPathLen, ep.x, ep.y, px2, py2)
         
         outPath:quadTo(
            Vector.xy(cp.x + o1x, cp.y + o1y),
@@ -234,16 +272,21 @@ function update(self: RippleEffect, path: PathData): PathData
   end
 
   local density = math.max(0.05, self.subdivision * 0.05)
+  local firstPoint = false
+  local pendingMoveX, pendingMoveY = 0, 0
 
+  currentSubIdx = 0
   for i = 1, #path do
     local cmd = path[i]
-    local isLast = (i == #path)
 
     if cmd.type == 'moveTo' then
+      currentSubIdx = currentSubIdx + 1
+      currentPathLen = subPathLengths[currentSubIdx] or 0
       local pt = cmd[1]
-      outPath:moveTo(pt)
+      pendingMoveX, pendingMoveY = pt.x, pt.y
       lastX, lastY = pt.x, pt.y
       dist = 0
+      firstPoint = true
 
     elseif cmd.type == 'lineTo' then
       local pt = cmd[1]
@@ -253,15 +296,19 @@ function update(self: RippleEffect, path: PathData): PathData
       if steps < 1 then steps = 1 end
       
       local nx, ny = normalize(dx, dy)
-      local px, py = -ny, nx 
+      local px2, py2 = -ny, nx 
       
-      local limit = isLast and steps or steps - 1
+      if firstPoint then
+        local offX, offY = self:getOffset(dist, currentPathLen, pendingMoveX, pendingMoveY, px2, py2)
+        outPath:moveTo(Vector.xy(pendingMoveX + offX, pendingMoveY + offY))
+        firstPoint = false
+      end
 
-      for s = 1, limit do
+      for s = 1, steps do
         local t = s / steps
         local cl = len * t
         local bx, by = lastX + dx * t, lastY + dy * t
-        local offX, offY = self:getOffset(dist + cl, totalLen, bx, by, px, py)
+        local offX, offY = self:getOffset(dist + cl, currentPathLen, bx, by, px2, py2)
         outPath:lineTo(Vector.xy(bx + offX, by + offY))
       end
       
@@ -275,9 +322,21 @@ function update(self: RippleEffect, path: PathData): PathData
       if steps < 1 then steps = 1 end
       
       local sx, sy = lastX, lastY
-      local limit = isLast and steps or steps - 1
+      
+      if firstPoint then
+        local dx = 3*(cp1.x - sx)
+        local dy = 3*(cp1.y - sy)
+        if dx == 0 and dy == 0 then
+          dx = ep.x - sx; dy = ep.y - sy
+        end
+        local nx, ny = normalize(dx, dy)
+        local px2, py2 = -ny, nx
+        local offX, offY = self:getOffset(dist, currentPathLen, pendingMoveX, pendingMoveY, px2, py2)
+        outPath:moveTo(Vector.xy(pendingMoveX + offX, pendingMoveY + offY))
+        firstPoint = false
+      end
        
-      for s = 1, limit do
+      for s = 1, steps do
         local t = s / steps
         local mt = 1 - t
         local mt2, t2 = mt * mt, t * t
@@ -289,8 +348,8 @@ function update(self: RippleEffect, path: PathData): PathData
         local dy = 3*mt2*(cp1.y - sy) + 6*mt*t*(cp2.y - cp1.y) + 3*t2*(ep.y - cp2.y)
         
         local nx, ny = normalize(dx, dy)
-        local px, py = -ny, nx
-        local offX, offY = self:getOffset(dist + approxLen * t, totalLen, x, y, px, py)
+        local px2, py2 = -ny, nx
+        local offX, offY = self:getOffset(dist + approxLen * t, currentPathLen, x, y, px2, py2)
         outPath:lineTo(Vector.xy(x + offX, y + offY))
       end
 
@@ -308,12 +367,20 @@ function update(self: RippleEffect, path: PathData): PathData
        
        local startX, startY = lastX, lastY
 
-       local limit = steps
-       if i < #path then
-         limit = steps - 1
+       if firstPoint then
+         local dx = 2*(cp.x - startX)
+         local dy = 2*(cp.y - startY)
+         if dx == 0 and dy == 0 then
+           dx = ep.x - startX; dy = ep.y - startY
+         end
+         local nx, ny = normalize(dx, dy)
+         local px2, py2 = -ny, nx
+         local offX, offY = self:getOffset(dist, currentPathLen, pendingMoveX, pendingMoveY, px2, py2)
+         outPath:moveTo(Vector.xy(pendingMoveX + offX, pendingMoveY + offY))
+         firstPoint = false
        end
 
-       for s = 1, limit do
+       for s = 1, steps do
          local t = s / steps
          local mt = 1 - t
          -- Point
@@ -324,9 +391,9 @@ function update(self: RippleEffect, path: PathData): PathData
          local dy = 2*mt*(cp.y - startY) + 2*t*(ep.y - cp.y)
          
          local nx, ny = normalize(dx, dy)
-         local px, py = -ny, nx
+         local px2, py2 = -ny, nx
          
-         local offX, offY = self:getOffset(dist + approxLen * t, self.totalLength, x, y, px, py)
+         local offX, offY = self:getOffset(dist + approxLen * t, currentPathLen, x, y, px2, py2)
          outPath:lineTo(Vector.xy(x + offX, y + offY))
        end
 

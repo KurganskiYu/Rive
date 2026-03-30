@@ -1,12 +1,18 @@
 -- Artboard Path Cloner Node Script
 
+type CloneData = {
+  num: Property<number>
+}
+
 type PathCloner = {
   pathArtwork: Input<Artboard>,
+  pathNodeName: Input<string>,
   drawPath: Input<boolean>,
 
   cloneArtwork: Input<Artboard>,
   clones: Input<number>,
-  percentage: Input<number>,
+  percentStart: Input<number>,
+  percentEnd: Input<number>,
   slide: Input<number>,
   loop: Input<boolean>,
   invert: Input<boolean>,
@@ -19,7 +25,8 @@ type PathCloner = {
 
   _pathPaint: Paint,
   _pathInstance: Artboard?,
-  _cloneInstance: Artboard?,
+  _cloneInstances: { Artboard },
+  _lastCloneCount: number,
   _context: Context?,
 }
 
@@ -42,11 +49,31 @@ local function advance(self: PathCloner, seconds: number): boolean
     self._pathInstance:advance(seconds)
   end
 
-  if self.cloneArtwork and not self._cloneInstance then
-    self._cloneInstance = self.cloneArtwork:instance()
+  local targetStrCount = math.max(1, math.floor(self.clones or 5))
+
+  if not self.cloneArtwork then
+    self._cloneInstances = {}
+    self._lastCloneCount = 0
+  elseif self.cloneArtwork and self._lastCloneCount ~= targetStrCount then
+    self._cloneInstances = {}
+    for i = 1, targetStrCount do
+      local inst = self.cloneArtwork:instance()
+      
+      -- Access data loosely to avoid strict typecast errors on the Artboard type
+      local vm: any = (inst :: any).data
+      if vm and vm.num then
+        (vm.num :: Property<number>).value = i - 1
+      end
+      
+      table.insert(self._cloneInstances, inst)
+    end
+    self._lastCloneCount = targetStrCount
   end
-  if self._cloneInstance then
-    self._cloneInstance:advance(seconds)
+
+  for _, clone in ipairs(self._cloneInstances) do
+    if clone then
+      clone:advance(seconds)
+    end
   end
 
   if self._context then
@@ -78,7 +105,7 @@ local function findFirstPathData(node: NodeData): (PathData?, Mat2D?)
 end
 
 local function draw(self: PathCloner, renderer: Renderer)
-  if not self._pathInstance or not self._cloneInstance then return end
+  if not self._pathInstance or not self._cloneInstances or #self._cloneInstances == 0 then return end
 
   -- Draw the path artboard off-screen so it computes world transforms for its nodes.
   -- We save/restore and immediately clip to nothing so it is invisible.
@@ -89,7 +116,13 @@ local function draw(self: PathCloner, renderer: Renderer)
   renderer:restore()
 
   -- Find the first node in the artboard that contains path data.
-  local rootNode = self._pathInstance:node("")
+  local targetName = self.pathNodeName or ""
+  local rootNode = self._pathInstance:node(targetName)
+  
+  -- Fallbacks for common default names if custom name fails or isn't provided
+  if not rootNode then
+    rootNode = self._pathInstance:node("Root") or self._pathInstance:node("")
+  end
   if not rootNode then return end
 
   local pathData, xform = findFirstPathData(rootNode)
@@ -125,18 +158,28 @@ local function draw(self: PathCloner, renderer: Renderer)
   local totalLength = measure.length
   if totalLength <= 0.001 then return end
 
-  local filledPct = math.clamp(self.percentage, 0, 100)
-  local filledLength = totalLength * (filledPct / 100.0)
+  local pPercentStart = self.percentStart or 0
+  local pPercentEnd = self.percentEnd or 100
+  
+  local startPct = math.clamp(pPercentStart, 0, 100)
+  local endPct = math.clamp(pPercentEnd, 0, 100)
+  
+  local tStart = startPct / 100.0
+  local tEnd = endPct / 100.0
+  
   local n = math.max(1, math.floor(self.clones))
 
   for i = 0, n - 1 do
     local t = if n > 1 then i / (n - 1) else 0
 
-    local dist = t * filledLength
     if self.invert then
-      dist = filledLength - dist
+      t = 1.0 - t
     end
-
+    
+    -- Map normalized t (0-1) to the restricted range between startPct and endPct
+    local mapped_t = tStart + t * (tEnd - tStart)
+    
+    local dist = mapped_t * totalLength
     dist = dist + totalLength * (self.slide / 100.0)
     if self.loop then
       dist = dist % totalLength
@@ -162,7 +205,10 @@ local function draw(self: PathCloner, renderer: Renderer)
 
     renderer:save()
     renderer:transform(cloneMat)
-    self._cloneInstance:draw(renderer)
+    local cloneInst = self._cloneInstances[i + 1]
+    if cloneInst then
+      cloneInst:draw(renderer)
+    end
     renderer:restore()
   end
 end
@@ -170,11 +216,13 @@ end
 return function(): Node<PathCloner>
   return {
     pathArtwork = late(),
+    pathNodeName = "",
     drawPath = true,
 
     cloneArtwork = late(),
     clones = 5,
-    percentage = 100,
+    percentStart = 0,
+    percentEnd = 100,
     slide = 0,
     loop = true,
     invert = false,
@@ -186,7 +234,8 @@ return function(): Node<PathCloner>
     orientAlongCurve = true,
     _pathPaint = Paint.new(),
     _pathInstance = nil,
-    _cloneInstance = nil,
+    _cloneInstances = {},
+    _lastCloneCount = 0,
     _context = nil,
 
     init = init,
