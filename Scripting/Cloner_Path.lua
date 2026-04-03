@@ -6,6 +6,7 @@ type CloneData = {
 
 type PathCloner = {
   pathArtwork: Input<Artboard>,
+  pathAnimation: Input<string>,
   pathNodeName: Input<string>,
   drawPath: Input<boolean>,
 
@@ -16,6 +17,7 @@ type PathCloner = {
   slide: Input<number>,
   loop: Input<boolean>,
   invert: Input<boolean>,
+  offset: Input<number>,
   startScale: Input<number>,
   endScale: Input<number>,
   startRotation: Input<number>,
@@ -25,6 +27,8 @@ type PathCloner = {
 
   _pathPaint: Paint,
   _pathInstance: Artboard?,
+  _pathAnimationInst: Animation?,
+  _currentAnimName: string?,
   _cloneInstances: { Artboard },
   _lastCloneCount: number,
   _context: Context?,
@@ -44,6 +48,43 @@ local function advance(self: PathCloner, seconds: number): boolean
   if self.pathArtwork and not self._pathInstance then
     self._pathInstance = self.pathArtwork:instance()
   end
+
+  if self._pathInstance and self.pathAnimation and self.pathAnimation ~= "" then
+    if not self._pathAnimationInst or self._currentAnimName ~= self.pathAnimation then
+      self._pathAnimationInst = self._pathInstance:animation(self.pathAnimation)
+      self._currentAnimName = self.pathAnimation
+    end
+  elseif self._pathAnimationInst and (not self.pathAnimation or self.pathAnimation == "") then
+    self._pathAnimationInst = nil
+    self._currentAnimName = nil
+  end
+
+  if self._pathAnimationInst then
+    self._pathAnimationInst:advance(seconds)
+  end
+
+  -- Sync main view model common properties to the path instance
+  if self._pathInstance and self._context then
+    local mainVM = self._context:viewModel()
+    local pathVM: any = (self._pathInstance :: any).data
+    if mainVM and pathVM then
+      local roundProp = mainVM:getNumber("round")
+      if roundProp and pathVM.round then
+        (pathVM.round :: Property<number>).value = roundProp.value
+      end
+
+      local sizeXProp = mainVM:getNumber("sizeX")
+      if sizeXProp and pathVM.sizeX then
+        (pathVM.sizeX :: Property<number>).value = sizeXProp.value
+      end
+
+      local sizeYProp = mainVM:getNumber("sizeY")
+      if sizeYProp and pathVM.sizeY then
+        (pathVM.sizeY :: Property<number>).value = sizeYProp.value
+      end
+    end
+  end
+
   -- Advance the path artboard every frame so world transforms are computed
   if self._pathInstance then
     self._pathInstance:advance(seconds)
@@ -138,6 +179,8 @@ local function draw(self: PathCloner, renderer: Renderer)
       dummyPath:lineTo(cmd[1])
     elseif cmd.type == "cubicTo" then
       dummyPath:cubicTo(cmd[1], cmd[2], cmd[3])
+    elseif cmd.type == "quadTo" then
+      dummyPath:quadTo(cmd[1], cmd[2])
     elseif cmd.type == "close" then
       dummyPath:close()
     end
@@ -196,10 +239,15 @@ local function draw(self: PathCloner, renderer: Renderer)
 
     local final_angle   = base_angle + anim_angle + tangent_angle
     local current_scale = self.startScale + t * (self.endScale - self.startScale)
+    
+    local offsetVal = self.offset or 0
+    local normalX, normalY = -tan.y, tan.x
+    local offsetX = normalX * offsetVal
+    local offsetY = normalY * offsetVal
 
     local cloneMat =
       xform
-      * Mat2D.withTranslation(pos.x, pos.y)
+      * Mat2D.withTranslation(pos.x + offsetX, pos.y + offsetY)
       * Mat2D.withRotation(final_angle)
       * Mat2D.withScale(current_scale, current_scale)
 
@@ -217,6 +265,7 @@ return function(): Node<PathCloner>
   return {
     pathArtwork = late(),
     pathNodeName = "",
+    pathAnimation = "",
     drawPath = true,
 
     cloneArtwork = late(),
@@ -226,6 +275,7 @@ return function(): Node<PathCloner>
     slide = 0,
     loop = true,
     invert = false,
+    offset = 0,
     startScale = 1.0,
     endScale = 1.0,
     startRotation = 0,
@@ -234,6 +284,8 @@ return function(): Node<PathCloner>
     orientAlongCurve = true,
     _pathPaint = Paint.new(),
     _pathInstance = nil,
+    _pathAnimationInst = nil,
+    _currentAnimName = nil,
     _cloneInstances = {},
     _lastCloneCount = 0,
     _context = nil,

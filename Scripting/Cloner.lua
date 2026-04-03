@@ -133,6 +133,8 @@ local function draw(self: PathCloner, renderer: Renderer)
         dummyPath:lineTo(cmd[1])
       elseif cmd.type == "cubicTo" then
         dummyPath:cubicTo(cmd[1], cmd[2], cmd[3])
+      elseif cmd.type == "quadTo" then
+        dummyPath:quadTo(cmd[1], cmd[2])
       elseif cmd.type == "close" then
         dummyPath:close()
       end
