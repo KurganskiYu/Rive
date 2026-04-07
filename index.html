@@ -19,7 +19,7 @@
             background-color: #000000;
             background-image: 
                 linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
-                linear-gradient(45deg, #0f0f0f 25%, #000000 25%, #000000 75%, #0f0f0f 75%, #0f0f0f);
+                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f);
             background-size: 20px 20px; /* Adjust size of the checkered pattern */
             background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
             padding: 10px 0;
@@ -307,7 +307,22 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="81"></canvas>
+        <canvas id="canvas3" width="200" height="105"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="pages/bannerparticlessand_v3.html" style="color: #464646;">bannerparticlessand</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas4" width="200" height="81"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -322,7 +337,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="105"></canvas>
+        <canvas id="canvas5" width="200" height="105"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -337,7 +352,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="433"></canvas>
+        <canvas id="canvas6" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -352,37 +367,13 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="433"></canvas>
+        <canvas id="canvas7" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
           <div><a href="pages/energysliders_v2.html" style="color: #464646;">energysliders</a></div>
           
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="219"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/godraycomment_v5.html" style="color: #464646;">godraycomment</a></div>
-          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input1">flip:</label>
-            <input type="checkbox" id="btn7_input1" />
-        </div>
-        
         </div>
         
       </div>
@@ -469,9 +460,9 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-    src: "riv/bannerparticlessand_v2.riv",
+    src: "riv/bannerparticlessand_v3.riv",
     canvas: document.getElementById("canvas3"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main206", stateMachines: "State Machine 1",
     onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
     const inputs = r3.stateMachineInputs("State Machine 1");
@@ -479,7 +470,7 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "riv/bannerparticlesbutton_v1.riv",
+    src: "riv/bannerparticlessand_v2.riv",
     canvas: document.getElementById("canvas4"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -489,7 +480,7 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-    src: "riv/fatgraph_v2.riv",
+    src: "riv/bannerparticlesbutton_v1.riv",
     canvas: document.getElementById("canvas5"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -499,7 +490,7 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-    src: "riv/energysliders_v2.riv",
+    src: "riv/fatgraph_v2.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -509,28 +500,12 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-    src: "riv/godraycomment_v5.riv",
+    src: "riv/energysliders_v2.riv",
     canvas: document.getElementById("canvas7"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r7.resizeDrawingSurfaceToCanvas();
-    const vmi = r7.viewModelInstance;
-    let inputFieldBtn7_1 = document.getElementById("btn7_input1");
-    if (inputFieldBtn7_1 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn7_1.addEventListener("change", () => {
-        vmi.boolean("flip").value = inputFieldBtn7_1.checked;
-      });
-      // Set initial value
-      vmi.boolean("flip").value = inputFieldBtn7_1.checked;
-    }
     const inputs = r7.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn7").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
-            }
-        });
   },
 });
 
