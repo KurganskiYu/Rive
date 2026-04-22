@@ -24,11 +24,12 @@ type Particle = {
 }
 type ParticleSystemNode = {
 	artboard: Input<Artboard>,
-	fastStart: Input<boolean>,
+	startTime: Input<number>,
 	-- Target number of live particles (also used to derive default emission rate).
 	count: Input<number>,
 	-- Optional explicit emission rate (particles per second). If <= 0, derived from count/life.
 	emitRate: number,
+	intersectionSize: Input<number>,
 	burst: Input<Trigger>,
 	burstCount: Input<number>,
 	emitWidth: Input<number>,
@@ -44,7 +45,6 @@ type ParticleSystemNode = {
 	massVar: Input<number>,
 	life: Input<number>,
 	lifeVar: Input<number>,
-	fadeTime: Input<number>,
 	noiseStrengthX: Input<number>,
 	noiseStrengthY: Input<number>,
 	noiseOctaves: Input<number>,
@@ -59,6 +59,7 @@ type ParticleSystemNode = {
 	gravityVar: number,
 	friction: Input<number>,
 	popOutside: Input<boolean>,
+	popDuration: Input<number>,
 	trail: Input<boolean>,
 	trailPaint: Paint,
 	drawEmitter: Input<boolean>,
@@ -191,8 +192,52 @@ local function spawn(sys: ParticleSystemNode, p: Particle)
 	p.mass = mmax(0.1, randomRange(sys.mass, sys.massVar))
 	
 	-- Ensure particles spawn strictly within the emission area (0 to width/height)
-	p.x = mrandom() * sys.emitWidth
-	p.y = mrandom() * sys.emitHeight
+	local isectSizeSq = sys.intersectionSize * sys.intersectionSize
+	if isectSizeSq > 0 then
+		local attempts = 0
+		local maxAttempts = 25 -- Increased slightly since it's now highly optimized
+		local bestX = 0
+		local bestY = 0
+		local maxMinDistSq = -1
+		local particles = sys.particles
+		local count = #particles
+		
+		while attempts < maxAttempts do
+			local px = mrandom() * sys.emitWidth
+			local py = mrandom() * sys.emitHeight
+			local minDistSq = math.huge
+			
+			for i = 1, count do
+				local other = particles[i]
+				local dx = px - other.x
+				local dy = py - other.y
+				local distSq = dx * dx + dy * dy
+				if distSq < minDistSq then
+					minDistSq = distSq
+				end
+				-- Optimization: reject candidate early if it's already worse than our best candidate
+				if minDistSq <= maxMinDistSq then
+					break
+				end
+			end
+			
+			if minDistSq > maxMinDistSq then
+				maxMinDistSq = minDistSq
+				bestX = px
+				bestY = py
+				-- Early success: fully satisfies intersection size
+				if maxMinDistSq >= isectSizeSq then
+					break
+				end
+			end
+			attempts = attempts + 1
+		end
+		p.x = bestX
+		p.y = bestY
+	else
+		p.x = mrandom() * sys.emitWidth
+		p.y = mrandom() * sys.emitHeight
+	end
 	
 	local s = randomRange(sys.speed, sys.speedVar)
 	
@@ -272,7 +317,7 @@ local function init(self: ParticleSystemNode, context: Context): boolean
 		table.insert(self.pool, createRawParticle())
 	end
 	
-	if self.fastStart then
+	if self.startTime <= 0 then
 		for _ = 1, self.count do
 			local p = table.remove(self.pool)
 			if p then
@@ -313,7 +358,10 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 	-- If emitRate <= 0, derive from count/avgLife (roughly maintains `count` live particles).
 	local avgLife = mmax(0.1, self.life)
 	local rate = self.emitRate
-	if rate <= 0 then
+	if self.startTime > 0 and self.time <= self.startTime then
+		-- Issue a warmup phase where we continuously spawn exact particle count across startTime smoothly
+		rate = self.count / self.startTime
+	elseif rate <= 0 then
 		rate = self.count / avgLife
 	end
 	-- Don't exceed target `count` live particles.
@@ -335,6 +383,15 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 					break
 				end
 				spawn(self, p)
+				
+				-- If we're emitting gradually via startTime warmup, aggressively scramble the
+				-- particle's starting life! If we don't, all 30 particles born strictly inside
+				-- a small 1s window will mathematically hit maxLife precisely in a 1s window later,
+				-- causing them to clump up and die/respawn all at once.
+				if self.startTime > 0 and self.time <= self.startTime then
+					p.life = mrandom() * (p.maxLife * 0.7)
+				end
+				
 				table.insert(particles, p)
 			end
 		end
@@ -351,13 +408,7 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 			p.instance = nil
 			if p.path then p.path:reset() end
 			table.insert(pool, p)
-			if i < count then
-				local last = particles[count]
-				if last then
-					particles[i] = last
-				end
-			end
-			particles[count] = nil
+			table.remove(particles, i)
 			count = count - 1
 		else
 			-- Apply noise-based forces (noise directly influences velocity for chaotic movement)
@@ -399,9 +450,23 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 				p.path:lineTo(Vector.xy(p.x, p.y))
 			end
 
-			if self.popOutside and p.instance and p.instance.data and p.instance.data.pop then
-				local isOutside = p.x < 0 or p.x > self.emitWidth or p.y < 0 or p.y > self.emitHeight
-				p.instance.data.pop.value = isOutside
+			if p.instance and p.instance.data and p.instance.data.pop then
+				local shouldPop = false
+				
+				-- 1. Pop before death (based on configured popDuration), providing it lived at least 30% of its lifetime
+				if (p.maxLife - p.life) <= self.popDuration and p.life >= (p.maxLife * 0.3) then
+					shouldPop = true
+				end
+				
+				-- 2. Pop if completely outside emission area (if configured)
+				if not shouldPop and self.popOutside then
+					if p.x < 0 or p.x > self.emitWidth or p.y < 0 or p.y > self.emitHeight then
+						shouldPop = true
+					end
+				end
+				
+				-- Explicitly assign shouldPop so it can switch false/true properly every frame
+				p.instance.data.pop.value = shouldPop
 			end
 
 			if p.instance then
@@ -445,18 +510,8 @@ local function draw(self: ParticleSystemNode, renderer: Renderer)
 			p.instance = instance
 		end
 		if instance then
-			local fadeScale = 1
-			if self.fadeTime > 0 then
-				local remain = p.maxLife - p.life
-				if remain < self.fadeTime then
-					local t = mmax(0, remain / self.fadeTime)
-					-- Smoothstep for ease in and out
-					fadeScale = t * t * (3 - 2 * t)
-				end
-			end
-
 			renderer:save()
-			local finalScale = p.scale * fadeScale
+			local finalScale = p.scale
 			mat.xx = finalScale
 			mat.xy = 0
 			mat.yx = 0
@@ -473,8 +528,9 @@ end
 return function(): Node<ParticleSystemNode>
 	return {
 		count = 30,
-		fastStart = false,
+		startTime = 0,
 		emitRate = 0, -- 0 => auto (count / life)
+		intersectionSize = 0,
 		burst = burst,
 		burstCount = 200,
 		emitWidth = 0,
@@ -490,7 +546,6 @@ return function(): Node<ParticleSystemNode>
 		massVar = 0,
 		life = 5,
 		lifeVar = 0,
-		fadeTime = 1,
 		noiseStrengthX = 20,
 		noiseStrengthY = 20,
 		noiseOctaves = 0,
@@ -505,6 +560,7 @@ return function(): Node<ParticleSystemNode>
 		gravityVar = 0,
 		friction = 0.0,
 		popOutside = false,
+		popDuration = 0.5,
 		trail = false,
 		trailPaint = late(),
 		drawEmitter = false,
