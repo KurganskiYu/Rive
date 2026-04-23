@@ -15,6 +15,7 @@ type RippleEffect = {
   useNoiseDirection: Input<boolean>,
   time: number,
   totalLength: number,
+  outPath: Path,
   context: Context,
   -- Methods
   noise: (self: RippleEffect, x: number, y: number) -> number,
@@ -122,12 +123,12 @@ function getOffset(self: RippleEffect, distance: number, pathLength: number, x: 
   if pathLength > 0 then
     -- Start fade
     if self.startFade > 0 then
-      local sf = self.startFade * 0.01 * pathLength
+      local sf = math.max(self.startFade * 0.01 * pathLength, 0.01)
       if distance < sf then fade = fade * ((distance / sf) ^ 2) end
     end
     -- End fade
     if self.endFade > 0 then
-      local ef = self.endFade * 0.01 * pathLength
+      local ef = math.max(self.endFade * 0.01 * pathLength, 0.01)
       if distance > (pathLength - ef) then fade = fade * (((pathLength - distance) / ef) ^ 2) end
     end
   end
@@ -145,7 +146,8 @@ function getOffset(self: RippleEffect, distance: number, pathLength: number, x: 
 end
 
 function update(self: RippleEffect, path: PathData): PathData
-  local outPath = Path.new()
+  self.outPath:reset()
+  local outPath = self.outPath
   local lastX, lastY, dist, sumTotal = 0, 0, 0, 0
   
   -- Pre-calculate length of each sub-path
@@ -292,7 +294,7 @@ function update(self: RippleEffect, path: PathData): PathData
       local pt = cmd[1]
       local dx, dy = pt.x - lastX, pt.y - lastY
       local len = length(dx, dy)
-      local steps = math.ceil(len * density)
+      local steps = math.min(math.ceil(len * density), 100)
       if steps < 1 then steps = 1 end
       
       local nx, ny = normalize(dx, dy)
@@ -318,7 +320,7 @@ function update(self: RippleEffect, path: PathData): PathData
     elseif cmd.type == 'cubicTo' then
       local cp1, cp2, ep = cmd[1], cmd[2], cmd[3]
       local approxLen = length(ep.x - lastX, ep.y - lastY)
-      local steps = math.ceil(approxLen * density)
+      local steps = math.min(math.ceil(approxLen * density), 100)
       if steps < 1 then steps = 1 end
       
       local sx, sy = lastX, lastY
@@ -362,7 +364,7 @@ function update(self: RippleEffect, path: PathData): PathData
        local l2 = length(ep.x - cp.x, ep.y - cp.y)
        local approxLen = l1 + l2
 
-       local steps = math.ceil(approxLen * density)
+       local steps = math.min(math.ceil(approxLen * density), 100)
        if steps < 1 then steps = 1 end
        
        local startX, startY = lastX, lastY
@@ -410,13 +412,13 @@ end
 
 function init(self: RippleEffect, context: Context)
   self.time = 0
+  self.outPath = Path.new()
   self.context = context
   return true
 end
 
 function advance(self: RippleEffect, dt: number)
   self.time = self.time + dt
-  self.context:markNeedsUpdate()
   return true
 end
 
@@ -435,6 +437,7 @@ return function(): PathEffect<RippleEffect>
     useNoiseDirection = false,
     time = 0,
     totalLength = 0,
+    outPath = late(),
     context = late(),
     noise = noise,
     getOffset = getOffset,
