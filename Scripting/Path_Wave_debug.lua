@@ -187,7 +187,7 @@ function update(self: RippleEffect, path: PathData): PathData
   currentSubIdx = 0
   local currentPathLen = 0
 
-  if self.subdivision <= 0 then
+  if true then
     -- No subdivision: preserve original path commands but deform points
     local firstPoint = false
     local pendingMoveX, pendingMoveY = 0, 0

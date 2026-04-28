@@ -248,7 +248,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="CircleLoader_v2.html" style="color: #464646;">CircleLoader</a></div>
+          <div><a href="SpiralLoader_v2.html" style="color: #464646;">SpiralLoader</a></div>
           
         </div>
         
@@ -263,8 +263,8 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="EyeLoader_v5_eye-C.html" style="color: #464646;">EyeLoader eye-C</a></div>
-          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <div><a href="CircleLoader_v2.html" style="color: #464646;">CircleLoader</a></div>
+          
         </div>
         
       </div>
@@ -274,6 +274,21 @@
     
       <div class="animation-container">
         <canvas id="canvas2" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="EyeLoader_v5_eye-C.html" style="color: #464646;">EyeLoader eye-C</a></div>
+          <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas3" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -288,7 +303,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="200"></canvas>
+        <canvas id="canvas4" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -303,7 +318,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="200"></canvas>
+        <canvas id="canvas5" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -320,24 +335,34 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/CircleLoader_v2.riv",
+    src: "../riv/SpiralLoader_v2.riv",
     canvas: document.getElementById("canvas0"),
-    autoplay: true, autoBind: true, stateMachines: "Circle Loader",
+    autoplay: true, autoBind: true, stateMachines: "Spiral Loader",
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
-    const inputs = r0.stateMachineInputs("Circle Loader");
+    const inputs = r0.stateMachineInputs("Spiral Loader");
   },
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/EyeLoader_v5_eye-C.riv",
+    src: "../riv/CircleLoader_v2.riv",
     canvas: document.getElementById("canvas1"),
-    autoplay: true, autoBind: true, stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true, stateMachines: "Circle Loader",
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
-    const inputs = r1.stateMachineInputs("State Machine 1");
+    const inputs = r1.stateMachineInputs("Circle Loader");
+  },
+});
+
+const r2 = new rive.Rive({
+    src: "../riv/EyeLoader_v5_eye-C.riv",
+    canvas: document.getElementById("canvas2"),
+    autoplay: true, autoBind: true, stateMachines: "State Machine 1",
+    onLoad: () => {
+        r2.resizeDrawingSurfaceToCanvas();
+    const inputs = r2.stateMachineInputs("State Machine 1");
     const triggerInput = inputs.find(input => input.name === "CloseTrigger");
-        document.getElementById("btn1").addEventListener("click", () => {
+        document.getElementById("btn2").addEventListener("click", () => {
             if (triggerInput) {
                 triggerInput.fire();
             }
@@ -345,33 +370,33 @@ const r1 = new rive.Rive({
   },
 });
 
-const r2 = new rive.Rive({
+const r3 = new rive.Rive({
     src: "../riv/EyeLoader_v4_eye-A_loop.riv",
-    canvas: document.getElementById("canvas2"),
+    canvas: document.getElementById("canvas3"),
     autoplay: true, autoBind: true, stateMachines: "EYE timeline",
     onLoad: () => {
-        r2.resizeDrawingSurfaceToCanvas();
-    const inputs = r2.stateMachineInputs("EYE timeline");
-  },
-});
-
-const r3 = new rive.Rive({
-    src: "../riv/New_v1.riv",
-    canvas: document.getElementById("canvas3"),
-    autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
-    onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
-    const inputs = r3.stateMachineInputs("State Machine 1");
+    const inputs = r3.stateMachineInputs("EYE timeline");
   },
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/EyeNew_v5.riv",
+    src: "../riv/New_v1.riv",
     canvas: document.getElementById("canvas4"),
     autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
     const inputs = r4.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r5 = new rive.Rive({
+    src: "../riv/EyeNew_v5.riv",
+    canvas: document.getElementById("canvas5"),
+    autoplay: true, autoBind: true,artboard: "Transparent", stateMachines: "State Machine 1",
+    onLoad: () => {
+        r5.resizeDrawingSurfaceToCanvas();
+    const inputs = r5.stateMachineInputs("State Machine 1");
   },
 });
 
