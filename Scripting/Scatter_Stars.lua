@@ -1,5 +1,18 @@
--- Scatter_v1: Grid/Tetrahedral scatter with delay
--- Optimized for Rive Lua Runtime
+--[[
+	Scatter_v1: Dynamic Particle Grid System
+	
+	Creates and manages a grid of particle instances with two spawn modes:
+	1. Sequential: Spawns points in order with optional frame delay between each
+	2. Radial: Spawns points from inside-out in a circular pattern from a center point
+	
+	Features:
+	- Tetrahedral mode: Offsets every odd row by half a cell width for hexagonal-like layout
+	- Dynamic grid sizing: Adjusts particle count/positions when countX/countY changes
+	- Visual Type Grid: 17x7 grid defines particle types (0-3) for visual variety
+	- Efficient reuse: Deactivates rather than deletes, reactivating on grid expansion
+	- Clear/removal: Sequential or radial clearing with configurable frame delay
+	- Optimized for Rive Lua Runtime
+]]
 
 -- Type definitions
 type PointVM = {

@@ -1,3 +1,20 @@
+-- ==============================================================================
+-- Scatter Calendar
+-- 
+-- Functionality: Dynamically spawns and renders a 2D grid of nested artboards 
+-- (representing days) within a defined area.
+-- 
+-- Logic: 
+-- 1. State Mapping: Reads from the main ViewModel (e.g., `daysAmount`, `daysShift`, 
+--    and space-separated `percentToData`) to control grid capacity and day states.
+-- 2. Grid Positioning: Calculates (X, Y) coordinates sequentially based on `countX` 
+--    and `countY`, adjusting for calendar start offsets via `daysShift`.
+-- 3. Staggered Animation: Uses an internal frame counter and `delayFrames`/`delay` 
+--    to sequentially toggle the `active` state of instances, creating a ripple spawn effect.
+-- 4. Lifecycle: Automatically flags the last day as `today` and manages cleanup if 
+--    the configured total amount of days decreases.
+-- ==============================================================================
+
 -- Scatter_v1: Grid/Tetrahedral scatter with delay
 -- Optimized for Rive Lua Runtime
 
