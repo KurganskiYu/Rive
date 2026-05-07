@@ -4,16 +4,22 @@ local Physics = require('Physics')
 -- FLAGS SCATTER SCRIPT
 --=============================================================================
 
-local COUNTRY_CODES = {
-  "US", "GB", "AU", "CA", "DE", "FR", "JP", "IT", "BR", "IN",
-  "CN", "RU", "KR", "ES", "MX", "ID", "NL", "SA", "CH", "AR",
-  "SE", "PL", "BE", "TH", "ZA"
-}
+local table_insert = table.insert
 
+type CountryData = { code: string, isNew: boolean }
+
+local function extractCodes(str: string, isNew: boolean, list: {CountryData})
+  if not str then return end
+  for word in string.gmatch(str, "%S+") do
+    table_insert(list, { code = word, isNew = isNew })
+  end
+end
+ 
 type ParticleVM = {
   countryCode: Property<string>,
   active: Property<boolean>,
   pointerOver: Property<boolean>,
+  new: Property<boolean>,
 }
 
 type Particle = {
@@ -42,7 +48,6 @@ type Particle = {
 type ParticleSystemNode = {
   artboard: Input<Artboard<ParticleVM>>,
   activate: Input<Trigger>,
-  countriesNum: Input<number>,
 
   friction: Input<number>,
   damping: Input<number>,
@@ -76,6 +81,7 @@ type ParticleSystemNode = {
   emitterPaint: Paint,
 
   _particles: { Particle },
+  countriesList: { CountryData },
   mat: Mat2D,
   nextId: number,
   totalSpawned: number,
@@ -88,7 +94,6 @@ type ParticleSystemNode = {
   relaxTimer: number,
   selectedParticle: Particle?,
   activationIndex: number,
-  activationDelayCounter: number,
 }
 
 local activate: (self: ParticleSystemNode) -> ()
@@ -102,7 +107,6 @@ local mcos = math.cos
 local msin = math.sin
 local mpi = math.pi
 local matan2 = math.atan2
-local table_insert = table.insert
 
 local BASE_RADIUS = 10
 local CELL_SIZE = 100
@@ -121,6 +125,7 @@ local function cubicEaseOut(t: number): number
 end
 
 local function init(self: ParticleSystemNode, context: Context): boolean
+  self.countriesList = {}
   local vm = context:viewModel()
   if vm then
     local startTrigger = vm:getTrigger('start')
@@ -129,6 +134,26 @@ local function init(self: ParticleSystemNode, context: Context): boolean
         activate(self)
       end)
     end
+    
+    local codesProp = vm:getString('codes')
+    local codesNewProp = vm:getString('codesNew')
+    local cStr = codesProp and codesProp.value or ""
+    local cnStr = codesNewProp and codesNewProp.value or ""
+    
+    extractCodes(cStr, false, self.countriesList)
+    extractCodes(cnStr, true, self.countriesList)
+    
+    local cNumProp = vm:getNumber('countries')
+    local cnNumProp = vm:getNumber('countriesNew')
+    
+    local total = #self.countriesList
+    local totalNew = 0
+    for _, item in ipairs(self.countriesList) do
+      if item.isNew then totalNew = totalNew + 1 end
+    end
+    
+    if cNumProp then cNumProp.value = total end
+    if cnNumProp then cnNumProp.value = totalNew end
   end
 
   self.boxPath = Path.new()
@@ -152,7 +177,6 @@ local function init(self: ParticleSystemNode, context: Context): boolean
   self.relaxTimer = 0.0
   self.selectedParticle = nil
   self.activationIndex = 1
-  self.activationDelayCounter = 0
 
   math.randomseed(os.time())
   return true
@@ -169,10 +193,19 @@ local function spawnParticle(self: ParticleSystemNode)
   
   instance:advance(0)
 
-  local randCode = COUNTRY_CODES[mrandom(1, #COUNTRY_CODES)]
+  local spawnIndex = self.totalSpawned + 1
+  local countryData = self.countriesList[spawnIndex]
+  if not countryData then
+    -- fallback if we somehow spawn more than exist or list is empty
+    countryData = { code = "US", isNew = false }
+  end
+
   if instance.data then
     if instance.data.countryCode then
-      instance.data.countryCode.value = randCode
+      instance.data.countryCode.value = countryData.code
+    end
+    if instance.data.new then
+      instance.data.new.value = countryData.isNew
     end
     if instance.data.active then
       instance.data.active.value = false
@@ -274,7 +307,7 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
   if not self.started then return true end
 
   local dt = mmin(seconds, 0.05)
-  local targetCount = mmax(1, mfloor(self.countriesNum or 25))
+  local targetCount = #self.countriesList
 
   if self.phase == 0 then
     self.phase = 1 -- EMIT
@@ -317,27 +350,37 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
   local currentRelaxMult = 1.0
 
   if self.phase >= 3 then
-    if self.activationIndex <= pCount then
-      if self.activationDelayCounter <= 0 then
-        local p = parts[self.activationIndex]
-        if p.instance.data and p.instance.data.active then
+    local rTime = self.relaxTime or 3.0
+    local progress = 1.0
+    if rTime > 0 then
+      if self.phase == 4 then
+        progress = 1.0
+      else
+        progress = mmax(0, mmin(1.0, self.relaxTimer / rTime))
+      end
+    end
+    
+    local targetActiveCount = mfloor(progress * pCount)
+    
+    -- Continually enforce active state for all particles that should be active by now.
+    -- This guarantees even on the first-frame initialization, data-binds won't be overwritten or missed by the engine.
+    for i = 1, targetActiveCount do
+      local p = parts[i]
+      if p.instance.data and p.instance.data.active then
+        if not p.instance.data.active.value then
           p.instance.data.active.value = true
         end
-        self.activationIndex = self.activationIndex + 1
-        self.activationDelayCounter = mmax(1, mfloor(self.emissionInterval or 3))
-      else
-        self.activationDelayCounter = self.activationDelayCounter - 1
       end
     end
   end
-
+ 
   if isRelaxState then
     self.relaxTimer = self.relaxTimer + dt
     local rTime = self.relaxTime or 3.0
     local t = mmin(1.0, self.relaxTimer / rTime)
     
-    -- Bell curve (0 -> 1 -> 0) to push them apart smoothly and then let them settle back slightly
-    local bellT = msin(t * mpi) 
+    -- Smoother Bell curve (0 -> 1 -> 0) with zero initial slope to prevent jumps
+    local bellT = (1.0 - mcos(t * 2.0 * mpi)) * 0.5 
     currentRelaxMult = 1.0 + (relaxMult - 1.0) * bellT
     
     if self.relaxTimer >= rTime + 0.3 then
@@ -454,9 +497,19 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
     for i = 1, pCount do
       local p = parts[i]
       
-      -- ParticlePhysics17 tight fill logic: override stiffness completely with 1.0 when relaxing/settled!
-      local isInteractingOrSettled = (self.phase >= 3)
-      local stiffness = isInteractingOrSettled and 1.0 or mappedStiffness
+      local stiffness = mappedStiffness
+      if self.phase == 3 then
+        local rTime = self.relaxTime or 3.0
+        local t = 1.0
+        if rTime > 0 then
+          t = mmin(1.0, self.relaxTimer / rTime)
+        end
+        -- Smoothly ramp up stiffness from mappedStiffness to 1.0 during relaxation
+        -- using t*t so it starts very gently without sudden hardened collisions
+        stiffness = mappedStiffness + (1.0 - mappedStiffness) * (t * t)
+      elseif self.phase > 3 then
+        stiffness = 1.0
+      end
       
       Physics.solveCollisions(grid, p :: Physics.Particle, stiffness, selId)
       
@@ -487,8 +540,17 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
       elseif isRelaxState then
         local vx = (p.x - p.prevX) / subDt
         local vy = (p.y - p.prevY) / subDt
-        p.vx = vx * RELAX_VEL_DAMPING
-        p.vy = vy * RELAX_VEL_DAMPING
+        
+        local rTime = self.relaxTime or 3.0
+        local t = 1.0
+        if rTime > 0 then
+          t = mmin(1.0, self.relaxTimer / rTime)
+        end
+        -- Blend from regular damping to RELAX_VEL_DAMPING so they don't suddenly freeze
+        local smoothDamping = damping + (RELAX_VEL_DAMPING - damping) * (t * t)
+        
+        p.vx = vx * smoothDamping
+        p.vy = vy * smoothDamping
       elseif not p.sleeping then
         local vx = (p.x - p.prevX) / subDt * damping
         local vy = (p.y - p.prevY) / subDt * damping
@@ -572,7 +634,6 @@ return function(): Node<ParticleSystemNode>
   return {
     artboard = late(),
     activate = late(),
-    countriesNum = 25,
 
     friction = 0.5,
     damping = 0.15,
@@ -598,7 +659,6 @@ return function(): Node<ParticleSystemNode>
     initialSpeed = 100,
     
     emissionInterval = 3,
-    growTime = 0.8,
     showOutlines = true,
 
     boxPath = Path.new(),
@@ -607,6 +667,7 @@ return function(): Node<ParticleSystemNode>
     emitterPaint = Paint.new(),
 
     _particles = {},
+    countriesList = {},
     mat = Mat2D.identity(),
 
     nextId = 1,
@@ -620,7 +681,6 @@ return function(): Node<ParticleSystemNode>
     relaxTimer = 0.0,
     selectedParticle = nil,
     activationIndex = 1,
-    activationDelayCounter = 0,
 
     init = init,
     advance = advance,
