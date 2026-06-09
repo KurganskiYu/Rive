@@ -79,3 +79,4 @@ stressbatterygraph_v10.riv,393x852,,"","",4.0,No,Transparent,main,v_num:stressSt
 experimentprogressbar_v3.riv,393x80,,"","",2.0,No,Transparent,main,v_num:percent(52),txt:time("23:15"),txt:timeLeft("1 h 27 min left"),txt:text("Experiment ongoing "),,, 
 energy_liquid_v2.riv,393x450,,"","",1.0,No,Transparent,energy,num:PercentFrom(5),num:PercentTo(100),,,,,
 stress_liquid_v2.riv,393x450,,"","",1.0,No,Transparent,stress,num:PercentFrom(5),num:PercentTo(100),,,,,
+glints_v2.riv,256x256,,"","",5.0,No,Transparent,main,,,,,,, 

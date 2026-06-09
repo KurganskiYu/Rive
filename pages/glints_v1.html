@@ -242,217 +242,47 @@
       })();
     </script>
     
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="433"></canvas>
+        <canvas id="main_canvas" width="256" height="256"></canvas>
         <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="Particles_v1.html" style="color: #464646;">Particles</a></div>
-          
-        </div>
-        
-      </div>
-    
+          <div>
+            <div><a href="../riv/glints_v1.riv" target="_blank" style="color: white;">glints</a><br>Size: 256px × 256px<br>State Machine: State Machine 1<br>Artboard: main<br>Duration: 5.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+              
+              
+            </div>
+          </div>
         </div>
       </div>
-    
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="433"></canvas>
+        <canvas id="preview_canvas" width="256" height="256"></canvas>
         <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="Welcome_v2.html" style="color: #464646;">Welcome</a></div>
-          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas2" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="Recovery_v3.html" style="color: #464646;">Recovery</a></div>
-          
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas3" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="Activity_v3.html" style="color: #464646;">Activity</a></div>
-          
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas4" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="DeepRest_v2.html" style="color: #464646;">DeepRest</a></div>
-          
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas5" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="OnboardingStrings_v3.html" style="color: #464646;">OnboardingStrings</a></div>
-          
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas6" width="200" height="433"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="OnboardingStrings_v2.html" style="color: #464646;">OnboardingStrings</a></div>
-          
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="325"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="ExerciseBubbles_v3.html" style="color: #464646;">ExerciseBubbles</a></div>
-          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-      </div>
-    
+          Preview:<br>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            
+            
+          </div>
         </div>
       </div>
     </div>
 <script>
 
-const r0 = new rive.Rive({
-    src: "../riv/Particles_v1.riv",
-    canvas: document.getElementById("canvas0"),
-    autoplay: true, autoBind: true, stateMachines: "State Machine 1",
-    onLoad: () => {
-        r0.resizeDrawingSurfaceToCanvas();
-    const inputs = r0.stateMachineInputs("State Machine 1");
+const mainRive = new rive.Rive({
+  src: "../riv/glints_v1.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
   },
 });
 
-const r1 = new rive.Rive({
-    src: "../riv/Welcome_v2.riv",
-    canvas: document.getElementById("canvas1"),
-    autoplay: true, autoBind: true,artboard: "Welcome", stateMachines: "State Machine 1",
-    onLoad: () => {
-        r1.resizeDrawingSurfaceToCanvas();
-    const inputs = r1.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn1").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
-            }
-        });
-  },
-});
-
-const r2 = new rive.Rive({
-    src: "../riv/Recovery_v3.riv",
-    canvas: document.getElementById("canvas2"),
-    autoplay: true, autoBind: true, stateMachines: "State Machine 1",
-    onLoad: () => {
-        r2.resizeDrawingSurfaceToCanvas();
-    const inputs = r2.stateMachineInputs("State Machine 1");
-  },
-});
-
-const r3 = new rive.Rive({
-    src: "../riv/Activity_v3.riv",
-    canvas: document.getElementById("canvas3"),
-    autoplay: true, autoBind: true, stateMachines: "State Machine 1",
-    onLoad: () => {
-        r3.resizeDrawingSurfaceToCanvas();
-    const inputs = r3.stateMachineInputs("State Machine 1");
-  },
-});
-
-const r4 = new rive.Rive({
-    src: "../riv/DeepRest_v2.riv",
-    canvas: document.getElementById("canvas4"),
-    autoplay: true, autoBind: true, stateMachines: "State Machine 1",
-    onLoad: () => {
-        r4.resizeDrawingSurfaceToCanvas();
-    const inputs = r4.stateMachineInputs("State Machine 1");
-  },
-});
-
-const r5 = new rive.Rive({
-    src: "../riv/OnboardingStrings_v3.riv",
-    canvas: document.getElementById("canvas5"),
-    autoplay: true, autoBind: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
-    onLoad: () => {
-        r5.resizeDrawingSurfaceToCanvas();
-    const inputs = r5.stateMachineInputs("State Machine 1");
-  },
-});
-
-const r6 = new rive.Rive({
-    src: "../riv/OnboardingStrings_v2.riv",
-    canvas: document.getElementById("canvas6"),
-    autoplay: true, autoBind: true,artboard: "OnboardingStrings", stateMachines: "State Machine 1",
-    onLoad: () => {
-        r6.resizeDrawingSurfaceToCanvas();
-    const inputs = r6.stateMachineInputs("State Machine 1");
-  },
-});
-
-const r7 = new rive.Rive({
-    src: "../riv/ExerciseBubbles_v3.riv",
-    canvas: document.getElementById("canvas7"),
-    autoplay: true, autoBind: true,artboard: "ExerciseBubbles", stateMachines: "State Machine 1",
-    onLoad: () => {
-        r7.resizeDrawingSurfaceToCanvas();
-    const inputs = r7.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn7").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
-            }
-        });
+const previewRive = new rive.Rive({
+  src: "../riv/glints_v1_preview.riv",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+  onLoad: () => {
+    previewRive.resizeDrawingSurfaceToCanvas();
   },
 });
 
@@ -460,15 +290,8 @@ document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";
   canvas.style.height = canvas.height + "px";
 });
-
-// Fire all triggers 3 seconds after page load
-setTimeout(() => {
-  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
-    btn.click();
-  });
-}, 3000);
 </script>
-<div style="margin: 24px 0; text-align:center;"><a href="../index.html"><button class="rive-btn">1</button></a> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a> <a href="page3.html"><button class="rive-btn">4</button></a> <a href="page4.html"><button class="rive-btn">5</button></a> <a href="page5.html"><button class="rive-btn">6</button></a> <a href="page6.html"><button class="rive-btn">7</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">8</button> <a href="page8.html"><button class="rive-btn">9</button></a> <a href="page9.html"><button class="rive-btn">10</button></a> <a href="page10.html"><button class="rive-btn">11</button></a></div>
+
     </div>
 </body>
 </html>
