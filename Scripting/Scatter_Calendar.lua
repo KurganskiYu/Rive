@@ -15,8 +15,6 @@
 --    the configured total amount of days decreases.
 -- ==============================================================================
 
--- Scatter_v1: Grid/Tetrahedral scatter with delay
--- Optimized for Rive Lua Runtime
 
 -- Type definitions
 type PointVM = {

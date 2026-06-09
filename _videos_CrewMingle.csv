@@ -1,0 +1,2 @@
+src,size,preview,state_machine,trigger,duration,loop,background,artboard,input1,input2,input3,input4,input5,input6
+stressbatterygraph_v10.riv,393x852,,"","",4.0,No,Transparent,main,v_num:stressStart(15),v_num:stressNow(55),v_num:bar1(97),v_num:bar5(65),txt:duration("120 min"),txt:timeBefore("9:00am"), 

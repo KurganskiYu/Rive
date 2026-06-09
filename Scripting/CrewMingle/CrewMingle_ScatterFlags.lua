@@ -82,6 +82,12 @@ type ParticleSystemNode = {
 
   _particles: { Particle },
   countriesList: { CountryData },
+  codesProp: Property<string>?,
+  codesNewProp: Property<string>?,
+  cNumProp: Property<number>?,
+  cnNumProp: Property<number>?,
+  lastCodes: string,
+  lastCodesNew: string,
   mat: Mat2D,
   nextId: number,
   totalSpawned: number,
@@ -135,16 +141,16 @@ local function init(self: ParticleSystemNode, context: Context): boolean
       end)
     end
     
-    local codesProp = vm:getString('codes')
-    local codesNewProp = vm:getString('codesNew')
-    local cStr = codesProp and codesProp.value or ""
-    local cnStr = codesNewProp and codesNewProp.value or ""
+    self.codesProp = vm:getString('codes')
+    self.codesNewProp = vm:getString('codesNew')
+    self.lastCodes = self.codesProp and self.codesProp.value or ""
+    self.lastCodesNew = self.codesNewProp and self.codesNewProp.value or ""
     
-    extractCodes(cStr, false, self.countriesList)
-    extractCodes(cnStr, true, self.countriesList)
+    extractCodes(self.lastCodes, false, self.countriesList)
+    extractCodes(self.lastCodesNew, true, self.countriesList)
     
-    local cNumProp = vm:getNumber('countries')
-    local cnNumProp = vm:getNumber('countriesNew')
+    self.cNumProp = vm:getNumber('countries')
+    self.cnNumProp = vm:getNumber('countriesNew')
     
     local total = #self.countriesList
     local totalNew = 0
@@ -152,8 +158,8 @@ local function init(self: ParticleSystemNode, context: Context): boolean
       if item.isNew then totalNew = totalNew + 1 end
     end
     
-    if cNumProp then cNumProp.value = total end
-    if cnNumProp then cnNumProp.value = totalNew end
+    if self.cNumProp then self.cNumProp.value = total end
+    if self.cnNumProp then self.cnNumProp.value = totalNew end
   end
 
   self.boxPath = Path.new()
@@ -305,6 +311,40 @@ end
 
 local function advance(self: ParticleSystemNode, seconds: number): boolean
   if not self.started then return true end
+
+  if self.codesProp or self.codesNewProp then
+    local cStr = self.codesProp and self.codesProp.value or ""
+    local cnStr = self.codesNewProp and self.codesNewProp.value or ""
+    if cStr ~= self.lastCodes or cnStr ~= self.lastCodesNew then
+      self.lastCodes = cStr
+      self.lastCodesNew = cnStr
+      
+      self.countriesList = {}
+      extractCodes(cStr, false, self.countriesList)
+      extractCodes(cnStr, true, self.countriesList)
+      
+      local total = #self.countriesList
+      local totalNew = 0
+      for _, item in ipairs(self.countriesList) do
+        if item.isNew then totalNew = totalNew + 1 end
+      end
+      if self.cNumProp then self.cNumProp.value = total end
+      if self.cnNumProp then self.cnNumProp.value = totalNew end
+      
+      for i = 1, #self._particles do
+        local p = self._particles[i]
+        local cd = self.countriesList[i] or { code = "US", isNew = false }
+        if p.instance and p.instance.data then
+          if p.instance.data.countryCode then
+            p.instance.data.countryCode.value = cd.code
+          end
+          if p.instance.data.new then
+            p.instance.data.new.value = cd.isNew
+          end
+        end
+      end
+    end
+  end
 
   local dt = mmin(seconds, 0.05)
   local targetCount = #self.countriesList
@@ -668,6 +708,12 @@ return function(): Node<ParticleSystemNode>
 
     _particles = {},
     countriesList = {},
+    codesProp = late(),
+    codesNewProp = late(),
+    cNumProp = late(),
+    cnNumProp = late(),
+    lastCodes = "",
+    lastCodesNew = "",
     mat = Mat2D.identity(),
 
     nextId = 1,

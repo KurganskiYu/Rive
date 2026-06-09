@@ -19,6 +19,8 @@ type Particle = {
   sleeping: boolean,
   instance: Artboard<ParticleVM>,
   sleepTimer: number,
+  targetX: number,
+  targetY: number,
 }
 
 type ParticleSystemNode = {
@@ -30,15 +32,17 @@ type ParticleSystemNode = {
   gravity: Input<number>,
   baseRadius: Input<number>,
   scaleVariation: Input<number>,
+  scaleMultiplier: Input<number>,
   emissionInterval: Input<number>,
   boxWidth: Input<number>,
   boxHeight: Input<number>,
   particleCount: Input<number>,
   
   emitterWidth: Input<number>,
+  emitterHeight: Input<number>,
   emitterY: Input<number>,
   showOutlines: Input<boolean>,
-
+ 
   -- Graphics
   boxPath: Path,
   boxPaint: Paint,
@@ -52,12 +56,12 @@ type ParticleSystemNode = {
   totalSpawned: number,
   spawnDelayCounter: number,
   pointerPos: { x: number, y: number },
-  phase: number,            -- 0: EMIT, 1: SETTLE, 2: RELAXED
+  phase: number,            -- 0: EMIT, 1: SETTLE, 2: RELAXED, 3: DONE
+  phase1Timer: number,
   relaxTimer: number,
   selectedParticle: Particle?,
-  lastSpawnX: number,
-  spawnDirection: number,
   counterProp: Property<number>?,
+  ctx: Context?,
 }
 
 local mfloor = math.floor
@@ -65,10 +69,9 @@ local mmax = math.max
 local mmin = math.min
 local mrandom = math.random
 
-local CELL_SIZE = 40
 local SUBSTEPS = 8
 local MAX_VELOCITY = 1500
-local SLEEP_VELOCITY_THRESH = 30
+local SLEEP_VELOCITY_THRESH = 40
 local SLEEP_VEL_THRESH_SQ = SLEEP_VELOCITY_THRESH * SLEEP_VELOCITY_THRESH
 local SLEEP_TIME_THRESH = 1.0
 
@@ -79,6 +82,7 @@ local RELAX_VEL_DAMPING = 0.88
 local RELAX_RESTITUTION = 0.35
 
 local function init(self: ParticleSystemNode, context: Context): boolean
+  self.ctx = context
   local vm = context:viewModel()
   if vm then
     self.counterProp = vm:getNumber("counter")
@@ -106,55 +110,77 @@ local function init(self: ParticleSystemNode, context: Context): boolean
   self.pointerPos = { x = 0, y = 0 }
   
   self.phase = 0
+  self.phase1Timer = 0.0
   self.relaxTimer = 0.0
   self.selectedParticle = nil
-  self.lastSpawnX = -999999
-  self.spawnDirection = 1
 
   math.randomseed(os.time())
   return true
 end
 
-local function spawnParticle(self: ParticleSystemNode)
+local function spawnParticle(self: ParticleSystemNode): boolean
   local instance = self.particleArtboard:instance()
-  if not instance then return end
+  if not instance then return false end
 
   local baseRad = self.baseRadius or 10
   local scaleVar = self.scaleVariation or 0.5
-  local radTarget = baseRad + (baseRad * (mrandom() * scaleVar))
-
-  instance:advance(0)
+  local scaleMult = self.scaleMultiplier or 1.0
+  local radTarget = (baseRad + (baseRad * (mrandom() * scaleVar))) * scaleMult
 
   local spawnY = self.emitterY or -300
   local width = self.emitterWidth or 200
-  local halfWidth = width / 2
+  local height = self.emitterHeight or 50
+  
+  local halfW = width / 2
+  local halfH = height / 2
 
-  if self.lastSpawnX == -999999 then 
-    self.lastSpawnX = -halfWidth 
+  local minX = -halfW + radTarget
+  local maxX = halfW - radTarget
+  local minY = spawnY - halfH + radTarget
+  local maxY = spawnY + halfH - radTarget
+  
+  -- Rejection sampling for non-intersecting spot
+  local maxAttempts = 50
+  local found = false
+  local finalX, finalY = 0, 0
+  
+  for attempt = 1, maxAttempts do
+    local testX = maxX < minX and 0 or (minX + mrandom() * (maxX - minX))
+    local testY = maxY < minY and spawnY or (minY + mrandom() * (maxY - minY))
+    
+    local intersected = false
+    for i = 1, #self._particles do
+      local p = self._particles[i]
+      local dx = p.x - testX
+      local dy = p.y - testY
+      local distSq = dx * dx + dy * dy
+      local minDist = p.radius + radTarget
+      if distSq < minDist * minDist then
+        intersected = true
+        break
+      end
+    end
+    
+    if not intersected then
+      finalX = testX
+      finalY = testY
+      found = true
+      break
+    end
+  end
+  
+  if not found then
+    return false
   end
 
-  local spawnX = self.lastSpawnX
-  if self.spawnDirection == 1 then
-    spawnX = spawnX + mrandom(10, 25)
-    if spawnX > halfWidth then
-      spawnX = halfWidth
-      self.spawnDirection = -1
-    end
-  else
-    spawnX = spawnX - mrandom(10, 25)
-    if spawnX < -halfWidth then
-      spawnX = -halfWidth
-      self.spawnDirection = 1
-    end
-  end
-  self.lastSpawnX = spawnX
+  instance:advance(0)
 
   local newParticle: Particle = {
     id = self.nextId,
-    x = spawnX,
-    y = spawnY,
-    prevX = spawnX,
-    prevY = spawnY,
+    x = finalX,
+    y = finalY,
+    prevX = finalX,
+    prevY = finalY,
     vx = 0,
     vy = 0,
     radius = radTarget,
@@ -162,6 +188,8 @@ local function spawnParticle(self: ParticleSystemNode)
     instance = instance,
     sleeping = false,
     sleepTimer = 0,
+    targetX = finalX,
+    targetY = finalY,
   }
 
   table.insert(self._particles, newParticle)
@@ -171,9 +199,14 @@ local function spawnParticle(self: ParticleSystemNode)
   if self.counterProp then
     self.counterProp.value = self.totalSpawned
   end
+  
+  return true
 end
 
 local function pointerDown(self: ParticleSystemNode, event: PointerEvent)
+  -- Only allow dragging when particles are relaxed or done
+  if self.phase < 2 then return end
+  
   local parts = self._particles
   if not parts then return end
   local pos = event.position
@@ -185,12 +218,10 @@ local function pointerDown(self: ParticleSystemNode, event: PointerEvent)
     local dx = pos.x - p.x
     local dy = pos.y - p.y
     if dx * dx + dy * dy <= p.radius * p.radius then
-      if self.phase == 2 or self.phase == 1 then
-        self.selectedParticle = p
-        p.x = pos.x
-        p.y = pos.y
-        p.sleeping = false
-      end
+      self.selectedParticle = p
+      p.x = pos.x
+      p.y = pos.y
+      p.sleeping = false
       event:hit()
       return
     end
@@ -204,6 +235,8 @@ local function pointerUp(self: ParticleSystemNode, event: PointerEvent)
 end
 
 local function pointerMove(self: ParticleSystemNode, event: PointerEvent)
+  if self.phase < 2 then return end
+
   local pos = event.position
   self.pointerPos.x = pos.x
   self.pointerPos.y = pos.y
@@ -220,6 +253,13 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
   local dt = seconds
   if dt > 0.05 then dt = 0.05 end
 
+  if not self.counterProp and self.ctx then
+    local vm = self.ctx:viewModel()
+    if vm then
+      self.counterProp = vm:getNumber("counter")
+    end
+  end
+ 
   local targetCount = mfloor(self.particleCount or 50)
   local emissionInt = self.emissionInterval or 3
 
@@ -230,8 +270,12 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
       self.relaxTimer = 0.0
     else
       if self.spawnDelayCounter <= 0 then
-        spawnParticle(self)
-        self.spawnDelayCounter = mmax(1, mfloor(emissionInt))
+        local spawned = spawnParticle(self)
+        if spawned then
+          self.spawnDelayCounter = mmax(1, mfloor(emissionInt))
+        else
+          self.spawnDelayCounter = 0 -- Wait for a spot to open
+        end
       else
         self.spawnDelayCounter = self.spawnDelayCounter - 1
       end
@@ -243,19 +287,33 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
   if pCount == 0 then return true end
 
   local isRelaxPhase = false
-  local allSleeping = true
 
-  -- Determine Phase 2: Relaxed
+  -- Determine Phase Transitions
   if self.phase == 1 then
+    self.phase1Timer = (self.phase1Timer or 0) + dt
+    local totalVelocitySq = 0
     for i = 1, pCount do
-      if not parts[i].sleeping then
-        allSleeping = false
-        break
-      end
+      totalVelocitySq = totalVelocitySq + (parts[i].vx * parts[i].vx + parts[i].vy * parts[i].vy)
     end
-    if allSleeping then
+    local avgVelocitySq = totalVelocitySq / pCount
+
+    -- if the system is quiet enough, accumulate settle time
+    -- SLEEP_VEL_THRESH_SQ is roughly 1600 (40*40)
+    if avgVelocitySq < SLEEP_VEL_THRESH_SQ or self.phase1Timer > 6.0 then
+      self.relaxTimer = (self.relaxTimer or 0) + dt
+    else
+      self.relaxTimer = 0
+    end
+
+    if self.relaxTimer > 1.0 or self.phase1Timer > 8.0 then
       self.phase = 2
       self.relaxTimer = 0.0
+      -- Force all to sleep explicitly to ensure they stop completely
+      for i = 1, pCount do
+        parts[i].sleeping = true
+        parts[i].vx = 0
+        parts[i].vy = 0
+      end
     end
   end
 
@@ -274,8 +332,60 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
   elseif self.phase == 2 and self.relaxTimer > RELAX_DURATION + 0.3 then
      for i = 1, pCount do
         parts[i].colRadius = parts[i].radius
+        parts[i].targetX = parts[i].x
+        parts[i].targetY = parts[i].y
     end
+    self.phase = 3 -- DONE
     isRelaxPhase = false
+  end
+
+  if self.phase == 3 then
+    local sel = self.selectedParticle
+    local selId = sel and sel.id or -1
+    
+    -- Homing Force to return particles to their relaxed origin when pushed out
+    local returnSpeed = 5.0
+    local factor = returnSpeed * dt
+    if factor > 1 then factor = 1 end
+
+    for i = 1, pCount do
+      local p = parts[i]
+      if p ~= sel then
+        p.x = p.x + (p.targetX - p.x) * factor
+        p.y = p.y + (p.targetY - p.y) * factor
+      end
+    end
+
+    local maxColBase = 1
+    for i = 1, pCount do
+        if parts[i].colRadius > maxColBase then 
+            maxColBase = parts[i].colRadius 
+        end
+    end
+    local dCellSize = mmax(40, maxColBase * 2)
+
+    local substeps = 4
+    for step = 1, substeps do
+        local grid = Physics.buildGrid(parts :: any, dCellSize)
+        for i = 1, pCount do
+            Physics.solveCollisions(grid, parts[i] :: any, RELAX_RESTITUTION, selId)
+        end
+    end
+    
+    -- Zero out velocities so they don't explode when interacting
+    for i = 1, pCount do
+        local p = parts[i]
+        p.prevX = p.x
+        p.prevY = p.y
+        p.vx = 0
+        p.vy = 0
+    end
+    
+    -- When done, only advance instances
+    for i = 1, pCount do
+      parts[i].instance:advance(seconds)
+    end
+    return true
   end
 
   local substeps = SUBSTEPS
@@ -311,11 +421,20 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
       end
     end
 
+    -- Dynamically calc max cell size to avoid missing intersections at large scales
+    local maxColBase = 1
+    for i = 1, pCount do
+        if parts[i].colRadius > maxColBase then 
+            maxColBase = parts[i].colRadius 
+        end
+    end
+    local dCellSize = mmax(40, maxColBase * 2)
+
     -- Collisions
-    local grid = Physics.buildGrid(parts :: any, CELL_SIZE)
+    local grid = Physics.buildGrid(parts :: any, dCellSize)
     for i = 1, pCount do
       local p = parts[i]
-      local restitution = isRelaxPhase and RELAX_RESTITUTION or 0.8
+      local restitution = isRelaxPhase and RELAX_RESTITUTION or 0.5
       Physics.solveCollisions(grid, p :: any, restitution, selId)
       
       local colRadBackup = p.colRadius
@@ -382,6 +501,7 @@ local function draw(self: ParticleSystemNode, renderer: Renderer)
     local boxW = self.boxWidth or 600
     local boxH = self.boxHeight or 600
     local emitW = self.emitterWidth or 200
+    local emitH = self.emitterHeight or 50
     local emitY = self.emitterY or -300
 
     self.boxPath:reset()
@@ -393,8 +513,11 @@ local function draw(self: ParticleSystemNode, renderer: Renderer)
     renderer:drawPath(self.boxPath, self.boxPaint)
 
     self.emitterPath:reset()
-    self.emitterPath:moveTo(Vector.xy(-emitW/2, emitY))
-    self.emitterPath:lineTo(Vector.xy(emitW/2, emitY))
+    self.emitterPath:moveTo(Vector.xy(-emitW/2, emitY - emitH/2))
+    self.emitterPath:lineTo(Vector.xy(emitW/2, emitY - emitH/2))
+    self.emitterPath:lineTo(Vector.xy(emitW/2, emitY + emitH/2))
+    self.emitterPath:lineTo(Vector.xy(-emitW/2, emitY + emitH/2))
+    self.emitterPath:close()
     renderer:drawPath(self.emitterPath, self.emitterPaint)
   end
 
@@ -425,12 +548,14 @@ return function(): Node<ParticleSystemNode>
     gravity = 1500,
     baseRadius = 10,
     scaleVariation = 0.5,
+    scaleMultiplier = 1.0,
     particleCount = 50,
     emissionInterval = 3,
     
     boxWidth = 600,
     boxHeight = 600,
     emitterWidth = 200,
+    emitterHeight = 50,
     emitterY = -300,
     showOutlines = true,
 
@@ -448,11 +573,11 @@ return function(): Node<ParticleSystemNode>
     pointerPos = { x = 0, y = 0 },
 
     phase = 0,
+    phase1Timer = 0.0,
     relaxTimer = 0.0,
     selectedParticle = nil,
-    lastSpawnX = -999999,
-    spawnDirection = 1,
     counterProp = nil,
+    ctx = nil,
 
     init = init,
     advance = advance,
