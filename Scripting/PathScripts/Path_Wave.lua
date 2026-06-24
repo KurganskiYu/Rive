@@ -13,6 +13,7 @@ type RippleEffect = {
   useWorldSpace: Input<boolean>,
   rotation: Input<number>,
   useNoiseDirection: Input<boolean>,
+  noiseOffset: Input<number>,
   time: number,
   totalLength: number,
   outPath: Path,
@@ -111,11 +112,11 @@ function getOffset(self: RippleEffect, distance: number, pathLength: number, x: 
     local ry = x * s + y * c
 
     local freq = self.frequency * 0.01
-    u = rx * freq - (self.time * self.speed)
+    u = rx * freq - (self.time * self.speed) + (self.noiseOffset or 0)
     v = ry * freq - (self.time * self.noiseSpeed)
   else
     -- The ripples expand from start to end; we shift phase by distance
-    u = distance * self.frequency * 0.01 - (self.time * self.speed)
+    u = distance * self.frequency * 0.01 - (self.time * self.speed) + (self.noiseOffset or 0)
     v = self.time * self.noiseSpeed
   end
 
@@ -452,6 +453,9 @@ end
 
 function advance(self: RippleEffect, dt: number)
   self.time = self.time + dt
+  if self.context then
+    self.context:markNeedsUpdate()
+  end
   return true
 end
 
@@ -468,6 +472,7 @@ return function(): PathEffect<RippleEffect>
     useWorldSpace = false,
     rotation = 0,
     useNoiseDirection = false,
+    noiseOffset = 0,
     time = 0,
     totalLength = 0,
     outPath = late(),

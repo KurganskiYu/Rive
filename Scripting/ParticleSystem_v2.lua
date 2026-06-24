@@ -18,6 +18,8 @@ type Particle = {
 	noiseStrX: number,
 	noiseStrY: number,
 	noiseFreq: number,
+	rotation: number,
+	rotationSpeed: number,
 	-- Per-particle artboard instance so animations are independent.
 	instance: Artboard?,
 	path: Path?,
@@ -45,6 +47,9 @@ type ParticleSystemNode = {
 	massVar: Input<number>,
 	life: Input<number>,
 	lifeVar: Input<number>,
+	rotationMinSpeed: Input<number>,
+	rotationMaxSpeed: Input<number>,
+	randomRotationDirection: Input<boolean>,
 	noiseStrengthX: Input<number>,
 	noiseStrengthY: Input<number>,
 	noiseOctaves: Input<number>,
@@ -186,6 +191,8 @@ local function createRawParticle(): Particle
 		noiseStrX = 0,
 		noiseStrY = 0,
 		noiseFreq = toNoiseFreq(0.01),
+		rotation = 0,
+		rotationSpeed = 0,
 		instance = nil,
 		path = nil,
 	}
@@ -272,6 +279,18 @@ local function spawn(sys: ParticleSystemNode, p: Particle)
 	p.noiseStrX = sys.noiseStrengthX
 	p.noiseStrY = sys.noiseStrengthY
 	p.noiseFreq = toNoiseFreq(randomRange(sys.noiseScale, sys.noiseScaleVar))
+	
+	p.rotation = 0
+	local rSpeed = sys.rotationMinSpeed
+	if sys.rotationMaxSpeed > sys.rotationMinSpeed then
+		rSpeed = sys.rotationMinSpeed + mrandom() * (sys.rotationMaxSpeed - sys.rotationMinSpeed)
+	end
+	
+	local dir = 1
+	if sys.randomRotationDirection then
+		dir = (mrandom() < 0.5) and 1 or -1
+	end
+	p.rotationSpeed = mrad(rSpeed * dir)
 	
 	if sys.trail then
 		if not p.path then
@@ -457,6 +476,8 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 			-- Integrate position: Internal Momentum + Environmental Turbulence
 			p.x = p.x + (p.vx + turbX) * seconds
 			p.y = p.y + (p.vy + turbY) * seconds
+			
+			p.rotation = (p.rotation + p.rotationSpeed * seconds) % twopi
 
 			if self.trail and p.path then
 				p.path:lineTo(Vector.xy(p.x, p.y))
@@ -540,10 +561,12 @@ local function draw(self: ParticleSystemNode, renderer: Renderer)
 		if instance then
 			renderer:save()
 			local finalScale = p.scale
-			mat.xx = finalScale
-			mat.xy = 0
-			mat.yx = 0
-			mat.yy = finalScale
+			local cosRot = mcos(p.rotation)
+			local sinRot = msin(p.rotation)
+			mat.xx = finalScale * cosRot
+			mat.xy = finalScale * sinRot
+			mat.yx = -finalScale * sinRot
+			mat.yy = finalScale * cosRot
 			mat.tx = p.x
 			mat.ty = p.y
 			renderer:transform(mat)
@@ -574,6 +597,9 @@ return function(): Node<ParticleSystemNode>
 		massVar = 0,
 		life = 5,
 		lifeVar = 0,
+		rotationMinSpeed = 0.0,
+		rotationMaxSpeed = 0.0,
+		randomRotationDirection = false,
 		noiseStrengthX = 20,
 		noiseStrengthY = 20,
 		noiseOctaves = 0,

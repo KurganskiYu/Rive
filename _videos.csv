@@ -80,3 +80,8 @@ experimentprogressbar_v3.riv,393x80,,"","",2.0,No,Transparent,main,v_num:percent
 energy_liquid_v2.riv,393x450,,"","",1.0,No,Transparent,energy,num:PercentFrom(5),num:PercentTo(100),,,,,
 stress_liquid_v2.riv,393x450,,"","",1.0,No,Transparent,stress,num:PercentFrom(5),num:PercentTo(100),,,,,
 glints_v2.riv,256x256,,"","",5.0,No,Transparent,main,,,,,,, 
+52_tagfire_v1.riv,393x596,,"","",5.0,No,Transparent,main,txt:tag("[tag_name]"),,,,,, 
+52_tagliquid_v1.riv,393x596,,"","",5.0,No,Transparent,main,txt:tag("[tag_name]"),,,,,, 
+52_tagsnumber_v1.riv,393x596,,"","",5.0,No,Gray,main,v_num:tagsNumber(300),,,,,, 
+52_tagclouds_v1.riv,393x596,,"","",5.0,No,Transparent,main,txt:tag("[tag_name]"),,,,,, 
+52_tagvessels_v1.riv,393x596,,"","",5.0,No,Transparent,main,,,,,,, 
