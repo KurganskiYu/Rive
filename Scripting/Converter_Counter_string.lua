@@ -1,15 +1,11 @@
 type ConverterCounter = {
   duration: Input<number>,
-  delayFrames: Input<number>,
-  easing: Input<boolean>,
-  precision: Input<number>,
   context: Context,
   currentValue: number,
   startValue: number,
   targetValue: number,
   elapsed: number,
   isAnimating: boolean,
-  remainingDelayFrames: number,
 }
 
 function init(self: ConverterCounter, context: Context): boolean
@@ -19,12 +15,11 @@ function init(self: ConverterCounter, context: Context): boolean
   self.targetValue = 0
   self.elapsed = 0
   self.isAnimating = false
-  self.remainingDelayFrames = 0
   return true
 end
 
-function convert(self: ConverterCounter, input: DataValueNumber): DataValueNumber
-  local dv: DataValueNumber = DataValue.number()
+function convert(self: ConverterCounter, input: DataValueNumber): DataValueString
+  local dv: DataValueString = DataValue.string()
 
   local newTarget = input.value
   -- When the input number changes, start a new animation toward it
@@ -32,7 +27,6 @@ function convert(self: ConverterCounter, input: DataValueNumber): DataValueNumbe
     self.startValue = self.currentValue
     self.targetValue = newTarget
     self.elapsed = 0
-    self.remainingDelayFrames = self.delayFrames or 0
     self.isAnimating = true
   end
 
@@ -42,25 +36,15 @@ function convert(self: ConverterCounter, input: DataValueNumber): DataValueNumbe
     self.context:markNeedsUpdate()
   end
 
-  -- Output the current intermediate with step precision
-  local precisionVal = self.precision or 0
-  local factor = 10 ^ precisionVal
-  local currentRounded = math.floor(self.currentValue * factor + 0.5) / factor
-  dv.value = currentRounded
+  -- Output the current intermediate integer as a string
+  local currentInt = math.floor(self.currentValue + 0.5)
+  dv.value = tostring(currentInt)
   
   return dv
 end
 
 function advance(self: ConverterCounter, seconds: number): boolean
   if self.isAnimating then
-    if self.remainingDelayFrames > 0 then
-      self.remainingDelayFrames = self.remainingDelayFrames - 1
-      if self.context then
-        self.context:markNeedsUpdate()
-      end
-      return true
-    end
-
     self.elapsed = self.elapsed + seconds
     local targetDuration = self.duration
     
@@ -76,17 +60,8 @@ function advance(self: ConverterCounter, seconds: number): boolean
       self.isAnimating = false
     end
     
-    local progress = t
-    if self.easing then
-      -- Cubic symmetric S-curve (high-contrast easing)
-      local t3 = t * t * t
-      local mt = 1.0 - t
-      local mt3 = mt * mt * mt
-      progress = t3 / (t3 + mt3)
-    end
-    
     -- Interpolate between the start value and target value
-    self.currentValue = self.startValue + (self.targetValue - self.startValue) * progress
+    self.currentValue = self.startValue + (self.targetValue - self.startValue) * t
     
     -- Keep requesting updates until animation completes
     if self.context then
@@ -96,7 +71,7 @@ function advance(self: ConverterCounter, seconds: number): boolean
   return true
 end
 
-function reverseConvert(self: ConverterCounter, input: DataValueNumber): DataValueNumber
+function reverseConvert(self: ConverterCounter, input: DataValueString): DataValueNumber
   -- When binding back from target to source (not typically used for this one-way counter)
   local dv: DataValueNumber = DataValue.number()
   dv.value = self.targetValue
@@ -104,19 +79,15 @@ function reverseConvert(self: ConverterCounter, input: DataValueNumber): DataVal
 end
 
 -- Return a factory function that builds the converter instance.
-return function(): Converter<ConverterCounter, DataValueNumber, DataValueNumber>
+return function(): Converter<ConverterCounter, DataValueNumber, DataValueString>
   return {
     duration = 2.0, 
-    delayFrames = 0,
-    easing = true,
-    precision = 0,
     context = late(),
     currentValue = 0,
     startValue = 0,
     targetValue = 0,
     elapsed = 0,
     isAnimating = false,
-    remainingDelayFrames = 0,
     init = init,
     convert = convert,
     reverseConvert = reverseConvert,
