@@ -565,7 +565,7 @@ local function draw(self: ParticleSystemNode, renderer: Renderer)
 			local cosRot = mcos(p.rotation)
 			local sinRot = msin(p.rotation)
 			mat.xx = finalScale * cosRot
-			mat.xy = finalScale * sinRot
+			mat.xy = finalScale * sinRot 
 			mat.yx = -finalScale * sinRot
 			mat.yy = finalScale * cosRot
 			mat.tx = p.x
