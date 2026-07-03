@@ -31,6 +31,7 @@ type ParticleSystemNode = {
 	count: Input<number>,
 	-- Optional explicit emission rate (particles per second). If <= 0, derived from count/life.
 	emitRate: number,
+	emit: Input<boolean>,
 	intersectionSize: Input<number>,
 	burst: Input<Trigger>,
 	burstCount: Input<number>,
@@ -348,7 +349,7 @@ local function init(self: ParticleSystemNode, context: Context): boolean
 		table.insert(self.pool, createRawParticle())
 	end
 	
-	if self.startTime <= 0 then
+	if self.emit and self.startTime <= 0 then
 		for _ = 1, self.count do
 			local p = table.remove(self.pool)
 			if p then
@@ -397,7 +398,7 @@ local function advance(self: ParticleSystemNode, seconds: number): boolean
 	end
 	-- Don't exceed target `count` live particles.
 	local capacity = self.count - #particles
-	if capacity > 0 and #pool > 0 and rate > 0 then
+	if self.emit and capacity > 0 and #pool > 0 and rate > 0 then
 		self.emitCarry = self.emitCarry + rate * seconds
 		local toSpawn = mfloor(self.emitCarry)
 		if toSpawn > capacity then
@@ -581,6 +582,7 @@ return function(): Node<ParticleSystemNode>
 		count = 30,
 		startTime = 0,
 		emitRate = 0, -- 0 => auto (count / life)
+		emit = true,
 		intersectionSize = 0,
 		burst = burst,
 		burstCount = 200,
