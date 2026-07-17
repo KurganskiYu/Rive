@@ -247,18 +247,18 @@
         <canvas id="main_canvas" width="196" height="187"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/BatteryWidget_v5.riv" target="_blank" style="color: white;">BatteryWidget</a><br>Size: 196px × 187px<br>State Machine: State Machine 1<br>Artboard: BatteryWidget<br>Trigger: Trigger 1<br>Input: num:BatteryPercentFrom<br>Input: num:BatteryPercentTo<br>Duration: 3.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/BatteryWidget_v5.riv" target="_blank" style="color: white;">BatteryWidget</a><br>Size: 196px × 187px<br>State Machine: State Machine 1<br>Artboard: BatteryWidget<br>Trigger: Trigger 1<br>Input: num:BatteryPercentFrom<br>Input: num:BatteryPercentTo<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               <button id="btn_main" class="rive-btn">Trigger</button>
               
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">BatteryPercentFrom:</label>
-            <input type="number" id="btn_main_input1" value="80" style="width:50px;" />
+            <label for="btn_main_input0">BatteryPercentFrom:</label>
+            <input type="number" id="btn_main_input0" value="80" style="width:50px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">BatteryPercentTo:</label>
-            <input type="number" id="btn_main_input2" value="80" style="width:50px;" />
+            <label for="btn_main_input1">BatteryPercentTo:</label>
+            <input type="number" id="btn_main_input1" value="80" style="width:50px;" />
         </div>
         
             </div>
@@ -273,13 +273,13 @@
             <button id="btn_preview" class="rive-btn">Trigger</button>
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">BatteryPercentFrom:</label>
-            <input type="number" id="btn_preview_input1" value="80" style="width:50px;" />
+            <label for="btn_preview_input0">BatteryPercentFrom:</label>
+            <input type="number" id="btn_preview_input0" value="80" style="width:50px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input2">BatteryPercentTo:</label>
-            <input type="number" id="btn_preview_input2" value="80" style="width:50px;" />
+            <label for="btn_preview_input1">BatteryPercentTo:</label>
+            <input type="number" id="btn_preview_input1" value="80" style="width:50px;" />
         </div>
         
           </div>
@@ -297,23 +297,44 @@ const mainRive = new rive.Rive({
   },
 });
 
-let triggerInputMain;
-mainRive.on("load", () => {
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_main").addEventListener("click", () => {
-    if (triggerInputMain) {
-        triggerInputMain.fire();
+    const vmi = mainRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
+
+let inputFieldMain_0 = document.getElementById("btn_main_input0");
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  let inputObjMain_0 = inputs.find(input => input.name === "BatteryPercentFrom");
+  if (inputFieldMain_0 && inputObjMain_0) {
+
+    // Initial assignment from default value (if any)
+    let initVal = parseFloat(inputFieldMain_0.value);
+    if (!isNaN(initVal)) inputObjMain_0.value = initVal;
+    inputFieldMain_0.addEventListener("input", () => {
+      let val = parseFloat(inputFieldMain_0.value);
+      if (!isNaN(val)) inputObjMain_0.value = val;
+    });
+  }
+});
 
 let inputFieldMain_1 = document.getElementById("btn_main_input1");
 mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
-  let inputObjMain_1 = inputs.find(input => input.name === "BatteryPercentFrom");
+  let inputObjMain_1 = inputs.find(input => input.name === "BatteryPercentTo");
   if (inputFieldMain_1 && inputObjMain_1) {
 
     // Initial assignment from default value (if any)
@@ -322,22 +343,6 @@ mainRive.on("load", () => {
     inputFieldMain_1.addEventListener("input", () => {
       let val = parseFloat(inputFieldMain_1.value);
       if (!isNaN(val)) inputObjMain_1.value = val;
-    });
-  }
-});
-
-let inputFieldMain_2 = document.getElementById("btn_main_input2");
-mainRive.on("load", () => {
-  const inputs = mainRive.stateMachineInputs("State Machine 1");
-  let inputObjMain_2 = inputs.find(input => input.name === "BatteryPercentTo");
-  if (inputFieldMain_2 && inputObjMain_2) {
-
-    // Initial assignment from default value (if any)
-    let initVal = parseFloat(inputFieldMain_2.value);
-    if (!isNaN(initVal)) inputObjMain_2.value = initVal;
-    inputFieldMain_2.addEventListener("input", () => {
-      let val = parseFloat(inputFieldMain_2.value);
-      if (!isNaN(val)) inputObjMain_2.value = val;
     });
   }
 });
@@ -351,23 +356,44 @@ const previewRive = new rive.Rive({
   },
 });
 
-let triggerInputPreview;
-previewRive.on("load", () => {
-    const inputs = previewRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_preview").addEventListener("click", () => {
-    if (triggerInputPreview) {
-        triggerInputPreview.fire();
+    const vmi = previewRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = previewRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
+
+let inputFieldPreview_0 = document.getElementById("btn_preview_input0");
+previewRive.on("load", () => {
+  const inputs = previewRive.stateMachineInputs("State Machine 1");
+  let inputObjPreview_0 = inputs.find(input => input.name === "BatteryPercentFrom");
+  if (inputFieldPreview_0 && inputObjPreview_0) {
+
+    // Initial assignment from default value (if any)
+    let initVal = parseFloat(inputFieldPreview_0.value);
+    if (!isNaN(initVal)) inputObjPreview_0.value = initVal;
+    inputFieldPreview_0.addEventListener("input", () => {
+      let val = parseFloat(inputFieldPreview_0.value);
+      if (!isNaN(val)) inputObjPreview_0.value = val;
+    });
+  }
+});
 
 let inputFieldPreview_1 = document.getElementById("btn_preview_input1");
 previewRive.on("load", () => {
   const inputs = previewRive.stateMachineInputs("State Machine 1");
-  let inputObjPreview_1 = inputs.find(input => input.name === "BatteryPercentFrom");
+  let inputObjPreview_1 = inputs.find(input => input.name === "BatteryPercentTo");
   if (inputFieldPreview_1 && inputObjPreview_1) {
 
     // Initial assignment from default value (if any)
@@ -376,22 +402,6 @@ previewRive.on("load", () => {
     inputFieldPreview_1.addEventListener("input", () => {
       let val = parseFloat(inputFieldPreview_1.value);
       if (!isNaN(val)) inputObjPreview_1.value = val;
-    });
-  }
-});
-
-let inputFieldPreview_2 = document.getElementById("btn_preview_input2");
-previewRive.on("load", () => {
-  const inputs = previewRive.stateMachineInputs("State Machine 1");
-  let inputObjPreview_2 = inputs.find(input => input.name === "BatteryPercentTo");
-  if (inputFieldPreview_2 && inputObjPreview_2) {
-
-    // Initial assignment from default value (if any)
-    let initVal = parseFloat(inputFieldPreview_2.value);
-    if (!isNaN(initVal)) inputObjPreview_2.value = initVal;
-    inputFieldPreview_2.addEventListener("input", () => {
-      let val = parseFloat(inputFieldPreview_2.value);
-      if (!isNaN(val)) inputObjPreview_2.value = val;
     });
   }
 });

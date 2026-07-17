@@ -246,18 +246,18 @@
       <canvas id="main_canvas" width="393" height="614"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/GiftBox_v5.riv" target="_blank" style="color: white;">GiftBox</a><br>Size: 393px × 614px<br>State Machine: State Machine 1<br>Artboard: GiftBox<br>Trigger: Trigger 1<br>Input: txt:text1<br>Input: txt:text2<br>Duration: 5.0s<br>Loop: Yes<br>Background: Color<br></div>
+          <div><a href="../riv/GiftBox_v5.riv" target="_blank" style="color: white;">GiftBox</a><br>Size: 393px × 614px<br>State Machine: State Machine 1<br>Artboard: GiftBox<br>Trigger: Trigger 1<br>Input: txt:text1<br>Input: txt:text2<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">text1:</label>
-            <input type="text" id="btn_main_input1" value="" style="width:90px;" />
+            <label for="btn_main_input0">text1:</label>
+            <input type="text" id="btn_main_input0" value="" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">text2:</label>
-            <input type="text" id="btn_main_input2" value="" style="width:90px;" />
+            <label for="btn_main_input1">text2:</label>
+            <input type="text" id="btn_main_input1" value="" style="width:90px;" />
         </div>
         
           </div>
@@ -273,33 +273,38 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
-    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
-    if (inputFieldBtn_Main_1 && vmi) {
-      vmi.string("text1").value = inputFieldBtn_Main_1.value;
-      inputFieldBtn_Main_1.addEventListener("input", () => {
-        vmi.string("text1").value = inputFieldBtn_Main_1.value;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      vmi.string("text1").value = inputFieldBtn_Main_0.value;
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn_Main_0.value;
       });
     }
-    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
-    if (inputFieldBtn_Main_2 && vmi) {
-      vmi.string("text2").value = inputFieldBtn_Main_2.value;
-      inputFieldBtn_Main_2.addEventListener("input", () => {
-        vmi.string("text2").value = inputFieldBtn_Main_2.value;
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      vmi.string("text2").value = inputFieldBtn_Main_1.value;
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn_Main_1.value;
       });
     }
   },
 });
 
-let triggerInputMain;
-mainRive.on("load", () => {
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_main").addEventListener("click", () => {
-    if (triggerInputMain) {
-        triggerInputMain.fire();
+    const vmi = mainRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
 

@@ -247,28 +247,28 @@
         <canvas id="main_canvas" width="375" height="812"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/energybyny_v7.riv" target="_blank" style="color: white;">energybyny</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: EnergyByNY<br>Input: txt:text1("Nov")<br>Input: txt:text2("Dec")<br>Input: txt:text3("2026")<br>Input: txt:textReclaim("Reclaim your energy by spring")<br>Duration: 6.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/energybyny_v7.riv" target="_blank" style="color: white;">energybyny</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: EnergyByNY<br>Input: txt:text1("Nov")<br>Input: txt:text2("Dec")<br>Input: txt:text3("2026")<br>Input: txt:textReclaim("Reclaim your energy by spring")<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">text1:</label>
-            <input type="text" id="btn_main_input1" value="Nov" style="width:90px;" />
+            <label for="btn_main_input0">text1:</label>
+            <input type="text" id="btn_main_input0" value="Nov" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">text2:</label>
-            <input type="text" id="btn_main_input2" value="Dec" style="width:90px;" />
+            <label for="btn_main_input1">text2:</label>
+            <input type="text" id="btn_main_input1" value="Dec" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input3">text3:</label>
-            <input type="text" id="btn_main_input3" value="2026" style="width:90px;" />
+            <label for="btn_main_input2">text3:</label>
+            <input type="text" id="btn_main_input2" value="2026" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input4">textReclaim:</label>
-            <input type="text" id="btn_main_input4" value="Reclaim your energy by spring" style="width:90px;" />
+            <label for="btn_main_input3">textReclaim:</label>
+            <input type="text" id="btn_main_input3" value="Reclaim your energy by spring" style="width:90px;" />
         </div>
         
             </div>
@@ -283,23 +283,23 @@
             
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">text1:</label>
-            <input type="text" id="btn_preview_input1" value="Nov" style="width:90px;" />
+            <label for="btn_preview_input0">text1:</label>
+            <input type="text" id="btn_preview_input0" value="Nov" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input2">text2:</label>
-            <input type="text" id="btn_preview_input2" value="Dec" style="width:90px;" />
+            <label for="btn_preview_input1">text2:</label>
+            <input type="text" id="btn_preview_input1" value="Dec" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input3">text3:</label>
-            <input type="text" id="btn_preview_input3" value="2026" style="width:90px;" />
+            <label for="btn_preview_input2">text3:</label>
+            <input type="text" id="btn_preview_input2" value="2026" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input4">textReclaim:</label>
-            <input type="text" id="btn_preview_input4" value="Reclaim your energy by spring" style="width:90px;" />
+            <label for="btn_preview_input3">textReclaim:</label>
+            <input type="text" id="btn_preview_input3" value="Reclaim your energy by spring" style="width:90px;" />
         </div>
         
           </div>
@@ -315,32 +315,32 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      vmi.string("text1").value = inputFieldBtn_Main_0.value;
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn_Main_0.value;
+      });
+    }
     let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
     if (inputFieldBtn_Main_1 && vmi) {
-      vmi.string("text1").value = inputFieldBtn_Main_1.value;
+      vmi.string("text2").value = inputFieldBtn_Main_1.value;
       inputFieldBtn_Main_1.addEventListener("input", () => {
-        vmi.string("text1").value = inputFieldBtn_Main_1.value;
+        vmi.string("text2").value = inputFieldBtn_Main_1.value;
       });
     }
     let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
     if (inputFieldBtn_Main_2 && vmi) {
-      vmi.string("text2").value = inputFieldBtn_Main_2.value;
+      vmi.string("text3").value = inputFieldBtn_Main_2.value;
       inputFieldBtn_Main_2.addEventListener("input", () => {
-        vmi.string("text2").value = inputFieldBtn_Main_2.value;
+        vmi.string("text3").value = inputFieldBtn_Main_2.value;
       });
     }
     let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
     if (inputFieldBtn_Main_3 && vmi) {
-      vmi.string("text3").value = inputFieldBtn_Main_3.value;
+      vmi.string("textReclaim").value = inputFieldBtn_Main_3.value;
       inputFieldBtn_Main_3.addEventListener("input", () => {
-        vmi.string("text3").value = inputFieldBtn_Main_3.value;
-      });
-    }
-    let inputFieldBtn_Main_4 = document.getElementById("btn_main_input4");
-    if (inputFieldBtn_Main_4 && vmi) {
-      vmi.string("textReclaim").value = inputFieldBtn_Main_4.value;
-      inputFieldBtn_Main_4.addEventListener("input", () => {
-        vmi.string("textReclaim").value = inputFieldBtn_Main_4.value;
+        vmi.string("textReclaim").value = inputFieldBtn_Main_3.value;
       });
     }
   },
@@ -353,32 +353,32 @@ const previewRive = new rive.Rive({
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
     const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      vmi.string("text1").value = inputFieldBtn_Preview_0.value;
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn_Preview_0.value;
+      });
+    }
     let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
     if (inputFieldBtn_Preview_1 && vmi) {
-      vmi.string("text1").value = inputFieldBtn_Preview_1.value;
+      vmi.string("text2").value = inputFieldBtn_Preview_1.value;
       inputFieldBtn_Preview_1.addEventListener("input", () => {
-        vmi.string("text1").value = inputFieldBtn_Preview_1.value;
+        vmi.string("text2").value = inputFieldBtn_Preview_1.value;
       });
     }
     let inputFieldBtn_Preview_2 = document.getElementById("btn_preview_input2");
     if (inputFieldBtn_Preview_2 && vmi) {
-      vmi.string("text2").value = inputFieldBtn_Preview_2.value;
+      vmi.string("text3").value = inputFieldBtn_Preview_2.value;
       inputFieldBtn_Preview_2.addEventListener("input", () => {
-        vmi.string("text2").value = inputFieldBtn_Preview_2.value;
+        vmi.string("text3").value = inputFieldBtn_Preview_2.value;
       });
     }
     let inputFieldBtn_Preview_3 = document.getElementById("btn_preview_input3");
     if (inputFieldBtn_Preview_3 && vmi) {
-      vmi.string("text3").value = inputFieldBtn_Preview_3.value;
+      vmi.string("textReclaim").value = inputFieldBtn_Preview_3.value;
       inputFieldBtn_Preview_3.addEventListener("input", () => {
-        vmi.string("text3").value = inputFieldBtn_Preview_3.value;
-      });
-    }
-    let inputFieldBtn_Preview_4 = document.getElementById("btn_preview_input4");
-    if (inputFieldBtn_Preview_4 && vmi) {
-      vmi.string("textReclaim").value = inputFieldBtn_Preview_4.value;
-      inputFieldBtn_Preview_4.addEventListener("input", () => {
-        vmi.string("textReclaim").value = inputFieldBtn_Preview_4.value;
+        vmi.string("textReclaim").value = inputFieldBtn_Preview_3.value;
       });
     }
   },

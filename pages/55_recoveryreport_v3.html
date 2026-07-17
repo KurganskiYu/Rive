@@ -247,28 +247,28 @@
         <canvas id="main_canvas" width="360" height="800"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/55_recoveryreport_v3.riv" target="_blank" style="color: white;">55 recoveryreport</a><br>Size: 360px × 800px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:state(2)<br>Input: v_bol:plusGreat(True)<br>Input: v_bol:plusGood(True)<br>Input: v_bol:plusBad(True)<br>Duration: 5.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/55_recoveryreport_v3.riv" target="_blank" style="color: white;">55 recoveryreport</a><br>Size: 360px × 800px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:state(2)<br>Input: v_bol:plusGreat(True)<br>Input: v_bol:plusGood(True)<br>Input: v_bol:plusBad(True)<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">state:</label>
-            <input type="number" id="btn_main_input1" value="2" style="width:60px;" />
+            <label for="btn_main_input0">state:</label>
+            <input type="number" id="btn_main_input0" value="2" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">plusGreat:</label>
+            <label for="btn_main_input1">plusGreat:</label>
+            <input type="checkbox" id="btn_main_input1" checked />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input2">plusGood:</label>
             <input type="checkbox" id="btn_main_input2" checked />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input3">plusGood:</label>
+            <label for="btn_main_input3">plusBad:</label>
             <input type="checkbox" id="btn_main_input3" checked />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input4">plusBad:</label>
-            <input type="checkbox" id="btn_main_input4" checked />
         </div>
         
             </div>
@@ -283,23 +283,23 @@
             
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">state:</label>
-            <input type="number" id="btn_preview_input1" value="2" style="width:60px;" />
+            <label for="btn_preview_input0">state:</label>
+            <input type="number" id="btn_preview_input0" value="2" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input2">plusGreat:</label>
+            <label for="btn_preview_input1">plusGreat:</label>
+            <input type="checkbox" id="btn_preview_input1" checked />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_preview_input2">plusGood:</label>
             <input type="checkbox" id="btn_preview_input2" checked />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input3">plusGood:</label>
+            <label for="btn_preview_input3">plusBad:</label>
             <input type="checkbox" id="btn_preview_input3" checked />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input4">plusBad:</label>
-            <input type="checkbox" id="btn_preview_input4" checked />
         </div>
         
           </div>
@@ -315,43 +315,43 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
-    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
-    if (inputFieldBtn_Main_1 && vmi) {
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
       // Update numeric ViewModel variable
-      inputFieldBtn_Main_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Main_1.value);
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
         if (!isNaN(val)) vmi.number("state").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Main_1.value);
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
       if (!isNaN(initVal)) vmi.number("state").value = initVal;
+    }
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn_Main_1.addEventListener("change", () => {
+        vmi.boolean("plusGreat").value = inputFieldBtn_Main_1.checked;
+      });
+      // Set initial value
+      vmi.boolean("plusGreat").value = inputFieldBtn_Main_1.checked;
     }
     let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
     if (inputFieldBtn_Main_2 && vmi) {
       // Update boolean ViewModel variable
       inputFieldBtn_Main_2.addEventListener("change", () => {
-        vmi.boolean("plusGreat").value = inputFieldBtn_Main_2.checked;
+        vmi.boolean("plusGood").value = inputFieldBtn_Main_2.checked;
       });
       // Set initial value
-      vmi.boolean("plusGreat").value = inputFieldBtn_Main_2.checked;
+      vmi.boolean("plusGood").value = inputFieldBtn_Main_2.checked;
     }
     let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
     if (inputFieldBtn_Main_3 && vmi) {
       // Update boolean ViewModel variable
       inputFieldBtn_Main_3.addEventListener("change", () => {
-        vmi.boolean("plusGood").value = inputFieldBtn_Main_3.checked;
+        vmi.boolean("plusBad").value = inputFieldBtn_Main_3.checked;
       });
       // Set initial value
-      vmi.boolean("plusGood").value = inputFieldBtn_Main_3.checked;
-    }
-    let inputFieldBtn_Main_4 = document.getElementById("btn_main_input4");
-    if (inputFieldBtn_Main_4 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn_Main_4.addEventListener("change", () => {
-        vmi.boolean("plusBad").value = inputFieldBtn_Main_4.checked;
-      });
-      // Set initial value
-      vmi.boolean("plusBad").value = inputFieldBtn_Main_4.checked;
+      vmi.boolean("plusBad").value = inputFieldBtn_Main_3.checked;
     }
   },
 });
@@ -363,43 +363,43 @@ const previewRive = new rive.Rive({
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
     const vmi = previewRive.viewModelInstance;
-    let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
-    if (inputFieldBtn_Preview_1 && vmi) {
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
       // Update numeric ViewModel variable
-      inputFieldBtn_Preview_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Preview_1.value);
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_0.value);
         if (!isNaN(val)) vmi.number("state").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Preview_1.value);
+      let initVal = parseFloat(inputFieldBtn_Preview_0.value);
       if (!isNaN(initVal)) vmi.number("state").value = initVal;
+    }
+    let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
+    if (inputFieldBtn_Preview_1 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn_Preview_1.addEventListener("change", () => {
+        vmi.boolean("plusGreat").value = inputFieldBtn_Preview_1.checked;
+      });
+      // Set initial value
+      vmi.boolean("plusGreat").value = inputFieldBtn_Preview_1.checked;
     }
     let inputFieldBtn_Preview_2 = document.getElementById("btn_preview_input2");
     if (inputFieldBtn_Preview_2 && vmi) {
       // Update boolean ViewModel variable
       inputFieldBtn_Preview_2.addEventListener("change", () => {
-        vmi.boolean("plusGreat").value = inputFieldBtn_Preview_2.checked;
+        vmi.boolean("plusGood").value = inputFieldBtn_Preview_2.checked;
       });
       // Set initial value
-      vmi.boolean("plusGreat").value = inputFieldBtn_Preview_2.checked;
+      vmi.boolean("plusGood").value = inputFieldBtn_Preview_2.checked;
     }
     let inputFieldBtn_Preview_3 = document.getElementById("btn_preview_input3");
     if (inputFieldBtn_Preview_3 && vmi) {
       // Update boolean ViewModel variable
       inputFieldBtn_Preview_3.addEventListener("change", () => {
-        vmi.boolean("plusGood").value = inputFieldBtn_Preview_3.checked;
+        vmi.boolean("plusBad").value = inputFieldBtn_Preview_3.checked;
       });
       // Set initial value
-      vmi.boolean("plusGood").value = inputFieldBtn_Preview_3.checked;
-    }
-    let inputFieldBtn_Preview_4 = document.getElementById("btn_preview_input4");
-    if (inputFieldBtn_Preview_4 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn_Preview_4.addEventListener("change", () => {
-        vmi.boolean("plusBad").value = inputFieldBtn_Preview_4.checked;
-      });
-      // Set initial value
-      vmi.boolean("plusBad").value = inputFieldBtn_Preview_4.checked;
+      vmi.boolean("plusBad").value = inputFieldBtn_Preview_3.checked;
     }
   },
 });

@@ -315,8 +315,8 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input1">flip:</label>
-            <input type="checkbox" id="btn4_input1" />
+            <label for="btn4_input0">flip:</label>
+            <input type="checkbox" id="btn4_input0" />
         </div>
         
         </div>
@@ -354,18 +354,18 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input1">daysAmount:</label>
-            <input type="number" id="btn6_input1" value="31" style="width:60px;" />
+            <label for="btn6_input0">daysAmount:</label>
+            <input type="number" id="btn6_input0" value="31" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input2">delay:</label>
-            <input type="number" id="btn6_input2" value="40" style="width:60px;" />
+            <label for="btn6_input1">delay:</label>
+            <input type="number" id="btn6_input1" value="40" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input3">percentToData:</label>
-            <input type="text" id="btn6_input3" value="60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55" style="width:90px;" />
+            <label for="btn6_input2">percentToData:</label>
+            <input type="text" id="btn6_input2" value="60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55" style="width:90px;" />
         </div>
         
         </div>
@@ -388,8 +388,8 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input1">rotation:</label>
-            <input type="number" id="btn7_input1" value="0" style="width:60px;" />
+            <label for="btn7_input0">rotation:</label>
+            <input type="number" id="btn7_input0" value="0" style="width:60px;" />
         </div>
         
         </div>
@@ -448,22 +448,31 @@ const r4 = new rive.Rive({
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
     const vmi = r4.viewModelInstance;
-    let inputFieldBtn4_1 = document.getElementById("btn4_input1");
-    if (inputFieldBtn4_1 && vmi) {
+    let inputFieldBtn4_0 = document.getElementById("btn4_input0");
+    if (inputFieldBtn4_0 && vmi) {
       // Update boolean ViewModel variable
-      inputFieldBtn4_1.addEventListener("change", () => {
-        vmi.boolean("flip").value = inputFieldBtn4_1.checked;
+      inputFieldBtn4_0.addEventListener("change", () => {
+        vmi.boolean("flip").value = inputFieldBtn4_0.checked;
       });
       // Set initial value
-      vmi.boolean("flip").value = inputFieldBtn4_1.checked;
+      vmi.boolean("flip").value = inputFieldBtn4_0.checked;
     }
     const inputs = r4.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn4").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn4").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
@@ -484,33 +493,33 @@ const r6 = new rive.Rive({
     onLoad: () => {
         r6.resizeDrawingSurfaceToCanvas();
     const vmi = r6.viewModelInstance;
+    let inputFieldBtn6_0 = document.getElementById("btn6_input0");
+    if (inputFieldBtn6_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn6_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn6_0.value);
+        if (!isNaN(val)) vmi.number("daysAmount").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn6_0.value);
+      if (!isNaN(initVal)) vmi.number("daysAmount").value = initVal;
+    }
     let inputFieldBtn6_1 = document.getElementById("btn6_input1");
     if (inputFieldBtn6_1 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn6_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn6_1.value);
-        if (!isNaN(val)) vmi.number("daysAmount").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn6_1.value);
-      if (!isNaN(initVal)) vmi.number("daysAmount").value = initVal;
-    }
-    let inputFieldBtn6_2 = document.getElementById("btn6_input2");
-    if (inputFieldBtn6_2 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn6_2.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn6_2.value);
         if (!isNaN(val)) vmi.number("delay").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn6_2.value);
+      let initVal = parseFloat(inputFieldBtn6_1.value);
       if (!isNaN(initVal)) vmi.number("delay").value = initVal;
     }
-    let inputFieldBtn6_3 = document.getElementById("btn6_input3");
-    if (inputFieldBtn6_3 && vmi) {
-      vmi.string("percentToData").value = inputFieldBtn6_3.value;
-      inputFieldBtn6_3.addEventListener("input", () => {
-        vmi.string("percentToData").value = inputFieldBtn6_3.value;
+    let inputFieldBtn6_2 = document.getElementById("btn6_input2");
+    if (inputFieldBtn6_2 && vmi) {
+      vmi.string("percentToData").value = inputFieldBtn6_2.value;
+      inputFieldBtn6_2.addEventListener("input", () => {
+        vmi.string("percentToData").value = inputFieldBtn6_2.value;
       });
     }
     const inputs = r6.stateMachineInputs("State Machine 1");
@@ -524,15 +533,15 @@ const r7 = new rive.Rive({
     onLoad: () => {
         r7.resizeDrawingSurfaceToCanvas();
     const vmi = r7.viewModelInstance;
-    let inputFieldBtn7_1 = document.getElementById("btn7_input1");
-    if (inputFieldBtn7_1 && vmi) {
+    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
+    if (inputFieldBtn7_0 && vmi) {
       // Update numeric ViewModel variable
-      inputFieldBtn7_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn7_1.value);
+      inputFieldBtn7_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn7_0.value);
         if (!isNaN(val)) vmi.number("rotation").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn7_1.value);
+      let initVal = parseFloat(inputFieldBtn7_0.value);
       if (!isNaN(initVal)) vmi.number("rotation").value = initVal;
     }
     const inputs = r7.stateMachineInputs("State Machine 1");

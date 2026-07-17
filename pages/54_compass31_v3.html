@@ -247,18 +247,18 @@
         <canvas id="main_canvas" width="393" height="393"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/54_compass31_v3.riv" target="_blank" style="color: white;">54 compass31</a><br>Size: 393px × 393px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:colorNum(3)<br>Input: v_num:state(65)<br>Duration: 6.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/54_compass31_v3.riv" target="_blank" style="color: white;">54 compass31</a><br>Size: 393px × 393px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:colorNum(3)<br>Input: v_num:state(65)<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">colorNum:</label>
-            <input type="number" id="btn_main_input1" value="3" style="width:60px;" />
+            <label for="btn_main_input0">colorNum:</label>
+            <input type="number" id="btn_main_input0" value="3" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">state:</label>
-            <input type="number" id="btn_main_input2" value="65" style="width:60px;" />
+            <label for="btn_main_input1">state:</label>
+            <input type="number" id="btn_main_input1" value="65" style="width:60px;" />
         </div>
         
             </div>
@@ -273,13 +273,13 @@
             
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">colorNum:</label>
-            <input type="number" id="btn_preview_input1" value="3" style="width:60px;" />
+            <label for="btn_preview_input0">colorNum:</label>
+            <input type="number" id="btn_preview_input0" value="3" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input2">state:</label>
-            <input type="number" id="btn_preview_input2" value="65" style="width:60px;" />
+            <label for="btn_preview_input1">state:</label>
+            <input type="number" id="btn_preview_input1" value="65" style="width:60px;" />
         </div>
         
           </div>
@@ -295,26 +295,26 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+        if (!isNaN(val)) vmi.number("colorNum").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("colorNum").value = initVal;
+    }
     let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
     if (inputFieldBtn_Main_1 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Main_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_1.value);
-        if (!isNaN(val)) vmi.number("colorNum").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Main_1.value);
-      if (!isNaN(initVal)) vmi.number("colorNum").value = initVal;
-    }
-    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
-    if (inputFieldBtn_Main_2 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn_Main_2.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Main_2.value);
         if (!isNaN(val)) vmi.number("state").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Main_2.value);
+      let initVal = parseFloat(inputFieldBtn_Main_1.value);
       if (!isNaN(initVal)) vmi.number("state").value = initVal;
     }
   },
@@ -327,26 +327,26 @@ const previewRive = new rive.Rive({
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
     const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_0.value);
+        if (!isNaN(val)) vmi.number("colorNum").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_0.value);
+      if (!isNaN(initVal)) vmi.number("colorNum").value = initVal;
+    }
     let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
     if (inputFieldBtn_Preview_1 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_1.value);
-        if (!isNaN(val)) vmi.number("colorNum").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Preview_1.value);
-      if (!isNaN(initVal)) vmi.number("colorNum").value = initVal;
-    }
-    let inputFieldBtn_Preview_2 = document.getElementById("btn_preview_input2");
-    if (inputFieldBtn_Preview_2 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn_Preview_2.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Preview_2.value);
         if (!isNaN(val)) vmi.number("state").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Preview_2.value);
+      let initVal = parseFloat(inputFieldBtn_Preview_1.value);
       if (!isNaN(initVal)) vmi.number("state").value = initVal;
     }
   },

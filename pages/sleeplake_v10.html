@@ -246,18 +246,18 @@
       <canvas id="main_canvas" width="375" height="812"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/sleeplake_v10.riv" target="_blank" style="color: white;">sleeplake</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: SleepLake<br>Trigger: Trigger 1<br>Input: num:LakeSize<br>Input: bol:NoAnimation<br>Duration: 3.0s<br>Loop: No<br>Background: Image<br></div>
+          <div><a href="../riv/sleeplake_v10.riv" target="_blank" style="color: white;">sleeplake</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: SleepLake<br>Trigger: Trigger 1<br>Input: num:LakeSize<br>Input: bol:NoAnimation<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">LakeSize:</label>
-            <input type="number" id="btn_main_input1" value="80" style="width:50px;" />
+            <label for="btn_main_input0">LakeSize:</label>
+            <input type="number" id="btn_main_input0" value="80" style="width:50px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">NoAnimation:</label>
-            <input type="checkbox" id="btn_main_input2" />
+            <label for="btn_main_input1">NoAnimation:</label>
+            <input type="checkbox" id="btn_main_input1" />
         </div>
         
           </div>
@@ -275,44 +275,49 @@ const mainRive = new rive.Rive({
   },
 });
 
-let triggerInputMain;
-mainRive.on("load", () => {
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_main").addEventListener("click", () => {
-    if (triggerInputMain) {
-        triggerInputMain.fire();
+    const vmi = mainRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
 
-let inputFieldMain_1 = document.getElementById("btn_main_input1");
+let inputFieldMain_0 = document.getElementById("btn_main_input0");
 mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
-  let inputObjMain_1 = inputs.find(input => input.name === "LakeSize");
-  if (inputFieldMain_1 && inputObjMain_1) {
+  let inputObjMain_0 = inputs.find(input => input.name === "LakeSize");
+  if (inputFieldMain_0 && inputObjMain_0) {
 
     // Initial assignment from default value (if any)
-    let initVal = parseFloat(inputFieldMain_1.value);
-    if (!isNaN(initVal)) inputObjMain_1.value = initVal;
-    inputFieldMain_1.addEventListener("input", () => {
-      let val = parseFloat(inputFieldMain_1.value);
-      if (!isNaN(val)) inputObjMain_1.value = val;
+    let initVal = parseFloat(inputFieldMain_0.value);
+    if (!isNaN(initVal)) inputObjMain_0.value = initVal;
+    inputFieldMain_0.addEventListener("input", () => {
+      let val = parseFloat(inputFieldMain_0.value);
+      if (!isNaN(val)) inputObjMain_0.value = val;
     });
   }
 });
 
-let inputFieldMain_2 = document.getElementById("btn_main_input2");
+let inputFieldMain_1 = document.getElementById("btn_main_input1");
 mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
-  let inputObjMain_2 = inputs.find(input => input.name === "NoAnimation");
-  if (inputFieldMain_2 && inputObjMain_2) {
+  let inputObjMain_1 = inputs.find(input => input.name === "NoAnimation");
+  if (inputFieldMain_1 && inputObjMain_1) {
 
-    inputObjMain_2.value = inputFieldMain_2.checked;
-    inputFieldMain_2.addEventListener("change", () => {
-      inputObjMain_2.value = inputFieldMain_2.checked;
+    inputObjMain_1.value = inputFieldMain_1.checked;
+    inputFieldMain_1.addEventListener("change", () => {
+      inputObjMain_1.value = inputFieldMain_1.checked;
     });
   }
 });

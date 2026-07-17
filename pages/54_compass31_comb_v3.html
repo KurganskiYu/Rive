@@ -247,38 +247,38 @@
         <canvas id="main_canvas" width="500" height="500"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/54_compass31_comb_v3.riv" target="_blank" style="color: white;">54 compass31 comb</a><br>Size: 500px × 500px<br>State Machine: State Machine 1<br>Artboard: combined<br>Input: v_num:state1(96)<br>Input: v_num:state2(80)<br>Input: v_num:state3(20)<br>Input: v_num:state4(65)<br>Input: v_num:state5(0)<br>Input: v_num:state6(36)<br>Duration: 6.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/54_compass31_comb_v3.riv" target="_blank" style="color: white;">54 compass31 comb</a><br>Size: 500px × 500px<br>State Machine: State Machine 1<br>Artboard: combined<br>Input: v_num:state1(96)<br>Input: v_num:state2(80)<br>Input: v_num:state3(20)<br>Input: v_num:state4(65)<br>Input: v_num:state5(0)<br>Input: v_num:state6(36)<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">state1:</label>
-            <input type="number" id="btn_main_input1" value="96" style="width:60px;" />
+            <label for="btn_main_input0">state1:</label>
+            <input type="number" id="btn_main_input0" value="96" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">state2:</label>
-            <input type="number" id="btn_main_input2" value="80" style="width:60px;" />
+            <label for="btn_main_input1">state2:</label>
+            <input type="number" id="btn_main_input1" value="80" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input3">state3:</label>
-            <input type="number" id="btn_main_input3" value="20" style="width:60px;" />
+            <label for="btn_main_input2">state3:</label>
+            <input type="number" id="btn_main_input2" value="20" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input4">state4:</label>
-            <input type="number" id="btn_main_input4" value="65" style="width:60px;" />
+            <label for="btn_main_input3">state4:</label>
+            <input type="number" id="btn_main_input3" value="65" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input5">state5:</label>
-            <input type="number" id="btn_main_input5" value="0" style="width:60px;" />
+            <label for="btn_main_input4">state5:</label>
+            <input type="number" id="btn_main_input4" value="0" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input6">state6:</label>
-            <input type="number" id="btn_main_input6" value="36" style="width:60px;" />
+            <label for="btn_main_input5">state6:</label>
+            <input type="number" id="btn_main_input5" value="36" style="width:60px;" />
         </div>
         
             </div>
@@ -293,33 +293,33 @@
             
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">state1:</label>
-            <input type="number" id="btn_preview_input1" value="96" style="width:60px;" />
+            <label for="btn_preview_input0">state1:</label>
+            <input type="number" id="btn_preview_input0" value="96" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input2">state2:</label>
-            <input type="number" id="btn_preview_input2" value="80" style="width:60px;" />
+            <label for="btn_preview_input1">state2:</label>
+            <input type="number" id="btn_preview_input1" value="80" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input3">state3:</label>
-            <input type="number" id="btn_preview_input3" value="20" style="width:60px;" />
+            <label for="btn_preview_input2">state3:</label>
+            <input type="number" id="btn_preview_input2" value="20" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input4">state4:</label>
-            <input type="number" id="btn_preview_input4" value="65" style="width:60px;" />
+            <label for="btn_preview_input3">state4:</label>
+            <input type="number" id="btn_preview_input3" value="65" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input5">state5:</label>
-            <input type="number" id="btn_preview_input5" value="0" style="width:60px;" />
+            <label for="btn_preview_input4">state5:</label>
+            <input type="number" id="btn_preview_input4" value="0" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input6">state6:</label>
-            <input type="number" id="btn_preview_input6" value="36" style="width:60px;" />
+            <label for="btn_preview_input5">state6:</label>
+            <input type="number" id="btn_preview_input5" value="36" style="width:60px;" />
         </div>
         
           </div>
@@ -335,70 +335,70 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+        if (!isNaN(val)) vmi.number("state1").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("state1").value = initVal;
+    }
     let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
     if (inputFieldBtn_Main_1 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Main_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_1.value);
-        if (!isNaN(val)) vmi.number("state1").value = val;
+        if (!isNaN(val)) vmi.number("state2").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_1.value);
-      if (!isNaN(initVal)) vmi.number("state1").value = initVal;
+      if (!isNaN(initVal)) vmi.number("state2").value = initVal;
     }
     let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
     if (inputFieldBtn_Main_2 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Main_2.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_2.value);
-        if (!isNaN(val)) vmi.number("state2").value = val;
+        if (!isNaN(val)) vmi.number("state3").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_2.value);
-      if (!isNaN(initVal)) vmi.number("state2").value = initVal;
+      if (!isNaN(initVal)) vmi.number("state3").value = initVal;
     }
     let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
     if (inputFieldBtn_Main_3 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Main_3.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_3.value);
-        if (!isNaN(val)) vmi.number("state3").value = val;
+        if (!isNaN(val)) vmi.number("state4").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_3.value);
-      if (!isNaN(initVal)) vmi.number("state3").value = initVal;
+      if (!isNaN(initVal)) vmi.number("state4").value = initVal;
     }
     let inputFieldBtn_Main_4 = document.getElementById("btn_main_input4");
     if (inputFieldBtn_Main_4 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Main_4.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_4.value);
-        if (!isNaN(val)) vmi.number("state4").value = val;
+        if (!isNaN(val)) vmi.number("state5").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_4.value);
-      if (!isNaN(initVal)) vmi.number("state4").value = initVal;
+      if (!isNaN(initVal)) vmi.number("state5").value = initVal;
     }
     let inputFieldBtn_Main_5 = document.getElementById("btn_main_input5");
     if (inputFieldBtn_Main_5 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Main_5.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_5.value);
-        if (!isNaN(val)) vmi.number("state5").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Main_5.value);
-      if (!isNaN(initVal)) vmi.number("state5").value = initVal;
-    }
-    let inputFieldBtn_Main_6 = document.getElementById("btn_main_input6");
-    if (inputFieldBtn_Main_6 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn_Main_6.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Main_6.value);
         if (!isNaN(val)) vmi.number("state6").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Main_6.value);
+      let initVal = parseFloat(inputFieldBtn_Main_5.value);
       if (!isNaN(initVal)) vmi.number("state6").value = initVal;
     }
   },
@@ -411,70 +411,70 @@ const previewRive = new rive.Rive({
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
     const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_0.value);
+        if (!isNaN(val)) vmi.number("state1").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_0.value);
+      if (!isNaN(initVal)) vmi.number("state1").value = initVal;
+    }
     let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
     if (inputFieldBtn_Preview_1 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_1.value);
-        if (!isNaN(val)) vmi.number("state1").value = val;
+        if (!isNaN(val)) vmi.number("state2").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_1.value);
-      if (!isNaN(initVal)) vmi.number("state1").value = initVal;
+      if (!isNaN(initVal)) vmi.number("state2").value = initVal;
     }
     let inputFieldBtn_Preview_2 = document.getElementById("btn_preview_input2");
     if (inputFieldBtn_Preview_2 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_2.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_2.value);
-        if (!isNaN(val)) vmi.number("state2").value = val;
+        if (!isNaN(val)) vmi.number("state3").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_2.value);
-      if (!isNaN(initVal)) vmi.number("state2").value = initVal;
+      if (!isNaN(initVal)) vmi.number("state3").value = initVal;
     }
     let inputFieldBtn_Preview_3 = document.getElementById("btn_preview_input3");
     if (inputFieldBtn_Preview_3 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_3.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_3.value);
-        if (!isNaN(val)) vmi.number("state3").value = val;
+        if (!isNaN(val)) vmi.number("state4").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_3.value);
-      if (!isNaN(initVal)) vmi.number("state3").value = initVal;
+      if (!isNaN(initVal)) vmi.number("state4").value = initVal;
     }
     let inputFieldBtn_Preview_4 = document.getElementById("btn_preview_input4");
     if (inputFieldBtn_Preview_4 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_4.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_4.value);
-        if (!isNaN(val)) vmi.number("state4").value = val;
+        if (!isNaN(val)) vmi.number("state5").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_4.value);
-      if (!isNaN(initVal)) vmi.number("state4").value = initVal;
+      if (!isNaN(initVal)) vmi.number("state5").value = initVal;
     }
     let inputFieldBtn_Preview_5 = document.getElementById("btn_preview_input5");
     if (inputFieldBtn_Preview_5 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_5.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_5.value);
-        if (!isNaN(val)) vmi.number("state5").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Preview_5.value);
-      if (!isNaN(initVal)) vmi.number("state5").value = initVal;
-    }
-    let inputFieldBtn_Preview_6 = document.getElementById("btn_preview_input6");
-    if (inputFieldBtn_Preview_6 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn_Preview_6.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Preview_6.value);
         if (!isNaN(val)) vmi.number("state6").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Preview_6.value);
+      let initVal = parseFloat(inputFieldBtn_Preview_5.value);
       if (!isNaN(initVal)) vmi.number("state6").value = initVal;
     }
   },

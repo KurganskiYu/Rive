@@ -246,18 +246,18 @@
       <canvas id="main_canvas" width="393" height="450"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/energy_liquid_v2.riv" target="_blank" style="color: white;">energy liquid</a><br>Size: 393px × 450px<br>State Machine: State Machine 1<br>Artboard: energy<br>Input: num:PercentFrom(5)<br>Input: num:PercentTo(100)<br>Duration: 1.0s<br>Loop: No<br>Background: Transparent<br></div>
+          <div><a href="../riv/energy_liquid_v2.riv" target="_blank" style="color: white;">energy liquid</a><br>Size: 393px × 450px<br>State Machine: State Machine 1<br>Artboard: energy<br>Input: num:PercentFrom(5)<br>Input: num:PercentTo(100)<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">PercentFrom:</label>
-            <input type="number" id="btn_main_input1" value="5" style="width:50px;" />
+            <label for="btn_main_input0">PercentFrom:</label>
+            <input type="number" id="btn_main_input0" value="5" style="width:50px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">PercentTo:</label>
-            <input type="number" id="btn_main_input2" value="100" style="width:50px;" />
+            <label for="btn_main_input1">PercentTo:</label>
+            <input type="number" id="btn_main_input1" value="100" style="width:50px;" />
         </div>
         
           </div>
@@ -275,10 +275,26 @@ const mainRive = new rive.Rive({
   },
 });
 
+let inputFieldMain_0 = document.getElementById("btn_main_input0");
+mainRive.on("load", () => {
+  const inputs = mainRive.stateMachineInputs("State Machine 1");
+  let inputObjMain_0 = inputs.find(input => input.name === "PercentFrom");
+  if (inputFieldMain_0 && inputObjMain_0) {
+
+    // Initial assignment from default value (if any)
+    let initVal = parseFloat(inputFieldMain_0.value);
+    if (!isNaN(initVal)) inputObjMain_0.value = initVal;
+    inputFieldMain_0.addEventListener("input", () => {
+      let val = parseFloat(inputFieldMain_0.value);
+      if (!isNaN(val)) inputObjMain_0.value = val;
+    });
+  }
+});
+
 let inputFieldMain_1 = document.getElementById("btn_main_input1");
 mainRive.on("load", () => {
   const inputs = mainRive.stateMachineInputs("State Machine 1");
-  let inputObjMain_1 = inputs.find(input => input.name === "PercentFrom");
+  let inputObjMain_1 = inputs.find(input => input.name === "PercentTo");
   if (inputFieldMain_1 && inputObjMain_1) {
 
     // Initial assignment from default value (if any)
@@ -287,22 +303,6 @@ mainRive.on("load", () => {
     inputFieldMain_1.addEventListener("input", () => {
       let val = parseFloat(inputFieldMain_1.value);
       if (!isNaN(val)) inputObjMain_1.value = val;
-    });
-  }
-});
-
-let inputFieldMain_2 = document.getElementById("btn_main_input2");
-mainRive.on("load", () => {
-  const inputs = mainRive.stateMachineInputs("State Machine 1");
-  let inputObjMain_2 = inputs.find(input => input.name === "PercentTo");
-  if (inputFieldMain_2 && inputObjMain_2) {
-
-    // Initial assignment from default value (if any)
-    let initVal = parseFloat(inputFieldMain_2.value);
-    if (!isNaN(initVal)) inputObjMain_2.value = initVal;
-    inputFieldMain_2.addEventListener("input", () => {
-      let val = parseFloat(inputFieldMain_2.value);
-      if (!isNaN(val)) inputObjMain_2.value = val;
     });
   }
 });

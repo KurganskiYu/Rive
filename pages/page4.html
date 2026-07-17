@@ -270,8 +270,8 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input1">impact:</label>
-            <input type="checkbox" id="btn1_input1" />
+            <label for="btn1_input0">impact:</label>
+            <input type="checkbox" id="btn1_input0" />
         </div>
         
         </div>
@@ -324,8 +324,8 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input1">numParticles:</label>
-            <input type="number" id="btn4_input1" value="120" style="width:60px;" />
+            <label for="btn4_input0">numParticles:</label>
+            <input type="number" id="btn4_input0" value="120" style="width:60px;" />
         </div>
         
         </div>
@@ -399,14 +399,14 @@ const r1 = new rive.Rive({
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
     const vmi = r1.viewModelInstance;
-    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
-    if (inputFieldBtn1_1 && vmi) {
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
       // Update boolean ViewModel variable
-      inputFieldBtn1_1.addEventListener("change", () => {
-        vmi.boolean("impact").value = inputFieldBtn1_1.checked;
+      inputFieldBtn1_0.addEventListener("change", () => {
+        vmi.boolean("impact").value = inputFieldBtn1_0.checked;
       });
       // Set initial value
-      vmi.boolean("impact").value = inputFieldBtn1_1.checked;
+      vmi.boolean("impact").value = inputFieldBtn1_0.checked;
     }
     const inputs = r1.stateMachineInputs("State Machine 1");
   },
@@ -439,15 +439,15 @@ const r4 = new rive.Rive({
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
     const vmi = r4.viewModelInstance;
-    let inputFieldBtn4_1 = document.getElementById("btn4_input1");
-    if (inputFieldBtn4_1 && vmi) {
+    let inputFieldBtn4_0 = document.getElementById("btn4_input0");
+    if (inputFieldBtn4_0 && vmi) {
       // Update numeric ViewModel variable
-      inputFieldBtn4_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn4_1.value);
+      inputFieldBtn4_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn4_0.value);
         if (!isNaN(val)) vmi.number("numParticles").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn4_1.value);
+      let initVal = parseFloat(inputFieldBtn4_0.value);
       if (!isNaN(initVal)) vmi.number("numParticles").value = initVal;
     }
     const inputs = r4.stateMachineInputs("State Machine 1");
@@ -460,13 +460,23 @@ const r5 = new rive.Rive({
     autoplay: true, autoBind: true,artboard: "Stacks", stateMachines: "State Machine 1",
     onLoad: () => {
         r5.resizeDrawingSurfaceToCanvas();
+    const vmi = r5.viewModelInstance;
     const inputs = r5.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn5").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn5").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
@@ -476,13 +486,23 @@ const r6 = new rive.Rive({
     autoplay: true, autoBind: true,artboard: "Main", stateMachines: "State Machine 1",
     onLoad: () => {
         r6.resizeDrawingSurfaceToCanvas();
+    const vmi = r6.viewModelInstance;
     const inputs = r6.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn6").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn6").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 

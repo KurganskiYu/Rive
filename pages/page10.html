@@ -270,13 +270,13 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input1">text1:</label>
-            <input type="text" id="btn1_input1" value="" style="width:90px;" />
+            <label for="btn1_input0">text1:</label>
+            <input type="text" id="btn1_input0" value="" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input2">text2:</label>
-            <input type="text" id="btn1_input2" value="" style="width:90px;" />
+            <label for="btn1_input1">text2:</label>
+            <input type="text" id="btn1_input1" value="" style="width:90px;" />
         </div>
         
         </div>
@@ -395,27 +395,36 @@ const r1 = new rive.Rive({
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
     const vmi = r1.viewModelInstance;
-    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
-    if (inputFieldBtn1_1 && vmi) {
-      vmi.string("text1").value = inputFieldBtn1_1.value;
-      inputFieldBtn1_1.addEventListener("input", () => {
-        vmi.string("text1").value = inputFieldBtn1_1.value;
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      vmi.string("text1").value = inputFieldBtn1_0.value;
+      inputFieldBtn1_0.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn1_0.value;
       });
     }
-    let inputFieldBtn1_2 = document.getElementById("btn1_input2");
-    if (inputFieldBtn1_2 && vmi) {
-      vmi.string("text2").value = inputFieldBtn1_2.value;
-      inputFieldBtn1_2.addEventListener("input", () => {
-        vmi.string("text2").value = inputFieldBtn1_2.value;
+    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
+    if (inputFieldBtn1_1 && vmi) {
+      vmi.string("text2").value = inputFieldBtn1_1.value;
+      inputFieldBtn1_1.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn1_1.value;
       });
     }
     const inputs = r1.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn1").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn1").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
@@ -425,13 +434,23 @@ const r2 = new rive.Rive({
     autoplay: true, autoBind: true, stateMachines: "State Machine 1",
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
     const inputs = r2.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger");
-        document.getElementById("btn2").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn2").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger");
+        }
+    });
   },
 });
 

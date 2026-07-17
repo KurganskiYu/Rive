@@ -247,13 +247,13 @@
         <canvas id="main_canvas" width="393" height="300"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/52_tagfire_v2.riv" target="_blank" style="color: white;">52 tagfire</a><br>Size: 393px × 300px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: txt:tag("[tag_name]")<br>Duration: 5.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/52_tagfire_v2.riv" target="_blank" style="color: white;">52 tagfire</a><br>Size: 393px × 300px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: txt:tag("[tag_name]")<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">tag:</label>
-            <input type="text" id="btn_main_input1" value="[tag_name]" style="width:90px;" />
+            <label for="btn_main_input0">tag:</label>
+            <input type="text" id="btn_main_input0" value="[tag_name]" style="width:90px;" />
         </div>
         
             </div>
@@ -268,8 +268,8 @@
             
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">tag:</label>
-            <input type="text" id="btn_preview_input1" value="[tag_name]" style="width:90px;" />
+            <label for="btn_preview_input0">tag:</label>
+            <input type="text" id="btn_preview_input0" value="[tag_name]" style="width:90px;" />
         </div>
         
           </div>
@@ -285,11 +285,11 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
-    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
-    if (inputFieldBtn_Main_1 && vmi) {
-      vmi.string("tag").value = inputFieldBtn_Main_1.value;
-      inputFieldBtn_Main_1.addEventListener("input", () => {
-        vmi.string("tag").value = inputFieldBtn_Main_1.value;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn_Main_0.value;
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn_Main_0.value;
       });
     }
   },
@@ -302,11 +302,11 @@ const previewRive = new rive.Rive({
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
     const vmi = previewRive.viewModelInstance;
-    let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
-    if (inputFieldBtn_Preview_1 && vmi) {
-      vmi.string("tag").value = inputFieldBtn_Preview_1.value;
-      inputFieldBtn_Preview_1.addEventListener("input", () => {
-        vmi.string("tag").value = inputFieldBtn_Preview_1.value;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn_Preview_0.value;
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn_Preview_0.value;
       });
     }
   },

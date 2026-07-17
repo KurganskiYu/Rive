@@ -246,13 +246,13 @@
       <canvas id="main_canvas" width="393" height="852"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/keyhole_v4.riv" target="_blank" style="color: white;">keyhole</a><br>Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: KeyHole<br>Trigger: Trigger 1<br>Input: img:MagicImage(MagicRiver.png)<br>Duration: 6.0s<br>Loop: Yes<br>Background: Black<br></div>
+          <div><a href="../riv/keyhole_v4.riv" target="_blank" style="color: white;">keyhole</a><br>Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: KeyHole<br>Trigger: Trigger 1<br>Input: img:MagicImage(MagicRiver.png)<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">MagicImage:</label>
-            <input type="text" id="btn_main_input1" placeholder="filename.ext" value="MagicRiver.png" style="width:100px;" />
+            <label for="btn_main_input0">MagicImage:</label>
+            <input type="text" id="btn_main_input0" placeholder="filename.ext" value="MagicRiver.png" style="width:100px;" />
         </div>
         
           </div>
@@ -268,53 +268,58 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
-    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
-    if (inputFieldBtn_Main_1 && vmi) {
-      const imgProp_btn_main_1 = vmi.image("MagicImage");
-      let lastImg_btn_main_1 = null;
-      const imgBase_btn_main_1 = location.pathname.includes('/pages/') ? '../img/' : 'img/';
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      const imgProp_btn_main_0 = vmi.image("MagicImage");
+      let lastImg_btn_main_0 = null;
+      const imgBase_btn_main_0 = location.pathname.includes('/pages/') ? '../img/' : 'img/';
 
-      async function loadImg_btn_main_1(filename) {
+      async function loadImg_btn_main_0(filename) {
         const name = (filename || "").trim();
         if (!name) return;
         try {
-          const res = await fetch(imgBase_btn_main_1 + name);
+          const res = await fetch(imgBase_btn_main_0 + name);
           const bytes = new Uint8Array(await res.arrayBuffer());
           if (!rive.decodeImage) {
             console.warn("rive.decodeImage is not available.");
             return;
           }
           const decoded = await rive.decodeImage(bytes);
-          if (lastImg_btn_main_1) lastImg_btn_main_1.unref();
-          imgProp_btn_main_1.value = decoded;
-          lastImg_btn_main_1 = decoded;
+          if (lastImg_btn_main_0) lastImg_btn_main_0.unref();
+          imgProp_btn_main_0.value = decoded;
+          lastImg_btn_main_0 = decoded;
         } catch (e) {
           console.error("Failed to load image:", name, e);
         }
       }
 
-      inputFieldBtn_Main_1.addEventListener("change", () => {
-        loadImg_btn_main_1(inputFieldBtn_Main_1.value);
+      inputFieldBtn_Main_0.addEventListener("change", () => {
+        loadImg_btn_main_0(inputFieldBtn_Main_0.value);
       });
 
       // Initial load if a default or preset value exists
-      if (inputFieldBtn_Main_1.value && inputFieldBtn_Main_1.value.trim() !== "") {
-        loadImg_btn_main_1(inputFieldBtn_Main_1.value);
+      if (inputFieldBtn_Main_0.value && inputFieldBtn_Main_0.value.trim() !== "") {
+        loadImg_btn_main_0(inputFieldBtn_Main_0.value);
       }
     }
   },
 });
 
-let triggerInputMain;
-mainRive.on("load", () => {
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_main").addEventListener("click", () => {
-    if (triggerInputMain) {
-        triggerInputMain.fire();
+    const vmi = mainRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
 

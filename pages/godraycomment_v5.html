@@ -246,13 +246,13 @@
       <canvas id="main_canvas" width="393" height="430"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/godraycomment_v5.riv" target="_blank" style="color: white;">godraycomment</a><br>Size: 393px × 430px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: Trigger 1<br>Input: v_bol:flip<br>Duration: 3.0s<br>Loop: No<br>Background: Transparent<br></div>
+          <div><a href="../riv/godraycomment_v5.riv" target="_blank" style="color: white;">godraycomment</a><br>Size: 393px × 430px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: Trigger 1<br>Input: v_bol:flip<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">flip:</label>
-            <input type="checkbox" id="btn_main_input1" />
+            <label for="btn_main_input0">flip:</label>
+            <input type="checkbox" id="btn_main_input0" />
         </div>
         
           </div>
@@ -268,28 +268,33 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
-    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
-    if (inputFieldBtn_Main_1 && vmi) {
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
       // Update boolean ViewModel variable
-      inputFieldBtn_Main_1.addEventListener("change", () => {
-        vmi.boolean("flip").value = inputFieldBtn_Main_1.checked;
+      inputFieldBtn_Main_0.addEventListener("change", () => {
+        vmi.boolean("flip").value = inputFieldBtn_Main_0.checked;
       });
       // Set initial value
-      vmi.boolean("flip").value = inputFieldBtn_Main_1.checked;
+      vmi.boolean("flip").value = inputFieldBtn_Main_0.checked;
     }
   },
 });
 
-let triggerInputMain;
-mainRive.on("load", () => {
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_main").addEventListener("click", () => {
-    if (triggerInputMain) {
-        triggerInputMain.fire();
+    const vmi = mainRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
 

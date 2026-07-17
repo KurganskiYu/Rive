@@ -270,8 +270,8 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input1">tag:</label>
-            <input type="text" id="btn1_input1" value="[tag_name]" style="width:90px;" />
+            <label for="btn1_input0">tag:</label>
+            <input type="text" id="btn1_input0" value="[tag_name]" style="width:90px;" />
         </div>
         
         </div>
@@ -294,8 +294,8 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn2_input1">tagsNumber:</label>
-            <input type="number" id="btn2_input1" value="300" style="width:60px;" />
+            <label for="btn2_input0">tagsNumber:</label>
+            <input type="number" id="btn2_input0" value="300" style="width:60px;" />
         </div>
         
         </div>
@@ -318,8 +318,8 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn3_input1">tag:</label>
-            <input type="text" id="btn3_input1" value="[tag_name]" style="width:90px;" />
+            <label for="btn3_input0">tag:</label>
+            <input type="text" id="btn3_input0" value="[tag_name]" style="width:90px;" />
         </div>
         
         </div>
@@ -342,8 +342,8 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input1">tag:</label>
-            <input type="text" id="btn4_input1" value="[tag_name]" style="width:90px;" />
+            <label for="btn4_input0">tag:</label>
+            <input type="text" id="btn4_input0" value="[tag_name]" style="width:90px;" />
         </div>
         
         </div>
@@ -381,13 +381,13 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input1">PercentFrom:</label>
-            <input type="number" id="btn6_input1" value="5" style="width:50px;" />
+            <label for="btn6_input0">PercentFrom:</label>
+            <input type="number" id="btn6_input0" value="5" style="width:50px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input2">PercentTo:</label>
-            <input type="number" id="btn6_input2" value="100" style="width:50px;" />
+            <label for="btn6_input1">PercentTo:</label>
+            <input type="number" id="btn6_input1" value="100" style="width:50px;" />
         </div>
         
         </div>
@@ -410,13 +410,13 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input1">PercentFrom:</label>
-            <input type="number" id="btn7_input1" value="5" style="width:50px;" />
+            <label for="btn7_input0">PercentFrom:</label>
+            <input type="number" id="btn7_input0" value="5" style="width:50px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input2">PercentTo:</label>
-            <input type="number" id="btn7_input2" value="100" style="width:50px;" />
+            <label for="btn7_input1">PercentTo:</label>
+            <input type="number" id="btn7_input1" value="100" style="width:50px;" />
         </div>
         
         </div>
@@ -445,11 +445,11 @@ const r1 = new rive.Rive({
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
     const vmi = r1.viewModelInstance;
-    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
-    if (inputFieldBtn1_1 && vmi) {
-      vmi.string("tag").value = inputFieldBtn1_1.value;
-      inputFieldBtn1_1.addEventListener("input", () => {
-        vmi.string("tag").value = inputFieldBtn1_1.value;
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn1_0.value;
+      inputFieldBtn1_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn1_0.value;
       });
     }
     const inputs = r1.stateMachineInputs("State Machine 1");
@@ -463,15 +463,15 @@ const r2 = new rive.Rive({
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
     const vmi = r2.viewModelInstance;
-    let inputFieldBtn2_1 = document.getElementById("btn2_input1");
-    if (inputFieldBtn2_1 && vmi) {
+    let inputFieldBtn2_0 = document.getElementById("btn2_input0");
+    if (inputFieldBtn2_0 && vmi) {
       // Update numeric ViewModel variable
-      inputFieldBtn2_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn2_1.value);
+      inputFieldBtn2_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn2_0.value);
         if (!isNaN(val)) vmi.number("tagsNumber").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn2_1.value);
+      let initVal = parseFloat(inputFieldBtn2_0.value);
       if (!isNaN(initVal)) vmi.number("tagsNumber").value = initVal;
     }
     const inputs = r2.stateMachineInputs("State Machine 1");
@@ -485,11 +485,11 @@ const r3 = new rive.Rive({
     onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
     const vmi = r3.viewModelInstance;
-    let inputFieldBtn3_1 = document.getElementById("btn3_input1");
-    if (inputFieldBtn3_1 && vmi) {
-      vmi.string("tag").value = inputFieldBtn3_1.value;
-      inputFieldBtn3_1.addEventListener("input", () => {
-        vmi.string("tag").value = inputFieldBtn3_1.value;
+    let inputFieldBtn3_0 = document.getElementById("btn3_input0");
+    if (inputFieldBtn3_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn3_0.value;
+      inputFieldBtn3_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn3_0.value;
       });
     }
     const inputs = r3.stateMachineInputs("State Machine 1");
@@ -503,11 +503,11 @@ const r4 = new rive.Rive({
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
     const vmi = r4.viewModelInstance;
-    let inputFieldBtn4_1 = document.getElementById("btn4_input1");
-    if (inputFieldBtn4_1 && vmi) {
-      vmi.string("tag").value = inputFieldBtn4_1.value;
-      inputFieldBtn4_1.addEventListener("input", () => {
-        vmi.string("tag").value = inputFieldBtn4_1.value;
+    let inputFieldBtn4_0 = document.getElementById("btn4_input0");
+    if (inputFieldBtn4_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn4_0.value;
+      inputFieldBtn4_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn4_0.value;
       });
     }
     const inputs = r4.stateMachineInputs("State Machine 1");
@@ -531,24 +531,24 @@ const r6 = new rive.Rive({
     onLoad: () => {
         r6.resizeDrawingSurfaceToCanvas();
     const inputs = r6.stateMachineInputs("State Machine 1");
+    let inputField_btn6_0 = document.getElementById("btn6_input0");
+    let inputObj_btn6_0 = inputs.find(input => input.name === "PercentFrom");
+    if (inputField_btn6_0 && inputObj_btn6_0) {
+            let val = parseFloat(inputField_btn6_0.value);
+            if (!isNaN(val)) inputObj_btn6_0.value = val;
+            inputField_btn6_0.addEventListener("input", () => {
+                let val = parseFloat(inputField_btn6_0.value);
+                if (!isNaN(val)) inputObj_btn6_0.value = val;
+            });
+        }
     let inputField_btn6_1 = document.getElementById("btn6_input1");
-    let inputObj_btn6_1 = inputs.find(input => input.name === "PercentFrom");
+    let inputObj_btn6_1 = inputs.find(input => input.name === "PercentTo");
     if (inputField_btn6_1 && inputObj_btn6_1) {
             let val = parseFloat(inputField_btn6_1.value);
             if (!isNaN(val)) inputObj_btn6_1.value = val;
             inputField_btn6_1.addEventListener("input", () => {
                 let val = parseFloat(inputField_btn6_1.value);
                 if (!isNaN(val)) inputObj_btn6_1.value = val;
-            });
-        }
-    let inputField_btn6_2 = document.getElementById("btn6_input2");
-    let inputObj_btn6_2 = inputs.find(input => input.name === "PercentTo");
-    if (inputField_btn6_2 && inputObj_btn6_2) {
-            let val = parseFloat(inputField_btn6_2.value);
-            if (!isNaN(val)) inputObj_btn6_2.value = val;
-            inputField_btn6_2.addEventListener("input", () => {
-                let val = parseFloat(inputField_btn6_2.value);
-                if (!isNaN(val)) inputObj_btn6_2.value = val;
             });
         }
   },
@@ -561,24 +561,24 @@ const r7 = new rive.Rive({
     onLoad: () => {
         r7.resizeDrawingSurfaceToCanvas();
     const inputs = r7.stateMachineInputs("State Machine 1");
+    let inputField_btn7_0 = document.getElementById("btn7_input0");
+    let inputObj_btn7_0 = inputs.find(input => input.name === "PercentFrom");
+    if (inputField_btn7_0 && inputObj_btn7_0) {
+            let val = parseFloat(inputField_btn7_0.value);
+            if (!isNaN(val)) inputObj_btn7_0.value = val;
+            inputField_btn7_0.addEventListener("input", () => {
+                let val = parseFloat(inputField_btn7_0.value);
+                if (!isNaN(val)) inputObj_btn7_0.value = val;
+            });
+        }
     let inputField_btn7_1 = document.getElementById("btn7_input1");
-    let inputObj_btn7_1 = inputs.find(input => input.name === "PercentFrom");
+    let inputObj_btn7_1 = inputs.find(input => input.name === "PercentTo");
     if (inputField_btn7_1 && inputObj_btn7_1) {
             let val = parseFloat(inputField_btn7_1.value);
             if (!isNaN(val)) inputObj_btn7_1.value = val;
             inputField_btn7_1.addEventListener("input", () => {
                 let val = parseFloat(inputField_btn7_1.value);
                 if (!isNaN(val)) inputObj_btn7_1.value = val;
-            });
-        }
-    let inputField_btn7_2 = document.getElementById("btn7_input2");
-    let inputObj_btn7_2 = inputs.find(input => input.name === "PercentTo");
-    if (inputField_btn7_2 && inputObj_btn7_2) {
-            let val = parseFloat(inputField_btn7_2.value);
-            if (!isNaN(val)) inputObj_btn7_2.value = val;
-            inputField_btn7_2.addEventListener("input", () => {
-                let val = parseFloat(inputField_btn7_2.value);
-                if (!isNaN(val)) inputObj_btn7_2.value = val;
             });
         }
   },

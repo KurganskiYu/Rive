@@ -247,38 +247,38 @@
         <canvas id="main_canvas" width="375" height="375"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/flowerparticles_v3.riv" target="_blank" style="color: white;">flowerparticles</a><br>Size: 375px × 375px<br>State Machine: State Machine 1<br>Artboard: FlowerParticles<br>Trigger: Trigger 1<br>Input: col:color1<br>Input: col:color2<br>Input: col:color3<br>Input: col:color4<br>Input: col:color5<br>Input: col:color6<br>Duration: 8.0s<br>Loop: No<br>Background: Transparent<br></div>
+            <div><a href="../riv/flowerparticles_v3.riv" target="_blank" style="color: white;">flowerparticles</a><br>Size: 375px × 375px<br>State Machine: State Machine 1<br>Artboard: FlowerParticles<br>Trigger: Trigger 1<br>Input: col:color1<br>Input: col:color2<br>Input: col:color3<br>Input: col:color4<br>Input: col:color5<br>Input: col:color6<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               <button id="btn_main" class="rive-btn">Trigger</button>
               
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">color1:</label>
-            <input type="color" id="btn_main_input1" value="#eeca09" />
+            <label for="btn_main_input0">color1:</label>
+            <input type="color" id="btn_main_input0" value="#7e312e" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">color2:</label>
-            <input type="color" id="btn_main_input2" value="#ab6f85" />
+            <label for="btn_main_input1">color2:</label>
+            <input type="color" id="btn_main_input1" value="#bf85b3" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input3">color3:</label>
-            <input type="color" id="btn_main_input3" value="#fe6b4d" />
+            <label for="btn_main_input2">color3:</label>
+            <input type="color" id="btn_main_input2" value="#8edbcd" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input4">color4:</label>
-            <input type="color" id="btn_main_input4" value="#c4aa84" />
+            <label for="btn_main_input3">color4:</label>
+            <input type="color" id="btn_main_input3" value="#f190e2" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input5">color5:</label>
-            <input type="color" id="btn_main_input5" value="#21772d" />
+            <label for="btn_main_input4">color5:</label>
+            <input type="color" id="btn_main_input4" value="#cfe8d8" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input6">color6:</label>
-            <input type="color" id="btn_main_input6" value="#a132d3" />
+            <label for="btn_main_input5">color6:</label>
+            <input type="color" id="btn_main_input5" value="#38c17c" />
         </div>
         
             </div>
@@ -293,33 +293,33 @@
             <button id="btn_preview" class="rive-btn">Trigger</button>
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">color1:</label>
-            <input type="color" id="btn_preview_input1" value="#e76fa2" />
+            <label for="btn_preview_input0">color1:</label>
+            <input type="color" id="btn_preview_input0" value="#f8b915" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input2">color2:</label>
-            <input type="color" id="btn_preview_input2" value="#1eabc7" />
+            <label for="btn_preview_input1">color2:</label>
+            <input type="color" id="btn_preview_input1" value="#f03fbf" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input3">color3:</label>
-            <input type="color" id="btn_preview_input3" value="#c3632a" />
+            <label for="btn_preview_input2">color3:</label>
+            <input type="color" id="btn_preview_input2" value="#e124eb" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input4">color4:</label>
-            <input type="color" id="btn_preview_input4" value="#d5425a" />
+            <label for="btn_preview_input3">color4:</label>
+            <input type="color" id="btn_preview_input3" value="#7e06bb" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input5">color5:</label>
-            <input type="color" id="btn_preview_input5" value="#9eef9d" />
+            <label for="btn_preview_input4">color5:</label>
+            <input type="color" id="btn_preview_input4" value="#a6116c" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input6">color6:</label>
-            <input type="color" id="btn_preview_input6" value="#94e70c" />
+            <label for="btn_preview_input5">color6:</label>
+            <input type="color" id="btn_preview_input5" value="#76c7be" />
         </div>
         
           </div>
@@ -335,16 +335,28 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Main_0.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color1").value = argb;
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let hex = inputFieldBtn_Main_0.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color1").value = argb;
+      });
+    }
     let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
     if (inputFieldBtn_Main_1 && vmi) {
       // Set initial color value
       let hex = inputFieldBtn_Main_1.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color1").value = argb;
+      vmi.color("color2").value = argb;
       inputFieldBtn_Main_1.addEventListener("input", () => {
         let hex = inputFieldBtn_Main_1.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color1").value = argb;
+        vmi.color("color2").value = argb;
       });
     }
     let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
@@ -352,11 +364,11 @@ const mainRive = new rive.Rive({
       // Set initial color value
       let hex = inputFieldBtn_Main_2.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color2").value = argb;
+      vmi.color("color3").value = argb;
       inputFieldBtn_Main_2.addEventListener("input", () => {
         let hex = inputFieldBtn_Main_2.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color2").value = argb;
+        vmi.color("color3").value = argb;
       });
     }
     let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
@@ -364,11 +376,11 @@ const mainRive = new rive.Rive({
       // Set initial color value
       let hex = inputFieldBtn_Main_3.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color3").value = argb;
+      vmi.color("color4").value = argb;
       inputFieldBtn_Main_3.addEventListener("input", () => {
         let hex = inputFieldBtn_Main_3.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color3").value = argb;
+        vmi.color("color4").value = argb;
       });
     }
     let inputFieldBtn_Main_4 = document.getElementById("btn_main_input4");
@@ -376,11 +388,11 @@ const mainRive = new rive.Rive({
       // Set initial color value
       let hex = inputFieldBtn_Main_4.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color4").value = argb;
+      vmi.color("color5").value = argb;
       inputFieldBtn_Main_4.addEventListener("input", () => {
         let hex = inputFieldBtn_Main_4.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color4").value = argb;
+        vmi.color("color5").value = argb;
       });
     }
     let inputFieldBtn_Main_5 = document.getElementById("btn_main_input5");
@@ -388,21 +400,9 @@ const mainRive = new rive.Rive({
       // Set initial color value
       let hex = inputFieldBtn_Main_5.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color5").value = argb;
+      vmi.color("color6").value = argb;
       inputFieldBtn_Main_5.addEventListener("input", () => {
         let hex = inputFieldBtn_Main_5.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color5").value = argb;
-      });
-    }
-    let inputFieldBtn_Main_6 = document.getElementById("btn_main_input6");
-    if (inputFieldBtn_Main_6 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn_Main_6.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color6").value = argb;
-      inputFieldBtn_Main_6.addEventListener("input", () => {
-        let hex = inputFieldBtn_Main_6.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
         vmi.color("color6").value = argb;
       });
@@ -410,16 +410,21 @@ const mainRive = new rive.Rive({
   },
 });
 
-let triggerInputMain;
-mainRive.on("load", () => {
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_main").addEventListener("click", () => {
-    if (triggerInputMain) {
-        triggerInputMain.fire();
+    const vmi = mainRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
 
@@ -430,16 +435,28 @@ const previewRive = new rive.Rive({
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
     const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Preview_0.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color1").value = argb;
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        let hex = inputFieldBtn_Preview_0.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color1").value = argb;
+      });
+    }
     let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
     if (inputFieldBtn_Preview_1 && vmi) {
       // Set initial color value
       let hex = inputFieldBtn_Preview_1.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color1").value = argb;
+      vmi.color("color2").value = argb;
       inputFieldBtn_Preview_1.addEventListener("input", () => {
         let hex = inputFieldBtn_Preview_1.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color1").value = argb;
+        vmi.color("color2").value = argb;
       });
     }
     let inputFieldBtn_Preview_2 = document.getElementById("btn_preview_input2");
@@ -447,11 +464,11 @@ const previewRive = new rive.Rive({
       // Set initial color value
       let hex = inputFieldBtn_Preview_2.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color2").value = argb;
+      vmi.color("color3").value = argb;
       inputFieldBtn_Preview_2.addEventListener("input", () => {
         let hex = inputFieldBtn_Preview_2.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color2").value = argb;
+        vmi.color("color3").value = argb;
       });
     }
     let inputFieldBtn_Preview_3 = document.getElementById("btn_preview_input3");
@@ -459,11 +476,11 @@ const previewRive = new rive.Rive({
       // Set initial color value
       let hex = inputFieldBtn_Preview_3.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color3").value = argb;
+      vmi.color("color4").value = argb;
       inputFieldBtn_Preview_3.addEventListener("input", () => {
         let hex = inputFieldBtn_Preview_3.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color3").value = argb;
+        vmi.color("color4").value = argb;
       });
     }
     let inputFieldBtn_Preview_4 = document.getElementById("btn_preview_input4");
@@ -471,11 +488,11 @@ const previewRive = new rive.Rive({
       // Set initial color value
       let hex = inputFieldBtn_Preview_4.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color4").value = argb;
+      vmi.color("color5").value = argb;
       inputFieldBtn_Preview_4.addEventListener("input", () => {
         let hex = inputFieldBtn_Preview_4.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color4").value = argb;
+        vmi.color("color5").value = argb;
       });
     }
     let inputFieldBtn_Preview_5 = document.getElementById("btn_preview_input5");
@@ -483,21 +500,9 @@ const previewRive = new rive.Rive({
       // Set initial color value
       let hex = inputFieldBtn_Preview_5.value.replace("#", "");
       let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color5").value = argb;
+      vmi.color("color6").value = argb;
       inputFieldBtn_Preview_5.addEventListener("input", () => {
         let hex = inputFieldBtn_Preview_5.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color5").value = argb;
-      });
-    }
-    let inputFieldBtn_Preview_6 = document.getElementById("btn_preview_input6");
-    if (inputFieldBtn_Preview_6 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn_Preview_6.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color6").value = argb;
-      inputFieldBtn_Preview_6.addEventListener("input", () => {
-        let hex = inputFieldBtn_Preview_6.value.replace("#", "");
         let argb = parseInt("FF" + hex.toUpperCase(), 16);
         vmi.color("color6").value = argb;
       });
@@ -505,16 +510,21 @@ const previewRive = new rive.Rive({
   },
 });
 
-let triggerInputPreview;
-previewRive.on("load", () => {
-    const inputs = previewRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_preview").addEventListener("click", () => {
-    if (triggerInputPreview) {
-        triggerInputPreview.fire();
+    const vmi = previewRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = previewRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
 

@@ -246,23 +246,23 @@
       <canvas id="main_canvas" width="393" height="620"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/activityring_v3.riv" target="_blank" style="color: white;">activityring</a><br>Size: 393px × 620px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: start<br>Input: v_num:goal(35)<br>Input: v_num:activeMinutes(66)<br>Input: v_num:size2mult(1.0)<br>Duration: 6.0s<br>Loop: No<br>Background: Transparent<br></div>
+          <div><a href="../riv/activityring_v3.riv" target="_blank" style="color: white;">activityring</a><br>Size: 393px × 620px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: start<br>Input: v_num:goal(35)<br>Input: v_num:activeMinutes(66)<br>Input: v_num:size2mult(1.0)<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">goal:</label>
-            <input type="number" id="btn_main_input1" value="35" style="width:60px;" />
+            <label for="btn_main_input0">goal:</label>
+            <input type="number" id="btn_main_input0" value="35" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">activeMinutes:</label>
-            <input type="number" id="btn_main_input2" value="66" style="width:60px;" />
+            <label for="btn_main_input1">activeMinutes:</label>
+            <input type="number" id="btn_main_input1" value="66" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input3">size2mult:</label>
-            <input type="number" id="btn_main_input3" value="1.0" style="width:60px;" />
+            <label for="btn_main_input2">size2mult:</label>
+            <input type="number" id="btn_main_input2" value="1.0" style="width:60px;" />
         </div>
         
           </div>
@@ -278,37 +278,37 @@ const mainRive = new rive.Rive({
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+        if (!isNaN(val)) vmi.number("goal").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("goal").value = initVal;
+    }
     let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
     if (inputFieldBtn_Main_1 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Main_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_1.value);
-        if (!isNaN(val)) vmi.number("goal").value = val;
+        if (!isNaN(val)) vmi.number("activeMinutes").value = val;
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_1.value);
-      if (!isNaN(initVal)) vmi.number("goal").value = initVal;
+      if (!isNaN(initVal)) vmi.number("activeMinutes").value = initVal;
     }
     let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
     if (inputFieldBtn_Main_2 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn_Main_2.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_2.value);
-        if (!isNaN(val)) vmi.number("activeMinutes").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Main_2.value);
-      if (!isNaN(initVal)) vmi.number("activeMinutes").value = initVal;
-    }
-    let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
-    if (inputFieldBtn_Main_3 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn_Main_3.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Main_3.value);
         if (!isNaN(val)) vmi.number("size2mult").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Main_3.value);
+      let initVal = parseFloat(inputFieldBtn_Main_2.value);
       if (!isNaN(initVal)) vmi.number("size2mult").value = initVal;
     }
   },
@@ -317,14 +317,18 @@ const mainRive = new rive.Rive({
 document.getElementById("btn_main").addEventListener("click", () => {
     const vmi = mainRive.viewModelInstance;
     if (vmi) {
-        const triggerInput = vmi.trigger("start");
-        if (triggerInput) {
-            triggerInput.trigger();
-        } else {
-            console.warn("View model trigger not found: start");
+        const vmTrigger = vmi.trigger("start");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
         }
+    }
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "start");
+    if (smTrigger) {
+        smTrigger.fire();
     } else {
-        console.warn("ViewModelInstance not found on mainRive");
+        console.warn("Trigger not found (view model or state machine): start");
     }
 } );
 

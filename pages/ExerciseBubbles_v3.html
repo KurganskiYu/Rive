@@ -247,7 +247,7 @@
         <canvas id="main_canvas" width="500" height="812"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/ExerciseBubbles_v3.riv" target="_blank" style="color: white;">ExerciseBubbles</a><br>Size: 500px × 812px<br>State Machine: State Machine 1<br>Artboard: ExerciseBubbles<br>Trigger: Trigger 1<br>Duration: 99.0s<br>Loop: Yes<br>Background: Transparent<br></div>
+            <div><a href="../riv/ExerciseBubbles_v3.riv" target="_blank" style="color: white;">ExerciseBubbles</a><br>Size: 500px × 812px<br>State Machine: State Machine 1<br>Artboard: ExerciseBubbles<br>Trigger: Trigger 1<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               <button id="btn_main" class="rive-btn">Trigger</button>
               
@@ -277,16 +277,21 @@ const mainRive = new rive.Rive({
   },
 });
 
-let triggerInputMain;
-mainRive.on("load", () => {
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputMain = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_main").addEventListener("click", () => {
-    if (triggerInputMain) {
-        triggerInputMain.fire();
+    const vmi = mainRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
 
@@ -299,16 +304,21 @@ const previewRive = new rive.Rive({
   },
 });
 
-let triggerInputPreview;
-previewRive.on("load", () => {
-    const inputs = previewRive.stateMachineInputs("State Machine 1");
-    if (inputs) {
-        triggerInputPreview = inputs.find(input => input.name === "Trigger 1");
-    }
-} );
 document.getElementById("btn_preview").addEventListener("click", () => {
-    if (triggerInputPreview) {
-        triggerInputPreview.fire();
+    const vmi = previewRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = previewRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
     }
 } );
 

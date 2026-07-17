@@ -270,8 +270,8 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input1">MagicImage:</label>
-            <input type="text" id="btn1_input1" placeholder="filename.ext" value="MagicRiver.png" style="width:100px;" />
+            <label for="btn1_input0">MagicImage:</label>
+            <input type="text" id="btn1_input0" placeholder="filename.ext" value="MagicRiver.png" style="width:100px;" />
         </div>
         
         </div>
@@ -369,28 +369,28 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input1">CurrentTime:</label>
-            <input type="text" id="btn7_input1" value="19:04" style="width:90px;" />
+            <label for="btn7_input0">CurrentTime:</label>
+            <input type="text" id="btn7_input0" value="19:04" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input2">CurrentPercent:</label>
-            <input type="text" id="btn7_input2" value="27%" style="width:90px;" />
+            <label for="btn7_input1">CurrentPercent:</label>
+            <input type="text" id="btn7_input1" value="27%" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input3">12h:</label>
-            <input type="checkbox" id="btn7_input3" />
+            <label for="btn7_input2">12h:</label>
+            <input type="checkbox" id="btn7_input2" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input4">CurrentPosition:</label>
-            <input type="number" id="btn7_input4" value="79.4" style="width:60px;" />
+            <label for="btn7_input3">CurrentPosition:</label>
+            <input type="number" id="btn7_input3" value="79.4" style="width:60px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input5">NightPosition:</label>
-            <input type="number" id="btn7_input5" value="34.7" style="width:60px;" />
+            <label for="btn7_input4">NightPosition:</label>
+            <input type="number" id="btn7_input4" value="34.7" style="width:60px;" />
         </div>
         
         </div>
@@ -408,13 +408,23 @@ const r0 = new rive.Rive({
     autoplay: true, autoBind: true,artboard: "StressImpact", stateMachines: "State Machine 1",
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
     const inputs = r0.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn0").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn0").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
@@ -425,49 +435,58 @@ const r1 = new rive.Rive({
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
     const vmi = r1.viewModelInstance;
-    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
-    if (inputFieldBtn1_1 && vmi) {
-      const imgProp_btn1_1 = vmi.image("MagicImage");
-      let lastImg_btn1_1 = null;
-      const imgBase_btn1_1 = location.pathname.includes('/pages/') ? '../img/' : 'img/';
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      const imgProp_btn1_0 = vmi.image("MagicImage");
+      let lastImg_btn1_0 = null;
+      const imgBase_btn1_0 = location.pathname.includes('/pages/') ? '../img/' : 'img/';
 
-      async function loadImg_btn1_1(filename) {
+      async function loadImg_btn1_0(filename) {
         const name = (filename || "").trim();
         if (!name) return;
         try {
-          const res = await fetch(imgBase_btn1_1 + name);
+          const res = await fetch(imgBase_btn1_0 + name);
           const bytes = new Uint8Array(await res.arrayBuffer());
           if (!rive.decodeImage) {
             console.warn("rive.decodeImage is not available.");
             return;
           }
           const decoded = await rive.decodeImage(bytes);
-          if (lastImg_btn1_1) lastImg_btn1_1.unref();
-          imgProp_btn1_1.value = decoded;
-          lastImg_btn1_1 = decoded;
+          if (lastImg_btn1_0) lastImg_btn1_0.unref();
+          imgProp_btn1_0.value = decoded;
+          lastImg_btn1_0 = decoded;
         } catch (e) {
           console.error("Failed to load image:", name, e);
         }
       }
 
-      inputFieldBtn1_1.addEventListener("change", () => {
-        loadImg_btn1_1(inputFieldBtn1_1.value);
+      inputFieldBtn1_0.addEventListener("change", () => {
+        loadImg_btn1_0(inputFieldBtn1_0.value);
       });
 
       // Initial load if a default or preset value exists
-      if (inputFieldBtn1_1.value && inputFieldBtn1_1.value.trim() !== "") {
-        loadImg_btn1_1(inputFieldBtn1_1.value);
+      if (inputFieldBtn1_0.value && inputFieldBtn1_0.value.trim() !== "") {
+        loadImg_btn1_0(inputFieldBtn1_0.value);
       }
     }
     const inputs = r1.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn1").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn1").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
-    let inputField_btn1_1 = document.getElementById("btn1_input1");
-    let inputObj_btn1_1 = inputs.find(input => input.name === "MagicImage");
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
+    let inputField_btn1_0 = document.getElementById("btn1_input0");
+    let inputObj_btn1_0 = inputs.find(input => input.name === "MagicImage");
   },
 });
 
@@ -477,13 +496,23 @@ const r2 = new rive.Rive({
     autoplay: true, autoBind: true,artboard: "SleepWavesNew", stateMachines: "State Machine 1",
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
     const inputs = r2.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn2").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn2").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
@@ -493,13 +522,23 @@ const r3 = new rive.Rive({
     autoplay: true, autoBind: true,artboard: "LaborEffect", stateMachines: "State Machine 1",
     onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
+    const vmi = r3.viewModelInstance;
     const inputs = r3.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn3").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn3").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
@@ -509,13 +548,23 @@ const r4 = new rive.Rive({
     autoplay: true, autoBind: true,artboard: "Eyes", stateMachines: "State Machine 1",
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
+    const vmi = r4.viewModelInstance;
     const inputs = r4.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn4").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn4").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
@@ -535,13 +584,23 @@ const r6 = new rive.Rive({
     autoplay: true, autoBind: true,artboard: "LiquidAnimation", stateMachines: "State Machine 1",
     onLoad: () => {
         r6.resizeDrawingSurfaceToCanvas();
+    const vmi = r6.viewModelInstance;
     const inputs = r6.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn6").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn6").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
@@ -552,56 +611,56 @@ const r7 = new rive.Rive({
     onLoad: () => {
         r7.resizeDrawingSurfaceToCanvas();
     const vmi = r7.viewModelInstance;
+    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
+    if (inputFieldBtn7_0 && vmi) {
+      vmi.string("CurrentTime").value = inputFieldBtn7_0.value;
+      inputFieldBtn7_0.addEventListener("input", () => {
+        vmi.string("CurrentTime").value = inputFieldBtn7_0.value;
+      });
+    }
     let inputFieldBtn7_1 = document.getElementById("btn7_input1");
     if (inputFieldBtn7_1 && vmi) {
-      vmi.string("CurrentTime").value = inputFieldBtn7_1.value;
+      vmi.string("CurrentPercent").value = inputFieldBtn7_1.value;
       inputFieldBtn7_1.addEventListener("input", () => {
-        vmi.string("CurrentTime").value = inputFieldBtn7_1.value;
+        vmi.string("CurrentPercent").value = inputFieldBtn7_1.value;
       });
     }
     let inputFieldBtn7_2 = document.getElementById("btn7_input2");
     if (inputFieldBtn7_2 && vmi) {
-      vmi.string("CurrentPercent").value = inputFieldBtn7_2.value;
-      inputFieldBtn7_2.addEventListener("input", () => {
-        vmi.string("CurrentPercent").value = inputFieldBtn7_2.value;
+      // Update boolean ViewModel variable
+      inputFieldBtn7_2.addEventListener("change", () => {
+        vmi.boolean("12h").value = inputFieldBtn7_2.checked;
       });
+      // Set initial value
+      vmi.boolean("12h").value = inputFieldBtn7_2.checked;
     }
     let inputFieldBtn7_3 = document.getElementById("btn7_input3");
     if (inputFieldBtn7_3 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn7_3.addEventListener("change", () => {
-        vmi.boolean("12h").value = inputFieldBtn7_3.checked;
+      // Update numeric ViewModel variable
+      inputFieldBtn7_3.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn7_3.value);
+        if (!isNaN(val)) vmi.number("CurrentPosition").value = val;
       });
-      // Set initial value
-      vmi.boolean("12h").value = inputFieldBtn7_3.checked;
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn7_3.value);
+      if (!isNaN(initVal)) vmi.number("CurrentPosition").value = initVal;
     }
     let inputFieldBtn7_4 = document.getElementById("btn7_input4");
     if (inputFieldBtn7_4 && vmi) {
       // Update numeric ViewModel variable
       inputFieldBtn7_4.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn7_4.value);
-        if (!isNaN(val)) vmi.number("CurrentPosition").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn7_4.value);
-      if (!isNaN(initVal)) vmi.number("CurrentPosition").value = initVal;
-    }
-    let inputFieldBtn7_5 = document.getElementById("btn7_input5");
-    if (inputFieldBtn7_5 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn7_5.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn7_5.value);
         if (!isNaN(val)) vmi.number("NightPosition").value = val;
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn7_5.value);
+      let initVal = parseFloat(inputFieldBtn7_4.value);
       if (!isNaN(initVal)) vmi.number("NightPosition").value = initVal;
     }
     if (vmi) {
-      const listVar_6 = vmi.list("BarList");
-      if (listVar_6) {
-        for (let idx = 0; idx < listVar_6.length; idx++) {
-          const inst = listVar_6.instanceAt(idx);
+      const listVar_5 = vmi.list("BarList");
+      if (listVar_5) {
+        for (let idx = 0; idx < listVar_5.length; idx++) {
+          const inst = listVar_5.instanceAt(idx);
           if (inst) {
             // Demo assignment; replace with real data source as needed
             //const randomVal = Math.random() * 100;
@@ -611,12 +670,21 @@ const r7 = new rive.Rive({
       }
     }
     const inputs = r7.stateMachineInputs("State Machine 1");
-    const triggerInput = inputs.find(input => input.name === "Trigger 1");
-        document.getElementById("btn7").addEventListener("click", () => {
-            if (triggerInput) {
-                triggerInput.fire();
+    document.getElementById("btn7").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
             }
-        });
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
