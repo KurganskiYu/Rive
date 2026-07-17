@@ -92,4 +92,4 @@ glints_v2,256x256,
 56_progressbar2_v2,393x80,,v_num:percent(52),txt:time("23:15"),txt:timeLeft("1 h 27 min left"),txt:text("Experiment ongoing ")
 57_energyfill_v1,360x800,
 58_mountain_v2,360x800,
-59_paymentcomplete_v2,393x852,
+59_paymentcomplete_v2,393x852,,note:"Note"
