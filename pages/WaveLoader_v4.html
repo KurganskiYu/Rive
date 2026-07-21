@@ -246,7 +246,7 @@
       <canvas id="main_canvas" width="250" height="250"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/WaveLoader_v4.riv" target="_blank" style="color: white;">WaveLoader</a><br>Size: 250px × 250px<br>State Machine: Wave Loader<br></div>
+          <div><a href="../riv/WaveLoader_v4.riv" target="_blank" style="color: white;">WaveLoader</a><br>Size: 250px × 250px<br>State Machine: State Machine 1<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
@@ -259,7 +259,7 @@
 const mainRive = new rive.Rive({
   src: "../riv/WaveLoader_v4.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true,autoBind: true, stateMachines: "Wave Loader",
+  autoplay: true,autoBind: true, stateMachines: "State Machine 1",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
   },

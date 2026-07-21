@@ -246,7 +246,7 @@
       <canvas id="main_canvas" width="393" height="852"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/NightDay_v8.riv" target="_blank" style="color: white;">NightDay</a><br>Size: 393px × 852px<br>State Machine: Timeline 1<br></div>
+          <div><a href="../riv/NightDay_v8.riv" target="_blank" style="color: white;">NightDay</a><br>Size: 393px × 852px<br>State Machine: StMachine<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
@@ -259,7 +259,7 @@
 const mainRive = new rive.Rive({
   src: "../riv/NightDay_v8.riv",
   canvas: document.getElementById("main_canvas"),
-  autoplay: true,autoBind: true, stateMachines: "Timeline 1",
+  autoplay: true,autoBind: true, stateMachines: "StMachine",
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
   },

@@ -242,15 +242,14 @@
       })();
     </script>
     
-    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
-        <canvas id="main_canvas" width="393" height="852"></canvas>
-        <div class="description">
-          <div>
-            <div><a href="../riv/stressbatterygraph_v10.riv" target="_blank" style="color: white;">stressbatterygraph</a><br>Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:stressStart(15)<br>Input: v_num:stressNow(55)<br>Input: v_num:bar1(97)<br>Input: v_num:bar5(65)<br>Input: txt:duration("120 min")<br>Input: txt:timeBefore("9:00am")<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              
-              
+    <div class="animation-container">
+      <canvas id="main_canvas" width="393" height="852"></canvas>
+      <div class="description">
+        <div>
+          <div><a href="../riv/stressbatterygraph_v10.riv" target="_blank" style="color: white;">stressbatterygraph</a><br>Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:stressStart(15)<br>Input: v_num:stressNow(55)<br>Input: v_num:bar1(97)<br>Input: v_num:bar5(65)<br>Input: txt:duration("120 min")<br>Input: txt:timeBefore("9:00am")<br></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            
+            
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">stressStart:</label>
             <input type="number" id="btn_main_input0" value="15" style="width:60px;" />
@@ -279,47 +278,6 @@
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input5">timeBefore:</label>
             <input type="text" id="btn_main_input5" value="9:00am" style="width:90px;" />
-        </div>
-        
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas id="preview_canvas" width="393" height="852"></canvas>
-        <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input0">stressStart:</label>
-            <input type="number" id="btn_preview_input0" value="15" style="width:60px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">stressNow:</label>
-            <input type="number" id="btn_preview_input1" value="55" style="width:60px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input2">bar1:</label>
-            <input type="number" id="btn_preview_input2" value="97" style="width:60px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input3">bar5:</label>
-            <input type="number" id="btn_preview_input3" value="65" style="width:60px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input4">duration:</label>
-            <input type="text" id="btn_preview_input4" value="120 min" style="width:90px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input5">timeBefore:</label>
-            <input type="text" id="btn_preview_input5" value="9:00am" style="width:90px;" />
         </div>
         
           </div>
@@ -391,74 +349,6 @@ const mainRive = new rive.Rive({
       vmi.string("timeBefore").value = inputFieldBtn_Main_5.value;
       inputFieldBtn_Main_5.addEventListener("input", () => {
         vmi.string("timeBefore").value = inputFieldBtn_Main_5.value;
-      });
-    }
-  },
-});
-
-const previewRive = new rive.Rive({
-  src: "../riv/stressbatterygraph_v10_preview.riv",
-  canvas: document.getElementById("preview_canvas"),
-  autoplay: true, autoBind: true, artboard: "main", stateMachines: "State Machine 1",
-  onLoad: () => {
-    previewRive.resizeDrawingSurfaceToCanvas();
-    const vmi = previewRive.viewModelInstance;
-    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
-    if (inputFieldBtn_Preview_0 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn_Preview_0.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Preview_0.value);
-        if (!isNaN(val)) vmi.number("stressStart").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Preview_0.value);
-      if (!isNaN(initVal)) vmi.number("stressStart").value = initVal;
-    }
-    let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
-    if (inputFieldBtn_Preview_1 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn_Preview_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Preview_1.value);
-        if (!isNaN(val)) vmi.number("stressNow").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Preview_1.value);
-      if (!isNaN(initVal)) vmi.number("stressNow").value = initVal;
-    }
-    let inputFieldBtn_Preview_2 = document.getElementById("btn_preview_input2");
-    if (inputFieldBtn_Preview_2 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn_Preview_2.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Preview_2.value);
-        if (!isNaN(val)) vmi.number("bar1").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Preview_2.value);
-      if (!isNaN(initVal)) vmi.number("bar1").value = initVal;
-    }
-    let inputFieldBtn_Preview_3 = document.getElementById("btn_preview_input3");
-    if (inputFieldBtn_Preview_3 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn_Preview_3.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn_Preview_3.value);
-        if (!isNaN(val)) vmi.number("bar5").value = val;
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn_Preview_3.value);
-      if (!isNaN(initVal)) vmi.number("bar5").value = initVal;
-    }
-    let inputFieldBtn_Preview_4 = document.getElementById("btn_preview_input4");
-    if (inputFieldBtn_Preview_4 && vmi) {
-      vmi.string("duration").value = inputFieldBtn_Preview_4.value;
-      inputFieldBtn_Preview_4.addEventListener("input", () => {
-        vmi.string("duration").value = inputFieldBtn_Preview_4.value;
-      });
-    }
-    let inputFieldBtn_Preview_5 = document.getElementById("btn_preview_input5");
-    if (inputFieldBtn_Preview_5 && vmi) {
-      vmi.string("timeBefore").value = inputFieldBtn_Preview_5.value;
-      inputFieldBtn_Preview_5.addEventListener("input", () => {
-        vmi.string("timeBefore").value = inputFieldBtn_Preview_5.value;
       });
     }
   },

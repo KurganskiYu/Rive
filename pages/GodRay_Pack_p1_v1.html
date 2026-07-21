@@ -242,34 +242,17 @@
       })();
     </script>
     
-    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
-        <canvas id="main_canvas" width="393" height="852"></canvas>
-        <div class="description">
-          <div>
-            <div><a href="../riv/GodRay_Pack_p1_v1.riv" target="_blank" style="color: white;">GodRay Pack p1</a><br>Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: Light1<br>Trigger: Trigger 1<br>Input: bol:Flip<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              <button id="btn_main" class="rive-btn">Trigger</button>
-              
+    <div class="animation-container">
+      <canvas id="main_canvas" width="393" height="852"></canvas>
+      <div class="description">
+        <div>
+          <div><a href="../riv/GodRay_Pack_p1_v1.riv" target="_blank" style="color: white;">GodRay Pack p1</a><br>Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: Light1<br>Trigger: Trigger 1<br>Input: bol:Flip<br></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            <button id="btn_main" class="rive-btn">Trigger</button>
+            
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">Flip:</label>
             <input type="checkbox" id="btn_main_input0" />
-        </div>
-        
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas id="preview_canvas" width="393" height="852"></canvas>
-        <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            <button id="btn_preview" class="rive-btn">Trigger</button>
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input0">Flip:</label>
-            <input type="checkbox" id="btn_preview_input0" />
         </div>
         
           </div>
@@ -314,46 +297,6 @@ mainRive.on("load", () => {
     inputObjMain_0.value = inputFieldMain_0.checked;
     inputFieldMain_0.addEventListener("change", () => {
       inputObjMain_0.value = inputFieldMain_0.checked;
-    });
-  }
-});
-
-const previewRive = new rive.Rive({
-  src: "../riv/GodRay_Pack_p1_v1_preview.riv",
-  canvas: document.getElementById("preview_canvas"),
-  autoplay: true, autoBind: true, artboard: "Light1", stateMachines: "State Machine 1",
-  onLoad: () => {
-    previewRive.resizeDrawingSurfaceToCanvas();
-  },
-});
-
-document.getElementById("btn_preview").addEventListener("click", () => {
-    const vmi = previewRive.viewModelInstance;
-    if (vmi) {
-        const vmTrigger = vmi.trigger("Trigger 1");
-        if (vmTrigger) {
-            vmTrigger.trigger();
-            return;
-        }
-    }
-    const inputs = previewRive.stateMachineInputs("State Machine 1");
-    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
-    if (smTrigger) {
-        smTrigger.fire();
-    } else {
-        console.warn("Trigger not found (view model or state machine): Trigger 1");
-    }
-} );
-
-let inputFieldPreview_0 = document.getElementById("btn_preview_input0");
-previewRive.on("load", () => {
-  const inputs = previewRive.stateMachineInputs("State Machine 1");
-  let inputObjPreview_0 = inputs.find(input => input.name === "Flip");
-  if (inputFieldPreview_0 && inputObjPreview_0) {
-
-    inputObjPreview_0.value = inputFieldPreview_0.checked;
-    inputFieldPreview_0.addEventListener("change", () => {
-      inputObjPreview_0.value = inputFieldPreview_0.checked;
     });
   }
 });

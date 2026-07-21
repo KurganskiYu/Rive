@@ -242,15 +242,14 @@
       })();
     </script>
     
-    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
-        <canvas id="main_canvas" width="196" height="187"></canvas>
-        <div class="description">
-          <div>
-            <div><a href="../riv/BatteryWidget_v5.riv" target="_blank" style="color: white;">BatteryWidget</a><br>Size: 196px × 187px<br>State Machine: State Machine 1<br>Artboard: BatteryWidget<br>Trigger: Trigger 1<br>Input: num:BatteryPercentFrom<br>Input: num:BatteryPercentTo<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              <button id="btn_main" class="rive-btn">Trigger</button>
-              
+    <div class="animation-container">
+      <canvas id="main_canvas" width="196" height="187"></canvas>
+      <div class="description">
+        <div>
+          <div><a href="../riv/BatteryWidget_v5.riv" target="_blank" style="color: white;">BatteryWidget</a><br>Size: 196px × 187px<br>State Machine: State Machine 1<br>Artboard: BatteryWidget<br>Trigger: Trigger 1<br>Input: num:BatteryPercentFrom<br>Input: num:BatteryPercentTo<br></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            <button id="btn_main" class="rive-btn">Trigger</button>
+            
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">BatteryPercentFrom:</label>
             <input type="number" id="btn_main_input0" value="80" style="width:50px;" />
@@ -259,27 +258,6 @@
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input1">BatteryPercentTo:</label>
             <input type="number" id="btn_main_input1" value="80" style="width:50px;" />
-        </div>
-        
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas id="preview_canvas" width="196" height="187"></canvas>
-        <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            <button id="btn_preview" class="rive-btn">Trigger</button>
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input0">BatteryPercentFrom:</label>
-            <input type="number" id="btn_preview_input0" value="80" style="width:50px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">BatteryPercentTo:</label>
-            <input type="number" id="btn_preview_input1" value="80" style="width:50px;" />
         </div>
         
           </div>
@@ -343,65 +321,6 @@ mainRive.on("load", () => {
     inputFieldMain_1.addEventListener("input", () => {
       let val = parseFloat(inputFieldMain_1.value);
       if (!isNaN(val)) inputObjMain_1.value = val;
-    });
-  }
-});
-
-const previewRive = new rive.Rive({
-  src: "../riv/BatteryWidget_v5_preview.riv",
-  canvas: document.getElementById("preview_canvas"),
-  autoplay: true, autoBind: true, artboard: "BatteryWidget", stateMachines: "State Machine 1",
-  onLoad: () => {
-    previewRive.resizeDrawingSurfaceToCanvas();
-  },
-});
-
-document.getElementById("btn_preview").addEventListener("click", () => {
-    const vmi = previewRive.viewModelInstance;
-    if (vmi) {
-        const vmTrigger = vmi.trigger("Trigger 1");
-        if (vmTrigger) {
-            vmTrigger.trigger();
-            return;
-        }
-    }
-    const inputs = previewRive.stateMachineInputs("State Machine 1");
-    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
-    if (smTrigger) {
-        smTrigger.fire();
-    } else {
-        console.warn("Trigger not found (view model or state machine): Trigger 1");
-    }
-} );
-
-let inputFieldPreview_0 = document.getElementById("btn_preview_input0");
-previewRive.on("load", () => {
-  const inputs = previewRive.stateMachineInputs("State Machine 1");
-  let inputObjPreview_0 = inputs.find(input => input.name === "BatteryPercentFrom");
-  if (inputFieldPreview_0 && inputObjPreview_0) {
-
-    // Initial assignment from default value (if any)
-    let initVal = parseFloat(inputFieldPreview_0.value);
-    if (!isNaN(initVal)) inputObjPreview_0.value = initVal;
-    inputFieldPreview_0.addEventListener("input", () => {
-      let val = parseFloat(inputFieldPreview_0.value);
-      if (!isNaN(val)) inputObjPreview_0.value = val;
-    });
-  }
-});
-
-let inputFieldPreview_1 = document.getElementById("btn_preview_input1");
-previewRive.on("load", () => {
-  const inputs = previewRive.stateMachineInputs("State Machine 1");
-  let inputObjPreview_1 = inputs.find(input => input.name === "BatteryPercentTo");
-  if (inputFieldPreview_1 && inputObjPreview_1) {
-
-    // Initial assignment from default value (if any)
-    let initVal = parseFloat(inputFieldPreview_1.value);
-    if (!isNaN(initVal)) inputObjPreview_1.value = initVal;
-    inputFieldPreview_1.addEventListener("input", () => {
-      let val = parseFloat(inputFieldPreview_1.value);
-      if (!isNaN(val)) inputObjPreview_1.value = val;
     });
   }
 });

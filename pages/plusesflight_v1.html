@@ -242,34 +242,17 @@
       })();
     </script>
     
-    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
-        <canvas id="main_canvas" width="375" height="812"></canvas>
-        <div class="description">
-          <div>
-            <div><a href="../riv/plusesflight_v1.riv" target="_blank" style="color: white;">plusesflight</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: PlusesFlight<br>Input: txt:text<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              
-              
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input0">text:</label>
-            <input type="text" id="btn_main_input0" value="" style="width:90px;" />
-        </div>
-        
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas id="preview_canvas" width="375" height="812"></canvas>
-        <div class="description">
-          Preview:<br>
+    <div class="animation-container">
+      <canvas id="main_canvas" width="375" height="812"></canvas>
+      <div class="description">
+        <div>
+          <div><a href="../riv/plusesflight_v1.riv" target="_blank" style="color: white;">plusesflight</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: PlusesFlight<br>Input: txt:text<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input0">text:</label>
-            <input type="text" id="btn_preview_input0" value="" style="width:90px;" />
+            <label for="btn_main_input0">text:</label>
+            <input type="text" id="btn_main_input0" value="" style="width:90px;" />
         </div>
         
           </div>
@@ -290,23 +273,6 @@ const mainRive = new rive.Rive({
       vmi.string("text").value = inputFieldBtn_Main_0.value;
       inputFieldBtn_Main_0.addEventListener("input", () => {
         vmi.string("text").value = inputFieldBtn_Main_0.value;
-      });
-    }
-  },
-});
-
-const previewRive = new rive.Rive({
-  src: "../riv/plusesflight_v1_preview.riv",
-  canvas: document.getElementById("preview_canvas"),
-  autoplay: true, autoBind: true, artboard: "PlusesFlight", stateMachines: "State Machine 1",
-  onLoad: () => {
-    previewRive.resizeDrawingSurfaceToCanvas();
-    const vmi = previewRive.viewModelInstance;
-    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
-    if (inputFieldBtn_Preview_0 && vmi) {
-      vmi.string("text").value = inputFieldBtn_Preview_0.value;
-      inputFieldBtn_Preview_0.addEventListener("input", () => {
-        vmi.string("text").value = inputFieldBtn_Preview_0.value;
       });
     }
   },

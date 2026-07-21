@@ -1,16 +1,15 @@
 src,size,preview,params...
 EyeNew_v5,80x80,,artboard:-
 New_v1,80x80,,artboard:-
-EyeLoader_v4_eye-A_loop,200x200,,sm:"EYE timeline",artboard:-
+EyeLoader_v4_eye-A_loop,200x200,,artboard:-
 EyeLoader_v5_eye-C,200x200,,trigger:"CloseTrigger",artboard:-
-CircleLoader_v2,200x200,,sm:"Circle Loader",artboard:-
-SpiralLoader_v2,200x200,,sm:"Spiral Loader",artboard:-
-WaveLoader_v4,250x250,,sm:"Wave Loader",artboard:-
-WaveLoader_v4a,250x250,,sm:"Wave Loader",artboard:-
-PulseWave_v5,360x80,,sm:"Pulse 2x",artboard:-
-PulseWave_full-circle_v6,274x274,,sm:"Timeline 1",artboard:-
-NightDay_v8,393x852,,sm:"Timeline 1",artboard:-
-Confetti_v1,930x930,,trigger:"Trigger",artboard:-
+CircleLoader_v2,200x200,,artboard:-
+SpiralLoader_v2,200x200,,artboard:-
+WaveLoader_v4,250x250,,artboard:-
+WaveLoader_v4a,250x250,,artboard:-
+PulseWave_v5,360x80,,artboard:-
+PulseWave_full-circle_v6,274x274,,artboard:-
+NightDay_v8,393x852,,artboard:-,sm:"StMachine"
 GiftBox_v5,393x614,,artboard:GiftBox,trigger:"Trigger 1",txt:text1,txt:text2
 River_v1,526x800,,artboard:-
 PulseWaveEye_v8,274x274,,trigger:"Trigger 1",artboard:-
