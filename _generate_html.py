@@ -21,7 +21,7 @@ def get_html_head():
 
 # NEW: Helper to inject the BG button on every page
 def get_bg_button_html(is_root=True):
-    riv_path = "riv/bg_button.riv" if is_root else "../riv/bg_button.riv"
+    riv_path = "riv/bg_button.riv" if is_root else "../bg_button.riv"
     # CSS for top-right fixed position
     html = f'''
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
