@@ -242,17 +242,34 @@
       })();
     </script>
     
-    <div class="animation-container">
-      <canvas id="main_canvas" width="380" height="320"></canvas>
-      <div class="description">
-        <div>
-          <div><a href="../riv/parametricparticles_v9.riv" target="_blank" style="color: white;">parametricparticles</a><br>Size: 380px × 320px<br>State Machine: State Machine 1<br>Artboard: Emitter<br>Input: v_num:numParticles(120)<br></div>
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
+      <div class="animation-container">
+        <canvas id="main_canvas" width="380" height="320"></canvas>
+        <div class="description">
+          <div>
+            <div><a href="../riv/parametricparticles_v9.riv" target="_blank" style="color: white;">parametricparticles</a><br>Size: 380px × 320px<br>State Machine: State Machine 1<br>Artboard: Emitter<br>Input: v_num:numParticles(120)<br></div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+              
+              
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input0">numParticles:</label>
+            <input type="number" id="btn_main_input0" value="120" style="width:60px;" />
+        </div>
+        
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="preview_canvas" width="380" height="320"></canvas>
+        <div class="description">
+          Preview:<br>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input0">numParticles:</label>
-            <input type="number" id="btn_main_input0" value="120" style="width:60px;" />
+            <label for="btn_preview_input0">numParticles:</label>
+            <input type="number" id="btn_preview_input0" value="120" style="width:60px;" />
         </div>
         
           </div>
@@ -277,6 +294,27 @@ const mainRive = new rive.Rive({
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("numParticles").value = initVal;
+    }
+  },
+});
+
+const previewRive = new rive.Rive({
+  src: "../riv/parametricparticles_v9_preview.riv",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, autoBind: true, artboard: "Emitter", stateMachines: "State Machine 1",
+  onLoad: () => {
+    previewRive.resizeDrawingSurfaceToCanvas();
+    const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_0.value);
+        if (!isNaN(val)) vmi.number("numParticles").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_0.value);
       if (!isNaN(initVal)) vmi.number("numParticles").value = initVal;
     }
   },

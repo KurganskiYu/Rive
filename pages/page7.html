@@ -248,7 +248,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="GodRay_Pack_p3_v3.html" style="color: #464646;">GodRay Pack p3</a></div>
+          <div><a href="10_GodRay_Pack_p3_v4.html" style="color: #464646;">10 GodRay Pack p3</a></div>
           <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -272,7 +272,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="GodRay_Pack_p2_v1.html" style="color: #464646;">GodRay Pack p2</a></div>
+          <div><a href="10_GodRay_Pack_p2_v2.html" style="color: #464646;">10 GodRay Pack p2</a></div>
           <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -296,7 +296,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="GodRay_Pack_p1_v1.html" style="color: #464646;">GodRay Pack p1</a></div>
+          <div><a href="10_GodRay_Pack_p1_v2.html" style="color: #464646;">10 GodRay Pack p1</a></div>
           <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -405,32 +405,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn6_input0">color1:</label>
-            <input type="color" id="btn6_input0" value="#984f43" />
+            <input type="color" id="btn6_input0" value="#5d5234" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn6_input1">color2:</label>
-            <input type="color" id="btn6_input1" value="#44b804" />
+            <input type="color" id="btn6_input1" value="#deaa93" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn6_input2">color3:</label>
-            <input type="color" id="btn6_input2" value="#dcc201" />
+            <input type="color" id="btn6_input2" value="#c89d7e" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn6_input3">color4:</label>
-            <input type="color" id="btn6_input3" value="#b6e5bb" />
+            <input type="color" id="btn6_input3" value="#fd17b8" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn6_input4">color5:</label>
-            <input type="color" id="btn6_input4" value="#569552" />
+            <input type="color" id="btn6_input4" value="#b20b6f" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn6_input5">color6:</label>
-            <input type="color" id="btn6_input5" value="#714c02" />
+            <input type="color" id="btn6_input5" value="#eec8ce" />
         </div>
         
         </div>
@@ -472,12 +472,21 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/GodRay_Pack_p3_v3.riv",
+    src: "../riv/10_GodRay_Pack_p3_v4.riv",
     canvas: document.getElementById("canvas0"),
-    autoplay: true, autoBind: true,artboard: "Light3", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
     const vmi = r0.viewModelInstance;
+    let inputFieldBtn0_0 = document.getElementById("btn0_input0");
+    if (inputFieldBtn0_0 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn0_0.addEventListener("change", () => {
+        vmi.boolean("Flip").value = inputFieldBtn0_0.checked;
+      });
+      // Set initial value
+      vmi.boolean("Flip").value = inputFieldBtn0_0.checked;
+    }
     const inputs = r0.stateMachineInputs("State Machine 1");
     document.getElementById("btn0").addEventListener("click", () => {
         if (vmi) {
@@ -494,24 +503,25 @@ const r0 = new rive.Rive({
             console.warn("Trigger not found (view model or state machine): Trigger 1");
         }
     });
-    let inputField_btn0_0 = document.getElementById("btn0_input0");
-    let inputObj_btn0_0 = inputs.find(input => input.name === "Flip");
-    if (inputField_btn0_0 && inputObj_btn0_0) {
-            inputObj_btn0_0.value = inputField_btn0_0.checked;
-            inputField_btn0_0.addEventListener("change", () => {
-                inputObj_btn0_0.value = inputField_btn0_0.checked;
-            });
-        }
   },
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/GodRay_Pack_p2_v1.riv",
+    src: "../riv/10_GodRay_Pack_p2_v2.riv",
     canvas: document.getElementById("canvas1"),
-    autoplay: true, autoBind: true,artboard: "Light2", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
     const vmi = r1.viewModelInstance;
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn1_0.addEventListener("change", () => {
+        vmi.boolean("Flip").value = inputFieldBtn1_0.checked;
+      });
+      // Set initial value
+      vmi.boolean("Flip").value = inputFieldBtn1_0.checked;
+    }
     const inputs = r1.stateMachineInputs("State Machine 1");
     document.getElementById("btn1").addEventListener("click", () => {
         if (vmi) {
@@ -528,24 +538,25 @@ const r1 = new rive.Rive({
             console.warn("Trigger not found (view model or state machine): Trigger 1");
         }
     });
-    let inputField_btn1_0 = document.getElementById("btn1_input0");
-    let inputObj_btn1_0 = inputs.find(input => input.name === "Flip");
-    if (inputField_btn1_0 && inputObj_btn1_0) {
-            inputObj_btn1_0.value = inputField_btn1_0.checked;
-            inputField_btn1_0.addEventListener("change", () => {
-                inputObj_btn1_0.value = inputField_btn1_0.checked;
-            });
-        }
   },
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/GodRay_Pack_p1_v1.riv",
+    src: "../riv/10_GodRay_Pack_p1_v2.riv",
     canvas: document.getElementById("canvas2"),
-    autoplay: true, autoBind: true,artboard: "Light1", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
     const vmi = r2.viewModelInstance;
+    let inputFieldBtn2_0 = document.getElementById("btn2_input0");
+    if (inputFieldBtn2_0 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn2_0.addEventListener("change", () => {
+        vmi.boolean("Flip").value = inputFieldBtn2_0.checked;
+      });
+      // Set initial value
+      vmi.boolean("Flip").value = inputFieldBtn2_0.checked;
+    }
     const inputs = r2.stateMachineInputs("State Machine 1");
     document.getElementById("btn2").addEventListener("click", () => {
         if (vmi) {
@@ -562,14 +573,6 @@ const r2 = new rive.Rive({
             console.warn("Trigger not found (view model or state machine): Trigger 1");
         }
     });
-    let inputField_btn2_0 = document.getElementById("btn2_input0");
-    let inputObj_btn2_0 = inputs.find(input => input.name === "Flip");
-    if (inputField_btn2_0 && inputObj_btn2_0) {
-            inputObj_btn2_0.value = inputField_btn2_0.checked;
-            inputField_btn2_0.addEventListener("change", () => {
-                inputObj_btn2_0.value = inputField_btn2_0.checked;
-            });
-        }
   },
 });
 

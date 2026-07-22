@@ -33,24 +33,24 @@ flowerparticles_v3,375x375,,artboard:FlowerParticles,trigger:"Trigger 1",col:col
 TextAnim_v4,393x393,,artboard:TextAnim,trigger:"Trigger 1",txt:Text
 HeaderTextAnim_v4,393x393,,artboard:HeaderTextAnim,trigger:"Trigger 1",txt:Text
 BatteryWidget_v5,196x187,,artboard:BatteryWidget,trigger:"Trigger 1",num:BatteryPercentFrom,num:BatteryPercentTo
-GodRay_Pack_p1_v1,393x852,,artboard:Light1,trigger:"Trigger 1",bol:Flip
-GodRay_Pack_p2_v1,393x852,,artboard:Light2,trigger:"Trigger 1",bol:Flip
-GodRay_Pack_p3_v3,393x852,,artboard:Light3,trigger:"Trigger 1",bol:Flip
-BatteryReport_v15,346x336,,artboard:BatteryReport,trigger:"Trigger 1",txt:CurrentTime("19:04"),txt:CurrentPercent("27%"),v_bol:12h,v_num:CurrentPosition(79.4),v_num:NightPosition(34.7),list:BarList[num:BarHeight]
-liquidanimation_v1,375x396,,artboard:LiquidAnimation,trigger:"Trigger 1"
+10_GodRay_Pack_p1_v2,393x852,,trigger:"Trigger 1",v_bol:Flip
+10_GodRay_Pack_p2_v2,393x852,,trigger:"Trigger 1",v_bol:Flip
+10_GodRay_Pack_p3_v4,393x852,,trigger:"Trigger 1",v_bol:Flip
+13_BatteryReport_v16,346x336,,trigger:"Trigger 1",txt:CurrentTime("19:04"),txt:CurrentPercent("27%"),v_bol:12h,v_num:CurrentPosition(79.4),v_num:NightPosition(34.7),list:BarList[num:BarHeight]
+15_liquidanimation_v2,375x396,,trigger:"Trigger 1"
 DragonCat_v2,500x500,,artboard:DragonCat
 dragoncateyes_v2,100x70,,artboard:Eyes,trigger:"Trigger 1"
-LaborEffect_v2,375x812,,artboard:LaborEffect,trigger:"Trigger 1"
-SleepWavesNew_v4,375x812,,artboard:SleepWavesNew,trigger:"Trigger 1"
-keyhole_v4,393x852,,artboard:KeyHole,trigger:"Trigger 1",img:MagicImage(MagicRiver.png)
-StressImpact_v2,375x812,,artboard:StressImpact,trigger:"Trigger 1"
-activityhand_v1,375x812,,artboard:ActivityHand,trigger:"Trigger 1"
-batteryliquid_v2,375x812,,artboard:Liquid,trigger:"Trigger 1",num:Percent
-batteryliquidsleep_v2,375x812,,artboard:Liquid,trigger:"Trigger 1"
+17_LaborEffect_v3,375x812,,trigger:"Trigger 1"
+18_SleepWavesNew_v5,375x812,,trigger:"Trigger 1"
+19_keyhole_v5,393x852,,trigger:"Trigger 1",img:MagicImage(MagicRiver.png)
+20_StressImpact_v3,375x812,,trigger:"Trigger 1"
+21_activityhand_v2,375x812,,
+22_batteryliquid_v3,375x812,,trigger:"Trigger 1",v_num:Percent(66)
+22_batteryliquidsleep_v3,375x812,,
 stressfanplus_v3,375x812,,artboard:StressFanPlus
 energybyny_v7,375x812,,artboard:EnergyByNY,txt:text1("Nov"),txt:text2("Dec"),txt:text3("2026"),txt:textReclaim("Reclaim your energy by spring")
 plusesflight_v1,375x812,,artboard:PlusesFlight,txt:text
-stressfanimpact_v2,375x812,,artboard:StressImpact,v_num:percent1(12),v_num:percent2(6)
+26_stressfanimpact_v4,375x812,,v_num:percent1(12),v_num:percent2(6)
 27_stresscontainer_v3,393x518,,trigger:"Trigger 1",v_num:PercentFrom(5),v_num:PercentTo(100)
 plustuktuk_v1,375x812,,artboard:Main
 30_starsfly_v4,393x852,,trigger:"Trigger 1"

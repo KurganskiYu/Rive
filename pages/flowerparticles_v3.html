@@ -242,42 +242,84 @@
       })();
     </script>
     
-    <div class="animation-container">
-      <canvas id="main_canvas" width="375" height="375"></canvas>
-      <div class="description">
-        <div>
-          <div><a href="../riv/flowerparticles_v3.riv" target="_blank" style="color: white;">flowerparticles</a><br>Size: 375px × 375px<br>State Machine: State Machine 1<br>Artboard: FlowerParticles<br>Trigger: Trigger 1<br>Input: col:color1<br>Input: col:color2<br>Input: col:color3<br>Input: col:color4<br>Input: col:color5<br>Input: col:color6<br></div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            <button id="btn_main" class="rive-btn">Trigger</button>
-            
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
+      <div class="animation-container">
+        <canvas id="main_canvas" width="375" height="375"></canvas>
+        <div class="description">
+          <div>
+            <div><a href="../riv/flowerparticles_v3.riv" target="_blank" style="color: white;">flowerparticles</a><br>Size: 375px × 375px<br>State Machine: State Machine 1<br>Artboard: FlowerParticles<br>Trigger: Trigger 1<br>Input: col:color1<br>Input: col:color2<br>Input: col:color3<br>Input: col:color4<br>Input: col:color5<br>Input: col:color6<br></div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+              <button id="btn_main" class="rive-btn">Trigger</button>
+              
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">color1:</label>
-            <input type="color" id="btn_main_input0" value="#93655f" />
+            <input type="color" id="btn_main_input0" value="#041cb6" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input1">color2:</label>
-            <input type="color" id="btn_main_input1" value="#02de18" />
+            <input type="color" id="btn_main_input1" value="#0f6368" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input2">color3:</label>
-            <input type="color" id="btn_main_input2" value="#d1c700" />
+            <input type="color" id="btn_main_input2" value="#12912e" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input3">color4:</label>
-            <input type="color" id="btn_main_input3" value="#967e53" />
+            <input type="color" id="btn_main_input3" value="#2e7bb4" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input4">color5:</label>
-            <input type="color" id="btn_main_input4" value="#6ee72f" />
+            <input type="color" id="btn_main_input4" value="#36c9a6" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input5">color6:</label>
-            <input type="color" id="btn_main_input5" value="#62cddc" />
+            <input type="color" id="btn_main_input5" value="#f05850" />
+        </div>
+        
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="preview_canvas" width="375" height="375"></canvas>
+        <div class="description">
+          Preview:<br>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            <button id="btn_preview" class="rive-btn">Trigger</button>
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_preview_input0">color1:</label>
+            <input type="color" id="btn_preview_input0" value="#84eb7e" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_preview_input1">color2:</label>
+            <input type="color" id="btn_preview_input1" value="#2660f4" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_preview_input2">color3:</label>
+            <input type="color" id="btn_preview_input2" value="#cf3248" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_preview_input3">color4:</label>
+            <input type="color" id="btn_preview_input3" value="#f66ec9" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_preview_input4">color5:</label>
+            <input type="color" id="btn_preview_input4" value="#3a423a" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_preview_input5">color6:</label>
+            <input type="color" id="btn_preview_input5" value="#e8d6ee" />
         </div>
         
           </div>
@@ -378,6 +420,106 @@ document.getElementById("btn_main").addEventListener("click", () => {
         }
     }
     const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
+} );
+
+const previewRive = new rive.Rive({
+  src: "../riv/flowerparticles_v3_preview.riv",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, autoBind: true, artboard: "FlowerParticles", stateMachines: "State Machine 1",
+  onLoad: () => {
+    previewRive.resizeDrawingSurfaceToCanvas();
+    const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Preview_0.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color1").value = argb;
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        let hex = inputFieldBtn_Preview_0.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color1").value = argb;
+      });
+    }
+    let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
+    if (inputFieldBtn_Preview_1 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Preview_1.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color2").value = argb;
+      inputFieldBtn_Preview_1.addEventListener("input", () => {
+        let hex = inputFieldBtn_Preview_1.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color2").value = argb;
+      });
+    }
+    let inputFieldBtn_Preview_2 = document.getElementById("btn_preview_input2");
+    if (inputFieldBtn_Preview_2 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Preview_2.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color3").value = argb;
+      inputFieldBtn_Preview_2.addEventListener("input", () => {
+        let hex = inputFieldBtn_Preview_2.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color3").value = argb;
+      });
+    }
+    let inputFieldBtn_Preview_3 = document.getElementById("btn_preview_input3");
+    if (inputFieldBtn_Preview_3 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Preview_3.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color4").value = argb;
+      inputFieldBtn_Preview_3.addEventListener("input", () => {
+        let hex = inputFieldBtn_Preview_3.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color4").value = argb;
+      });
+    }
+    let inputFieldBtn_Preview_4 = document.getElementById("btn_preview_input4");
+    if (inputFieldBtn_Preview_4 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Preview_4.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color5").value = argb;
+      inputFieldBtn_Preview_4.addEventListener("input", () => {
+        let hex = inputFieldBtn_Preview_4.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color5").value = argb;
+      });
+    }
+    let inputFieldBtn_Preview_5 = document.getElementById("btn_preview_input5");
+    if (inputFieldBtn_Preview_5 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Preview_5.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color6").value = argb;
+      inputFieldBtn_Preview_5.addEventListener("input", () => {
+        let hex = inputFieldBtn_Preview_5.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color6").value = argb;
+      });
+    }
+  },
+});
+
+document.getElementById("btn_preview").addEventListener("click", () => {
+    const vmi = previewRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = previewRive.stateMachineInputs("State Machine 1");
     const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
     if (smTrigger) {
         smTrigger.fire();
