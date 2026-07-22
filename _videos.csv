@@ -51,10 +51,10 @@ stressfanplus_v3,375x812,,artboard:StressFanPlus
 energybyny_v7,375x812,,artboard:EnergyByNY,txt:text1("Nov"),txt:text2("Dec"),txt:text3("2026"),txt:textReclaim("Reclaim your energy by spring")
 plusesflight_v1,375x812,,artboard:PlusesFlight,txt:text
 stressfanimpact_v2,375x812,,artboard:StressImpact,v_num:percent1(12),v_num:percent2(6)
-stresscontainer_v2,393x518,,artboard:Liquid,trigger:"Trigger 1",num:PercentFrom(5),num:PercentTo(100)
+27_stresscontainer_v3,393x518,,trigger:"Trigger 1",v_num:PercentFrom(5),v_num:PercentTo(100)
 plustuktuk_v1,375x812,,artboard:Main
-starsfly_v3,393x852,,artboard:Main,trigger:"Trigger 1"
-starsflystack_v1,393x852,,artboard:Stacks,trigger:"Trigger 1"
+30_starsfly_v4,393x852,,trigger:"Trigger 1"
+30_starsflystack_v2,393x852,,trigger:"Trigger 1"
 parametricparticles_v9,380x320,,artboard:Emitter,v_num:numParticles(120)
 contraTest_v5,375x812,
 healthdataaccess_v4,375x327,,artboard:Screen
@@ -63,7 +63,7 @@ scatterpluses_v3,375x812,
 PaywallWave_v7,375x812,,v_num:rotation(0)
 stresscalendar_v11,325x352,375x812,artboard:calendar,v_num:daysAmount(31),v_num:delay(40),txt:percentToData("60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55")
 stressvessels_v2,375x584,375x812
-godraycomment_v5,393x430,,trigger:"Trigger 1",v_bol:flip
+39_godraycomment_v6,393x430,,trigger:"Trigger 1",v_bol:flip
 energysliders_v2,375x812,
 fatgraph_v2,375x812,
 bannerparticlesbutton_v1,393x206,
