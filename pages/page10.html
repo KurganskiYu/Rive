@@ -263,7 +263,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="GiftBox_v5.html" style="color: #464646;">GiftBox</a></div>
+          <div><a href="06_GiftBox_v6.html" style="color: #464646;">06 GiftBox</a></div>
           <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -271,12 +271,12 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn1_input0">text1:</label>
-            <input type="text" id="btn1_input0" value="" style="width:90px;" />
+            <input type="text" id="btn1_input0" value="25%" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn1_input1">text2:</label>
-            <input type="text" id="btn1_input1" value="" style="width:90px;" />
+            <input type="text" id="btn1_input1" value="discount for 24 hours" style="width:90px;" />
         </div>
         
         </div>
@@ -389,9 +389,9 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/GiftBox_v5.riv",
+    src: "../riv/06_GiftBox_v6.riv",
     canvas: document.getElementById("canvas1"),
-    autoplay: true, autoBind: true,artboard: "GiftBox", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
     const vmi = r1.viewModelInstance;

@@ -243,16 +243,41 @@
     </script>
     
     <div class="animation-container">
-      <canvas id="main_canvas" width="393" height="100"></canvas>
+      <canvas id="main_canvas" width="300" height="300"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/TextAnim_v4.riv" target="_blank" style="color: white;">TextAnim</a><br>Size: 393px × 100px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: Trigger 1<br>Input: txt:Text("Your Heart Rate Wave shows how last nights heart rate compares to your restful nights. We also track if you met your sleep need how long you were awake and how consistent your sleep schedule is.")<br></div>
+          <div><a href="../riv/12_flowerparticles_v4.riv" target="_blank" style="color: white;">12 flowerparticles</a><br>Size: 300px × 300px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: col:color1<br>Input: col:color2<br>Input: col:color3<br>Input: col:color4<br>Input: col:color5<br>Input: col:color6<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            <button id="btn_main" class="rive-btn">Trigger</button>
+            
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input0">Text:</label>
-            <input type="text" id="btn_main_input0" value="Your Heart Rate Wave shows how last nights heart rate compares to your restful nights. We also track if you met your sleep need how long you were awake and how consistent your sleep schedule is." style="width:90px;" />
+            <label for="btn_main_input0">color1:</label>
+            <input type="color" id="btn_main_input0" value="#eec9c9" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input1">color2:</label>
+            <input type="color" id="btn_main_input1" value="#dff582" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input2">color3:</label>
+            <input type="color" id="btn_main_input2" value="#fe6a14" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input3">color4:</label>
+            <input type="color" id="btn_main_input3" value="#1b5bb8" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input4">color5:</label>
+            <input type="color" id="btn_main_input4" value="#b6132b" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input5">color6:</label>
+            <input type="color" id="btn_main_input5" value="#8ce6cd" />
         </div>
         
           </div>
@@ -262,7 +287,7 @@
 <script>
 
 const mainRive = new rive.Rive({
-  src: "../riv/TextAnim_v4.riv",
+  src: "../riv/12_flowerparticles_v4.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
   onLoad: () => {
@@ -270,31 +295,78 @@ const mainRive = new rive.Rive({
     const vmi = mainRive.viewModelInstance;
     let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
     if (inputFieldBtn_Main_0 && vmi) {
-      vmi.string("Text").value = inputFieldBtn_Main_0.value;
+      // Set initial color value
+      let hex = inputFieldBtn_Main_0.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color1").value = argb;
       inputFieldBtn_Main_0.addEventListener("input", () => {
-        vmi.string("Text").value = inputFieldBtn_Main_0.value;
+        let hex = inputFieldBtn_Main_0.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color1").value = argb;
+      });
+    }
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Main_1.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color2").value = argb;
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        let hex = inputFieldBtn_Main_1.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color2").value = argb;
+      });
+    }
+    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
+    if (inputFieldBtn_Main_2 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Main_2.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color3").value = argb;
+      inputFieldBtn_Main_2.addEventListener("input", () => {
+        let hex = inputFieldBtn_Main_2.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color3").value = argb;
+      });
+    }
+    let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
+    if (inputFieldBtn_Main_3 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Main_3.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color4").value = argb;
+      inputFieldBtn_Main_3.addEventListener("input", () => {
+        let hex = inputFieldBtn_Main_3.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color4").value = argb;
+      });
+    }
+    let inputFieldBtn_Main_4 = document.getElementById("btn_main_input4");
+    if (inputFieldBtn_Main_4 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Main_4.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color5").value = argb;
+      inputFieldBtn_Main_4.addEventListener("input", () => {
+        let hex = inputFieldBtn_Main_4.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color5").value = argb;
+      });
+    }
+    let inputFieldBtn_Main_5 = document.getElementById("btn_main_input5");
+    if (inputFieldBtn_Main_5 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn_Main_5.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color6").value = argb;
+      inputFieldBtn_Main_5.addEventListener("input", () => {
+        let hex = inputFieldBtn_Main_5.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color6").value = argb;
       });
     }
   },
 });
-
-document.getElementById("btn_main").addEventListener("click", () => {
-    const vmi = mainRive.viewModelInstance;
-    if (vmi) {
-        const vmTrigger = vmi.trigger("Trigger 1");
-        if (vmTrigger) {
-            vmTrigger.trigger();
-            return;
-        }
-    }
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
-    if (smTrigger) {
-        smTrigger.fire();
-    } else {
-        console.warn("Trigger not found (view model or state machine): Trigger 1");
-    }
-} );
 
 document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";

@@ -10,32 +10,32 @@ WaveLoader_v4a,250x250,,artboard:-
 PulseWave_v5,360x80,,artboard:-
 PulseWave_full-circle_v6,274x274,,artboard:-
 NightDay_v8,393x852,,artboard:-,sm:"StMachine"
-GiftBox_v5,393x614,,artboard:GiftBox,trigger:"Trigger 1",txt:text1,txt:text2
+06_GiftBox_v6,393x614,,trigger:"Trigger 1",txt:text1("25%"),txt:text2("discount for 24 hours")
 River_v1,526x800,,artboard:-
 PulseWaveEye_v8,274x274,,trigger:"Trigger 1",artboard:-
-StressLiquid_v1,375x812,,artboard:StressLiquid,trigger:"Trigger 1",num:StressPercent
-SleepLines_v4,375x812,,artboard:SleepLines,trigger:"Trigger 1"
-ExerciseBubbles_v3,500x812,,artboard:ExerciseBubbles,trigger:"Trigger 1"
-OnboardingStrings_v2,375x812,,artboard:OnboardingStrings
-OnboardingStrings_v3,375x812,,artboard:OnboardingStrings
-DeepRest_v2,375x812,,artboard:-
-Activity_v3,375x812,,artboard:-
-Recovery_v3,375x812,,artboard:-
-Welcome_v2,375x812,,artboard:Welcome,trigger:"Trigger 1"
-Particles_v1,375x812,,artboard:-
-LightRay_v1,375x812,,artboard:-
-sleeplake_v10,375x812,,artboard:SleepLake,trigger:"Trigger 1",num:LakeSize,bol:NoAnimation
-GodRay_v2,393x852,,artboard:GodRay,trigger:"Trigger 1"
-GodRay_Small_v1,393x852,,artboard:GodRayS,trigger:"Trigger 1"
-GodRay_Small2_v2,393x852,,artboard:GodRayS,trigger:"Trigger 1"
-sleeplake_widget_v5,196x186,,artboard:SleepLake,trigger:"Trigger 1",num:LakeSize,bol:NoAnimation
-flowerparticles_v3,375x375,,artboard:FlowerParticles,trigger:"Trigger 1",col:color1,col:color2,col:color3,col:color4,col:color5,col:color6
-TextAnim_v4,393x393,,artboard:TextAnim,trigger:"Trigger 1",txt:Text
-HeaderTextAnim_v4,393x393,,artboard:HeaderTextAnim,trigger:"Trigger 1",txt:Text
-BatteryWidget_v5,196x187,,artboard:BatteryWidget,trigger:"Trigger 1",num:BatteryPercentFrom,num:BatteryPercentTo
+08_StressLiquid_v2,375x812,,trigger:"Trigger 1",v_num:StressPercent
+08_exercisemonth_v1,375x460,,
+08_stressmonth_v1,375x460,,
+08_SleepLines_v5,375x812,,trigger:"Trigger 1"
+08_ExerciseBubbles_v4,500x812,,trigger:"Trigger 1"
+08_OnboardingStrings_v4,375x812,,
+08_Activity_v4,375x812,,
+08_Recovery_v4,375x812,,
+08_Welcome_v3,375x812,,trigger:"Trigger 1"
+08_Particles_v2,375x812,,
+08_LightRay_v2,375x812,,
+09_sleeplake_v11,375x812,,trigger:"Trigger 1",v_num:LakeSize(80),v_bol:NoAnimation
+09_sleeplake_widget_v6,196x186,,trigger:"Trigger 1",v_num:LakeSize(80),v_bol:NoAnimation
+10_GodRay_v3,393x852,,trigger:"Trigger 1"
+10_GodRay_Small_v2,393x852,,trigger:"Trigger 1"
+10_GodRay_Small2_v3,393x852,,trigger:"Trigger 1"
 10_GodRay_Pack_p1_v2,393x852,,trigger:"Trigger 1",v_bol:Flip
 10_GodRay_Pack_p2_v2,393x852,,trigger:"Trigger 1",v_bol:Flip
 10_GodRay_Pack_p3_v4,393x852,,trigger:"Trigger 1",v_bol:Flip
+12_flowerparticles_v4,300x300,,col:color1,col:color2,col:color3,col:color4,col:color5,col:color6
+11_TextAnim_v5,393x100,,trigger:"Trigger 1",txt:Text("Your Heart Rate Wave shows how last nights heart rate compares to your restful nights. We also track if you met your sleep need how long you were awake and how consistent your sleep schedule is.")
+11_HeaderTextAnim_v5,393x393,375x720,trigger:"Trigger 1",txt:Text("Yesterdays workout demands met — your solid sleep gave you that boost.")
+14_BatteryWidget_v6,196x187,,trigger:"Trigger 1",v_num:BatteryPercentFrom(10),v_num:BatteryPercentTo(80)
 13_BatteryReport_v16,346x336,,trigger:"Trigger 1",txt:CurrentTime("19:04"),txt:CurrentPercent("27%"),v_bol:12h,v_num:CurrentPosition(79.4),v_num:NightPosition(34.7),list:BarList[num:BarHeight]
 15_liquidanimation_v2,375x396,,trigger:"Trigger 1"
 DragonCat_v2,500x500,,artboard:DragonCat

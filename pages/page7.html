@@ -243,20 +243,25 @@
     </script>
     
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="434"></canvas>
+        <canvas id="canvas0" width="200" height="191"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="10_GodRay_Pack_p3_v4.html" style="color: #464646;">10 GodRay Pack p3</a></div>
+          <div><a href="14_BatteryWidget_v6.html" style="color: #464646;">14 BatteryWidget</a></div>
           <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn0_input0">Flip:</label>
-            <input type="checkbox" id="btn0_input0" />
+            <label for="btn0_input0">BatteryPercentFrom:</label>
+            <input type="number" id="btn0_input0" value="10" style="width:60px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input1">BatteryPercentTo:</label>
+            <input type="number" id="btn0_input1" value="80" style="width:60px;" />
         </div>
         
         </div>
@@ -267,20 +272,20 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="434"></canvas>
+        <canvas id="canvas1" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="10_GodRay_Pack_p2_v2.html" style="color: #464646;">10 GodRay Pack p2</a></div>
+          <div><a href="11_HeaderTextAnim_v5.html" style="color: #464646;">11 HeaderTextAnim</a></div>
           <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input0">Flip:</label>
-            <input type="checkbox" id="btn1_input0" />
+            <label for="btn1_input0">Text:</label>
+            <input type="text" id="btn1_input0" value="Yesterdays workout demands met — your solid sleep gave you that boost." style="width:90px;" />
         </div>
         
         </div>
@@ -291,20 +296,20 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="434"></canvas>
+        <canvas id="canvas2" width="200" height="51"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="10_GodRay_Pack_p1_v2.html" style="color: #464646;">10 GodRay Pack p1</a></div>
+          <div><a href="11_TextAnim_v5.html" style="color: #464646;">11 TextAnim</a></div>
           <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn2_input0">Flip:</label>
-            <input type="checkbox" id="btn2_input0" />
+            <label for="btn2_input0">Text:</label>
+            <input type="text" id="btn2_input0" value="Your Heart Rate Wave shows how last nights heart rate compares to your restful nights. We also track if you met your sleep need how long you were awake and how consistent your sleep schedule is." style="width:90px;" />
         </div>
         
         </div>
@@ -315,25 +320,45 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="191"></canvas>
+        <canvas id="canvas3" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="BatteryWidget_v5.html" style="color: #464646;">BatteryWidget</a></div>
-          <button id="btn3" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <div><a href="12_flowerparticles_v4.html" style="color: #464646;">12 flowerparticles</a></div>
+          
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn3_input0">BatteryPercentFrom:</label>
-            <input type="number" id="btn3_input0" value="80" style="width:50px;" />
+            <label for="btn3_input0">color1:</label>
+            <input type="color" id="btn3_input0" value="#8fb739" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn3_input1">BatteryPercentTo:</label>
-            <input type="number" id="btn3_input1" value="80" style="width:50px;" />
+            <label for="btn3_input1">color2:</label>
+            <input type="color" id="btn3_input1" value="#e69f9f" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input2">color3:</label>
+            <input type="color" id="btn3_input2" value="#763e09" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input3">color4:</label>
+            <input type="color" id="btn3_input3" value="#48aad9" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input4">color5:</label>
+            <input type="color" id="btn3_input4" value="#05071f" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input5">color6:</label>
+            <input type="color" id="btn3_input5" value="#f9cb44" />
         </div>
         
         </div>
@@ -344,20 +369,20 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="200"></canvas>
+        <canvas id="canvas4" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="HeaderTextAnim_v4.html" style="color: #464646;">HeaderTextAnim</a></div>
+          <div><a href="10_GodRay_Pack_p3_v4.html" style="color: #464646;">10 GodRay Pack p3</a></div>
           <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input0">Text:</label>
-            <input type="text" id="btn4_input0" value="" style="width:90px;" />
+            <label for="btn4_input0">Flip:</label>
+            <input type="checkbox" id="btn4_input0" />
         </div>
         
         </div>
@@ -368,20 +393,20 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="200"></canvas>
+        <canvas id="canvas5" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="TextAnim_v4.html" style="color: #464646;">TextAnim</a></div>
+          <div><a href="10_GodRay_Pack_p2_v2.html" style="color: #464646;">10 GodRay Pack p2</a></div>
           <button id="btn5" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn5_input0">Text:</label>
-            <input type="text" id="btn5_input0" value="" style="width:90px;" />
+            <label for="btn5_input0">Flip:</label>
+            <input type="checkbox" id="btn5_input0" />
         </div>
         
         </div>
@@ -392,45 +417,20 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="200"></canvas>
+        <canvas id="canvas6" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="flowerparticles_v3.html" style="color: #464646;">flowerparticles</a></div>
+          <div><a href="10_GodRay_Pack_p1_v2.html" style="color: #464646;">10 GodRay Pack p1</a></div>
           <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input0">color1:</label>
-            <input type="color" id="btn6_input0" value="#5d5234" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input1">color2:</label>
-            <input type="color" id="btn6_input1" value="#deaa93" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input2">color3:</label>
-            <input type="color" id="btn6_input2" value="#c89d7e" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input3">color4:</label>
-            <input type="color" id="btn6_input3" value="#fd17b8" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input4">color5:</label>
-            <input type="color" id="btn6_input4" value="#b20b6f" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input5">color6:</label>
-            <input type="color" id="btn6_input5" value="#eec8ce" />
+            <label for="btn6_input0">Flip:</label>
+            <input type="checkbox" id="btn6_input0" />
         </div>
         
         </div>
@@ -441,27 +441,13 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas7" width="200" height="190"></canvas>
+        <canvas id="canvas7" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="sleeplake_widget_v5.html" style="color: #464646;">sleeplake widget</a></div>
+          <div><a href="10_GodRay_Small2_v3.html" style="color: #464646;">10 GodRay Small2</a></div>
           <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input0">LakeSize:</label>
-            <input type="number" id="btn7_input0" value="80" style="width:50px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input1">NoAnimation:</label>
-            <input type="checkbox" id="btn7_input1" />
-        </div>
-        
         </div>
         
       </div>
@@ -472,7 +458,7 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/10_GodRay_Pack_p3_v4.riv",
+    src: "../riv/14_BatteryWidget_v6.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -480,12 +466,25 @@ const r0 = new rive.Rive({
     const vmi = r0.viewModelInstance;
     let inputFieldBtn0_0 = document.getElementById("btn0_input0");
     if (inputFieldBtn0_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn0_0.addEventListener("change", () => {
-        vmi.boolean("Flip").value = inputFieldBtn0_0.checked;
+      // Update numeric ViewModel variable
+      inputFieldBtn0_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_0.value);
+        if (!isNaN(val)) vmi.number("BatteryPercentFrom").value = val;
       });
-      // Set initial value
-      vmi.boolean("Flip").value = inputFieldBtn0_0.checked;
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_0.value);
+      if (!isNaN(initVal)) vmi.number("BatteryPercentFrom").value = initVal;
+    }
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_1.value);
+        if (!isNaN(val)) vmi.number("BatteryPercentTo").value = val;
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_1.value);
+      if (!isNaN(initVal)) vmi.number("BatteryPercentTo").value = initVal;
     }
     const inputs = r0.stateMachineInputs("State Machine 1");
     document.getElementById("btn0").addEventListener("click", () => {
@@ -507,7 +506,7 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/10_GodRay_Pack_p2_v2.riv",
+    src: "../riv/11_HeaderTextAnim_v5.riv",
     canvas: document.getElementById("canvas1"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -515,12 +514,10 @@ const r1 = new rive.Rive({
     const vmi = r1.viewModelInstance;
     let inputFieldBtn1_0 = document.getElementById("btn1_input0");
     if (inputFieldBtn1_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn1_0.addEventListener("change", () => {
-        vmi.boolean("Flip").value = inputFieldBtn1_0.checked;
+      vmi.string("Text").value = inputFieldBtn1_0.value;
+      inputFieldBtn1_0.addEventListener("input", () => {
+        vmi.string("Text").value = inputFieldBtn1_0.value;
       });
-      // Set initial value
-      vmi.boolean("Flip").value = inputFieldBtn1_0.checked;
     }
     const inputs = r1.stateMachineInputs("State Machine 1");
     document.getElementById("btn1").addEventListener("click", () => {
@@ -542,7 +539,7 @@ const r1 = new rive.Rive({
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/10_GodRay_Pack_p1_v2.riv",
+    src: "../riv/11_TextAnim_v5.riv",
     canvas: document.getElementById("canvas2"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -550,12 +547,10 @@ const r2 = new rive.Rive({
     const vmi = r2.viewModelInstance;
     let inputFieldBtn2_0 = document.getElementById("btn2_input0");
     if (inputFieldBtn2_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn2_0.addEventListener("change", () => {
-        vmi.boolean("Flip").value = inputFieldBtn2_0.checked;
+      vmi.string("Text").value = inputFieldBtn2_0.value;
+      inputFieldBtn2_0.addEventListener("input", () => {
+        vmi.string("Text").value = inputFieldBtn2_0.value;
       });
-      // Set initial value
-      vmi.boolean("Flip").value = inputFieldBtn2_0.checked;
     }
     const inputs = r2.stateMachineInputs("State Machine 1");
     document.getElementById("btn2").addEventListener("click", () => {
@@ -577,64 +572,103 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/BatteryWidget_v5.riv",
+    src: "../riv/12_flowerparticles_v4.riv",
     canvas: document.getElementById("canvas3"),
-    autoplay: true, autoBind: true,artboard: "BatteryWidget", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
     const vmi = r3.viewModelInstance;
+    let inputFieldBtn3_0 = document.getElementById("btn3_input0");
+    if (inputFieldBtn3_0 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn3_0.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color1").value = argb;
+      inputFieldBtn3_0.addEventListener("input", () => {
+        let hex = inputFieldBtn3_0.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color1").value = argb;
+      });
+    }
+    let inputFieldBtn3_1 = document.getElementById("btn3_input1");
+    if (inputFieldBtn3_1 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn3_1.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color2").value = argb;
+      inputFieldBtn3_1.addEventListener("input", () => {
+        let hex = inputFieldBtn3_1.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color2").value = argb;
+      });
+    }
+    let inputFieldBtn3_2 = document.getElementById("btn3_input2");
+    if (inputFieldBtn3_2 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn3_2.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color3").value = argb;
+      inputFieldBtn3_2.addEventListener("input", () => {
+        let hex = inputFieldBtn3_2.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color3").value = argb;
+      });
+    }
+    let inputFieldBtn3_3 = document.getElementById("btn3_input3");
+    if (inputFieldBtn3_3 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn3_3.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color4").value = argb;
+      inputFieldBtn3_3.addEventListener("input", () => {
+        let hex = inputFieldBtn3_3.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color4").value = argb;
+      });
+    }
+    let inputFieldBtn3_4 = document.getElementById("btn3_input4");
+    if (inputFieldBtn3_4 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn3_4.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color5").value = argb;
+      inputFieldBtn3_4.addEventListener("input", () => {
+        let hex = inputFieldBtn3_4.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color5").value = argb;
+      });
+    }
+    let inputFieldBtn3_5 = document.getElementById("btn3_input5");
+    if (inputFieldBtn3_5 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn3_5.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color6").value = argb;
+      inputFieldBtn3_5.addEventListener("input", () => {
+        let hex = inputFieldBtn3_5.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color6").value = argb;
+      });
+    }
     const inputs = r3.stateMachineInputs("State Machine 1");
-    document.getElementById("btn3").addEventListener("click", () => {
-        if (vmi) {
-            const vmTrigger = vmi.trigger("Trigger 1");
-            if (vmTrigger) {
-                vmTrigger.trigger();
-                return;
-            }
-        }
-        const smTrigger = inputs.find(input => input.name === "Trigger 1");
-        if (smTrigger) {
-            smTrigger.fire();
-        } else {
-            console.warn("Trigger not found (view model or state machine): Trigger 1");
-        }
-    });
-    let inputField_btn3_0 = document.getElementById("btn3_input0");
-    let inputObj_btn3_0 = inputs.find(input => input.name === "BatteryPercentFrom");
-    if (inputField_btn3_0 && inputObj_btn3_0) {
-            let val = parseFloat(inputField_btn3_0.value);
-            if (!isNaN(val)) inputObj_btn3_0.value = val;
-            inputField_btn3_0.addEventListener("input", () => {
-                let val = parseFloat(inputField_btn3_0.value);
-                if (!isNaN(val)) inputObj_btn3_0.value = val;
-            });
-        }
-    let inputField_btn3_1 = document.getElementById("btn3_input1");
-    let inputObj_btn3_1 = inputs.find(input => input.name === "BatteryPercentTo");
-    if (inputField_btn3_1 && inputObj_btn3_1) {
-            let val = parseFloat(inputField_btn3_1.value);
-            if (!isNaN(val)) inputObj_btn3_1.value = val;
-            inputField_btn3_1.addEventListener("input", () => {
-                let val = parseFloat(inputField_btn3_1.value);
-                if (!isNaN(val)) inputObj_btn3_1.value = val;
-            });
-        }
   },
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/HeaderTextAnim_v4.riv",
+    src: "../riv/10_GodRay_Pack_p3_v4.riv",
     canvas: document.getElementById("canvas4"),
-    autoplay: true, autoBind: true,artboard: "HeaderTextAnim", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
     const vmi = r4.viewModelInstance;
     let inputFieldBtn4_0 = document.getElementById("btn4_input0");
     if (inputFieldBtn4_0 && vmi) {
-      vmi.string("Text").value = inputFieldBtn4_0.value;
-      inputFieldBtn4_0.addEventListener("input", () => {
-        vmi.string("Text").value = inputFieldBtn4_0.value;
+      // Update boolean ViewModel variable
+      inputFieldBtn4_0.addEventListener("change", () => {
+        vmi.boolean("Flip").value = inputFieldBtn4_0.checked;
       });
+      // Set initial value
+      vmi.boolean("Flip").value = inputFieldBtn4_0.checked;
     }
     const inputs = r4.stateMachineInputs("State Machine 1");
     document.getElementById("btn4").addEventListener("click", () => {
@@ -656,18 +690,20 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-    src: "../riv/TextAnim_v4.riv",
+    src: "../riv/10_GodRay_Pack_p2_v2.riv",
     canvas: document.getElementById("canvas5"),
-    autoplay: true, autoBind: true,artboard: "TextAnim", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r5.resizeDrawingSurfaceToCanvas();
     const vmi = r5.viewModelInstance;
     let inputFieldBtn5_0 = document.getElementById("btn5_input0");
     if (inputFieldBtn5_0 && vmi) {
-      vmi.string("Text").value = inputFieldBtn5_0.value;
-      inputFieldBtn5_0.addEventListener("input", () => {
-        vmi.string("Text").value = inputFieldBtn5_0.value;
+      // Update boolean ViewModel variable
+      inputFieldBtn5_0.addEventListener("change", () => {
+        vmi.boolean("Flip").value = inputFieldBtn5_0.checked;
       });
+      // Set initial value
+      vmi.boolean("Flip").value = inputFieldBtn5_0.checked;
     }
     const inputs = r5.stateMachineInputs("State Machine 1");
     document.getElementById("btn5").addEventListener("click", () => {
@@ -689,83 +725,20 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-    src: "../riv/flowerparticles_v3.riv",
+    src: "../riv/10_GodRay_Pack_p1_v2.riv",
     canvas: document.getElementById("canvas6"),
-    autoplay: true, autoBind: true,artboard: "FlowerParticles", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r6.resizeDrawingSurfaceToCanvas();
     const vmi = r6.viewModelInstance;
     let inputFieldBtn6_0 = document.getElementById("btn6_input0");
     if (inputFieldBtn6_0 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_0.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color1").value = argb;
-      inputFieldBtn6_0.addEventListener("input", () => {
-        let hex = inputFieldBtn6_0.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color1").value = argb;
+      // Update boolean ViewModel variable
+      inputFieldBtn6_0.addEventListener("change", () => {
+        vmi.boolean("Flip").value = inputFieldBtn6_0.checked;
       });
-    }
-    let inputFieldBtn6_1 = document.getElementById("btn6_input1");
-    if (inputFieldBtn6_1 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_1.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color2").value = argb;
-      inputFieldBtn6_1.addEventListener("input", () => {
-        let hex = inputFieldBtn6_1.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color2").value = argb;
-      });
-    }
-    let inputFieldBtn6_2 = document.getElementById("btn6_input2");
-    if (inputFieldBtn6_2 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_2.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color3").value = argb;
-      inputFieldBtn6_2.addEventListener("input", () => {
-        let hex = inputFieldBtn6_2.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color3").value = argb;
-      });
-    }
-    let inputFieldBtn6_3 = document.getElementById("btn6_input3");
-    if (inputFieldBtn6_3 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_3.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color4").value = argb;
-      inputFieldBtn6_3.addEventListener("input", () => {
-        let hex = inputFieldBtn6_3.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color4").value = argb;
-      });
-    }
-    let inputFieldBtn6_4 = document.getElementById("btn6_input4");
-    if (inputFieldBtn6_4 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_4.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color5").value = argb;
-      inputFieldBtn6_4.addEventListener("input", () => {
-        let hex = inputFieldBtn6_4.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color5").value = argb;
-      });
-    }
-    let inputFieldBtn6_5 = document.getElementById("btn6_input5");
-    if (inputFieldBtn6_5 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_5.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color6").value = argb;
-      inputFieldBtn6_5.addEventListener("input", () => {
-        let hex = inputFieldBtn6_5.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color6").value = argb;
-      });
+      // Set initial value
+      vmi.boolean("Flip").value = inputFieldBtn6_0.checked;
     }
     const inputs = r6.stateMachineInputs("State Machine 1");
     document.getElementById("btn6").addEventListener("click", () => {
@@ -787,9 +760,9 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-    src: "../riv/sleeplake_widget_v5.riv",
+    src: "../riv/10_GodRay_Small2_v3.riv",
     canvas: document.getElementById("canvas7"),
-    autoplay: true, autoBind: true,artboard: "SleepLake", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r7.resizeDrawingSurfaceToCanvas();
     const vmi = r7.viewModelInstance;
@@ -809,24 +782,6 @@ const r7 = new rive.Rive({
             console.warn("Trigger not found (view model or state machine): Trigger 1");
         }
     });
-    let inputField_btn7_0 = document.getElementById("btn7_input0");
-    let inputObj_btn7_0 = inputs.find(input => input.name === "LakeSize");
-    if (inputField_btn7_0 && inputObj_btn7_0) {
-            let val = parseFloat(inputField_btn7_0.value);
-            if (!isNaN(val)) inputObj_btn7_0.value = val;
-            inputField_btn7_0.addEventListener("input", () => {
-                let val = parseFloat(inputField_btn7_0.value);
-                if (!isNaN(val)) inputObj_btn7_0.value = val;
-            });
-        }
-    let inputField_btn7_1 = document.getElementById("btn7_input1");
-    let inputObj_btn7_1 = inputs.find(input => input.name === "NoAnimation");
-    if (inputField_btn7_1 && inputObj_btn7_1) {
-            inputObj_btn7_1.value = inputField_btn7_1.checked;
-            inputField_btn7_1.addEventListener("change", () => {
-                inputObj_btn7_1.value = inputField_btn7_1.checked;
-            });
-        }
   },
 });
 
