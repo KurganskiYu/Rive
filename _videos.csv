@@ -71,21 +71,21 @@ contraTest_v5,375x812,
 45_activityring_v4,393x620,,trigger:"start",v_num:goal(35),v_num:activeMinutes(66),v_num:size2mult(1.0)
 46_dictationbutton_v7,393x286,,v_bol:pressed
 47_activitytags_v3,393x388,,note:"Scripting"
-stressbatterygraph_v10,393x852,,v_num:stressStart(15),v_num:stressNow(55),v_num:bar1(97),v_num:bar5(65),txt:duration("120 min"),txt:timeBefore("9:00am")
-experimentprogressbar_v3,393x80,,v_num:percent(52),txt:time("23:15"),txt:timeLeft("1 h 27 min left"),txt:text("Experiment ongoing ")
-energy_liquid_v2,393x450,,artboard:energy,num:PercentFrom(5),num:PercentTo(100)
-stress_liquid_v2,393x450,,artboard:stress,num:PercentFrom(5),num:PercentTo(100)
-glints_v2,256x256,
-52_tagfire_v2,393x300,393x596,txt:tag("[tag_name]")
-52_tagliquid_v2,393x300,393x596,txt:tag("[tag_name]")
-52_tagsnumber_v2,393x300,393x596,v_num:tagsNumber(300)
-52_tagclouds_v3,393x300,393x596,txt:tag("[tag_name]")
-52_tagvessels_v2,393x300,393x596
-53_insightcardclock_v3,393x300,393x596,v_num:hours(4),v_num:minutes(45),v_num:blueHourStart(4),v_num:blueHourEnd(8),v_num:redHourStart(0),v_num:redHourEnd(4)
-54_compass31_v3,393x393,393x480,v_num:colorNum(3),v_num:state(65)
-54_compass31_comb_v3,500x500,393x852,artboard:combined,v_num:state1(96),v_num:state2(80),v_num:state3(20),v_num:state4(65),v_num:state5(0),v_num:state6(36)
-55_recoveryreport_v3,360x800,,v_num:state(2),v_bol:plusGreat(True),v_bol:plusGood(True),v_bol:plusBad(True)
-56_progressbar2_v2,393x80,,v_num:percent(52),txt:time("23:15"),txt:timeLeft("1 h 27 min left"),txt:text("Experiment ongoing ")
-57_energyfill_v1,360x800,
-58_mountain_v2,360x800,
-59_paymentcomplete_v3,393x852,,note:"Removed particle script"
+48_stressbatterygraph_v11,393x852,,v_num:stressStart(15),v_num:stressNow(55),v_num:bar1(97),v_num:bar5(65),txt:duration("120 min"),txt:timeBefore("9:00am")
+49_experimentprogressbar_v4,393x80,,v_num:percent(52),txt:time("23:15"),txt:timeLeft("1 h 27 min left"),txt:text("Experiment ongoing ")
+50_energy_liquid_v3,393x450,,artboard:energy,v_num:PercentFrom(5),v_num:PercentTo(100)
+50_stress_liquid_v3,393x450,,artboard:stress,v_num:PercentFrom(5),v_num:PercentTo(100)
+53_glints_v3,256x256,256x256,note:"Scripting"
+52_tagfire_v4,393x300,393x596,txt:tag("[tag_name]"),note:"Scripting"
+52_tagliquid_v3,393x300,393x596,txt:tag("[tag_name]"),note:"Scripting"
+52_tagsnumber_v3,393x300,393x596,v_num:tagsNumber(300),note:"Scripting"
+52_tagclouds_v4,393x300,393x596,txt:tag("[tag_name]")
+52_tagvessels_v3,393x300,393x596,note:"Scripting"
+53_insightcardclock_v4,393x300,393x596,v_num:hours(4),v_num:minutes(45),v_num:blueHourStart(4),v_num:blueHourEnd(8),v_num:redHourStart(0),v_num:redHourEnd(4),note:"Scripting"
+54_compass31_v4,393x393,393x480,v_num:colorNum(3),v_num:state(65),note:"Scripting"
+54_compass31_comb_v4,500x500,393x852,artboard:combined,v_num:state1(96),v_num:state2(80),v_num:state3(20),v_num:state4(65),v_num:state5(0),v_num:state6(36),note:"Scripting"
+55_recoveryreport_v4,360x800,360x800,v_num:state(2),v_bol:plusGreat(True),v_bol:plusGood(True),v_bol:plusBad(True),note:"Scripting"
+56_progressbar2_v3,393x80,,
+57_energyfill_v2,360x800,360x800,
+58_mountain_v3,360x800,360x800,
+59_paymentcomplete_v4,393x852,393x852,
