@@ -18,10 +18,8 @@
             min-height: 10vh;
             background-color: #000000;
             background-image: 
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f);
+                repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%);
             background-size: 20px 20px; /* Adjust size of the checkered pattern */
-            background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
             padding: 10px 0;
         }
         .animation-wrapper {
@@ -171,9 +169,9 @@
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
                 body.style.backgroundSize = "20px 20px";
-                body.style.backgroundPosition = "0 0, 10px 10px";
+                body.style.backgroundPosition = "";
             } else if (mode === 2) {
                 // Solid black
                 body.style.backgroundColor = "#000000";
@@ -336,7 +334,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="activitytags_v2.html" style="color: #464646;">activitytags</a></div>
+          <div><a href="47_activitytags_v3.html" style="color: #464646;">47 activitytags</a></div>
           
         </div>
         
@@ -351,7 +349,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="dictationbutton_v5.html" style="color: #464646;">dictationbutton</a></div>
+          <div><a href="46_dictationbutton_v7.html" style="color: #464646;">46 dictationbutton</a></div>
           
         </div>
         
@@ -375,7 +373,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="activityring_v3.html" style="color: #464646;">activityring</a></div>
+          <div><a href="45_activityring_v4.html" style="color: #464646;">45 activityring</a></div>
           <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -409,7 +407,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="particlesstars_v1.html" style="color: #464646;">particlesstars</a></div>
+          <div><a href="44_particlesstars_v2.html" style="color: #464646;">44 particlesstars</a></div>
           
         </div>
         
@@ -424,7 +422,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="playerbird_v3.html" style="color: #464646;">playerbird</a></div>
+          <div><a href="43_playerbird_v4.html" style="color: #464646;">43 playerbird</a></div>
           
         </div>
         
@@ -439,7 +437,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="bannerparticlessand_v4.html" style="color: #464646;">bannerparticlessand</a></div>
+          <div><a href="42_bannerparticlessandwide_v5.html" style="color: #464646;">42 bannerparticlessandwide</a></div>
           
         </div>
         
@@ -563,7 +561,7 @@ const r1 = new rive.Rive({
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/activitytags_v2.riv",
+    src: "../riv/47_activitytags_v3.riv",
     canvas: document.getElementById("canvas2"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -573,7 +571,7 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/dictationbutton_v5.riv",
+    src: "../riv/46_dictationbutton_v7.riv",
     canvas: document.getElementById("canvas3"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -593,7 +591,7 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/activityring_v3.riv",
+    src: "../riv/45_activityring_v4.riv",
     canvas: document.getElementById("canvas4"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -652,7 +650,7 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-    src: "../riv/particlesstars_v1.riv",
+    src: "../riv/44_particlesstars_v2.riv",
     canvas: document.getElementById("canvas5"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -662,7 +660,7 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-    src: "../riv/playerbird_v3.riv",
+    src: "../riv/43_playerbird_v4.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -672,7 +670,7 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-    src: "../riv/bannerparticlessand_v4.riv",
+    src: "../riv/42_bannerparticlessandwide_v5.riv",
     canvas: document.getElementById("canvas7"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {

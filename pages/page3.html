@@ -18,10 +18,8 @@
             min-height: 10vh;
             background-color: #000000;
             background-image: 
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f);
+                repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%);
             background-size: 20px 20px; /* Adjust size of the checkered pattern */
-            background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
             padding: 10px 0;
         }
         .animation-wrapper {
@@ -171,9 +169,9 @@
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
                 body.style.backgroundSize = "20px 20px";
-                body.style.backgroundPosition = "0 0, 10px 10px";
+                body.style.backgroundPosition = "";
             } else if (mode === 2) {
                 // Solid black
                 body.style.backgroundColor = "#000000";
@@ -248,7 +246,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="bannerparticlessand_v2.html" style="color: #464646;">bannerparticlessand</a></div>
+          <div><a href="42_bannerparticlessand_v5.html" style="color: #464646;">42 bannerparticlessand</a></div>
           
         </div>
         
@@ -263,7 +261,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="bannerparticlesbutton_v1.html" style="color: #464646;">bannerparticlesbutton</a></div>
+          <div><a href="42_bannerparticlesbutton_v2.html" style="color: #464646;">42 bannerparticlesbutton</a></div>
           
         </div>
         
@@ -278,7 +276,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="fatgraph_v2.html" style="color: #464646;">fatgraph</a></div>
+          <div><a href="41_fatgraph_v3.html" style="color: #464646;">41 fatgraph</a></div>
           
         </div>
         
@@ -293,7 +291,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="energysliders_v2.html" style="color: #464646;">energysliders</a></div>
+          <div><a href="40_energysliders_v3.html" style="color: #464646;">40 energysliders</a></div>
           
         </div>
         
@@ -332,7 +330,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="stressvessels_v2.html" style="color: #464646;">stressvessels</a></div>
+          <div><a href="38_stressvessels_v3.html" style="color: #464646;">38 stressvessels</a></div>
           
         </div>
         
@@ -347,7 +345,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="stresscalendar_v11.html" style="color: #464646;">stresscalendar</a></div>
+          <div><a href="37_stresscalendar_v12.html" style="color: #464646;">37 stresscalendar</a></div>
           
         </div>
         
@@ -381,7 +379,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="PaywallWave_v7.html" style="color: #464646;">PaywallWave</a></div>
+          <div><a href="36_PaywallWave_v16.html" style="color: #464646;">36 PaywallWave</a></div>
           
         </div>
         
@@ -402,7 +400,7 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/bannerparticlessand_v2.riv",
+    src: "../riv/42_bannerparticlessand_v5.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -412,7 +410,7 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/bannerparticlesbutton_v1.riv",
+    src: "../riv/42_bannerparticlesbutton_v2.riv",
     canvas: document.getElementById("canvas1"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -422,7 +420,7 @@ const r1 = new rive.Rive({
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/fatgraph_v2.riv",
+    src: "../riv/41_fatgraph_v3.riv",
     canvas: document.getElementById("canvas2"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -432,7 +430,7 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/energysliders_v2.riv",
+    src: "../riv/40_energysliders_v3.riv",
     canvas: document.getElementById("canvas3"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -477,7 +475,7 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-    src: "../riv/stressvessels_v2.riv",
+    src: "../riv/38_stressvessels_v3.riv",
     canvas: document.getElementById("canvas5"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -487,9 +485,9 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-    src: "../riv/stresscalendar_v11.riv",
+    src: "../riv/37_stresscalendar_v12.riv",
     canvas: document.getElementById("canvas6"),
-    autoplay: true, autoBind: true,artboard: "calendar", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r6.resizeDrawingSurfaceToCanvas();
     const vmi = r6.viewModelInstance;
@@ -527,7 +525,7 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-    src: "../riv/PaywallWave_v7.riv",
+    src: "../riv/36_PaywallWave_v16.riv",
     canvas: document.getElementById("canvas7"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {

@@ -18,10 +18,8 @@
             min-height: 10vh;
             background-color: #000000;
             background-image: 
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f);
+                repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%);
             background-size: 20px 20px; /* Adjust size of the checkered pattern */
-            background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
             padding: 10px 0;
         }
         .animation-wrapper {
@@ -171,9 +169,9 @@
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
                 body.style.backgroundSize = "20px 20px";
-                body.style.backgroundPosition = "0 0, 10px 10px";
+                body.style.backgroundPosition = "";
             } else if (mode === 2) {
                 // Solid black
                 body.style.backgroundColor = "#000000";
@@ -263,7 +261,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="19_keyhole_v5.html" style="color: #464646;">19 keyhole</a></div>
+          <div><a href="19_keyhole_v6.html" style="color: #464646;">19 keyhole</a></div>
           <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -317,7 +315,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="dragoncateyes_v2.html" style="color: #464646;">dragoncateyes</a></div>
+          <div><a href="16_dragoncateyes_v3.html" style="color: #464646;">16 dragoncateyes</a></div>
           <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -332,7 +330,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="DragonCat_v2.html" style="color: #464646;">DragonCat</a></div>
+          <div><a href="16_DragonCat_v3.html" style="color: #464646;">16 DragonCat</a></div>
           
         </div>
         
@@ -429,7 +427,7 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/19_keyhole_v5.riv",
+    src: "../riv/19_keyhole_v6.riv",
     canvas: document.getElementById("canvas1"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -543,9 +541,9 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/dragoncateyes_v2.riv",
+    src: "../riv/16_dragoncateyes_v3.riv",
     canvas: document.getElementById("canvas4"),
-    autoplay: true, autoBind: true,artboard: "Eyes", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
     const vmi = r4.viewModelInstance;
@@ -569,9 +567,9 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-    src: "../riv/DragonCat_v2.riv",
+    src: "../riv/16_DragonCat_v3.riv",
     canvas: document.getElementById("canvas5"),
-    autoplay: true, autoBind: true,artboard: "DragonCat", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r5.resizeDrawingSurfaceToCanvas();
     const inputs = r5.stateMachineInputs("State Machine 1");

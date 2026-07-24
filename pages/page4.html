@@ -18,10 +18,8 @@
             min-height: 10vh;
             background-color: #000000;
             background-image: 
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f);
+                repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%);
             background-size: 20px 20px; /* Adjust size of the checkered pattern */
-            background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
             padding: 10px 0;
         }
         .animation-wrapper {
@@ -171,9 +169,9 @@
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
                 body.style.backgroundSize = "20px 20px";
-                body.style.backgroundPosition = "0 0, 10px 10px";
+                body.style.backgroundPosition = "";
             } else if (mode === 2) {
                 // Solid black
                 body.style.backgroundColor = "#000000";
@@ -248,7 +246,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="scatterpluses_v3.html" style="color: #464646;">scatterpluses</a></div>
+          <div><a href="35_scatterpluses_v4.html" style="color: #464646;">35 scatterpluses</a></div>
           
         </div>
         
@@ -263,7 +261,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="cometpluses2_v5.html" style="color: #464646;">cometpluses2</a></div>
+          <div><a href="34_cometpluses2_v6.html" style="color: #464646;">34 cometpluses2</a></div>
           
         </div>
         
@@ -287,7 +285,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="healthdataaccess_v4.html" style="color: #464646;">healthdataaccess</a></div>
+          <div><a href="33_healthdataaccess_v5.html" style="color: #464646;">33 healthdataaccess</a></div>
           
         </div>
         
@@ -317,7 +315,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="parametricparticles_v9.html" style="color: #464646;">parametricparticles</a></div>
+          <div><a href="31_parametricparticles_v10.html" style="color: #464646;">31 parametricparticles</a></div>
           
         </div>
         
@@ -356,7 +354,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="30_starsfly_v4.html" style="color: #464646;">30 starsfly</a></div>
+          <div><a href="30_starsfly_v5.html" style="color: #464646;">30 starsfly</a></div>
           <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -371,7 +369,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="plustuktuk_v1.html" style="color: #464646;">plustuktuk</a></div>
+          <div><a href="29_plustuktuk_v2.html" style="color: #464646;">29 plustuktuk</a></div>
           
         </div>
         
@@ -383,7 +381,7 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/scatterpluses_v3.riv",
+    src: "../riv/35_scatterpluses_v4.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -393,9 +391,9 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/cometpluses2_v5.riv",
+    src: "../riv/34_cometpluses2_v6.riv",
     canvas: document.getElementById("canvas1"),
-    autoplay: true, autoBind: true,artboard: "CometPluses", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
     const vmi = r1.viewModelInstance;
@@ -413,9 +411,9 @@ const r1 = new rive.Rive({
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/healthdataaccess_v4.riv",
+    src: "../riv/33_healthdataaccess_v5.riv",
     canvas: document.getElementById("canvas2"),
-    autoplay: true, autoBind: true,artboard: "Screen", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
     const inputs = r2.stateMachineInputs("State Machine 1");
@@ -433,9 +431,9 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/parametricparticles_v9.riv",
+    src: "../riv/31_parametricparticles_v10.riv",
     canvas: document.getElementById("canvas4"),
-    autoplay: true, autoBind: true,artboard: "Emitter", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
     const vmi = r4.viewModelInstance;
@@ -481,7 +479,7 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-    src: "../riv/30_starsfly_v4.riv",
+    src: "../riv/30_starsfly_v5.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
@@ -507,9 +505,9 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-    src: "../riv/plustuktuk_v1.riv",
+    src: "../riv/29_plustuktuk_v2.riv",
     canvas: document.getElementById("canvas7"),
-    autoplay: true, autoBind: true,artboard: "Main", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r7.resizeDrawingSurfaceToCanvas();
     const inputs = r7.stateMachineInputs("State Machine 1");

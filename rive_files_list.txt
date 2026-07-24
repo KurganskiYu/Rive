@@ -1,12 +1,12 @@
-1_plus_tuktuk
-2_stressfanplus_v2.riv
-Activity Hand v1.riv
-activitytags
+    1_plus_tuktuk
+    2_stressfanplus_v2.riv
+    Activity Hand v1.riv
+    activitytags
     Activity_v3
 BackgroundProjectorV1.riv
 BatteryLiquidSleep_v2.riv
 batteryliquid_v2
-BatteryReport_v15
+    BatteryReport_v15
     battery_widget_v5
 cometpluses
 cometpluses2_v5
@@ -27,12 +27,12 @@ Particles_v1
 paywall_stress
 paywall_trial_general
 plusesflight_v1.riv
-PulseWave_…full-circle_v6
+    PulseWave_…full-circle_v6
     Recovery_v3
 ?   River
-scatterpluses_v3
-sleeplake_v10
-sleeplake_widget_v5
+    scatterpluses_v3
+    sleeplake_v10
+    sleeplake_widget_v5
     SleepWaves_v4.riv
 stressbatterygraph_v10
 stresscalendar_v11

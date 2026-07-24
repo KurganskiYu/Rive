@@ -18,10 +18,8 @@
             min-height: 10vh;
             background-color: #000000;
             background-image: 
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f),
-                linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f);
+                repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%);
             background-size: 20px 20px; /* Adjust size of the checkered pattern */
-            background-position: 0 0, 10px 10px; /* Offset the layers for the checkered effect */
             padding: 10px 0;
         }
         .animation-wrapper {
@@ -171,9 +169,9 @@
                 // Checkered pattern
                 body.style.backgroundColor = "#000000";
                 body.style.backgroundImage =
-                    "linear-gradient(45deg, #0f0f0f 25%, transparent 25%, transparent 75%, #0f0f0f 75%, #0f0f0f)";
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
                 body.style.backgroundSize = "20px 20px";
-                body.style.backgroundPosition = "0 0, 10px 10px";
+                body.style.backgroundPosition = "";
             } else if (mode === 2) {
                 // Solid black
                 body.style.backgroundColor = "#000000";
@@ -306,7 +304,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="plusesflight_v1.html" style="color: #464646;">plusesflight</a></div>
+          <div><a href="25_plusesflight_v2.html" style="color: #464646;">25 plusesflight</a></div>
           
         </div>
         
@@ -330,7 +328,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="energybyny_v7.html" style="color: #464646;">energybyny</a></div>
+          <div><a href="24_energybyny_v8.html" style="color: #464646;">24 energybyny</a></div>
           
         </div>
         
@@ -369,7 +367,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="stressfanplus_v3.html" style="color: #464646;">stressfanplus</a></div>
+          <div><a href="23_stressfanplus_v5.html" style="color: #464646;">23 stressfanplus</a></div>
           
         </div>
         
@@ -516,9 +514,9 @@ const r1 = new rive.Rive({
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/plusesflight_v1.riv",
+    src: "../riv/25_plusesflight_v2.riv",
     canvas: document.getElementById("canvas2"),
-    autoplay: true, autoBind: true,artboard: "PlusesFlight", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
     const vmi = r2.viewModelInstance;
@@ -534,9 +532,9 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/energybyny_v7.riv",
+    src: "../riv/24_energybyny_v8.riv",
     canvas: document.getElementById("canvas3"),
-    autoplay: true, autoBind: true,artboard: "EnergyByNY", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
     const vmi = r3.viewModelInstance;
@@ -573,9 +571,9 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/stressfanplus_v3.riv",
+    src: "../riv/23_stressfanplus_v5.riv",
     canvas: document.getElementById("canvas4"),
-    autoplay: true, autoBind: true,artboard: "StressFanPlus", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
     const inputs = r4.stateMachineInputs("State Machine 1");
