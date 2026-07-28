@@ -5,6 +5,7 @@ from functools import lru_cache
 import shutil
 import time
 import random
+import json
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, "_videos.csv")
@@ -579,14 +580,37 @@ def generate_text_input_js(row, prefix, rive_var, include_vmi=False):
         js_parts.insert(0, f"    const vmi = {rive_var}.viewModelInstance;\n")
     return "".join(js_parts)
 
-def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, input_prefix, row):
+def generate_image_asset_loader(row, is_root):
+    """Generate the loader required for externally packaged Rive image assets."""
+    for input_value in row.get("inputs", []):
+        input_type, _input_name, default_value = parse_input_spec(input_value)
+        if input_type == "img" and default_value:
+            image_path = ("img/" if is_root else "../img/") + default_value
+            return f'''    assetLoader: (asset) => {{
+      if (!asset.isImage) return false;
+      fetch({json.dumps(image_path)})
+        .then(response => response.arrayBuffer())
+        .then(bytes => rive.decodeImage(new Uint8Array(bytes)))
+        .then(image => {{
+          asset.setRenderImage(image);
+          image.unref();
+        }})
+        .catch(error => console.error("Failed to load Rive image asset:", error));
+      return true;
+    }},
+'''
+    return ""
+
+def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, input_prefix, row, is_root=True):
         artboard_line = f'artboard: "{artboard}",' if artboard else ""
         state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
+        asset_loader = generate_image_asset_loader(row, is_root)
         js = [f'''
 const {var_name} = new rive.Rive({{
     src: "{src}",
     canvas: document.getElementById("{canvas_id}"),
     autoplay: true, autoBind: true,{artboard_line}{state_machine_line}
+{asset_loader}
     onLoad: () => {{
         {var_name}.resizeDrawingSurfaceToCanvas();
 ''']
@@ -664,7 +688,8 @@ def make_script(rows, is_root=True):
                 state_machine=state_machine,
                 trigger=trigger,
                 input_prefix=button_id,
-                row=row
+                row=row,
+                is_root=is_root
             )
         )
 
@@ -820,11 +845,13 @@ def generate_animation_js(row, main_rive, preview_ctx):
     js_parts = ['<script>\n']
 
     # Main animation
+    asset_loader = generate_image_asset_loader(row, is_root=False)
     js_parts.append(f'''
 const mainRive = new rive.Rive({{
   src: "{main_rive}",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true,{f' artboard: "{row["artboard"]}",' if row.get("artboard") else ""}{f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""}
+{asset_loader}
   onLoad: () => {{
     mainRive.resizeDrawingSurfaceToCanvas();
 ''')
@@ -898,12 +925,14 @@ def generate_preview_animation_js(row, preview_ctx):
     """Generate preview animation JavaScript"""
     artboard_val = preview_ctx.get("artboard", "")
     artboard_prop = f' artboard: "{artboard_val}",' if artboard_val else ""
+    asset_loader = generate_image_asset_loader(row, is_root=False)
 
     js_parts = [f'''
 const previewRive = new rive.Rive({{
   src: "{preview_ctx["src"]}",
   canvas: document.getElementById("preview_canvas"),
   autoplay: true, autoBind: true,{artboard_prop}{f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""}
+{asset_loader}
   onLoad: () => {{
     previewRive.resizeDrawingSurfaceToCanvas();
 ''']

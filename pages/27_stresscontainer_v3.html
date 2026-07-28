@@ -290,6 +290,7 @@ const mainRive = new rive.Rive({
   src: "../riv/27_stresscontainer_v3.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
@@ -340,6 +341,7 @@ const previewRive = new rive.Rive({
   src: "../riv/27_stresscontainer_v3_preview.riv",
   canvas: document.getElementById("preview_canvas"),
   autoplay: true, autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+
   onLoad: () => {
     previewRive.resizeDrawingSurfaceToCanvas();
     const vmi = previewRive.viewModelInstance;

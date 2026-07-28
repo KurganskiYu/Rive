@@ -283,6 +283,7 @@ const mainRive = new rive.Rive({
   src: "../riv/13_BatteryReport_v16.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
     const vmi = mainRive.viewModelInstance;
