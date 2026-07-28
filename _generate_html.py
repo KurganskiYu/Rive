@@ -269,6 +269,22 @@ def parse_input_spec(input_value):
                 default = default[1:-1]
     return t, name, default
 
+def parse_number_range(value):
+    """Return (current, minimum, maximum, step) for current:min-max syntax."""
+    if not value:
+        return None
+    match = re.fullmatch(r'\s*(-?(?:\d+(?:\.\d*)?|\.\d+))\s*:\s*(-?(?:\d+(?:\.\d*)?|\.\d+))\s*-\s*(-?(?:\d+(?:\.\d*)?|\.\d+))\s*', value)
+    if not match:
+        return None
+
+    current, minimum, maximum = match.groups()
+    precision = max(
+        len(part.partition(".")[2]) if "." in part else 0
+        for part in (current, minimum, maximum)
+    )
+    step = "1" if precision == 0 else f"{10 ** -precision:.{precision}f}"
+    return current, minimum, maximum, step
+
 # NEW helpers for list input
 def camel_to_words(name: str):
     return re.sub(r'(?<!^)(?=[A-Z])', '', name).strip()
@@ -288,7 +304,7 @@ def random_color_hex():
     # Returns a random color in #RRGGBB format
     return "#{:06x}".format(random.randint(0, 0xFFFFFF))
 
-def parse_input_field(input_value, input_idx, button_id):
+def parse_input_field(input_value, input_idx, button_id, control_width=None):
     input_type, input_name, default_val = parse_input_spec(input_value)
     # Handle list:Name[innerSpec] -> no direct HTML, skip rendering
     if input_type == "list":
@@ -307,6 +323,22 @@ def parse_input_field(input_value, input_idx, button_id):
         '''
     elif input_type == "v_num":  # NEW: view model number variable
         value_attr = default_val if default_val is not None else "0"
+        number_range = parse_number_range(default_val)
+        if number_range:
+            current, minimum, maximum, step = number_range
+            minimum_value = float(minimum)
+            maximum_value = float(maximum)
+            progress = 0 if maximum_value == minimum_value else (float(current) - minimum_value) / (maximum_value - minimum_value) * 100
+            slider_width = (control_width + 2) if control_width is not None else 180
+            return f'''
+        <div class="range-control" style="width:{slider_width}px;--slider-progress:{progress:.4f}%;">
+            <output for="{input_id}">{current}</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="{input_id}" value="{current}" min="{minimum}" max="{maximum}" step="{step}" aria-label="{input_name}" />
+            <span class="range-bound range-min">{minimum}</span>
+            <span class="range-bound range-max">{maximum}</span>
+        </div>
+        '''
         return f'''
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="{input_id}">{input_name}:</label>
@@ -391,16 +423,17 @@ def make_input_js(input_type, input_name, input_id, obj_var, field_var):
     }
     return js_configs.get(input_type, "")
 
-def collect_input_fields(row, button_id):
+def collect_input_fields(row, button_id, control_width):
     """Collect all input fields for a row"""
     inputs_html = []
     for i, input_value in enumerate(row.get("inputs", [])):
-        inputs_html.append(parse_input_field(input_value, i, button_id))
+        inputs_html.append(parse_input_field(input_value, i, button_id, control_width))
     return "".join(inputs_html)
 
 def make_main_canvas(idx, row, is_root=True):
     canvas_id = f"canvas{idx}"
     button_id = f"btn{idx}"
+    width, height = scale_dimensions(row["width"], row["height"])
 
     # Build button HTML
     button_html = ""
@@ -408,7 +441,7 @@ def make_main_canvas(idx, row, is_root=True):
         button_html = f'<button id="{button_id}" class="rive-btn" style="margin-left:auto;">Trigger</button>'
 
     # Collect input fields (below the row)
-    inputs_html = collect_input_fields(row, button_id)
+    inputs_html = collect_input_fields(row, button_id, width)
     if inputs_html:
         inputs_html = f'''
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
@@ -418,7 +451,6 @@ def make_main_canvas(idx, row, is_root=True):
     else:
         inputs_html = ""
 
-    width, height = scale_dimensions(row["width"], row["height"])
     desc = f'''
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
@@ -501,7 +533,15 @@ def generate_text_input_js(row, prefix, rive_var, include_vmi=False):
       // Update numeric ViewModel variable
       {field_var}.addEventListener("input", () => {{
         let val = parseFloat({field_var}.value);
-        if (!isNaN(val)) vmi.number("{input_name}").value = val;
+                if (!isNaN(val)) vmi.number("{input_name}").value = val;
+                const rangeControl = {field_var}.closest(".range-control");
+                if (rangeControl) {{
+                    rangeControl.querySelector("output").value = {field_var}.value;
+                    const minimum = Number({field_var}.min);
+                    const maximum = Number({field_var}.max);
+                    const progress = maximum === minimum ? 0 : ({field_var}.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${{progress}}%`);
+                }}
       }});
       // Set initial value if present
       let initVal = parseFloat({field_var}.value);
@@ -736,11 +776,11 @@ def make_description_html(row):
 
     return "".join(parts)
 
-def make_animation_inputs(row, prefix):
+def make_animation_inputs(row, prefix, control_width):
     """Generate animation input HTML"""
     html_parts = []
     for i, input_value in enumerate(row.get("inputs", [])):
-        html_parts.append(parse_input_field(input_value, i, prefix))
+        html_parts.append(parse_input_field(input_value, i, prefix, control_width))
     return "".join(html_parts)
 
 def check_preview_exists(row):
@@ -804,7 +844,7 @@ def generate_single_animation_html(row):
           <div>{make_description_html(row)}</div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-            {make_animation_inputs(row, "btn_main")}
+            {make_animation_inputs(row, "btn_main", row["width"])}
           </div>
         </div>
       </div>
@@ -822,7 +862,7 @@ def generate_dual_animation_html(row, preview_ctx):
             <div>{make_description_html(row)}</div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-              {make_animation_inputs(row, "btn_main")}
+              {make_animation_inputs(row, "btn_main", row["width"])}
             </div>
           </div>
         </div>
@@ -833,7 +873,7 @@ def generate_dual_animation_html(row, preview_ctx):
           Preview:<br>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             {'<button id="btn_preview" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-            {make_animation_inputs(row, "btn_preview")}
+            {make_animation_inputs(row, "btn_preview", preview_ctx["width"])}
           </div>
         </div>
       </div>

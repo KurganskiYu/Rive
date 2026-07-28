@@ -87,6 +87,92 @@
             font-size: 1rem;
             outline: none;
         }
+        .range-control {
+            position: relative;
+            padding: 14px 0 13px;
+        }
+        .range-control::before,
+        .range-control::after {
+            position: absolute;
+            top: 19px;
+            width: 1px;
+            height: 6px;
+            background: rgb(120, 120, 120);
+            content: "";
+        }
+        .range-control::before {
+            left: 0;
+        }
+        .range-control::after {
+            right: 0;
+        }
+        .range-control output {
+            position: absolute;
+            top: 0;
+            left: var(--slider-progress);
+            transform: translateX(-50%);
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-ticks {
+            position: absolute;
+            top: 20px;
+            right: 1px;
+            left: 1px;
+            z-index: 0;
+            height: 3px;
+            background: repeating-linear-gradient(to right, transparent 0, transparent 17px, rgb(120, 120, 120) 17px, rgb(120, 120, 120) 18px);
+        }
+        .range-control .range-bound {
+            position: absolute;
+            top: 33px;
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-min {
+            left: 0;
+        }
+        .range-control .range-max {
+            right: 0;
+        }
+        .range-control input[type="range"] {
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            background: transparent;
+        }
+        .range-control input[type="range"]::-webkit-slider-runnable-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            margin-top: -5px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
+        .range-control input[type="range"]::-moz-range-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
         input[type="text"] {
             border-radius: 8px;
             background: #8a8a8a;
@@ -250,32 +336,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">color1:</label>
-            <input type="color" id="btn_main_input0" value="#32f9fb" />
+            <input type="color" id="btn_main_input0" value="#1c0974" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input1">color2:</label>
-            <input type="color" id="btn_main_input1" value="#74e847" />
+            <input type="color" id="btn_main_input1" value="#9056ef" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input2">color3:</label>
-            <input type="color" id="btn_main_input2" value="#b19d7d" />
+            <input type="color" id="btn_main_input2" value="#e28266" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input3">color4:</label>
-            <input type="color" id="btn_main_input3" value="#307c9c" />
+            <input type="color" id="btn_main_input3" value="#cf3258" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input4">color5:</label>
-            <input type="color" id="btn_main_input4" value="#7f24ff" />
+            <input type="color" id="btn_main_input4" value="#c71355" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input5">color6:</label>
-            <input type="color" id="btn_main_input5" value="#7f8978" />
+            <input type="color" id="btn_main_input5" value="#9b9ab1" />
         </div>
         
           </div>

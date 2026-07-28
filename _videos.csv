@@ -10,7 +10,7 @@ src,size,preview,params...
 06_GiftBox_v6,393x614,,trigger:"Trigger 1",txt:text1("25%"),txt:text2("discount for 24 hours")
 River_v1,526x800,,artboard:-
 04_PulseWaveEye_v9,274x274,360x323,trigger:"Trigger 1"
-08_StressLiquid_v2,375x812,,trigger:"Trigger 1",v_num:StressPercent(86)
+08_StressLiquid_v2,375x812,,trigger:"Trigger 1",v_num:StressPercent(86:1-100)
 08_exercisemonth_v2,375x460,,
 08_stressmonth_v1,375x460,,
 08_SleepLines_v5,375x812,,trigger:"Trigger 1"
@@ -21,8 +21,8 @@ River_v1,526x800,,artboard:-
 08_Welcome_v3,375x812,,trigger:"Trigger 1"
 08_Particles_v2,375x812,,
 08_LightRay_v2,375x812,,
-09_sleeplake_v11,375x812,,trigger:"Trigger 1",v_num:LakeSize(80),v_bol:NoAnimation
-09_sleeplake_widget_v6,196x186,,trigger:"Trigger 1",v_num:LakeSize(80),v_bol:NoAnimation
+09_sleeplake_v11,375x812,,trigger:"Trigger 1",v_num:LakeSize(80:1-100),v_bol:NoAnimation
+09_sleeplake_widget_v6,196x186,,trigger:"Trigger 1",v_num:LakeSize(80:1-100),v_bol:NoAnimation
 10_GodRay_v3,393x852,,trigger:"Trigger 1"
 10_GodRay_Small_v2,393x852,,trigger:"Trigger 1"
 10_GodRay_Small2_v3,393x852,,trigger:"Trigger 1"
@@ -32,8 +32,8 @@ River_v1,526x800,,artboard:-
 12_flowerparticles_v4,300x300,,col:color1,col:color2,col:color3,col:color4,col:color5,col:color6
 11_TextAnim_v5,393x100,,trigger:"Trigger 1",txt:Text("Your Heart Rate Wave shows how last nights heart rate compares to your restful nights. We also track if you met your sleep need how long you were awake and how consistent your sleep schedule is.")
 11_HeaderTextAnim_v5,393x393,375x720,trigger:"Trigger 1",txt:Text("Yesterdays workout demands met — your solid sleep gave you that boost.")
-14_BatteryWidget_v6,196x187,,trigger:"Trigger 1",v_num:BatteryPercentFrom(10),v_num:BatteryPercentTo(80)
-13_BatteryReport_v16,346x336,,trigger:"Trigger 1",txt:CurrentTime("19:04"),txt:CurrentPercent("27%"),v_bol:12h,v_num:CurrentPosition(79.4),v_num:NightPosition(34.7),list:BarList[num:BarHeight]
+14_BatteryWidget_v6,196x187,,trigger:"Trigger 1",v_num:BatteryPercentFrom(10:1-100),v_num:BatteryPercentTo(80:1-100)
+13_BatteryReport_v16,346x336,,trigger:"Trigger 1",txt:CurrentTime("19:04"),txt:CurrentPercent("27%"),v_bol:12h,v_num:CurrentPosition(79.4:0-100),v_num:NightPosition(34.7:0-100),list:BarList[num:BarHeight]
 15_liquidanimation_v2,375x396,,trigger:"Trigger 1"
 16_DragonCat_v3,500x500,,
 16_dragoncateyes_v3,100x70,,trigger:"Trigger 1"
@@ -42,23 +42,23 @@ River_v1,526x800,,artboard:-
 19_keyhole_v7,393x852,,trigger:"Trigger 1",img:MagicImage(MagicRiver.png)
 20_StressImpact_v3,375x812,,trigger:"Trigger 1"
 21_activityhand_v2,375x812,,
-22_batteryliquid_v3,375x812,,trigger:"Trigger 1",v_num:Percent(66)
+22_batteryliquid_v3,375x812,,trigger:"Trigger 1",v_num:Percent(66:0-100)
 22_batteryliquidsleep_v3,375x812,,
 23_stressfanplus_v5,375x812,375x812,
 24_energybyny_v9,375x812,375x812,txt:text1("Nov"),txt:text2("Dec"),txt:text3("2026"),txt:textReclaim("Reclaim your energy by spring")
 25_plusesflight_v2,375x812,,txt:text
-26_stressfanimpact_v4,375x812,,v_num:percent1(12),v_num:percent2(6)
-27_stresscontainer_v3,393x518,,trigger:"Trigger 1",v_num:PercentFrom(5),v_num:PercentTo(100)
+26_stressfanimpact_v4,375x812,,v_num:percent1(12:0-100),v_num:percent2(6:0-100)
+27_stresscontainer_v3,393x518,,trigger:"Trigger 1",v_num:PercentFrom(5:0-100),v_num:PercentTo(100:0-100)
 29_plustuktuk_v2,375x812,,
 30_starsfly_v5,393x852,,trigger:"Trigger 1"
 30_starsflystack_v2,393x852,,trigger:"Trigger 1"
-31_parametricparticles_v10,380x320,,v_num:numParticles(120)
+31_parametricparticles_v10,380x320,,v_num:numParticles(120:20-300)
 contraTest_v5,375x812,
 33_healthdataaccess_v5,375x327,,note:"Scripting for particles and ScreenRu artboard for russian localization"
 34_cometpluses2_v6,375x812,,v_bol:impact
 35_scatterpluses_v4,375x812,
-36_PaywallWave_v16,375x812,,v_num:rotation(0),note:"Scripting for wave"
-37_stresscalendar_v12,325x352,375x812,v_num:daysAmount(31),v_num:delay(40),txt:percentToData("60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55"),note:"Scripting"
+36_PaywallWave_v16,375x812,,v_num:rotation(0:0-360),note:"Scripting for wave"
+37_stresscalendar_v12,325x352,375x812,v_num:daysAmount(31:1-31),v_num:delay(40:0-100),txt:percentToData("60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55"),note:"Scripting"
 38_stressvessels_v3,375x584,375x812,note:"Scripting"
 39_godraycomment_v6,393x430,,trigger:"Trigger 1",v_bol:flip
 40_energysliders_v3,375x812,
@@ -68,23 +68,23 @@ contraTest_v5,375x812,
 42_bannerparticlessandwide_v5,393x206,
 43_playerbird_v4,393x852,,note:"Scripting"
 44_particlesstars_v2,375x200,,note:"Scripting"
-45_activityring_v4,393x620,,trigger:"start",v_num:goal(35),v_num:activeMinutes(66),v_num:size2mult(1.0)
+45_activityring_v4,393x620,,trigger:"start",v_num:goal(35:5-100),v_num:activeMinutes(66:5-90),v_num:size2mult(1.0:0.3-1.0)
 46_dictationbutton_v7,393x286,,v_bol:pressed
 47_activitytags_v3,393x388,,note:"Scripting"
-48_stressbatterygraph_v11,393x852,,v_num:stressStart(15),v_num:stressNow(55),v_num:bar1(97),v_num:bar5(65),txt:duration("120 min"),txt:timeBefore("9:00am")
-49_experimentprogressbar_v4,393x80,,v_num:percent(52),txt:time("23:15"),txt:timeLeft("1 h 27 min left"),txt:text("Experiment ongoing ")
-50_energy_liquid_v3,393x450,,artboard:energy,v_num:PercentFrom(5),v_num:PercentTo(100)
-50_stress_liquid_v3,393x450,,artboard:stress,v_num:PercentFrom(5),v_num:PercentTo(100)
+48_stressbatterygraph_v11,393x852,,v_num:stressStart(15:0-100),v_num:stressNow(55:0-100),v_num:bar1(97:0-100),v_num:bar5(65:0-100),txt:duration("120 min"),txt:timeBefore("9:00am")
+49_experimentprogressbar_v4,393x80,,v_num:percent(52:0-100),txt:time("23:15"),txt:timeLeft("1 h 27 min left"),txt:text("Experiment ongoing ")
+50_energy_liquid_v3,393x450,,artboard:energy,v_num:PercentFrom(5:0-100),v_num:PercentTo(100:0-100)
+50_stress_liquid_v3,393x450,,artboard:stress,v_num:PercentFrom(5:0-100),v_num:PercentTo(100:0-100)
 51_glints_v3,256x256,256x256,note:"Scripting"
 52_tagfire_v4,393x300,393x596,txt:tag("[tag_name]"),note:"Scripting"
 52_tagliquid_v3,393x300,393x596,txt:tag("[tag_name]"),note:"Scripting"
-52_tagsnumber_v3,393x300,393x596,v_num:tagsNumber(300),note:"Scripting"
+52_tagsnumber_v3,393x300,393x596,v_num:tagsNumber(300:10-300),note:"Scripting"
 52_tagclouds_v4,393x300,393x596,txt:tag("[tag_name]")
 52_tagvessels_v3,393x300,393x596,note:"Scripting"
-53_insightcardclock_v4,393x300,393x596,v_num:hours(4),v_num:minutes(45),v_num:blueHourStart(4),v_num:blueHourEnd(8),v_num:redHourStart(0),v_num:redHourEnd(4),note:"Scripting"
-54_compass31_v4,393x393,393x480,v_num:colorNum(3),v_num:state(65),note:"Scripting"
-54_compass31_comb_v4,500x500,393x852,artboard:combined,v_num:state1(96),v_num:state2(80),v_num:state3(20),v_num:state4(65),v_num:state5(0),v_num:state6(36),note:"Scripting"
-55_recoveryreport_v4,360x800,360x800,v_num:state(2),v_bol:plusGreat(True),v_bol:plusGood(True),v_bol:plusBad(True),note:"Scripting"
+53_insightcardclock_v4,393x300,393x596,v_num:hours(4:0-12),v_num:minutes(45:0-59),v_num:blueHourStart(4:0-12),v_num:blueHourEnd(8:0-12),v_num:redHourStart(0:0-12),v_num:redHourEnd(4:0-12),note:"Scripting"
+54_compass31_v4,393x393,393x480,v_num:colorNum(3:1-6),v_num:state(65:0-100),note:"Scripting"
+54_compass31_comb_v4,500x500,393x852,artboard:combined,v_num:state1(96:0-100),v_num:state2(80:0-100),v_num:state3(20:0-100),v_num:state4(65:0-100),v_num:state5(0:0-100),v_num:state6(36:0-100),note:"Scripting"
+55_recoveryreport_v4,360x800,360x800,v_num:state(2:0-3),v_bol:plusGreat(True),v_bol:plusGood(True),v_bol:plusBad(True),note:"Scripting"
 56_progressbar2_v3,393x80,,
 57_energyfill_v2,360x800,360x800,
 58_mountain_v3,360x800,360x800,

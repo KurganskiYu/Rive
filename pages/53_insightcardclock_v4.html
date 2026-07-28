@@ -87,6 +87,92 @@
             font-size: 1rem;
             outline: none;
         }
+        .range-control {
+            position: relative;
+            padding: 14px 0 13px;
+        }
+        .range-control::before,
+        .range-control::after {
+            position: absolute;
+            top: 19px;
+            width: 1px;
+            height: 6px;
+            background: rgb(120, 120, 120);
+            content: "";
+        }
+        .range-control::before {
+            left: 0;
+        }
+        .range-control::after {
+            right: 0;
+        }
+        .range-control output {
+            position: absolute;
+            top: 0;
+            left: var(--slider-progress);
+            transform: translateX(-50%);
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-ticks {
+            position: absolute;
+            top: 20px;
+            right: 1px;
+            left: 1px;
+            z-index: 0;
+            height: 3px;
+            background: repeating-linear-gradient(to right, transparent 0, transparent 17px, rgb(120, 120, 120) 17px, rgb(120, 120, 120) 18px);
+        }
+        .range-control .range-bound {
+            position: absolute;
+            top: 33px;
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-min {
+            left: 0;
+        }
+        .range-control .range-max {
+            right: 0;
+        }
+        .range-control input[type="range"] {
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            background: transparent;
+        }
+        .range-control input[type="range"]::-webkit-slider-runnable-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            margin-top: -5px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
+        .range-control input[type="range"]::-moz-range-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
         input[type="text"] {
             border-radius: 8px;
             background: #8a8a8a;
@@ -245,38 +331,56 @@
         <canvas id="main_canvas" width="393" height="300"></canvas>
         <div class="description">
           <div>
-            <div><a href="../riv/53_insightcardclock_v4.riv" target="_blank" style="color: white;">53 insightcardclock</a><br>Size: 393px × 300px<br>State Machine: State Machine 1<br>Artboard: main<br>Note: Scripting<br>Input: v_num:hours(4)<br>Input: v_num:minutes(45)<br>Input: v_num:blueHourStart(4)<br>Input: v_num:blueHourEnd(8)<br>Input: v_num:redHourStart(0)<br>Input: v_num:redHourEnd(4)<br></div>
+            <div><a href="../riv/53_insightcardclock_v4.riv" target="_blank" style="color: white;">53 insightcardclock</a><br>Size: 393px × 300px<br>State Machine: State Machine 1<br>Artboard: main<br>Note: Scripting<br>Input: v_num:hours(4:0-12)<br>Input: v_num:minutes(45:0-59)<br>Input: v_num:blueHourStart(4:0-12)<br>Input: v_num:blueHourEnd(8:0-12)<br>Input: v_num:redHourStart(0:0-12)<br>Input: v_num:redHourEnd(4:0-12)<br></div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               
               
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input0">hours:</label>
-            <input type="number" id="btn_main_input0" value="4" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:33.3333%;">
+            <output for="btn_main_input0">4</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input0" value="4" min="0" max="12" step="1" aria-label="hours" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">minutes:</label>
-            <input type="number" id="btn_main_input1" value="45" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:76.2712%;">
+            <output for="btn_main_input1">45</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input1" value="45" min="0" max="59" step="1" aria-label="minutes" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">59</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">blueHourStart:</label>
-            <input type="number" id="btn_main_input2" value="4" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:33.3333%;">
+            <output for="btn_main_input2">4</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input2" value="4" min="0" max="12" step="1" aria-label="blueHourStart" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input3">blueHourEnd:</label>
-            <input type="number" id="btn_main_input3" value="8" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:66.6667%;">
+            <output for="btn_main_input3">8</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input3" value="8" min="0" max="12" step="1" aria-label="blueHourEnd" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input4">redHourStart:</label>
-            <input type="number" id="btn_main_input4" value="0" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:0.0000%;">
+            <output for="btn_main_input4">0</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input4" value="0" min="0" max="12" step="1" aria-label="redHourStart" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input5">redHourEnd:</label>
-            <input type="number" id="btn_main_input5" value="4" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:33.3333%;">
+            <output for="btn_main_input5">4</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input5" value="4" min="0" max="12" step="1" aria-label="redHourEnd" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
             </div>
@@ -290,34 +394,52 @@
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input0">hours:</label>
-            <input type="number" id="btn_preview_input0" value="4" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:33.3333%;">
+            <output for="btn_preview_input0">4</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_preview_input0" value="4" min="0" max="12" step="1" aria-label="hours" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input1">minutes:</label>
-            <input type="number" id="btn_preview_input1" value="45" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:76.2712%;">
+            <output for="btn_preview_input1">45</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_preview_input1" value="45" min="0" max="59" step="1" aria-label="minutes" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">59</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input2">blueHourStart:</label>
-            <input type="number" id="btn_preview_input2" value="4" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:33.3333%;">
+            <output for="btn_preview_input2">4</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_preview_input2" value="4" min="0" max="12" step="1" aria-label="blueHourStart" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input3">blueHourEnd:</label>
-            <input type="number" id="btn_preview_input3" value="8" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:66.6667%;">
+            <output for="btn_preview_input3">8</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_preview_input3" value="8" min="0" max="12" step="1" aria-label="blueHourEnd" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input4">redHourStart:</label>
-            <input type="number" id="btn_preview_input4" value="0" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:0.0000%;">
+            <output for="btn_preview_input4">0</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_preview_input4" value="0" min="0" max="12" step="1" aria-label="redHourStart" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_preview_input5">redHourEnd:</label>
-            <input type="number" id="btn_preview_input5" value="4" style="width:60px;" />
+        <div class="range-control" style="width:395px;--slider-progress:33.3333%;">
+            <output for="btn_preview_input5">4</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_preview_input5" value="4" min="0" max="12" step="1" aria-label="redHourEnd" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">12</span>
         </div>
         
           </div>
@@ -339,7 +461,15 @@ const mainRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Main_0.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_0.value);
-        if (!isNaN(val)) vmi.number("hours").value = val;
+                if (!isNaN(val)) vmi.number("hours").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_0.value);
@@ -350,7 +480,15 @@ const mainRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Main_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_1.value);
-        if (!isNaN(val)) vmi.number("minutes").value = val;
+                if (!isNaN(val)) vmi.number("minutes").value = val;
+                const rangeControl = inputFieldBtn_Main_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_1.value;
+                    const minimum = Number(inputFieldBtn_Main_1.min);
+                    const maximum = Number(inputFieldBtn_Main_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_1.value);
@@ -361,7 +499,15 @@ const mainRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Main_2.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_2.value);
-        if (!isNaN(val)) vmi.number("blueHourStart").value = val;
+                if (!isNaN(val)) vmi.number("blueHourStart").value = val;
+                const rangeControl = inputFieldBtn_Main_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_2.value;
+                    const minimum = Number(inputFieldBtn_Main_2.min);
+                    const maximum = Number(inputFieldBtn_Main_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_2.value);
@@ -372,7 +518,15 @@ const mainRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Main_3.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_3.value);
-        if (!isNaN(val)) vmi.number("blueHourEnd").value = val;
+                if (!isNaN(val)) vmi.number("blueHourEnd").value = val;
+                const rangeControl = inputFieldBtn_Main_3.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_3.value;
+                    const minimum = Number(inputFieldBtn_Main_3.min);
+                    const maximum = Number(inputFieldBtn_Main_3.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_3.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_3.value);
@@ -383,7 +537,15 @@ const mainRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Main_4.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_4.value);
-        if (!isNaN(val)) vmi.number("redHourStart").value = val;
+                if (!isNaN(val)) vmi.number("redHourStart").value = val;
+                const rangeControl = inputFieldBtn_Main_4.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_4.value;
+                    const minimum = Number(inputFieldBtn_Main_4.min);
+                    const maximum = Number(inputFieldBtn_Main_4.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_4.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_4.value);
@@ -394,7 +556,15 @@ const mainRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Main_5.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_5.value);
-        if (!isNaN(val)) vmi.number("redHourEnd").value = val;
+                if (!isNaN(val)) vmi.number("redHourEnd").value = val;
+                const rangeControl = inputFieldBtn_Main_5.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_5.value;
+                    const minimum = Number(inputFieldBtn_Main_5.min);
+                    const maximum = Number(inputFieldBtn_Main_5.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_5.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_5.value);
@@ -416,7 +586,15 @@ const previewRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_0.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_0.value);
-        if (!isNaN(val)) vmi.number("hours").value = val;
+                if (!isNaN(val)) vmi.number("hours").value = val;
+                const rangeControl = inputFieldBtn_Preview_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_0.value;
+                    const minimum = Number(inputFieldBtn_Preview_0.min);
+                    const maximum = Number(inputFieldBtn_Preview_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_0.value);
@@ -427,7 +605,15 @@ const previewRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_1.value);
-        if (!isNaN(val)) vmi.number("minutes").value = val;
+                if (!isNaN(val)) vmi.number("minutes").value = val;
+                const rangeControl = inputFieldBtn_Preview_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_1.value;
+                    const minimum = Number(inputFieldBtn_Preview_1.min);
+                    const maximum = Number(inputFieldBtn_Preview_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_1.value);
@@ -438,7 +624,15 @@ const previewRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_2.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_2.value);
-        if (!isNaN(val)) vmi.number("blueHourStart").value = val;
+                if (!isNaN(val)) vmi.number("blueHourStart").value = val;
+                const rangeControl = inputFieldBtn_Preview_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_2.value;
+                    const minimum = Number(inputFieldBtn_Preview_2.min);
+                    const maximum = Number(inputFieldBtn_Preview_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_2.value);
@@ -449,7 +643,15 @@ const previewRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_3.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_3.value);
-        if (!isNaN(val)) vmi.number("blueHourEnd").value = val;
+                if (!isNaN(val)) vmi.number("blueHourEnd").value = val;
+                const rangeControl = inputFieldBtn_Preview_3.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_3.value;
+                    const minimum = Number(inputFieldBtn_Preview_3.min);
+                    const maximum = Number(inputFieldBtn_Preview_3.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_3.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_3.value);
@@ -460,7 +662,15 @@ const previewRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_4.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_4.value);
-        if (!isNaN(val)) vmi.number("redHourStart").value = val;
+                if (!isNaN(val)) vmi.number("redHourStart").value = val;
+                const rangeControl = inputFieldBtn_Preview_4.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_4.value;
+                    const minimum = Number(inputFieldBtn_Preview_4.min);
+                    const maximum = Number(inputFieldBtn_Preview_4.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_4.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_4.value);
@@ -471,7 +681,15 @@ const previewRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Preview_5.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Preview_5.value);
-        if (!isNaN(val)) vmi.number("redHourEnd").value = val;
+                if (!isNaN(val)) vmi.number("redHourEnd").value = val;
+                const rangeControl = inputFieldBtn_Preview_5.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_5.value;
+                    const minimum = Number(inputFieldBtn_Preview_5.min);
+                    const maximum = Number(inputFieldBtn_Preview_5.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_5.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Preview_5.value);

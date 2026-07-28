@@ -87,6 +87,92 @@
             font-size: 1rem;
             outline: none;
         }
+        .range-control {
+            position: relative;
+            padding: 14px 0 13px;
+        }
+        .range-control::before,
+        .range-control::after {
+            position: absolute;
+            top: 19px;
+            width: 1px;
+            height: 6px;
+            background: rgb(120, 120, 120);
+            content: "";
+        }
+        .range-control::before {
+            left: 0;
+        }
+        .range-control::after {
+            right: 0;
+        }
+        .range-control output {
+            position: absolute;
+            top: 0;
+            left: var(--slider-progress);
+            transform: translateX(-50%);
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-ticks {
+            position: absolute;
+            top: 20px;
+            right: 1px;
+            left: 1px;
+            z-index: 0;
+            height: 3px;
+            background: repeating-linear-gradient(to right, transparent 0, transparent 17px, rgb(120, 120, 120) 17px, rgb(120, 120, 120) 18px);
+        }
+        .range-control .range-bound {
+            position: absolute;
+            top: 33px;
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-min {
+            left: 0;
+        }
+        .range-control .range-max {
+            right: 0;
+        }
+        .range-control input[type="range"] {
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            background: transparent;
+        }
+        .range-control input[type="range"]::-webkit-slider-runnable-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            margin-top: -5px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
+        .range-control input[type="range"]::-moz-range-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
         input[type="text"] {
             border-radius: 8px;
             background: #8a8a8a;
@@ -252,9 +338,12 @@
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn0_input0">percent:</label>
-            <input type="number" id="btn0_input0" value="52" style="width:60px;" />
+        <div class="range-control" style="width:202px;--slider-progress:52.0000%;">
+            <output for="btn0_input0">52</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn0_input0" value="52" min="0" max="100" step="1" aria-label="percent" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
@@ -291,24 +380,36 @@
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input0">stressStart:</label>
-            <input type="number" id="btn1_input0" value="15" style="width:60px;" />
+        <div class="range-control" style="width:202px;--slider-progress:15.0000%;">
+            <output for="btn1_input0">15</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn1_input0" value="15" min="0" max="100" step="1" aria-label="stressStart" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input1">stressNow:</label>
-            <input type="number" id="btn1_input1" value="55" style="width:60px;" />
+        <div class="range-control" style="width:202px;--slider-progress:55.0000%;">
+            <output for="btn1_input1">55</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn1_input1" value="55" min="0" max="100" step="1" aria-label="stressNow" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input2">bar1:</label>
-            <input type="number" id="btn1_input2" value="97" style="width:60px;" />
+        <div class="range-control" style="width:202px;--slider-progress:97.0000%;">
+            <output for="btn1_input2">97</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn1_input2" value="97" min="0" max="100" step="1" aria-label="bar1" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input3">bar5:</label>
-            <input type="number" id="btn1_input3" value="65" style="width:60px;" />
+        <div class="range-control" style="width:202px;--slider-progress:65.0000%;">
+            <output for="btn1_input3">65</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn1_input3" value="65" min="0" max="100" step="1" aria-label="bar5" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
@@ -379,19 +480,28 @@
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input0">goal:</label>
-            <input type="number" id="btn4_input0" value="35" style="width:60px;" />
+        <div class="range-control" style="width:202px;--slider-progress:31.5789%;">
+            <output for="btn4_input0">35</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn4_input0" value="35" min="5" max="100" step="1" aria-label="goal" />
+            <span class="range-bound range-min">5</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input1">activeMinutes:</label>
-            <input type="number" id="btn4_input1" value="66" style="width:60px;" />
+        <div class="range-control" style="width:202px;--slider-progress:71.7647%;">
+            <output for="btn4_input1">66</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn4_input1" value="66" min="5" max="90" step="1" aria-label="activeMinutes" />
+            <span class="range-bound range-min">5</span>
+            <span class="range-bound range-max">90</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input2">size2mult:</label>
-            <input type="number" id="btn4_input2" value="1.0" style="width:60px;" />
+        <div class="range-control" style="width:202px;--slider-progress:100.0000%;">
+            <output for="btn4_input2">1.0</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn4_input2" value="1.0" min="0.3" max="1.0" step="0.1" aria-label="size2mult" />
+            <span class="range-bound range-min">0.3</span>
+            <span class="range-bound range-max">1.0</span>
         </div>
         
         </div>
@@ -461,7 +571,15 @@ const r0 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn0_0.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn0_0.value);
-        if (!isNaN(val)) vmi.number("percent").value = val;
+                if (!isNaN(val)) vmi.number("percent").value = val;
+                const rangeControl = inputFieldBtn0_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_0.value;
+                    const minimum = Number(inputFieldBtn0_0.min);
+                    const maximum = Number(inputFieldBtn0_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn0_0.value);
@@ -505,7 +623,15 @@ const r1 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn1_0.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn1_0.value);
-        if (!isNaN(val)) vmi.number("stressStart").value = val;
+                if (!isNaN(val)) vmi.number("stressStart").value = val;
+                const rangeControl = inputFieldBtn1_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn1_0.value;
+                    const minimum = Number(inputFieldBtn1_0.min);
+                    const maximum = Number(inputFieldBtn1_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn1_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn1_0.value);
@@ -516,7 +642,15 @@ const r1 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn1_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn1_1.value);
-        if (!isNaN(val)) vmi.number("stressNow").value = val;
+                if (!isNaN(val)) vmi.number("stressNow").value = val;
+                const rangeControl = inputFieldBtn1_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn1_1.value;
+                    const minimum = Number(inputFieldBtn1_1.min);
+                    const maximum = Number(inputFieldBtn1_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn1_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn1_1.value);
@@ -527,7 +661,15 @@ const r1 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn1_2.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn1_2.value);
-        if (!isNaN(val)) vmi.number("bar1").value = val;
+                if (!isNaN(val)) vmi.number("bar1").value = val;
+                const rangeControl = inputFieldBtn1_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn1_2.value;
+                    const minimum = Number(inputFieldBtn1_2.min);
+                    const maximum = Number(inputFieldBtn1_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn1_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn1_2.value);
@@ -538,7 +680,15 @@ const r1 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn1_3.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn1_3.value);
-        if (!isNaN(val)) vmi.number("bar5").value = val;
+                if (!isNaN(val)) vmi.number("bar5").value = val;
+                const rangeControl = inputFieldBtn1_3.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn1_3.value;
+                    const minimum = Number(inputFieldBtn1_3.min);
+                    const maximum = Number(inputFieldBtn1_3.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn1_3.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn1_3.value);
@@ -607,7 +757,15 @@ const r4 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn4_0.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn4_0.value);
-        if (!isNaN(val)) vmi.number("goal").value = val;
+                if (!isNaN(val)) vmi.number("goal").value = val;
+                const rangeControl = inputFieldBtn4_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn4_0.value;
+                    const minimum = Number(inputFieldBtn4_0.min);
+                    const maximum = Number(inputFieldBtn4_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn4_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn4_0.value);
@@ -618,7 +776,15 @@ const r4 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn4_1.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn4_1.value);
-        if (!isNaN(val)) vmi.number("activeMinutes").value = val;
+                if (!isNaN(val)) vmi.number("activeMinutes").value = val;
+                const rangeControl = inputFieldBtn4_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn4_1.value;
+                    const minimum = Number(inputFieldBtn4_1.min);
+                    const maximum = Number(inputFieldBtn4_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn4_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn4_1.value);
@@ -629,7 +795,15 @@ const r4 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn4_2.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn4_2.value);
-        if (!isNaN(val)) vmi.number("size2mult").value = val;
+                if (!isNaN(val)) vmi.number("size2mult").value = val;
+                const rangeControl = inputFieldBtn4_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn4_2.value;
+                    const minimum = Number(inputFieldBtn4_2.min);
+                    const maximum = Number(inputFieldBtn4_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn4_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn4_2.value);

@@ -87,6 +87,92 @@
             font-size: 1rem;
             outline: none;
         }
+        .range-control {
+            position: relative;
+            padding: 14px 0 13px;
+        }
+        .range-control::before,
+        .range-control::after {
+            position: absolute;
+            top: 19px;
+            width: 1px;
+            height: 6px;
+            background: rgb(120, 120, 120);
+            content: "";
+        }
+        .range-control::before {
+            left: 0;
+        }
+        .range-control::after {
+            right: 0;
+        }
+        .range-control output {
+            position: absolute;
+            top: 0;
+            left: var(--slider-progress);
+            transform: translateX(-50%);
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-ticks {
+            position: absolute;
+            top: 20px;
+            right: 1px;
+            left: 1px;
+            z-index: 0;
+            height: 3px;
+            background: repeating-linear-gradient(to right, transparent 0, transparent 17px, rgb(120, 120, 120) 17px, rgb(120, 120, 120) 18px);
+        }
+        .range-control .range-bound {
+            position: absolute;
+            top: 33px;
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-min {
+            left: 0;
+        }
+        .range-control .range-max {
+            right: 0;
+        }
+        .range-control input[type="range"] {
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            background: transparent;
+        }
+        .range-control input[type="range"]::-webkit-slider-runnable-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            margin-top: -5px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
+        .range-control input[type="range"]::-moz-range-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
         input[type="text"] {
             border-radius: 8px;
             background: #8a8a8a;
@@ -244,13 +330,16 @@
       <canvas id="main_canvas" width="375" height="812"></canvas>
       <div class="description">
         <div>
-          <div><a href="../riv/08_StressLiquid_v2.riv" target="_blank" style="color: white;">08 StressLiquid</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: Trigger 1<br>Input: v_num:StressPercent(86)<br></div>
+          <div><a href="../riv/08_StressLiquid_v2.riv" target="_blank" style="color: white;">08 StressLiquid</a><br>Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: Trigger 1<br>Input: v_num:StressPercent(86:1-100)<br></div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             <button id="btn_main" class="rive-btn">Trigger</button>
             
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input0">StressPercent:</label>
-            <input type="number" id="btn_main_input0" value="86" style="width:60px;" />
+        <div class="range-control" style="width:377px;--slider-progress:85.8586%;">
+            <output for="btn_main_input0">86</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input0" value="86" min="1" max="100" step="1" aria-label="StressPercent" />
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
           </div>
@@ -272,7 +361,15 @@ const mainRive = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn_Main_0.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn_Main_0.value);
-        if (!isNaN(val)) vmi.number("StressPercent").value = val;
+                if (!isNaN(val)) vmi.number("StressPercent").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn_Main_0.value);
