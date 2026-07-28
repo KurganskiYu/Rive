@@ -1,0 +1,1099 @@
+import os
+import csv
+import re
+from functools import lru_cache
+import shutil
+import time
+import random
+import json
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+head_html_path = os.path.join(script_dir, "head.html")
+SELECTED_CSV_PATTERN = re.compile(r"^_videos_selected([1-9]\d*)\.csv$")
+
+
+def find_selected_catalogs():
+    """Return numbered selected CSV files paired with their output folders."""
+    catalogs = []
+    for filename in os.listdir(script_dir):
+        match = SELECTED_CSV_PATTERN.fullmatch(filename)
+        if match:
+            number = int(match.group(1))
+            catalogs.append((number, os.path.join(script_dir, filename), os.path.join(script_dir, f"selected{number}")))
+    return sorted(catalogs)
+
+# Cache file reads
+@lru_cache(maxsize=1)
+def get_html_head():
+    with open(head_html_path, "r", encoding="utf-8") as head_file:
+        return head_file.read()
+
+# NEW: Helper to inject the BG button on every page
+def get_bg_button_html(is_root=True):
+    riv_path = "bg_button.riv" if is_root else "../bg_button.riv"
+    # CSS for top-right fixed position
+    html = f'''
+    <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {{
+        function updatePageBg(mode) {{
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {{
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            }} else if (mode === 2) {{
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }} else if (mode === 3) {{
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }}
+        }}
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {{
+            updatePageBg(parseInt(storedBg));
+        }}
+
+        const bgRive = new rive.Rive({{
+          src: "{riv_path}",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {{
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {{
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {{
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {{
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    }};
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {{
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {{
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }}
+                    }}, 200);
+                }}
+            }}
+          }} }}); 
+      }})();
+    </script>
+    '''
+    return html
+
+html_foot = """
+    </div>
+</body>
+</html>
+"""
+
+SCALE_TO_200PX = True
+ANIMATIONS_PER_PAGE = 8
+
+def parse_size(size_str):
+    if not size_str:
+        return 0, 0
+    try:
+        parts = size_str.lower().split('x')
+        return int(parts[0]), int(parts[1])
+    except:
+        return 0, 0
+
+DEFAULT_STATE_MACHINE = "State Machine 1"
+DEFAULT_ARTBOARD = "main"
+SCALAR_KEYS = {"sm": "state_machine", "artboard": "artboard", "trigger": "trigger", "note": "note"}
+INPUT_TYPE_PREFIXES = {"num", "bol", "v_num", "v_bol", "txt", "col", "img", "list"}
+
+def strip_quotes(value):
+    value = value.strip()
+    if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
+        return value[1:-1]
+    return value
+
+def load_csv_rows(csv_file_path):
+    """Parse the flexible CSV format: src,size,preview,token1,token2,...
+    Tokens are freeform `key:value` pairs, any order/count, omitted when unused.
+    Recognized scalar keys: sm, artboard, trigger, note.
+    Recognized input-type prefixes: num, bol, v_num, v_bol, txt, col, img, list.
+    """
+    with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
+        lines = csvfile.read().splitlines()
+
+    if not lines:
+        return []
+
+    rows = []
+    for raw_line in lines[1:]:
+        if not raw_line.strip():
+            continue
+
+        values = next(csv.reader([raw_line]))
+        row = {
+            "src": values[0].strip() if len(values) > 0 else "",
+            "size": values[1].strip() if len(values) > 1 else "",
+            "preview": values[2].strip() if len(values) > 2 else "",
+            "inputs": [],
+        }
+        if row["src"].lower().endswith(".riv"):
+            row["src"] = row["src"][:-4]
+
+        for raw_token in values[3:]:
+            token = raw_token.strip()
+            if not token:
+                continue
+            key, sep, rest = token.partition(":")
+            if not sep:
+                print(f"Warning: ignoring malformed token '{token}' for {row['src']}")
+                continue
+            if key in SCALAR_KEYS:
+                value = strip_quotes(rest)
+                if key == "artboard" and value == "-":
+                    # Explicitly omit the artboard (e.g. old .riv files with a single,
+                    # arbitrarily-named artboard) - let Rive use the file's only/default artboard.
+                    value = ""
+                row[SCALAR_KEYS[key]] = value
+            elif key in INPUT_TYPE_PREFIXES:
+                row["inputs"].append(token)
+            else:
+                print(f"Warning: unknown key '{key}' in token '{token}' for {row['src']}")
+
+        rows.append(row)
+
+    return rows
+
+def scale_dimensions(width, height):
+    if not SCALE_TO_200PX:
+        return width, height
+    try:
+        width, height = int(width), int(height)
+        if width == 200:
+            return width, height
+        scale = 200 / width
+        return 200, int(round(height * scale))
+    except (ValueError, TypeError):
+        return width, height
+
+@lru_cache(maxsize=128)
+def get_display_name(src):
+    name = os.path.splitext(src)[0]
+    name = re.sub(r'_v\d+[a-zA-Z0-9]*', '', name)
+    return name.replace('_', ' ')
+
+def sanitize_for_filename(value):
+    value = (value or "").strip()
+    value = re.sub(r'[^A-Za-z0-9_-]+', '_', value)
+    return value.strip('_') or "artboard"
+
+def assign_page_stems(rows):
+    """Compute a unique detail-page filename stem for every row.
+    Multiple rows can share the same .riv src (e.g. different artboards in one
+    file) - each still needs its own detail page, otherwise later rows
+    overwrite the page generated by earlier ones.
+    """
+    src_counts = {}
+    for row in rows:
+        src_counts[row["src"]] = src_counts.get(row["src"], 0) + 1
+
+    seen_stems = set()
+    for row in rows:
+        stem = row["src"]
+        if src_counts[row["src"]] > 1:
+            suffix = sanitize_for_filename(row.get("artboard") or row.get("trigger") or "default")
+            base_stem = f'{row["src"]}--{suffix}'
+            stem = base_stem
+            n = 2
+            while stem in seen_stems:
+                stem = f'{base_stem}-{n}'
+                n += 1
+        row["page_stem"] = stem
+        seen_stems.add(stem)
+
+def make_main_link(row):
+    page_name = row.get("page_stem", row["src"]) + ".html"
+    display_name = get_display_name(row["src"])
+    return f'<a href="{page_name}" style="color: #464646;">{display_name}</a>'
+
+def parse_input_type_name(input_value):
+    """Parse input value and return type and name"""
+    if not input_value:
+        return None, None
+    input_value = input_value.strip()
+    if ":" in input_value:
+        t, n = input_value.split(":", 1)
+        return t.strip(), n.strip()
+    return "num", input_value.strip()
+
+def parse_input_spec(input_value):
+    """Return (type, name_without_default, default_value_or_None). Supports name(default)."""
+    t, name = parse_input_type_name(input_value)
+    default = None
+    if name and name.endswith(")") and "(" in name:
+        m = re.match(r'^(.*)\(([^()]*)\)\s*$', name)
+        if m:
+            name = m.group(1).strip()
+            default = m.group(2).strip()
+            # Strip wrapping quotes if present (e.g. from name("value"))
+            if len(default) >= 2 and ((default.startswith('"') and default.endswith('"')) or (default.startswith("'") and default.endswith("'"))):
+                default = default[1:-1]
+    return t, name, default
+
+def parse_number_range(value):
+    """Return (current, minimum, maximum, step) for current:min-max syntax."""
+    if not value:
+        return None
+    match = re.fullmatch(r'\s*(-?(?:\d+(?:\.\d*)?|\.\d+))\s*:\s*(-?(?:\d+(?:\.\d*)?|\.\d+))\s*-\s*(-?(?:\d+(?:\.\d*)?|\.\d+))\s*', value)
+    if not match:
+        return None
+
+    current, minimum, maximum = match.groups()
+    precision = max(
+        len(part.partition(".")[2]) if "." in part else 0
+        for part in (current, minimum, maximum)
+    )
+    step = "1" if precision == 0 else f"{10 ** -precision:.{precision}f}"
+    return current, minimum, maximum, step
+
+# NEW helpers for list input
+def camel_to_words(name: str):
+    return re.sub(r'(?<!^)(?=[A-Z])', '', name).strip()
+
+def parse_list_inner(spec: str):
+    """
+    Parse inner spec like num:BarHeight (only num supported now).
+    Returns (inner_type, inner_name)
+    """
+    spec = spec.strip()
+    if ":" in spec:
+        t, n = spec.split(":", 1)
+        return t.strip(), n.strip()
+    return "num", spec
+
+def random_color_hex():
+    # Returns a random color in #RRGGBB format
+    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+
+def parse_input_field(input_value, input_idx, button_id, control_width=None):
+    input_type, input_name, default_val = parse_input_spec(input_value)
+    # Handle list:Name[innerSpec] -> no direct HTML, skip rendering
+    if input_type == "list":
+        return ""
+    if not input_type:
+        return ""
+    input_id = f"{button_id}_input{input_idx}"
+    # Each label+input in a row
+    if input_type == "num":
+        value_attr = default_val if default_val is not None else "80"
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="number" id="{input_id}" value="{value_attr}" style="width:50px;" />
+        </div>
+        '''
+    elif input_type == "v_num":  # NEW: view model number variable
+        value_attr = default_val if default_val is not None else "0"
+        number_range = parse_number_range(default_val)
+        if number_range:
+            current, minimum, maximum, step = number_range
+            minimum_value = float(minimum)
+            maximum_value = float(maximum)
+            progress = 0 if maximum_value == minimum_value else (float(current) - minimum_value) / (maximum_value - minimum_value) * 100
+            slider_width = (control_width + 2) if control_width is not None else 180
+            return f'''
+        <div class="range-control" style="width:{slider_width}px;--slider-progress:{progress:.4f}%;">
+            <output for="{input_id}">{current}</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="{input_id}" value="{current}" min="{minimum}" max="{maximum}" step="{step}" aria-label="{input_name}" />
+            <span class="range-bound range-min">{minimum}</span>
+            <span class="range-bound range-max">{maximum}</span>
+        </div>
+        '''
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="number" id="{input_id}" value="{value_attr}" style="width:60px;" />
+        </div>
+        '''
+    elif input_type == "txt":
+        value_attr = default_val if default_val is not None else ""
+        value_attr = value_attr.replace('"', '&quot;')
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="text" id="{input_id}" value="{value_attr}" style="width:90px;" />
+        </div>
+        '''
+    elif input_type == "bol":
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="checkbox" id="{input_id}" />
+        </div>
+        '''
+    elif input_type == "col":
+        default_color = random_color_hex()
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="color" id="{input_id}" value="{default_color}" />
+        </div>
+        '''
+    elif input_type == "v_bol":  # NEW: view model boolean variable
+        # Support defaults via name(true)/name(false)
+        checked = False
+        if default_val is not None:
+            if str(default_val).strip().lower() in ("true", "1", "yes", "y", "on", "checked"):
+                checked = True
+        checked_attr = " checked" if checked else ""
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="checkbox" id="{input_id}"{checked_attr} />
+        </div>
+        '''
+    elif input_type == "img":  # NEW: ViewModel image variable (expects filename in img folder)
+        value_attr = default_val if default_val is not None else ""
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <input type="text" id="{input_id}" placeholder="filename.ext" value="{value_attr}" style="width:100px;" />
+        </div>
+        '''
+    return ""
+
+def make_input_js(input_type, input_name, input_id, obj_var, field_var):
+    js_configs = {
+        "num": f'''
+    // Initial assignment from default value (if any)
+    let initVal = parseFloat({field_var}.value);
+    if (!isNaN(initVal)) {obj_var}.value = initVal;
+    {field_var}.addEventListener("input", () => {{
+      let val = parseFloat({field_var}.value);
+      if (!isNaN(val)) {obj_var}.value = val;
+    }});''',
+        "bol": f'''
+    {obj_var}.value = {field_var}.checked;
+    {field_var}.addEventListener("change", () => {{
+      {obj_var}.value = {field_var}.checked;
+    }});''',
+        "txt": f'''
+    {obj_var}.value = {field_var}.value;
+    {field_var}.addEventListener("input", () => {{
+      {obj_var}.value = {field_var}.value;
+    }});''',
+        "col": f'''
+    let hex = {field_var}.value.replace("#", "");
+    {obj_var}.value = parseInt("FF" + hex.toUpperCase(), 16);
+    {field_var}.addEventListener("input", () => {{
+      let hex = {field_var}.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      {obj_var}.value = argb;
+    }});'''
+    }
+    return js_configs.get(input_type, "")
+
+def collect_input_fields(row, button_id, control_width):
+    """Collect all input fields for a row"""
+    inputs_html = []
+    for i, input_value in enumerate(row.get("inputs", [])):
+        inputs_html.append(parse_input_field(input_value, i, button_id, control_width))
+    return "".join(inputs_html)
+
+def make_main_canvas(idx, row):
+    canvas_id = f"canvas{idx}"
+    button_id = f"btn{idx}"
+    width, height = scale_dimensions(row["width"], row["height"])
+
+    # Build button HTML
+    button_html = ""
+    if row.get("trigger"):
+        button_html = f'<button id="{button_id}" class="rive-btn" style="margin-left:auto;">Trigger</button>'
+
+    desc = f'''
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+                    <div>{make_main_link(row)}</div>
+          {button_html}
+        </div>
+      </div>
+    '''
+    return f'''
+      <div class="animation-container">
+        <canvas id="{canvas_id}" width="{width}" height="{height}"></canvas>
+        <div class="description">
+          {desc}
+        </div>
+      </div>
+    '''
+
+def generate_rive_config(idx, row):
+    """Generate Rive configuration for a canvas"""
+    canvas_id = f"canvas{idx}"
+    src = f"riv/{row['src']}"
+    state_machine = row.get("state_machine", "")
+    artboard = row.get("artboard", "")
+    
+    artboard_line = f'artboard: "{artboard}",' if artboard else ""
+    state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
+    
+    return f'''
+const r{idx} = new rive.Rive({{
+  src: "{src}",
+  canvas: document.getElementById("{canvas_id}"),
+  autoplay: true, autoBind: true,{artboard_line}{state_machine_line}
+  onLoad: () => {{
+    r{idx}.resizeDrawingSurfaceToCanvas();
+  }},
+}});
+'''
+
+def generate_text_input_js(row, prefix, rive_var, include_vmi=False, is_root=True):
+    """Generate JS for ViewModel-based inputs (txt, col, v_num, v_bol, img, list)."""
+    js_parts = []
+    has_vmi_inputs = False
+    for i, input_value in enumerate(row.get("inputs", [])):
+        input_type, name_spec, _default = parse_input_spec(input_value)
+        input_name = name_spec  # ensure name available for non-list types
+        list_match = None
+        if input_type == "list" and name_spec:
+            list_match = re.match(r'^([^\[]+)\[(.+)\]$', name_spec)
+        input_id = f"{prefix}_input{i}"
+        field_var = f"inputField{prefix.title()}_{i}"
+        if input_type in ("txt", "col", "v_num", "v_bol", "img"):
+            has_vmi_inputs = True
+            if input_type == "txt":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      vmi.string("{input_name}").value = {field_var}.value;
+      {field_var}.addEventListener("input", () => {{
+        vmi.string("{input_name}").value = {field_var}.value;
+      }});
+    }}
+""")
+            elif input_type == "col":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      // Set initial color value
+      let hex = {field_var}.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("{input_name}").value = argb;
+      {field_var}.addEventListener("input", () => {{
+        let hex = {field_var}.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("{input_name}").value = argb;
+      }});
+    }}
+""")
+            elif input_type == "v_num":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      // Update numeric ViewModel variable
+      {field_var}.addEventListener("input", () => {{
+        let val = parseFloat({field_var}.value);
+                if (!isNaN(val)) vmi.number("{input_name}").value = val;
+                const rangeControl = {field_var}.closest(".range-control");
+                if (rangeControl) {{
+                    rangeControl.querySelector("output").value = {field_var}.value;
+                    const minimum = Number({field_var}.min);
+                    const maximum = Number({field_var}.max);
+                    const progress = maximum === minimum ? 0 : ({field_var}.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${{progress}}%`);
+                }}
+      }});
+      // Set initial value if present
+      let initVal = parseFloat({field_var}.value);
+      if (!isNaN(initVal)) vmi.number("{input_name}").value = initVal;
+    }}
+""")
+            elif input_type == "v_bol":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      // Update boolean ViewModel variable
+      {field_var}.addEventListener("change", () => {{
+        vmi.boolean("{input_name}").value = {field_var}.checked;
+      }});
+      // Set initial value
+      vmi.boolean("{input_name}").value = {field_var}.checked;
+    }}
+""")
+            elif input_type == "img":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      const imgProp_{prefix}_{i} = vmi.image("{input_name}");
+      let lastImg_{prefix}_{i} = null;
+    const imgBase_{prefix}_{i} = {json.dumps("img/" if is_root else "../img/")};
+
+      async function loadImg_{prefix}_{i}(filename) {{
+        const name = (filename || "").trim();
+        if (!name) return;
+        try {{
+          const res = await fetch(imgBase_{prefix}_{i} + name);
+          const bytes = new Uint8Array(await res.arrayBuffer());
+          if (!rive.decodeImage) {{
+            console.warn("rive.decodeImage is not available.");
+            return;
+          }}
+          const decoded = await rive.decodeImage(bytes);
+          if (lastImg_{prefix}_{i}) lastImg_{prefix}_{i}.unref();
+          imgProp_{prefix}_{i}.value = decoded;
+          lastImg_{prefix}_{i} = decoded;
+        }} catch (e) {{
+          console.error("Failed to load image:", name, e);
+        }}
+      }}
+
+      {field_var}.addEventListener("change", () => {{
+        loadImg_{prefix}_{i}({field_var}.value);
+      }});
+
+      // Initial load if a default or preset value exists
+      if ({field_var}.value && {field_var}.value.trim() !== "") {{
+        loadImg_{prefix}_{i}({field_var}.value);
+      }}
+    }}
+""")
+        elif input_type == "list" and list_match:
+            has_vmi_inputs = True
+            list_name_raw = list_match.group(1).strip()
+            inner_spec = list_match.group(2).strip()
+            inner_t, inner_name = parse_list_inner(inner_spec)
+            list_name_vmi = camel_to_words(list_name_raw)
+            if inner_t == "num":
+                js_parts.append(f"""    if (vmi) {{
+      const listVar_{i} = vmi.list("{list_name_vmi}");
+      if (listVar_{i}) {{
+        for (let idx = 0; idx < listVar_{i}.length; idx++) {{
+          const inst = listVar_{i}.instanceAt(idx);
+          if (inst) {{
+            // Demo assignment; replace with real data source as needed
+            //const randomVal = Math.random() * 100;
+            //inst.number("{inner_name}").value = randomVal;
+          }}
+        }}
+      }}
+    }}
+""")
+    if has_vmi_inputs or include_vmi:
+        js_parts.insert(0, f"    const vmi = {rive_var}.viewModelInstance;\n")
+    return "".join(js_parts)
+
+def generate_image_asset_loader(row, is_root):
+    """Generate the loader required for externally packaged Rive image assets."""
+    for input_value in row.get("inputs", []):
+        input_type, _input_name, default_value = parse_input_spec(input_value)
+        if input_type == "img" and default_value:
+            image_path = ("img/" if is_root else "../img/") + default_value
+            return f'''    assetLoader: (asset) => {{
+      if (!asset.isImage) return false;
+      fetch({json.dumps(image_path)})
+        .then(response => response.arrayBuffer())
+        .then(bytes => rive.decodeImage(new Uint8Array(bytes)))
+        .then(image => {{
+          asset.setRenderImage(image);
+          image.unref();
+        }})
+        .catch(error => console.error("Failed to load Rive image asset:", error));
+      return true;
+    }},
+'''
+    return ""
+
+def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, input_prefix, row, is_root=True):
+        artboard_line = f'artboard: "{artboard}",' if artboard else ""
+        state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
+        asset_loader = generate_image_asset_loader(row, is_root)
+        js = [f'''
+const {var_name} = new rive.Rive({{
+    src: "{src}",
+    canvas: document.getElementById("{canvas_id}"),
+    autoplay: true, autoBind: true,{artboard_line}{state_machine_line}
+{asset_loader}
+    onLoad: () => {{
+        {var_name}.resizeDrawingSurfaceToCanvas();
+''']
+
+        js.append(generate_text_input_js(row, input_prefix, var_name, include_vmi=bool(trigger)))
+
+        if state_machine:
+                js.append(f'    const inputs = {var_name}.stateMachineInputs("{state_machine}");\n')
+                if trigger:
+                        js.append(f'''    document.getElementById("{input_prefix}").addEventListener("click", () => {{
+        if (vmi) {{
+            const vmTrigger = vmi.trigger("{trigger}");
+            if (vmTrigger) {{
+                vmTrigger.trigger();
+                return;
+            }}
+        }}
+        const smTrigger = inputs.find(input => input.name === "{trigger}");
+        if (smTrigger) {{
+            smTrigger.fire();
+        }} else {{
+            console.warn("Trigger not found (view model or state machine): {trigger}");
+        }}
+    }});
+''')
+
+                for i, input_value in enumerate(row.get("inputs", [])):
+                        input_type, input_name, _default = parse_input_spec(input_value)
+                        if input_type in ("txt", "col", "v_num", "v_bol", "list"):
+                                continue
+                        input_id = f"{input_prefix}_input{i}"
+                        field_var = f'inputField_{input_prefix}_{i}'
+                        obj_var = f'inputObj_{input_prefix}_{i}'
+                        js.append(f'    let {field_var} = document.getElementById("{input_id}");\n')
+                        js.append(f'    let {obj_var} = inputs.find(input => input.name === "{input_name}");\n')
+                        if input_type == "num":
+                                js.append(f'''    if ({field_var} && {obj_var}) {{
+            let val = parseFloat({field_var}.value);
+            if (!isNaN(val)) {obj_var}.value = val;
+            {field_var}.addEventListener("input", () => {{
+                let val = parseFloat({field_var}.value);
+                if (!isNaN(val)) {obj_var}.value = val;
+            }});
+        }}
+''')
+                        elif input_type == "bol":
+                                js.append(f'''    if ({field_var} && {obj_var}) {{
+            {obj_var}.value = {field_var}.checked;
+            {field_var}.addEventListener("change", () => {{
+                {obj_var}.value = {field_var}.checked;
+            }});
+        }}
+''')
+        js.append('  },\n});\n')
+        return "".join(js)
+
+def make_script(rows):
+    script_parts = ["<script>\n"]
+    riv_prefix = "../"
+    for idx, row in enumerate(rows):
+        canvas_id = f"canvas{idx}"
+        button_id = f"btn{idx}"
+        src = f"{riv_prefix}riv/{row['src']}.riv"
+        artboard = row.get("artboard", "")
+        state_machine = row.get("state_machine", "")
+        trigger = row.get("trigger", "")
+
+        # Use unified function
+        script_parts.append(
+            generate_rive_js_block(
+                var_name=f"r{idx}",
+                canvas_id=canvas_id,
+                src=src,
+                artboard=artboard,
+                state_machine=state_machine,
+                trigger=trigger,
+                input_prefix=button_id,
+                row=row,
+                is_root=False
+            )
+        )
+
+    # Canvas sizing and auto-trigger
+    script_parts.append('''
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+
+// Fire all triggers 3 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 3000);
+</script>
+''')
+    return "".join(script_parts)
+
+def make_description_html(row):
+    display_name = get_display_name(row["src"])
+    # Compose size from width and height
+    size_str = f'{row["width"]}px × {row["height"]}px'
+    parts = [
+        f'<a href="../riv/{row["src"]}.riv" target="_blank" style="color: white;">{display_name}</a><br>',
+        f'Size: {size_str}<br>',
+        f'State Machine: {row["state_machine"]}<br>'
+    ]
+
+    optional_fields = [
+        ("artboard", "Artboard"),
+        ("trigger", "Trigger"),
+        ("note", "Note"),
+    ]
+
+    for field, label in optional_fields:
+        if row.get(field):
+            parts.append(f'{label}: {row[field]}<br>')
+
+    # Add all non-empty inputs
+    for input_value in row.get("inputs", []):
+        parts.append(f'Input: {input_value}<br>')
+
+    return "".join(parts)
+
+def make_animation_inputs(row, prefix, control_width):
+    """Generate animation input HTML"""
+    html_parts = []
+    for i, input_value in enumerate(row.get("inputs", [])):
+        html_parts.append(parse_input_field(input_value, i, prefix, control_width))
+    return "".join(html_parts)
+
+def check_preview_exists(row):
+    """Check if preview file exists"""
+    src_base = os.path.splitext(row["src"])[0]
+    preview_file = f'{src_base}_preview.riv'
+    preview_path = os.path.join(script_dir, "riv", preview_file)
+    return f'../riv/{preview_file}' if os.path.exists(preview_path) else None
+
+def make_animation_page(row, output_dir):
+    page_name = row.get("page_stem", row["src"]) + ".html"
+    main_rive = f'../riv/{row["src"]}.riv'
+    
+    # Determine preview configuration
+    preview_ctx = None
+    if row.get("preview") and row["preview"].strip():
+        # Internal preview
+        w, h = parse_size(row["preview"])
+        preview_ctx = {
+            "src": main_rive,
+            "width": w,
+            "height": h,
+            "artboard": "preview" 
+        }
+    else:
+        # External preview check
+        preview_path = check_preview_exists(row)
+        if preview_path:
+            preview_ctx = {
+                "src": preview_path,
+                "width": row["width"],
+                "height": row["height"],
+                "artboard": row.get("artboard", "")
+            }
+
+    html_parts = [get_html_head()]
+    # Selected pages are one directory below the shared assets.
+    html_parts.append(get_bg_button_html(is_root=False))
+    
+    # Generate main content based on preview existence
+    if preview_ctx:
+        html_parts.append(generate_dual_animation_html(row, preview_ctx))
+    else:
+        html_parts.append(generate_single_animation_html(row))
+    
+    # Generate JavaScript
+    html_parts.append(generate_animation_js(row, main_rive, preview_ctx))
+    html_parts.append(html_foot)
+    
+    # Write file
+    with open(os.path.join(output_dir, page_name), "w", encoding="utf-8") as f:
+        f.write("".join(html_parts))
+
+def generate_single_animation_html(row):
+    """Generate HTML for single animation layout"""
+    return f'''
+    <div class="animation-container">
+      <canvas id="main_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
+      <div class="description">
+        <div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
+            {make_animation_inputs(row, "btn_main", row["width"])}
+          </div>
+        </div>
+      </div>
+    </div>
+'''
+
+def generate_dual_animation_html(row, preview_ctx):
+    """Generate HTML for dual animation layout"""
+    return f'''
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
+      <div class="animation-container">
+        <canvas id="main_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
+        <div class="description">
+          <div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+              {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
+              {make_animation_inputs(row, "btn_main", row["width"])}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="preview_canvas" width="{preview_ctx["width"]}" height="{preview_ctx["height"]}"></canvas>
+        <div class="description">
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            {'<button id="btn_preview" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
+            {make_animation_inputs(row, "btn_preview", preview_ctx["width"])}
+          </div>
+        </div>
+      </div>
+    </div>
+'''
+
+def generate_animation_js(row, main_rive, preview_ctx):
+    """Generate JavaScript for animation page"""
+    js_parts = ['<script>\n']
+
+    # Main animation
+    asset_loader = generate_image_asset_loader(row, is_root=False)
+    js_parts.append(f'''
+const mainRive = new rive.Rive({{
+  src: "{main_rive}",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true,autoBind: true,{f' artboard: "{row["artboard"]}",' if row.get("artboard") else ""}{f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""}
+{asset_loader}
+  onLoad: () => {{
+    mainRive.resizeDrawingSurfaceToCanvas();
+''')
+    
+    # Handle text inputs in onLoad for main
+    js_parts.append(generate_text_input_js(row, "btn_main", "mainRive", is_root=False))
+    js_parts.append('  },\n});\n')
+    
+    # Main animation controls
+    js_parts.append(generate_animation_controls_js(row, "main", "mainRive"))
+    
+    # Preview animation if exists
+    if preview_ctx:
+        js_parts.append(generate_preview_animation_js(row, preview_ctx))
+    
+    js_parts.append('''
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+</script>
+''')
+    
+    return "".join(js_parts)
+
+def generate_animation_controls_js(row, canvas_type, rive_var):
+    """Generate animation control JavaScript"""
+    js_parts = []
+
+    # Trigger handling: try ViewModel trigger first, fall back to state machine trigger
+    if row.get("trigger"):
+        js_parts.append(f'''
+document.getElementById("btn_{canvas_type}").addEventListener("click", () => {{
+    const vmi = {rive_var}.viewModelInstance;
+    if (vmi) {{
+        const vmTrigger = vmi.trigger("{row["trigger"]}");
+        if (vmTrigger) {{
+            vmTrigger.trigger();
+            return;
+        }}
+    }}
+    const inputs = {rive_var}.stateMachineInputs("{row["state_machine"]}");
+    const smTrigger = inputs && inputs.find(input => input.name === "{row["trigger"]}");
+    if (smTrigger) {{
+        smTrigger.fire();
+    }} else {{
+        console.warn("Trigger not found (view model or state machine): {row["trigger"]}");
+    }}
+}} );
+''')
+
+    # Input handling for num/bool
+    for i, input_value in enumerate(row.get("inputs", [])):
+        input_type, input_name, _default = parse_input_spec(input_value)
+        if input_type in ["num", "bol"]:
+            input_id = f"btn_{canvas_type}_input{i}"
+            js_parts.append(f'''
+let inputField{canvas_type.title()}_{i} = document.getElementById("{input_id}");
+{rive_var}.on("load", () => {{
+  const inputs = {rive_var}.stateMachineInputs("{row["state_machine"]}");
+  let inputObj{canvas_type.title()}_{i} = inputs.find(input => input.name === "{input_name}");
+  if (inputField{canvas_type.title()}_{i} && inputObj{canvas_type.title()}_{i}) {{
+{make_input_js(input_type, input_name, input_id, f"inputObj{canvas_type.title()}_{i}", f"inputField{canvas_type.title()}_{i}")}
+  }}
+}});
+''')
+        # v_num, txt, col, img, list skipped (handled via ViewModel)
+    return "".join(js_parts)
+
+def generate_preview_animation_js(row, preview_ctx):
+    """Generate preview animation JavaScript"""
+    artboard_val = preview_ctx.get("artboard", "")
+    artboard_prop = f' artboard: "{artboard_val}",' if artboard_val else ""
+    asset_loader = generate_image_asset_loader(row, is_root=False)
+
+    js_parts = [f'''
+const previewRive = new rive.Rive({{
+  src: "{preview_ctx["src"]}",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, autoBind: true,{artboard_prop}{f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""}
+{asset_loader}
+  onLoad: () => {{
+    previewRive.resizeDrawingSurfaceToCanvas();
+''']
+    
+    js_parts.append(generate_text_input_js(row, "btn_preview", "previewRive", is_root=False))
+    js_parts.append('  },\n});\n')
+    js_parts.append(generate_animation_controls_js(row, "preview", "previewRive"))
+    
+    return "".join(js_parts)
+
+def make_pagination_buttons(current_page, total_pages):
+    buttons = []
+    for i in range(total_pages):
+        label = str(i + 1)
+        
+        if i == current_page:
+            buttons.append(f'<button class="rive-btn" style="background:#e0e0e0;color:#333;">{label}</button>')
+        else:
+            target = "index.html" if i == 0 else f"catalog-page-{i + 1}.html"
+            buttons.append(f'<a href="{target}"><button class="rive-btn">{label}</button></a>')
+    
+    return '<div style="margin: 24px 0; text-align:center;">' + " ".join(buttons) + "</div>"
+
+def write_main_page(page_rows, page_idx, total_pages, output_dir):
+    filename = os.path.join(output_dir, "index.html" if page_idx == 0 else f"catalog-page-{page_idx + 1}.html")
+    
+    with open(filename, "w", encoding="utf-8") as f:
+        content_parts = [
+            get_html_head(),
+            get_bg_button_html(is_root=False),
+            "".join(make_main_canvas(idx, row) for idx, row in enumerate(page_rows)),
+            "</div>\n",
+            make_script(page_rows),
+            make_pagination_buttons(page_idx, total_pages),
+            html_foot
+        ]
+        f.write("".join(content_parts))
+
+def copy_recent_riv_files(src_dir, dst_dir, age_seconds=300):
+    """Recursively copy .riv files less than `age_seconds` old from src_dir to dst_dir."""
+    if not src_dir or not os.path.isdir(src_dir):
+        print(f"Skip copying .riv files: source directory not found: {src_dir}")
+        return
+    os.makedirs(dst_dir, exist_ok=True)
+    now = time.time()
+    for root, _, files in os.walk(src_dir):
+        for file in files:
+            if file.lower().endswith('.riv'):
+                src_path = os.path.join(root, file)
+                if now - os.path.getmtime(src_path) < age_seconds:
+                    dst_path = os.path.join(dst_dir, file)
+                    try:
+                        shutil.copy2(src_path, dst_path)
+                        print(f"Copied {src_path} to {dst_path}")
+                    except Exception as e:
+                        print(f"Failed to copy {src_path} to {dst_path}: {e}")
+
+# NEW: Resolve cross-platform source directory (env var first, then common defaults)
+def resolve_src_dir():
+    env_path = os.environ.get("RIV_SRC_DIR")
+    if env_path and os.path.isdir(env_path):
+        return env_path
+    candidates = [
+        r"c:\Dropbox\_Job\_Welltory",  # Windows default
+        "/Users/yuri/Library/CloudStorage/Dropbox/_Job/_Welltory",  # macOS Dropbox CloudStorage
+        "/Users/yuri/Dropbox/_Job/_Welltory",  # macOS standard Dropbox
+    ]
+    for p in candidates:
+        if os.path.isdir(p):
+            return p
+    return None
+
+
+def clean_generated_html(output_dir):
+    """Remove only HTML from a selected catalog before regenerating it."""
+    os.makedirs(output_dir, exist_ok=True)
+    for filename in os.listdir(output_dir):
+        path = os.path.join(output_dir, filename)
+        if os.path.isfile(path) and filename.lower().endswith(".html"):
+            os.remove(path)
+
+
+def generate_selected_catalog(csv_file_path, output_dir):
+    clean_generated_html(output_dir)
+    rows = load_csv_rows(csv_file_path)[::-1]
+
+    for row in rows:
+        if not row.get("state_machine") or row["state_machine"].strip() == "":
+            row["state_machine"] = DEFAULT_STATE_MACHINE
+        if "artboard" not in row:
+            row["artboard"] = DEFAULT_ARTBOARD
+
+        width, height = parse_size(row.get("size"))
+        row["width"] = width
+        row["height"] = height
+
+    assign_page_stems(rows)
+
+    for row in rows:
+        make_animation_page(row, output_dir)
+
+    total_pages = max(1, (len(rows) + ANIMATIONS_PER_PAGE - 1) // ANIMATIONS_PER_PAGE)
+    for page_idx in range(total_pages):
+        start = page_idx * ANIMATIONS_PER_PAGE
+        end = start + ANIMATIONS_PER_PAGE
+        write_main_page(rows[start:end], page_idx, total_pages, output_dir)
+
+    print(f"Generated {output_dir}: {len(rows)} animation pages and {total_pages} catalog page(s).")
+
+# Main execution
+def main():
+    catalogs = find_selected_catalogs()
+    if not catalogs:
+        print("No numbered selected CSV files found.")
+        return
+
+    for _number, csv_file_path, output_dir in catalogs:
+        generate_selected_catalog(csv_file_path, output_dir)
+
+if __name__ == "__main__":
+    # Ensure destination riv folder exists
+    dest_riv_dir = os.path.join(script_dir, "riv")
+    os.makedirs(dest_riv_dir, exist_ok=True)
+
+    # Copy recent .riv files before generating HTML (cross-platform)
+    src_dir = resolve_src_dir()
+    age = int(os.environ.get("RIV_COPY_AGE_SECONDS", "300"))
+    if not src_dir:
+        print("No .riv source directory found. Set RIV_SRC_DIR to your .riv folder to enable auto-copy.")
+    copy_recent_riv_files(src_dir, dest_riv_dir, age_seconds=age)
+
+    main()

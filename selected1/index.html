@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="RiveIcon2.svg" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Apply modern font */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 10vh;
+            background-color: #000000;
+            background-image: 
+                repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%);
+            background-size: 20px 20px; /* Adjust size of the checkered pattern */
+            padding: 10px 0;
+        }
+        .animation-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 30px;
+            width: 95%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #292929; 
+            width: auto; /* Ensure the CSS width matches the HTML width */
+            height: auto; /* Ensure the CSS height matches the HTML height */
+        }
+        #bg_button_canvas {
+            border: none !important;
+        }
+        .bg-btn {
+            border: 0px;
+        }
+        .animation-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .description {
+            color: rgb(120, 120, 120);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        .animation-row {
+          display: flex;
+          gap: 32px;
+          align-items: flex-start;
+        }
+        .controls-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .controls-column > * {
+            width: max-content;
+        }
+        .rive-btn {
+            background: #646464;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 8px;
+            cursor: pointer;
+            margin-left: 0; /* Remove left margin for perfect right alignment */
+        }
+        input[type="number"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .range-control {
+            position: relative;
+            padding: 14px 0 13px;
+        }
+        .range-control::before,
+        .range-control::after {
+            position: absolute;
+            top: 19px;
+            width: 1px;
+            height: 6px;
+            background: rgb(120, 120, 120);
+            content: "";
+        }
+        .range-control::before {
+            left: 0;
+        }
+        .range-control::after {
+            right: 0;
+        }
+        .range-control output {
+            position: absolute;
+            top: 0;
+            left: var(--slider-progress);
+            transform: translateX(-50%);
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-ticks {
+            position: absolute;
+            top: 20px;
+            right: 1px;
+            left: 1px;
+            z-index: 0;
+            height: 3px;
+            background: repeating-linear-gradient(to right, transparent 0, transparent 17px, rgb(120, 120, 120) 17px, rgb(120, 120, 120) 18px);
+        }
+        .range-control .range-bound {
+            position: absolute;
+            top: 33px;
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-min {
+            left: 0;
+        }
+        .range-control .range-max {
+            right: 0;
+        }
+        .range-control input[type="range"] {
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            background: transparent;
+        }
+        .range-control input[type="range"]::-webkit-slider-runnable-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            margin-top: -5px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
+        .range-control input[type="range"]::-moz-range-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
+        input[type="text"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            outline: none;
+            accent-color: #646464;
+            appearance: none; /* Remove default checkbox style */
+            -webkit-appearance: none;
+            display: inline-block;
+            /*vertical-align: middle; */
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 6px;
+            top: 1px;
+            width: 8px;
+            height: 14px;
+            border: solid #000000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+        input[type="color"] {
+            border-radius: 8px;
+            background: #000000;
+            border: none;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            outline: none;
+            cursor: pointer;
+            /* Remove default appearance for consistency */
+            -webkit-appearance: none;
+            appearance: none;
+            /* Optional: add a subtle box-shadow for focus */
+            box-shadow: 0 0 0 0px #646464 inset;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 8px;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border-radius: 8px;
+            border: none;
+        }
+        input[type="color"]:focus {
+            box-shadow: 0 0 0 2px #464646;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+
+
+    <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+      <div class="animation-container">
+        <canvas id="canvas0" width="200" height="312"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="06_GiftBox_v6.html" style="color: #464646;">06 GiftBox</a></div>
+          <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="434"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="59_paymentcomplete_v4.html" style="color: #464646;">59 paymentcomplete</a></div>
+          
+        </div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas2" width="200" height="444"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="58_mountain_v3.html" style="color: #464646;">58 mountain</a></div>
+          
+        </div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas3" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="53_insightcardclock_v4.html" style="color: #464646;">53 insightcardclock</a></div>
+          
+        </div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas4" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="04_EyeNew_v6.html" style="color: #464646;">04 EyeNew</a></div>
+          
+        </div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas5" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="52_tagclouds_v4.html" style="color: #464646;">52 tagclouds</a></div>
+          
+        </div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas6" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="52_tagliquid_v3.html" style="color: #464646;">52 tagliquid</a></div>
+          
+        </div>
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas7" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="52_tagfire_v4.html" style="color: #464646;">52 tagfire</a></div>
+          
+        </div>
+      </div>
+    
+        </div>
+      </div>
+    </div>
+<script>
+
+const r0 = new rive.Rive({
+    src: "../riv/06_GiftBox_v6.riv",
+    canvas: document.getElementById("canvas0"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
+    let inputFieldBtn0_0 = document.getElementById("btn0_input0");
+    if (inputFieldBtn0_0 && vmi) {
+      vmi.string("text1").value = inputFieldBtn0_0.value;
+      inputFieldBtn0_0.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn0_0.value;
+      });
+    }
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      vmi.string("text2").value = inputFieldBtn0_1.value;
+      inputFieldBtn0_1.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn0_1.value;
+      });
+    }
+    const inputs = r0.stateMachineInputs("State Machine 1");
+    document.getElementById("btn0").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
+            }
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
+  },
+});
+
+const r1 = new rive.Rive({
+    src: "../riv/59_paymentcomplete_v4.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
+    const inputs = r1.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r2 = new rive.Rive({
+    src: "../riv/58_mountain_v3.riv",
+    canvas: document.getElementById("canvas2"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r2.resizeDrawingSurfaceToCanvas();
+    const inputs = r2.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r3 = new rive.Rive({
+    src: "../riv/53_insightcardclock_v4.riv",
+    canvas: document.getElementById("canvas3"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r3.resizeDrawingSurfaceToCanvas();
+    const vmi = r3.viewModelInstance;
+    let inputFieldBtn3_0 = document.getElementById("btn3_input0");
+    if (inputFieldBtn3_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn3_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn3_0.value);
+                if (!isNaN(val)) vmi.number("hours").value = val;
+                const rangeControl = inputFieldBtn3_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn3_0.value;
+                    const minimum = Number(inputFieldBtn3_0.min);
+                    const maximum = Number(inputFieldBtn3_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn3_0.value);
+      if (!isNaN(initVal)) vmi.number("hours").value = initVal;
+    }
+    let inputFieldBtn3_1 = document.getElementById("btn3_input1");
+    if (inputFieldBtn3_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn3_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn3_1.value);
+                if (!isNaN(val)) vmi.number("minutes").value = val;
+                const rangeControl = inputFieldBtn3_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn3_1.value;
+                    const minimum = Number(inputFieldBtn3_1.min);
+                    const maximum = Number(inputFieldBtn3_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn3_1.value);
+      if (!isNaN(initVal)) vmi.number("minutes").value = initVal;
+    }
+    let inputFieldBtn3_2 = document.getElementById("btn3_input2");
+    if (inputFieldBtn3_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn3_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn3_2.value);
+                if (!isNaN(val)) vmi.number("blueHourStart").value = val;
+                const rangeControl = inputFieldBtn3_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn3_2.value;
+                    const minimum = Number(inputFieldBtn3_2.min);
+                    const maximum = Number(inputFieldBtn3_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn3_2.value);
+      if (!isNaN(initVal)) vmi.number("blueHourStart").value = initVal;
+    }
+    let inputFieldBtn3_3 = document.getElementById("btn3_input3");
+    if (inputFieldBtn3_3 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn3_3.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn3_3.value);
+                if (!isNaN(val)) vmi.number("blueHourEnd").value = val;
+                const rangeControl = inputFieldBtn3_3.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn3_3.value;
+                    const minimum = Number(inputFieldBtn3_3.min);
+                    const maximum = Number(inputFieldBtn3_3.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_3.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn3_3.value);
+      if (!isNaN(initVal)) vmi.number("blueHourEnd").value = initVal;
+    }
+    let inputFieldBtn3_4 = document.getElementById("btn3_input4");
+    if (inputFieldBtn3_4 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn3_4.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn3_4.value);
+                if (!isNaN(val)) vmi.number("redHourStart").value = val;
+                const rangeControl = inputFieldBtn3_4.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn3_4.value;
+                    const minimum = Number(inputFieldBtn3_4.min);
+                    const maximum = Number(inputFieldBtn3_4.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_4.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn3_4.value);
+      if (!isNaN(initVal)) vmi.number("redHourStart").value = initVal;
+    }
+    let inputFieldBtn3_5 = document.getElementById("btn3_input5");
+    if (inputFieldBtn3_5 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn3_5.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn3_5.value);
+                if (!isNaN(val)) vmi.number("redHourEnd").value = val;
+                const rangeControl = inputFieldBtn3_5.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn3_5.value;
+                    const minimum = Number(inputFieldBtn3_5.min);
+                    const maximum = Number(inputFieldBtn3_5.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_5.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn3_5.value);
+      if (!isNaN(initVal)) vmi.number("redHourEnd").value = initVal;
+    }
+    const inputs = r3.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r4 = new rive.Rive({
+    src: "../riv/04_EyeNew_v6.riv",
+    canvas: document.getElementById("canvas4"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r4.resizeDrawingSurfaceToCanvas();
+    const inputs = r4.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r5 = new rive.Rive({
+    src: "../riv/52_tagclouds_v4.riv",
+    canvas: document.getElementById("canvas5"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r5.resizeDrawingSurfaceToCanvas();
+    const vmi = r5.viewModelInstance;
+    let inputFieldBtn5_0 = document.getElementById("btn5_input0");
+    if (inputFieldBtn5_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn5_0.value;
+      inputFieldBtn5_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn5_0.value;
+      });
+    }
+    const inputs = r5.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r6 = new rive.Rive({
+    src: "../riv/52_tagliquid_v3.riv",
+    canvas: document.getElementById("canvas6"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r6.resizeDrawingSurfaceToCanvas();
+    const vmi = r6.viewModelInstance;
+    let inputFieldBtn6_0 = document.getElementById("btn6_input0");
+    if (inputFieldBtn6_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn6_0.value;
+      inputFieldBtn6_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn6_0.value;
+      });
+    }
+    const inputs = r6.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r7 = new rive.Rive({
+    src: "../riv/52_tagfire_v4.riv",
+    canvas: document.getElementById("canvas7"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r7.resizeDrawingSurfaceToCanvas();
+    const vmi = r7.viewModelInstance;
+    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
+    if (inputFieldBtn7_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn7_0.value;
+      inputFieldBtn7_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn7_0.value;
+      });
+    }
+    const inputs = r7.stateMachineInputs("State Machine 1");
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  canvas.style.width = canvas.width + "px";
+  canvas.style.height = canvas.height + "px";
+});
+
+// Fire all triggers 3 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 3000);
+</script>
+<div style="margin: 24px 0; text-align:center;"><button class="rive-btn" style="background:#e0e0e0;color:#333;">1</button> <a href="catalog-page-2.html"><button class="rive-btn">2</button></a> <a href="catalog-page-3.html"><button class="rive-btn">3</button></a> <a href="catalog-page-4.html"><button class="rive-btn">4</button></a> <a href="catalog-page-5.html"><button class="rive-btn">5</button></a> <a href="catalog-page-6.html"><button class="rive-btn">6</button></a> <a href="catalog-page-7.html"><button class="rive-btn">7</button></a></div>
+    </div>
+</body>
+</html>
