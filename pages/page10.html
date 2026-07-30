@@ -327,7 +327,22 @@
     </script>
     
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="304"></canvas>
+        <canvas id="canvas0" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="04_PulseWaveEye_v9.html" style="color: #464646;">04 PulseWaveEye</a></div>
+          <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="304"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -342,25 +357,25 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="312"></canvas>
+        <canvas id="canvas2" width="200" height="312"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
           <div><a href="06_GiftBox_v6.html" style="color: #464646;">06 GiftBox</a></div>
-          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input0">text1:</label>
-            <input type="text" id="btn1_input0" value="25%" style="width:90px;" />
+            <label for="btn2_input0">text1:</label>
+            <input type="text" id="btn2_input0" value="25%" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input1">text2:</label>
-            <input type="text" id="btn1_input1" value="discount for 24 hours" style="width:90px;" />
+            <label for="btn2_input1">text2:</label>
+            <input type="text" id="btn2_input1" value="discount for 24 hours" style="width:90px;" />
         </div>
         
         </div>
@@ -371,7 +386,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="434"></canvas>
+        <canvas id="canvas3" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -386,7 +401,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="200"></canvas>
+        <canvas id="canvas4" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -401,7 +416,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="200"></canvas>
+        <canvas id="canvas5" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -416,7 +431,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="200"></canvas>
+        <canvas id="canvas6" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -431,28 +446,13 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="200"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="03_loaders_v3--EyeLoader.html" style="color: #464646;">03 loaders</a></div>
-          <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
         <canvas id="canvas7" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="03_loaders_v3--CircleLoader.html" style="color: #464646;">03 loaders</a></div>
-          
+          <div><a href="03_loaders_v3--EyeLoader.html" style="color: #464646;">03 loaders</a></div>
+          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
       </div>
@@ -463,40 +463,15 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/River_v1.riv",
+    src: "../riv/04_PulseWaveEye_v9.riv",
     canvas: document.getElementById("canvas0"),
-    autoplay: true, autoBind: true, stateMachines: "State Machine 1",
-
-    onLoad: () => {
-        r0.resizeDrawingSurfaceToCanvas();
-    const inputs = r0.stateMachineInputs("State Machine 1");
-  },
-});
-
-const r1 = new rive.Rive({
-    src: "../riv/06_GiftBox_v6.riv",
-    canvas: document.getElementById("canvas1"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
-        r1.resizeDrawingSurfaceToCanvas();
-    const vmi = r1.viewModelInstance;
-    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
-    if (inputFieldBtn1_0 && vmi) {
-      vmi.string("text1").value = inputFieldBtn1_0.value;
-      inputFieldBtn1_0.addEventListener("input", () => {
-        vmi.string("text1").value = inputFieldBtn1_0.value;
-      });
-    }
-    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
-    if (inputFieldBtn1_1 && vmi) {
-      vmi.string("text2").value = inputFieldBtn1_1.value;
-      inputFieldBtn1_1.addEventListener("input", () => {
-        vmi.string("text2").value = inputFieldBtn1_1.value;
-      });
-    }
-    const inputs = r1.stateMachineInputs("State Machine 1");
-    document.getElementById("btn1").addEventListener("click", () => {
+        r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
+    const inputs = r0.stateMachineInputs("State Machine 1");
+    document.getElementById("btn0").addEventListener("click", () => {
         if (vmi) {
             const vmTrigger = vmi.trigger("Trigger 1");
             if (vmTrigger) {
@@ -514,19 +489,60 @@ const r1 = new rive.Rive({
   },
 });
 
+const r1 = new rive.Rive({
+    src: "../riv/River_v1.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true, stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
+    const inputs = r1.stateMachineInputs("State Machine 1");
+  },
+});
+
 const r2 = new rive.Rive({
-    src: "../riv/01_NightDay_v9.riv",
+    src: "../riv/06_GiftBox_v6.riv",
     canvas: document.getElementById("canvas2"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
+    let inputFieldBtn2_0 = document.getElementById("btn2_input0");
+    if (inputFieldBtn2_0 && vmi) {
+      vmi.string("text1").value = inputFieldBtn2_0.value;
+      inputFieldBtn2_0.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn2_0.value;
+      });
+    }
+    let inputFieldBtn2_1 = document.getElementById("btn2_input1");
+    if (inputFieldBtn2_1 && vmi) {
+      vmi.string("text2").value = inputFieldBtn2_1.value;
+      inputFieldBtn2_1.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn2_1.value;
+      });
+    }
     const inputs = r2.stateMachineInputs("State Machine 1");
+    document.getElementById("btn2").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
+            }
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/04_PulseWave_full-circle_v7.riv",
+    src: "../riv/01_NightDay_v9.riv",
     canvas: document.getElementById("canvas3"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -537,9 +553,9 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/03_loaders_v3.riv",
+    src: "../riv/04_PulseWave_full-circle_v7.riv",
     canvas: document.getElementById("canvas4"),
-    autoplay: true, autoBind: true,artboard: "WaveLoader", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
@@ -550,7 +566,7 @@ const r4 = new rive.Rive({
 const r5 = new rive.Rive({
     src: "../riv/03_loaders_v3.riv",
     canvas: document.getElementById("canvas5"),
-    autoplay: true, autoBind: true,artboard: "SpiralLoader", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "WaveLoader", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r5.resizeDrawingSurfaceToCanvas();
@@ -561,13 +577,24 @@ const r5 = new rive.Rive({
 const r6 = new rive.Rive({
     src: "../riv/03_loaders_v3.riv",
     canvas: document.getElementById("canvas6"),
-    autoplay: true, autoBind: true,artboard: "EyeLoader", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "SpiralLoader", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r6.resizeDrawingSurfaceToCanvas();
-    const vmi = r6.viewModelInstance;
     const inputs = r6.stateMachineInputs("State Machine 1");
-    document.getElementById("btn6").addEventListener("click", () => {
+  },
+});
+
+const r7 = new rive.Rive({
+    src: "../riv/03_loaders_v3.riv",
+    canvas: document.getElementById("canvas7"),
+    autoplay: true, autoBind: true,artboard: "EyeLoader", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r7.resizeDrawingSurfaceToCanvas();
+    const vmi = r7.viewModelInstance;
+    const inputs = r7.stateMachineInputs("State Machine 1");
+    document.getElementById("btn7").addEventListener("click", () => {
         if (vmi) {
             const vmTrigger = vmi.trigger("Trigger 1");
             if (vmTrigger) {
@@ -582,17 +609,6 @@ const r6 = new rive.Rive({
             console.warn("Trigger not found (view model or state machine): Trigger 1");
         }
     });
-  },
-});
-
-const r7 = new rive.Rive({
-    src: "../riv/03_loaders_v3.riv",
-    canvas: document.getElementById("canvas7"),
-    autoplay: true, autoBind: true,artboard: "CircleLoader", stateMachines: "State Machine 1",
-
-    onLoad: () => {
-        r7.resizeDrawingSurfaceToCanvas();
-    const inputs = r7.stateMachineInputs("State Machine 1");
   },
 });
 

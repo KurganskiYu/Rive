@@ -23,7 +23,8 @@ River_v1,526x800,,artboard:-
 08_LightRay_v2,375x812,,
 09_sleeplake_v11,375x812,,trigger:"Trigger 1",v_num:LakeSize(80:1-100),v_bol:NoAnimation
 09_sleeplake_widget_v6,196x186,,trigger:"Trigger 1",v_num:LakeSize(80:1-100),v_bol:NoAnimation
-10_GodRay_v3,393x852,,trigger:"Trigger 1"
+10_GodRay_v4,393x852,,artboard:"Ray1",trigger:"Trigger 1"
+10_GodRay_v4,393x852,,artboard:"Ray2",trigger:"Trigger 1"
 10_GodRay_Small_v2,393x852,,trigger:"Trigger 1"
 10_GodRay_Small2_v3,393x852,,trigger:"Trigger 1"
 10_GodRay_Pack_p1_v2,393x852,,trigger:"Trigger 1",v_bol:Flip
@@ -85,7 +86,7 @@ contraTest_v5,375x812,
 54_compass31_v4,393x393,393x480,v_num:colorNum(3:1-6),v_num:state(65:0-100),note:"Scripting"
 54_compass31_comb_v4,500x500,393x852,artboard:combined,v_num:state1(96:0-100),v_num:state2(80:0-100),v_num:state3(20:0-100),v_num:state4(65:0-100),v_num:state5(0:0-100),v_num:state6(36:0-100),note:"Scripting"
 55_recoveryreport_v4,360x800,360x800,v_num:state(2:0-3),v_bol:plusGreat(True),v_bol:plusGood(True),v_bol:plusBad(True),note:"Scripting"
-56_progressbar2_v3,393x80,,
+56_progressbar2_v3,393x80,,v_num:percent(52:0-100)
 57_energyfill_v2,360x800,360x800,
 58_mountain_v3,360x800,360x800,
 59_paymentcomplete_v4,393x852,393x852,
