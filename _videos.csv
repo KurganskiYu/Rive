@@ -58,7 +58,7 @@ contraTest_v5,375x812,
 33_healthdataaccess_v5,375x327,,note:"Scripting for particles and ScreenRu artboard for russian localization"
 34_cometpluses2_v6,375x812,,v_bol:impact
 35_scatterpluses_v4,375x812,
-36_PaywallWave_v16,375x812,,v_num:rotation(0:0-360),note:"Scripting for wave"
+36_PaywallWave_v17,375x812,,v_num:rotation(0:0-360),note:"Scripting for wave"
 37_stresscalendar_v12,325x352,375x812,v_num:daysAmount(31:1-31),v_num:delay(40:0-100),txt:percentToData("60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55"),note:"Scripting"
 38_stressvessels_v3,375x584,375x812,note:"Scripting"
 39_godraycomment_v6,393x430,,trigger:"Trigger 1",v_bol:flip
