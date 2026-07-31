@@ -332,7 +332,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="03_loaders_v3--CircleLoader.html" style="color: #464646;">03 loaders</a></div>
+          <div><a href="03_loaders_v3--SpiralLoader.html" style="color: #464646;">03 loaders</a></div>
           
         </div>
         
@@ -347,6 +347,36 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="03_loaders_v3--EyeLoader.html" style="color: #464646;">03 loaders</a></div>
+          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas2" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="03_loaders_v3--CircleLoader.html" style="color: #464646;">03 loaders</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas3" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
           <div><a href="04_New_v2.html" style="color: #464646;">04 New</a></div>
           
         </div>
@@ -357,7 +387,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="200"></canvas>
+        <canvas id="canvas4" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -376,7 +406,7 @@
 const r0 = new rive.Rive({
     src: "../riv/03_loaders_v3.riv",
     canvas: document.getElementById("canvas0"),
-    autoplay: true, autoBind: true,artboard: "CircleLoader", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "SpiralLoader", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
@@ -385,24 +415,62 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/04_New_v2.riv",
+    src: "../riv/03_loaders_v3.riv",
     canvas: document.getElementById("canvas1"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "EyeLoader", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
+    const vmi = r1.viewModelInstance;
     const inputs = r1.stateMachineInputs("State Machine 1");
+    document.getElementById("btn1").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
+            }
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
   },
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/04_EyeNew_v6.riv",
+    src: "../riv/03_loaders_v3.riv",
     canvas: document.getElementById("canvas2"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "CircleLoader", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
     const inputs = r2.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r3 = new rive.Rive({
+    src: "../riv/04_New_v2.riv",
+    canvas: document.getElementById("canvas3"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r3.resizeDrawingSurfaceToCanvas();
+    const inputs = r3.stateMachineInputs("State Machine 1");
+  },
+});
+
+const r4 = new rive.Rive({
+    src: "../riv/04_EyeNew_v6.riv",
+    canvas: document.getElementById("canvas4"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r4.resizeDrawingSurfaceToCanvas();
+    const inputs = r4.stateMachineInputs("State Machine 1");
   },
 });
 
