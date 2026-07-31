@@ -326,41 +326,54 @@
       })();
     </script>
     
-    <div class="animation-container">
-      <canvas id="main_canvas" width="300" height="300"></canvas>
-      <div class="description">
-        <div>
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
+      <div class="animation-container">
+        <canvas id="main_canvas" width="375" height="812"></canvas>
+        <div class="description">
+          <div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+              
+              
+        <div class="range-control" style="width:377px;--slider-progress:12.0000%;">
+            <output for="btn_main_input0">12</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input0" value="12" min="0" max="100" step="1" aria-label="percent1" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:377px;--slider-progress:6.0000%;">
+            <output for="btn_main_input1">6</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input1" value="6" min="0" max="100" step="1" aria-label="percent2" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="preview_canvas" width="375" height="812"></canvas>
+        <div class="description">
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input0">color1:</label>
-            <input type="color" id="btn_main_input0" value="#3683e8" />
+        <div class="range-control" style="width:377px;--slider-progress:12.0000%;">
+            <output for="btn_preview_input0">12</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_preview_input0" value="12" min="0" max="100" step="1" aria-label="percent1" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input1">color2:</label>
-            <input type="color" id="btn_main_input1" value="#7df922" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input2">color3:</label>
-            <input type="color" id="btn_main_input2" value="#8039ec" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input3">color4:</label>
-            <input type="color" id="btn_main_input3" value="#fea208" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input4">color5:</label>
-            <input type="color" id="btn_main_input4" value="#114fd6" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input5">color6:</label>
-            <input type="color" id="btn_main_input5" value="#e44815" />
+        <div class="range-control" style="width:377px;--slider-progress:6.0000%;">
+            <output for="btn_preview_input1">6</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_preview_input1" value="6" min="0" max="100" step="1" aria-label="percent2" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
           </div>
@@ -370,7 +383,7 @@
 <script>
 
 const mainRive = new rive.Rive({
-  src: "../riv/12_flowerparticles_v4.riv",
+  src: "../riv/26_stressfanimpact_v4.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
 
@@ -379,75 +392,90 @@ const mainRive = new rive.Rive({
     const vmi = mainRive.viewModelInstance;
     let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
     if (inputFieldBtn_Main_0 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn_Main_0.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color1").value = argb;
+      // Update numeric ViewModel variable
       inputFieldBtn_Main_0.addEventListener("input", () => {
-        let hex = inputFieldBtn_Main_0.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color1").value = argb;
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+                if (!isNaN(val)) vmi.number("percent1").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("percent1").value = initVal;
     }
     let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
     if (inputFieldBtn_Main_1 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn_Main_1.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color2").value = argb;
+      // Update numeric ViewModel variable
       inputFieldBtn_Main_1.addEventListener("input", () => {
-        let hex = inputFieldBtn_Main_1.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color2").value = argb;
+        let val = parseFloat(inputFieldBtn_Main_1.value);
+                if (!isNaN(val)) vmi.number("percent2").value = val;
+                const rangeControl = inputFieldBtn_Main_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_1.value;
+                    const minimum = Number(inputFieldBtn_Main_1.min);
+                    const maximum = Number(inputFieldBtn_Main_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_1.value);
+      if (!isNaN(initVal)) vmi.number("percent2").value = initVal;
     }
-    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
-    if (inputFieldBtn_Main_2 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn_Main_2.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color3").value = argb;
-      inputFieldBtn_Main_2.addEventListener("input", () => {
-        let hex = inputFieldBtn_Main_2.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color3").value = argb;
+  },
+});
+
+const previewRive = new rive.Rive({
+  src: "../riv/26_stressfanimpact_v4_preview.riv",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+
+  onLoad: () => {
+    previewRive.resizeDrawingSurfaceToCanvas();
+    const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_0.value);
+                if (!isNaN(val)) vmi.number("percent1").value = val;
+                const rangeControl = inputFieldBtn_Preview_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_0.value;
+                    const minimum = Number(inputFieldBtn_Preview_0.min);
+                    const maximum = Number(inputFieldBtn_Preview_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_0.value);
+      if (!isNaN(initVal)) vmi.number("percent1").value = initVal;
     }
-    let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
-    if (inputFieldBtn_Main_3 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn_Main_3.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color4").value = argb;
-      inputFieldBtn_Main_3.addEventListener("input", () => {
-        let hex = inputFieldBtn_Main_3.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color4").value = argb;
+    let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
+    if (inputFieldBtn_Preview_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_1.value);
+                if (!isNaN(val)) vmi.number("percent2").value = val;
+                const rangeControl = inputFieldBtn_Preview_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_1.value;
+                    const minimum = Number(inputFieldBtn_Preview_1.min);
+                    const maximum = Number(inputFieldBtn_Preview_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
-    }
-    let inputFieldBtn_Main_4 = document.getElementById("btn_main_input4");
-    if (inputFieldBtn_Main_4 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn_Main_4.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color5").value = argb;
-      inputFieldBtn_Main_4.addEventListener("input", () => {
-        let hex = inputFieldBtn_Main_4.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color5").value = argb;
-      });
-    }
-    let inputFieldBtn_Main_5 = document.getElementById("btn_main_input5");
-    if (inputFieldBtn_Main_5 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn_Main_5.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color6").value = argb;
-      inputFieldBtn_Main_5.addEventListener("input", () => {
-        let hex = inputFieldBtn_Main_5.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color6").value = argb;
-      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_1.value);
+      if (!isNaN(initVal)) vmi.number("percent2").value = initVal;
     }
   },
 });
