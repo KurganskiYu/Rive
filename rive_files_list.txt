@@ -7,7 +7,7 @@ BatteryLiquidSleep_v2.riv --> 22_batteryliquidsleep_v3
 batteryliquid_v2 --> 22_batteryliquid_v3
 BatteryReport_v15 --> 13_BatteryReport_v16
 battery_widget_v5 --> 14_BatteryWidget_v6
-cometpluses --> 34_cometpluses2_v6
+cometpluses --> 28_cometpluses_v5
 cometpluses2_v5 --> 34_cometpluses2_v6
 experimentprogressbar_v3 --> 49_experimentprogressbar_v4
 godraycomment_v5 --> 39_godraycomment_v6

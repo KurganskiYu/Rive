@@ -8,7 +8,6 @@
 13_BatteryReport_v16
 14_BatteryWidget_v6
 34_cometpluses2_v6
-34_cometpluses2_v6
 49_experimentprogressbar_v4
 39_godraycomment_v6
 10_GodRay_Pack_p1_v2

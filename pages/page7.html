@@ -327,7 +327,22 @@
     </script>
     
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="200"></canvas>
+        <canvas id="canvas0" width="200" height="140"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="16_dragoncateyes_v3.html" style="color: #464646;">16 dragoncateyes</a></div>
+          <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -342,13 +357,13 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="211"></canvas>
+        <canvas id="canvas2" width="200" height="211"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
           <div><a href="15_liquidanimation_v2.html" style="color: #464646;">15 liquidanimation</a></div>
-          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
       </div>
@@ -357,80 +372,45 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="194"></canvas>
+        <canvas id="canvas3" width="200" height="194"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
           <div><a href="13_BatteryReport_v16.html" style="color: #464646;">13 BatteryReport</a></div>
-          <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn2_input0">CurrentTime:</label>
-            <input type="text" id="btn2_input0" value="19:04" style="width:90px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn2_input1">CurrentPercent:</label>
-            <input type="text" id="btn2_input1" value="27%" style="width:90px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn2_input2">12h:</label>
-            <input type="checkbox" id="btn2_input2" />
-        </div>
-        
-        <div class="range-control" style="width:202px;--slider-progress:79.4000%;">
-            <output for="btn2_input3">79.4</output>
-            <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn2_input3" value="79.4" min="0" max="100" step="0.1" aria-label="CurrentPosition" />
-            <span class="range-bound range-min">0</span>
-            <span class="range-bound range-max">100</span>
-        </div>
-        
-        <div class="range-control" style="width:202px;--slider-progress:34.7000%;">
-            <output for="btn2_input4">34.7</output>
-            <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn2_input4" value="34.7" min="0" max="100" step="0.1" aria-label="NightPosition" />
-            <span class="range-bound range-min">0</span>
-            <span class="range-bound range-max">100</span>
-        </div>
-        
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas3" width="200" height="191"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="14_BatteryWidget_v6.html" style="color: #464646;">14 BatteryWidget</a></div>
           <button id="btn3" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
-        <div class="range-control" style="width:202px;--slider-progress:9.0909%;">
-            <output for="btn3_input0">10</output>
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input0">CurrentTime:</label>
+            <input type="text" id="btn3_input0" value="19:04" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input1">CurrentPercent:</label>
+            <input type="text" id="btn3_input1" value="27%" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input2">12h:</label>
+            <input type="checkbox" id="btn3_input2" />
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:79.4000%;">
+            <output for="btn3_input3">79.4</output>
             <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn3_input0" value="10" min="1" max="100" step="1" aria-label="BatteryPercentFrom" />
-            <span class="range-bound range-min">1</span>
+            <input type="range" id="btn3_input3" value="79.4" min="0" max="100" step="0.1" aria-label="CurrentPosition" />
+            <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:202px;--slider-progress:79.7980%;">
-            <output for="btn3_input1">80</output>
+        <div class="range-control" style="width:202px;--slider-progress:34.7000%;">
+            <output for="btn3_input4">34.7</output>
             <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn3_input1" value="80" min="1" max="100" step="1" aria-label="BatteryPercentTo" />
-            <span class="range-bound range-min">1</span>
+            <input type="range" id="btn3_input4" value="34.7" min="0" max="100" step="0.1" aria-label="NightPosition" />
+            <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">100</span>
         </div>
         
@@ -442,20 +422,31 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="200"></canvas>
+        <canvas id="canvas4" width="200" height="191"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="11_HeaderTextAnim_v5.html" style="color: #464646;">11 HeaderTextAnim</a></div>
+          <div><a href="14_BatteryWidget_v6.html" style="color: #464646;">14 BatteryWidget</a></div>
           <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input0">Text:</label>
-            <input type="text" id="btn4_input0" value="Yesterdays workout demands met — your solid sleep gave you that boost." style="width:90px;" />
+        <div class="range-control" style="width:202px;--slider-progress:9.0909%;">
+            <output for="btn4_input0">10</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn4_input0" value="10" min="1" max="100" step="1" aria-label="BatteryPercentFrom" />
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:79.7980%;">
+            <output for="btn4_input1">80</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn4_input1" value="80" min="1" max="100" step="1" aria-label="BatteryPercentTo" />
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">100</span>
         </div>
         
         </div>
@@ -466,12 +457,12 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="51"></canvas>
+        <canvas id="canvas5" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="11_TextAnim_v5.html" style="color: #464646;">11 TextAnim</a></div>
+          <div><a href="11_HeaderTextAnim_v5.html" style="color: #464646;">11 HeaderTextAnim</a></div>
           <button id="btn5" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -479,7 +470,7 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input0">Text:</label>
-            <input type="text" id="btn5_input0" value="Your Heart Rate Wave shows how last nights heart rate compares to your restful nights. We also track if you met your sleep need how long you were awake and how consistent your sleep schedule is." style="width:90px;" />
+            <input type="text" id="btn5_input0" value="Yesterdays workout demands met — your solid sleep gave you that boost." style="width:90px;" />
         </div>
         
         </div>
@@ -490,7 +481,31 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="200"></canvas>
+        <canvas id="canvas6" width="200" height="51"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="11_TextAnim_v5.html" style="color: #464646;">11 TextAnim</a></div>
+          <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn6_input0">Text:</label>
+            <input type="text" id="btn6_input0" value="Your Heart Rate Wave shows how last nights heart rate compares to your restful nights. We also track if you met your sleep need how long you were awake and how consistent your sleep schedule is." style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas7" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -502,57 +517,33 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input0">color1:</label>
-            <input type="color" id="btn6_input0" value="#0efd8f" />
+            <label for="btn7_input0">color1:</label>
+            <input type="color" id="btn7_input0" value="#8fe0af" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input1">color2:</label>
-            <input type="color" id="btn6_input1" value="#b4afc4" />
+            <label for="btn7_input1">color2:</label>
+            <input type="color" id="btn7_input1" value="#2afcb3" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input2">color3:</label>
-            <input type="color" id="btn6_input2" value="#2e01bc" />
+            <label for="btn7_input2">color3:</label>
+            <input type="color" id="btn7_input2" value="#fbcdf2" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input3">color4:</label>
-            <input type="color" id="btn6_input3" value="#b7f711" />
+            <label for="btn7_input3">color4:</label>
+            <input type="color" id="btn7_input3" value="#58fdb6" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input4">color5:</label>
-            <input type="color" id="btn6_input4" value="#58541f" />
+            <label for="btn7_input4">color5:</label>
+            <input type="color" id="btn7_input4" value="#c26f67" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input5">color6:</label>
-            <input type="color" id="btn6_input5" value="#525b4d" />
-        </div>
-        
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="434"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="10_GodRay_Pack_p3_v4.html" style="color: #464646;">10 GodRay Pack p3</a></div>
-          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input0">Flip:</label>
-            <input type="checkbox" id="btn7_input0" />
+            <label for="btn7_input5">color6:</label>
+            <input type="color" id="btn7_input5" value="#e4db2d" />
         </div>
         
         </div>
@@ -565,26 +556,15 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/16_DragonCat_v3.riv",
+    src: "../riv/16_dragoncateyes_v3.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
     const inputs = r0.stateMachineInputs("State Machine 1");
-  },
-});
-
-const r1 = new rive.Rive({
-    src: "../riv/15_liquidanimation_v2.riv",
-    canvas: document.getElementById("canvas1"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-
-    onLoad: () => {
-        r1.resizeDrawingSurfaceToCanvas();
-    const vmi = r1.viewModelInstance;
-    const inputs = r1.stateMachineInputs("State Machine 1");
-    document.getElementById("btn1").addEventListener("click", () => {
+    document.getElementById("btn0").addEventListener("click", () => {
         if (vmi) {
             const vmTrigger = vmi.trigger("Trigger 1");
             if (vmTrigger) {
@@ -602,88 +582,25 @@ const r1 = new rive.Rive({
   },
 });
 
+const r1 = new rive.Rive({
+    src: "../riv/16_DragonCat_v3.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
+    const inputs = r1.stateMachineInputs("State Machine 1");
+  },
+});
+
 const r2 = new rive.Rive({
-    src: "../riv/13_BatteryReport_v16.riv",
+    src: "../riv/15_liquidanimation_v2.riv",
     canvas: document.getElementById("canvas2"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
     const vmi = r2.viewModelInstance;
-    let inputFieldBtn2_0 = document.getElementById("btn2_input0");
-    if (inputFieldBtn2_0 && vmi) {
-      vmi.string("CurrentTime").value = inputFieldBtn2_0.value;
-      inputFieldBtn2_0.addEventListener("input", () => {
-        vmi.string("CurrentTime").value = inputFieldBtn2_0.value;
-      });
-    }
-    let inputFieldBtn2_1 = document.getElementById("btn2_input1");
-    if (inputFieldBtn2_1 && vmi) {
-      vmi.string("CurrentPercent").value = inputFieldBtn2_1.value;
-      inputFieldBtn2_1.addEventListener("input", () => {
-        vmi.string("CurrentPercent").value = inputFieldBtn2_1.value;
-      });
-    }
-    let inputFieldBtn2_2 = document.getElementById("btn2_input2");
-    if (inputFieldBtn2_2 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn2_2.addEventListener("change", () => {
-        vmi.boolean("12h").value = inputFieldBtn2_2.checked;
-      });
-      // Set initial value
-      vmi.boolean("12h").value = inputFieldBtn2_2.checked;
-    }
-    let inputFieldBtn2_3 = document.getElementById("btn2_input3");
-    if (inputFieldBtn2_3 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn2_3.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn2_3.value);
-                if (!isNaN(val)) vmi.number("CurrentPosition").value = val;
-                const rangeControl = inputFieldBtn2_3.closest(".range-control");
-                if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn2_3.value;
-                    const minimum = Number(inputFieldBtn2_3.min);
-                    const maximum = Number(inputFieldBtn2_3.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn2_3.value - minimum) / (maximum - minimum) * 100;
-                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
-                }
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn2_3.value);
-      if (!isNaN(initVal)) vmi.number("CurrentPosition").value = initVal;
-    }
-    let inputFieldBtn2_4 = document.getElementById("btn2_input4");
-    if (inputFieldBtn2_4 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn2_4.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn2_4.value);
-                if (!isNaN(val)) vmi.number("NightPosition").value = val;
-                const rangeControl = inputFieldBtn2_4.closest(".range-control");
-                if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn2_4.value;
-                    const minimum = Number(inputFieldBtn2_4.min);
-                    const maximum = Number(inputFieldBtn2_4.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn2_4.value - minimum) / (maximum - minimum) * 100;
-                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
-                }
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn2_4.value);
-      if (!isNaN(initVal)) vmi.number("NightPosition").value = initVal;
-    }
-    if (vmi) {
-      const listVar_5 = vmi.list("BarList");
-      if (listVar_5) {
-        for (let idx = 0; idx < listVar_5.length; idx++) {
-          const inst = listVar_5.instanceAt(idx);
-          if (inst) {
-            // Demo assignment; replace with real data source as needed
-            //const randomVal = Math.random() * 100;
-            //inst.number("BarHeight").value = randomVal;
-          }
-        }
-      }
-    }
     const inputs = r2.stateMachineInputs("State Machine 1");
     document.getElementById("btn2").addEventListener("click", () => {
         if (vmi) {
@@ -704,7 +621,7 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/14_BatteryWidget_v6.riv",
+    src: "../riv/13_BatteryReport_v16.riv",
     canvas: document.getElementById("canvas3"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -713,41 +630,77 @@ const r3 = new rive.Rive({
     const vmi = r3.viewModelInstance;
     let inputFieldBtn3_0 = document.getElementById("btn3_input0");
     if (inputFieldBtn3_0 && vmi) {
-      // Update numeric ViewModel variable
+      vmi.string("CurrentTime").value = inputFieldBtn3_0.value;
       inputFieldBtn3_0.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn3_0.value);
-                if (!isNaN(val)) vmi.number("BatteryPercentFrom").value = val;
-                const rangeControl = inputFieldBtn3_0.closest(".range-control");
-                if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn3_0.value;
-                    const minimum = Number(inputFieldBtn3_0.min);
-                    const maximum = Number(inputFieldBtn3_0.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_0.value - minimum) / (maximum - minimum) * 100;
-                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
-                }
+        vmi.string("CurrentTime").value = inputFieldBtn3_0.value;
       });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn3_0.value);
-      if (!isNaN(initVal)) vmi.number("BatteryPercentFrom").value = initVal;
     }
     let inputFieldBtn3_1 = document.getElementById("btn3_input1");
     if (inputFieldBtn3_1 && vmi) {
-      // Update numeric ViewModel variable
+      vmi.string("CurrentPercent").value = inputFieldBtn3_1.value;
       inputFieldBtn3_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn3_1.value);
-                if (!isNaN(val)) vmi.number("BatteryPercentTo").value = val;
-                const rangeControl = inputFieldBtn3_1.closest(".range-control");
+        vmi.string("CurrentPercent").value = inputFieldBtn3_1.value;
+      });
+    }
+    let inputFieldBtn3_2 = document.getElementById("btn3_input2");
+    if (inputFieldBtn3_2 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn3_2.addEventListener("change", () => {
+        vmi.boolean("12h").value = inputFieldBtn3_2.checked;
+      });
+      // Set initial value
+      vmi.boolean("12h").value = inputFieldBtn3_2.checked;
+    }
+    let inputFieldBtn3_3 = document.getElementById("btn3_input3");
+    if (inputFieldBtn3_3 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn3_3.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn3_3.value);
+                if (!isNaN(val)) vmi.number("CurrentPosition").value = val;
+                const rangeControl = inputFieldBtn3_3.closest(".range-control");
                 if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn3_1.value;
-                    const minimum = Number(inputFieldBtn3_1.min);
-                    const maximum = Number(inputFieldBtn3_1.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.querySelector("output").value = inputFieldBtn3_3.value;
+                    const minimum = Number(inputFieldBtn3_3.min);
+                    const maximum = Number(inputFieldBtn3_3.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_3.value - minimum) / (maximum - minimum) * 100;
                     rangeControl.style.setProperty("--slider-progress", `${progress}%`);
                 }
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn3_1.value);
-      if (!isNaN(initVal)) vmi.number("BatteryPercentTo").value = initVal;
+      let initVal = parseFloat(inputFieldBtn3_3.value);
+      if (!isNaN(initVal)) vmi.number("CurrentPosition").value = initVal;
+    }
+    let inputFieldBtn3_4 = document.getElementById("btn3_input4");
+    if (inputFieldBtn3_4 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn3_4.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn3_4.value);
+                if (!isNaN(val)) vmi.number("NightPosition").value = val;
+                const rangeControl = inputFieldBtn3_4.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn3_4.value;
+                    const minimum = Number(inputFieldBtn3_4.min);
+                    const maximum = Number(inputFieldBtn3_4.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_4.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn3_4.value);
+      if (!isNaN(initVal)) vmi.number("NightPosition").value = initVal;
+    }
+    if (vmi) {
+      const listVar_5 = vmi.list("BarList");
+      if (listVar_5) {
+        for (let idx = 0; idx < listVar_5.length; idx++) {
+          const inst = listVar_5.instanceAt(idx);
+          if (inst) {
+            // Demo assignment; replace with real data source as needed
+            //const randomVal = Math.random() * 100;
+            //inst.number("BarHeight").value = randomVal;
+          }
+        }
+      }
     }
     const inputs = r3.stateMachineInputs("State Machine 1");
     document.getElementById("btn3").addEventListener("click", () => {
@@ -769,7 +722,7 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/11_HeaderTextAnim_v5.riv",
+    src: "../riv/14_BatteryWidget_v6.riv",
     canvas: document.getElementById("canvas4"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -778,10 +731,41 @@ const r4 = new rive.Rive({
     const vmi = r4.viewModelInstance;
     let inputFieldBtn4_0 = document.getElementById("btn4_input0");
     if (inputFieldBtn4_0 && vmi) {
-      vmi.string("Text").value = inputFieldBtn4_0.value;
+      // Update numeric ViewModel variable
       inputFieldBtn4_0.addEventListener("input", () => {
-        vmi.string("Text").value = inputFieldBtn4_0.value;
+        let val = parseFloat(inputFieldBtn4_0.value);
+                if (!isNaN(val)) vmi.number("BatteryPercentFrom").value = val;
+                const rangeControl = inputFieldBtn4_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn4_0.value;
+                    const minimum = Number(inputFieldBtn4_0.min);
+                    const maximum = Number(inputFieldBtn4_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn4_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn4_0.value);
+      if (!isNaN(initVal)) vmi.number("BatteryPercentFrom").value = initVal;
+    }
+    let inputFieldBtn4_1 = document.getElementById("btn4_input1");
+    if (inputFieldBtn4_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn4_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn4_1.value);
+                if (!isNaN(val)) vmi.number("BatteryPercentTo").value = val;
+                const rangeControl = inputFieldBtn4_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn4_1.value;
+                    const minimum = Number(inputFieldBtn4_1.min);
+                    const maximum = Number(inputFieldBtn4_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn4_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn4_1.value);
+      if (!isNaN(initVal)) vmi.number("BatteryPercentTo").value = initVal;
     }
     const inputs = r4.stateMachineInputs("State Machine 1");
     document.getElementById("btn4").addEventListener("click", () => {
@@ -803,7 +787,7 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-    src: "../riv/11_TextAnim_v5.riv",
+    src: "../riv/11_HeaderTextAnim_v5.riv",
     canvas: document.getElementById("canvas5"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -837,7 +821,7 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-    src: "../riv/12_flowerparticles_v4.riv",
+    src: "../riv/11_TextAnim_v5.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -846,99 +830,13 @@ const r6 = new rive.Rive({
     const vmi = r6.viewModelInstance;
     let inputFieldBtn6_0 = document.getElementById("btn6_input0");
     if (inputFieldBtn6_0 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_0.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color1").value = argb;
+      vmi.string("Text").value = inputFieldBtn6_0.value;
       inputFieldBtn6_0.addEventListener("input", () => {
-        let hex = inputFieldBtn6_0.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color1").value = argb;
-      });
-    }
-    let inputFieldBtn6_1 = document.getElementById("btn6_input1");
-    if (inputFieldBtn6_1 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_1.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color2").value = argb;
-      inputFieldBtn6_1.addEventListener("input", () => {
-        let hex = inputFieldBtn6_1.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color2").value = argb;
-      });
-    }
-    let inputFieldBtn6_2 = document.getElementById("btn6_input2");
-    if (inputFieldBtn6_2 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_2.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color3").value = argb;
-      inputFieldBtn6_2.addEventListener("input", () => {
-        let hex = inputFieldBtn6_2.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color3").value = argb;
-      });
-    }
-    let inputFieldBtn6_3 = document.getElementById("btn6_input3");
-    if (inputFieldBtn6_3 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_3.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color4").value = argb;
-      inputFieldBtn6_3.addEventListener("input", () => {
-        let hex = inputFieldBtn6_3.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color4").value = argb;
-      });
-    }
-    let inputFieldBtn6_4 = document.getElementById("btn6_input4");
-    if (inputFieldBtn6_4 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_4.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color5").value = argb;
-      inputFieldBtn6_4.addEventListener("input", () => {
-        let hex = inputFieldBtn6_4.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color5").value = argb;
-      });
-    }
-    let inputFieldBtn6_5 = document.getElementById("btn6_input5");
-    if (inputFieldBtn6_5 && vmi) {
-      // Set initial color value
-      let hex = inputFieldBtn6_5.value.replace("#", "");
-      let argb = parseInt("FF" + hex.toUpperCase(), 16);
-      vmi.color("color6").value = argb;
-      inputFieldBtn6_5.addEventListener("input", () => {
-        let hex = inputFieldBtn6_5.value.replace("#", "");
-        let argb = parseInt("FF" + hex.toUpperCase(), 16);
-        vmi.color("color6").value = argb;
+        vmi.string("Text").value = inputFieldBtn6_0.value;
       });
     }
     const inputs = r6.stateMachineInputs("State Machine 1");
-  },
-});
-
-const r7 = new rive.Rive({
-    src: "../riv/10_GodRay_Pack_p3_v4.riv",
-    canvas: document.getElementById("canvas7"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-
-    onLoad: () => {
-        r7.resizeDrawingSurfaceToCanvas();
-    const vmi = r7.viewModelInstance;
-    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
-    if (inputFieldBtn7_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn7_0.addEventListener("change", () => {
-        vmi.boolean("Flip").value = inputFieldBtn7_0.checked;
-      });
-      // Set initial value
-      vmi.boolean("Flip").value = inputFieldBtn7_0.checked;
-    }
-    const inputs = r7.stateMachineInputs("State Machine 1");
-    document.getElementById("btn7").addEventListener("click", () => {
+    document.getElementById("btn6").addEventListener("click", () => {
         if (vmi) {
             const vmTrigger = vmi.trigger("Trigger 1");
             if (vmTrigger) {
@@ -953,6 +851,90 @@ const r7 = new rive.Rive({
             console.warn("Trigger not found (view model or state machine): Trigger 1");
         }
     });
+  },
+});
+
+const r7 = new rive.Rive({
+    src: "../riv/12_flowerparticles_v4.riv",
+    canvas: document.getElementById("canvas7"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r7.resizeDrawingSurfaceToCanvas();
+    const vmi = r7.viewModelInstance;
+    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
+    if (inputFieldBtn7_0 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn7_0.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color1").value = argb;
+      inputFieldBtn7_0.addEventListener("input", () => {
+        let hex = inputFieldBtn7_0.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color1").value = argb;
+      });
+    }
+    let inputFieldBtn7_1 = document.getElementById("btn7_input1");
+    if (inputFieldBtn7_1 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn7_1.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color2").value = argb;
+      inputFieldBtn7_1.addEventListener("input", () => {
+        let hex = inputFieldBtn7_1.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color2").value = argb;
+      });
+    }
+    let inputFieldBtn7_2 = document.getElementById("btn7_input2");
+    if (inputFieldBtn7_2 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn7_2.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color3").value = argb;
+      inputFieldBtn7_2.addEventListener("input", () => {
+        let hex = inputFieldBtn7_2.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color3").value = argb;
+      });
+    }
+    let inputFieldBtn7_3 = document.getElementById("btn7_input3");
+    if (inputFieldBtn7_3 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn7_3.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color4").value = argb;
+      inputFieldBtn7_3.addEventListener("input", () => {
+        let hex = inputFieldBtn7_3.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color4").value = argb;
+      });
+    }
+    let inputFieldBtn7_4 = document.getElementById("btn7_input4");
+    if (inputFieldBtn7_4 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn7_4.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color5").value = argb;
+      inputFieldBtn7_4.addEventListener("input", () => {
+        let hex = inputFieldBtn7_4.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color5").value = argb;
+      });
+    }
+    let inputFieldBtn7_5 = document.getElementById("btn7_input5");
+    if (inputFieldBtn7_5 && vmi) {
+      // Set initial color value
+      let hex = inputFieldBtn7_5.value.replace("#", "");
+      let argb = parseInt("FF" + hex.toUpperCase(), 16);
+      vmi.color("color6").value = argb;
+      inputFieldBtn7_5.addEventListener("input", () => {
+        let hex = inputFieldBtn7_5.value.replace("#", "");
+        let argb = parseInt("FF" + hex.toUpperCase(), 16);
+        vmi.color("color6").value = argb;
+      });
+    }
+    const inputs = r7.stateMachineInputs("State Machine 1");
   },
 });
 

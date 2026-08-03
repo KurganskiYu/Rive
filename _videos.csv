@@ -93,3 +93,4 @@ contraTest_v5,375x812,
 59_paymentcomplete_v4,393x852,393x852,
 60_stresscalendar_v2,325x352,375x812,v_num:daysAmount(31:1-31),v_num:delay(40:0-100),txt:percentToData("60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55"),note:"Scripting"
 61_umbrellas_v2,393x206,,
+62_patternpill_v1,360x800,360x800,
