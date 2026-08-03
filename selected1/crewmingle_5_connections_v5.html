@@ -333,6 +333,14 @@
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
+        <div class="range-control" style="width:395px;--slider-progress:16.3522%;">
+            <output for="btn_main_input0">27</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input0" value="27" min="1" max="160" step="1" aria-label="friendsNum" />
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">160</span>
+        </div>
+        
           </div>
         </div>
       </div>
@@ -346,6 +354,26 @@ const mainRive = new rive.Rive({
 
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+                if (!isNaN(val)) vmi.number("friendsNum").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("friendsNum").value = initVal;
+    }
   },
 });
 

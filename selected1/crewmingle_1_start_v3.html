@@ -333,6 +333,21 @@
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input0">name:</label>
+            <input type="text" id="btn_main_input0" value="Andreas" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input1">shipName:</label>
+            <input type="text" id="btn_main_input1" value="AIDA Prima" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input2">dates:</label>
+            <input type="text" id="btn_main_input2" value="Nov 1 – Mar 28" style="width:90px;" />
+        </div>
+        
           </div>
         </div>
       </div>
@@ -346,6 +361,28 @@ const mainRive = new rive.Rive({
 
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      vmi.string("name").value = inputFieldBtn_Main_0.value;
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        vmi.string("name").value = inputFieldBtn_Main_0.value;
+      });
+    }
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      vmi.string("shipName").value = inputFieldBtn_Main_1.value;
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        vmi.string("shipName").value = inputFieldBtn_Main_1.value;
+      });
+    }
+    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
+    if (inputFieldBtn_Main_2 && vmi) {
+      vmi.string("dates").value = inputFieldBtn_Main_2.value;
+      inputFieldBtn_Main_2.addEventListener("input", () => {
+        vmi.string("dates").value = inputFieldBtn_Main_2.value;
+      });
+    }
   },
 });
 

@@ -333,6 +333,32 @@
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             
             
+        <div class="range-control" style="width:395px;--slider-progress:7.5377%;">
+            <output for="btn_main_input0">16</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input0" value="16" min="1" max="200" step="1" aria-label="countries" />
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">200</span>
+        </div>
+        
+        <div class="range-control" style="width:395px;--slider-progress:15.3061%;">
+            <output for="btn_main_input1">16</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input1" value="16" min="1" max="99" step="1" aria-label="countriesNew" />
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">99</span>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input2">codes:</label>
+            <input type="text" id="btn_main_input2" value="WS CA MX GB GR ES BS CH TV TZ UY" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input3">codesNew:</label>
+            <input type="text" id="btn_main_input3" value="AU CU JM HK MA TR US ZA TH WLS" style="width:90px;" />
+        </div>
+        
           </div>
         </div>
       </div>
@@ -346,6 +372,59 @@ const mainRive = new rive.Rive({
 
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+                if (!isNaN(val)) vmi.number("countries").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("countries").value = initVal;
+    }
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_1.value);
+                if (!isNaN(val)) vmi.number("countriesNew").value = val;
+                const rangeControl = inputFieldBtn_Main_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_1.value;
+                    const minimum = Number(inputFieldBtn_Main_1.min);
+                    const maximum = Number(inputFieldBtn_Main_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_1.value);
+      if (!isNaN(initVal)) vmi.number("countriesNew").value = initVal;
+    }
+    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
+    if (inputFieldBtn_Main_2 && vmi) {
+      vmi.string("codes").value = inputFieldBtn_Main_2.value;
+      inputFieldBtn_Main_2.addEventListener("input", () => {
+        vmi.string("codes").value = inputFieldBtn_Main_2.value;
+      });
+    }
+    let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
+    if (inputFieldBtn_Main_3 && vmi) {
+      vmi.string("codesNew").value = inputFieldBtn_Main_3.value;
+      inputFieldBtn_Main_3.addEventListener("input", () => {
+        vmi.string("codesNew").value = inputFieldBtn_Main_3.value;
+      });
+    }
   },
 });
 

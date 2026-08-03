@@ -37,13 +37,13 @@ contraTest_v5,375x812,
 39_godraycomment_v6,393x430,,trigger:"Trigger 1",v_bol:flip
 41_fatgraph_v3,375x812,
 45_activityring_v4,393x620,,trigger:"start",v_num:goal(35:5-100),v_num:activeMinutes(66:5-90),v_num:size2mult(1.0:0.3-1.0)
-crewmingle_1_start_v3,393x852,,
-crewmingle_2_daysonboard_v5,393x852,
-crewmingle_3_seaportdays_v3,393x852,
-crewmingle_4_achievements_v3,393x852,
-crewmingle_5_connections_v5,393x852,
-crewmingle_6_countries_v6,393x852,
-crewmingle_buttonwrapped_v4,460x140,
+crewmingle_1_start_v3,393x852,,txt:name("Andreas"),txt:shipName("AIDA Prima"),txt:dates("Nov 1 – Mar 28")
+crewmingle_2_daysonboard_v5,393x852,,v_num:days(256:1-600),txt:shipName("Norwegian Epic")
+crewmingle_3_seaportdays_v3,393x852,,v_num:seaDays(126:1-600),v_num:portDays(32:1-600)
+crewmingle_4_achievements_v3,393x852,,v_num:illustrationIndex(3:1-22),txt:name("Marcos")
+crewmingle_5_connections_v5,393x852,,v_num:friendsNum(27:1-160)
+crewmingle_6_countries_v6,393x852,,v_num:countries(16:1-200),v_num:countriesNew(16:1-99),txt:codes("WS CA MX GB GR ES BS CH TV TZ UY"),txt:codesNew("AU CU JM HK MA TR US ZA TH WLS")
+crewmingle_buttonwrapped_v4,460x140,,
 52_tagfire_v4,393x300,393x596,txt:tag("[tag_name]"),note:"Scripting"
 52_tagliquid_v3,393x300,393x596,txt:tag("[tag_name]"),note:"Scripting"
 52_tagclouds_v4,393x300,393x596,txt:tag("[tag_name]")
