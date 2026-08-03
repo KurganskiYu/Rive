@@ -327,7 +327,50 @@
     </script>
     
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="107"></canvas>
+        <canvas id="canvas0" width="200" height="316"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="45_activityring_v4.html" style="color: #464646;">45 activityring</a></div>
+          <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:31.5789%;">
+            <output for="btn0_input0">35</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn0_input0" value="35" min="5" max="100" step="1" aria-label="goal" />
+            <span class="range-bound range-min">5</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:71.7647%;">
+            <output for="btn0_input1">66</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn0_input1" value="66" min="5" max="90" step="1" aria-label="activeMinutes" />
+            <span class="range-bound range-min">5</span>
+            <span class="range-bound range-max">90</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:100.0000%;">
+            <output for="btn0_input2">1.0</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn0_input2" value="1.0" min="0.3" max="1.0" step="0.1" aria-label="size2mult" />
+            <span class="range-bound range-min">0.3</span>
+            <span class="range-bound range-max">1.0</span>
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="107"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -342,7 +385,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="434"></canvas>
+        <canvas id="canvas2" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -357,7 +400,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="105"></canvas>
+        <canvas id="canvas3" width="200" height="105"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -372,7 +415,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="81"></canvas>
+        <canvas id="canvas4" width="200" height="81"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -387,7 +430,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="105"></canvas>
+        <canvas id="canvas5" width="200" height="105"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -402,7 +445,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="433"></canvas>
+        <canvas id="canvas6" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -417,7 +460,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="433"></canvas>
+        <canvas id="canvas7" width="200" height="433"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -430,46 +473,95 @@
     
         </div>
       </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="219"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="39_godraycomment_v6.html" style="color: #464646;">39 godraycomment</a></div>
-          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input0">flip:</label>
-            <input type="checkbox" id="btn7_input0" />
-        </div>
-        
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
     </div>
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/44_particlesstars_v2.riv",
+    src: "../riv/45_activityring_v4.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
+    let inputFieldBtn0_0 = document.getElementById("btn0_input0");
+    if (inputFieldBtn0_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_0.value);
+                if (!isNaN(val)) vmi.number("goal").value = val;
+                const rangeControl = inputFieldBtn0_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_0.value;
+                    const minimum = Number(inputFieldBtn0_0.min);
+                    const maximum = Number(inputFieldBtn0_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_0.value);
+      if (!isNaN(initVal)) vmi.number("goal").value = initVal;
+    }
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_1.value);
+                if (!isNaN(val)) vmi.number("activeMinutes").value = val;
+                const rangeControl = inputFieldBtn0_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_1.value;
+                    const minimum = Number(inputFieldBtn0_1.min);
+                    const maximum = Number(inputFieldBtn0_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_1.value);
+      if (!isNaN(initVal)) vmi.number("activeMinutes").value = initVal;
+    }
+    let inputFieldBtn0_2 = document.getElementById("btn0_input2");
+    if (inputFieldBtn0_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_2.value);
+                if (!isNaN(val)) vmi.number("size2mult").value = val;
+                const rangeControl = inputFieldBtn0_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_2.value;
+                    const minimum = Number(inputFieldBtn0_2.min);
+                    const maximum = Number(inputFieldBtn0_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_2.value);
+      if (!isNaN(initVal)) vmi.number("size2mult").value = initVal;
+    }
     const inputs = r0.stateMachineInputs("State Machine 1");
+    document.getElementById("btn0").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("start");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
+            }
+        }
+        const smTrigger = inputs.find(input => input.name === "start");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): start");
+        }
+    });
   },
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/43_playerbird_v4.riv",
+    src: "../riv/44_particlesstars_v2.riv",
     canvas: document.getElementById("canvas1"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -480,7 +572,7 @@ const r1 = new rive.Rive({
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/42_bannerparticlessandwide_v5.riv",
+    src: "../riv/43_playerbird_v4.riv",
     canvas: document.getElementById("canvas2"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -491,7 +583,7 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/42_bannerparticlessand_v5.riv",
+    src: "../riv/42_bannerparticlessandwide_v5.riv",
     canvas: document.getElementById("canvas3"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -502,7 +594,7 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/42_bannerparticlesbutton_v2.riv",
+    src: "../riv/42_bannerparticlessand_v5.riv",
     canvas: document.getElementById("canvas4"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -513,7 +605,7 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-    src: "../riv/41_fatgraph_v3.riv",
+    src: "../riv/42_bannerparticlesbutton_v2.riv",
     canvas: document.getElementById("canvas5"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -524,7 +616,7 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-    src: "../riv/40_energysliders_v3.riv",
+    src: "../riv/41_fatgraph_v3.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -535,38 +627,13 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-    src: "../riv/39_godraycomment_v6.riv",
+    src: "../riv/40_energysliders_v3.riv",
     canvas: document.getElementById("canvas7"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r7.resizeDrawingSurfaceToCanvas();
-    const vmi = r7.viewModelInstance;
-    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
-    if (inputFieldBtn7_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn7_0.addEventListener("change", () => {
-        vmi.boolean("flip").value = inputFieldBtn7_0.checked;
-      });
-      // Set initial value
-      vmi.boolean("flip").value = inputFieldBtn7_0.checked;
-    }
     const inputs = r7.stateMachineInputs("State Machine 1");
-    document.getElementById("btn7").addEventListener("click", () => {
-        if (vmi) {
-            const vmTrigger = vmi.trigger("Trigger 1");
-            if (vmTrigger) {
-                vmTrigger.trigger();
-                return;
-            }
-        }
-        const smTrigger = inputs.find(input => input.name === "Trigger 1");
-        if (smTrigger) {
-            smTrigger.fire();
-        } else {
-            console.warn("Trigger not found (view model or state machine): Trigger 1");
-        }
-    });
   },
 });
 
