@@ -438,31 +438,39 @@ def collect_input_fields(row, button_id, control_width):
     return "".join(inputs_html)
 
 def make_main_canvas(idx, row):
-    canvas_id = f"canvas{idx}"
-    button_id = f"btn{idx}"
-    width, height = scale_dimensions(row["width"], row["height"])
+        canvas_id = f"canvas{idx}"
+        button_id = f"btn{idx}"
+        width, height = scale_dimensions(row["width"], row["height"])
 
-    # Build button HTML
-    button_html = ""
-    if row.get("trigger"):
-        button_html = f'<button id="{button_id}" class="rive-btn" style="margin-left:auto;">Trigger</button>'
+        button_html = ""
+        if row.get("trigger"):
+                button_html = f'<button id="{button_id}" class="rive-btn" style="margin-left:auto;">Trigger</button>'
 
-    desc = f'''
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
+        inputs_html = collect_input_fields(row, button_id, width)
+        if inputs_html:
+                inputs_html = f'''
+                <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+                        {inputs_html}
+                </div>
+                '''
+
+        desc = f'''
+            <div style="display: flex; flex-direction: column; align-items: stretch;">
+                <div style="display: flex; align-items: center; width: 100%;">
                     <div>{make_main_link(row)}</div>
-          {button_html}
-        </div>
-      </div>
-    '''
-    return f'''
-      <div class="animation-container">
-        <canvas id="{canvas_id}" width="{width}" height="{height}"></canvas>
-        <div class="description">
-          {desc}
-        </div>
-      </div>
-    '''
+                    {button_html}
+                </div>
+                {inputs_html}
+            </div>
+        '''
+        return f'''
+            <div class="animation-container">
+                <canvas id="{canvas_id}" width="{width}" height="{height}"></canvas>
+                <div class="description">
+                    {desc}
+                </div>
+            </div>
+        '''
 
 def generate_rive_config(idx, row):
     """Generate Rive configuration for a canvas"""
