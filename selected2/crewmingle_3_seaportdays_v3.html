@@ -331,11 +331,22 @@
       <div class="description">
         <div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            <button id="btn_main" class="rive-btn">Trigger</button>
             
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn_main_input0">Flip:</label>
-            <input type="checkbox" id="btn_main_input0" />
+            
+        <div class="range-control" style="width:395px;--slider-progress:20.8681%;">
+            <output for="btn_main_input0">126</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input0" value="126" min="1" max="600" step="1" aria-label="seaDays" />
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">600</span>
+        </div>
+        
+        <div class="range-control" style="width:395px;--slider-progress:5.1753%;">
+            <output for="btn_main_input1">32</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input1" value="32" min="1" max="600" step="1" aria-label="portDays" />
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">600</span>
         </div>
         
           </div>
@@ -345,7 +356,7 @@
 <script>
 
 const mainRive = new rive.Rive({
-  src: "../riv/10_GodRay_Pack_p1_v2.riv",
+  src: "../riv/crewmingle_3_seaportdays_v3.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
 
@@ -354,33 +365,44 @@ const mainRive = new rive.Rive({
     const vmi = mainRive.viewModelInstance;
     let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
     if (inputFieldBtn_Main_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn_Main_0.addEventListener("change", () => {
-        vmi.boolean("Flip").value = inputFieldBtn_Main_0.checked;
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+                if (!isNaN(val)) vmi.number("seaDays").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
-      // Set initial value
-      vmi.boolean("Flip").value = inputFieldBtn_Main_0.checked;
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("seaDays").value = initVal;
+    }
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_1.value);
+                if (!isNaN(val)) vmi.number("portDays").value = val;
+                const rangeControl = inputFieldBtn_Main_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_1.value;
+                    const minimum = Number(inputFieldBtn_Main_1.min);
+                    const maximum = Number(inputFieldBtn_Main_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_1.value);
+      if (!isNaN(initVal)) vmi.number("portDays").value = initVal;
     }
   },
 });
-
-document.getElementById("btn_main").addEventListener("click", () => {
-    const vmi = mainRive.viewModelInstance;
-    if (vmi) {
-        const vmTrigger = vmi.trigger("Trigger 1");
-        if (vmTrigger) {
-            vmTrigger.trigger();
-            return;
-        }
-    }
-    const inputs = mainRive.stateMachineInputs("State Machine 1");
-    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
-    if (smTrigger) {
-        smTrigger.fire();
-    } else {
-        console.warn("Trigger not found (view model or state machine): Trigger 1");
-    }
-} );
 
 document.querySelectorAll('canvas').forEach(canvas => {
   canvas.style.width = canvas.width + "px";

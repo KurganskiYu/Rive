@@ -52,4 +52,5 @@ crewmingle_buttonwrapped_v4,460x140,,
 58_mountain_v3,360x800,360x800,
 59_paymentcomplete_v4,393x852,393x852,
 06_GiftBox_v6,393x614,,trigger:"Trigger 1",txt:text1("25%"),txt:text2("discount for 24 hours")
+contraHMI_v21,1000x358,,
 
