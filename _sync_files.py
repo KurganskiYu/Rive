@@ -44,3 +44,5 @@ if PROJECT_RIV_DIR.exists():
 	shutil.rmtree(PROJECT_RIV_DIR)
 
 shutil.copytree(RIV_DIR, PROJECT_RIV_DIR)
+
+print("Sync completed successfully.")

@@ -43,7 +43,7 @@ River_v1,526x800,,artboard:-
 19_keyhole_v7,393x852,,trigger:"Trigger 1",img:MagicImage(MagicRiver.png)
 20_StressImpact_v3,375x812,,trigger:"Trigger 1"
 21_activityhand_v2,375x812,,
-22_batteryliquid_v3,375x812,,trigger:"Trigger 1",v_num:Percent(66:0-100)
+22_batteryliquid_v4,375x812,,trigger:"Trigger 1",v_num:Percent(66:0-100)
 22_batteryliquidsleep_v3,375x812,,
 23_stressfanplus_v5,375x812,375x812,
 24_energybyny_v9,375x812,375x812,txt:text1("Nov"),txt:text2("Dec"),txt:text3("2026"),txt:textReclaim("Reclaim your energy by spring")
