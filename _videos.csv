@@ -95,3 +95,4 @@ contraTest_v5,375x812,
 61_umbrellas_v2,393x206,,
 62_patternpill_v1,360x800,360x800, 
 63_liquidbluepink_v2,360x484,360x484,
+64_stressinsight_v1,393x300,393x586,v_num:percent(30:0-100)
