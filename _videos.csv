@@ -97,3 +97,4 @@ contraTest_v5,375x812,
 63_liquidbluepink_v2,360x484,360x484,
 64_stressinsight_v1,393x300,393x586,v_num:percent(30:0-100)
 65_healthflower_v3,360x320,393x852,
+66_dictationbutton2_v1,393x286,393x852,v_bol:pressed
