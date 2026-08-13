@@ -1,10 +1,10 @@
 src,size,preview,params...
 04_EyeNew_v6,80x80,176x168,
 04_New_v2,80x80,,
-03_loaders_v3,200x200,,artboard:"CircleLoader"
-03_loaders_v3,200x200,,artboard:"EyeLoader",trigger:"Trigger 1"
-03_loaders_v3,200x200,,artboard:"SpiralLoader"
-03_loaders_v3,200x200,,artboard:"WaveLoader"
+03_loaders_v4,200x200,,artboard:"CircleLoader"
+03_loaders_v4,200x200,,artboard:"EyeLoader",trigger:"Trigger 1"
+03_loaders_v4,200x200,,artboard:"SpiralLoader"
+03_loaders_v4,200x200,,artboard:"WaveLoader"
 04_PulseWave_full-circle_v7,274x274,,
 01_NightDay_v9,393x852,,
 06_GiftBox_v6,393x614,,trigger:"Trigger 1",txt:text1("25%"),txt:text2("discount for 24 hours")
