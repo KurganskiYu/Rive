@@ -16,7 +16,7 @@ River_v1,526x800,,artboard:-
 08_SleepLines_v5,375x812,,trigger:"Trigger 1"
 08_ExerciseBubbles_v4,500x812,,trigger:"Trigger 1"
 08_OnboardingStrings_v4,375x812,,
-08_Activity_v4,375x812,,
+08_ActivityRecovery_v5,375x812,,artboard:"activity",note:"activity; activityEsp; recovery; recoveryEsp artboards for localizations"
 08_Recovery_v4,375x812,,
 08_Welcome_v3,375x812,,trigger:"Trigger 1"
 08_Particles_v2,375x812,,
@@ -38,7 +38,7 @@ River_v1,526x800,,artboard:-
 15_liquidanimation_v2,375x396,,trigger:"Trigger 1"
 16_DragonCat_v3,500x500,,
 16_dragoncateyes_v3,100x70,,trigger:"Trigger 1"
-17_LaborEffect_v4,375x812,,trigger:"Trigger 1"
+17_LaborEffect_v5,375x812,,trigger:"Trigger 1",note:"mainEsp artboard for localization"
 18_SleepWavesNew_v5,375x812,,trigger:"Trigger 1"
 19_keyhole_v7,393x852,,trigger:"Trigger 1",img:MagicImage(MagicRiver.png)
 20_StressImpact_v3,375x812,,trigger:"Trigger 1"
@@ -56,7 +56,7 @@ River_v1,526x800,,artboard:-
 30_starsflystack_v2,393x852,,trigger:"Trigger 1"
 31_parametricparticles_v10,380x320,,v_num:numParticles(120:20-300)
 contraTest_v5,375x812,
-33_healthdataaccess_v5,375x327,,note:"Scripting for particles and ScreenRu artboard for russian localization"
+33_healthdataaccess_v6,375x327,,note:"ScreenRu and ScreenEsp artboards for localizations"
 34_cometpluses2_v6,375x812,,v_bol:impact
 35_scatterpluses_v4,375x812,
 36_PaywallWave_v18,375x812,,v_num:rotation(0:0-360),note:"Scripting for wave"
