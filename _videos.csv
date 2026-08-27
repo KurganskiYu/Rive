@@ -70,7 +70,7 @@ contraTest_v5,375x812,
 42_bannerparticlessandwide_v5,393x206,
 43_playerbird_v4,393x852,,note:"Scripting"
 44_particlesstars_v2,375x200,,note:"Scripting"
-45_activityring_v5,393x620,,trigger:"start",v_num:goal(35:5-100),v_num:activeMinutes(66:5-90),v_num:size2mult(1.0:0.3-1.0)
+45_activityring_v6,393x620,,trigger:"start",v_num:goal(35:5-100),v_num:activeMinutes(66:5-90),v_num:size2mult(1.0:0.3-1.0)
 46_dictationbutton_v7,393x286,,v_bol:pressed
 47_activitytags_v3,393x388,,note:"Scripting"
 48_stressbatterygraph_v11,393x852,,v_num:stressStart(15:0-100),v_num:stressNow(55:0-100),v_num:bar1(97:0-100),v_num:bar5(65:0-100),txt:duration("120 min"),txt:timeBefore("9:00am")
