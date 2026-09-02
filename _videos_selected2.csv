@@ -28,3 +28,7 @@ contraTest_v5,375x812,
 57_energyfill_v2,360x800,360x800,
 59_paymentcomplete_v4,393x852,393x852,
 60_stresscalendar2_v2,325x352,375x812,v_num:daysAmount(31:1-31),v_num:delay(40:0-100),txt:percentToData("60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55"),note:"Scripting"
+64_stressinsight_v3,393x300,393x586,v_num:percent(30:0-100)
+65_healthflower_v3,360x320,393x852,
+66_dictationbutton2_v1,393x286,393x852,v_bol:pressed
+68_dictationfunnel_v4,393x286,393x852,v_bol:pressed,trigger:"trigger"
