@@ -99,4 +99,4 @@ contraTest_v5,375x812,
 65_healthflower_v3,360x320,393x852,
 66_dictationbutton2_v1,393x286,393x852,v_bol:pressed
 68_dictationfunnel_v4,393x286,393x852,v_bol:pressed,trigger:"trigger"
-69_activitycan_v6,393x368,393x795,trigger:"start",v_num:goal(35:5-100),v_num:zone1(25:0-90),v_num:zone2(30:0-90),v_num:zone3(20:0-90),v_num:zone4(5:0-90)
+69_activitycan_v10,393x368,393x795,trigger:"start",v_num:goal(35:5-100),v_num:zone1(25:0-90),v_num:zone2(30:0-90),v_num:zone3(20:0-90),v_num:zone4(5:0-90)
