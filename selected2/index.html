@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Yuri's Rive Animations</title>
-    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <script src="https://unpkg.com/@rive-app/webgl2@2.39.2"></script>
     <!-- Add Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="RiveIcon2.svg" />
@@ -327,20 +327,55 @@
     </script>
     
             <div class="animation-container">
-                <canvas id="canvas0" width="200" height="146"></canvas>
+                <canvas id="canvas0" width="200" height="187"></canvas>
                 <div class="description">
                     
             <div style="display: flex; flex-direction: column; align-items: stretch;">
                 <div style="display: flex; align-items: center; width: 100%;">
-                    <div><a href="68_dictationfunnel_v4.html" style="color: #464646;">68 dictationfunnel</a></div>
+                    <div><a href="69_activitycan_v10.html" style="color: #464646;">69 activitycan</a></div>
                     <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
                 </div>
                 
                 <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
                         
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn0_input0">pressed:</label>
-            <input type="checkbox" id="btn0_input0" />
+        <div class="range-control" style="width:202px;--slider-progress:31.5789%;">
+            <output for="btn0_input0">35</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn0_input0" value="35" min="5" max="100" step="1" aria-label="goal" />
+            <span class="range-bound range-min">5</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:27.7778%;">
+            <output for="btn0_input1">25</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn0_input1" value="25" min="0" max="90" step="1" aria-label="zone1" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">90</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:33.3333%;">
+            <output for="btn0_input2">30</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn0_input2" value="30" min="0" max="90" step="1" aria-label="zone2" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">90</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:22.2222%;">
+            <output for="btn0_input3">20</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn0_input3" value="20" min="0" max="90" step="1" aria-label="zone3" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">90</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:5.5556%;">
+            <output for="btn0_input4">5</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn0_input4" value="5" min="0" max="90" step="1" aria-label="zone4" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">90</span>
         </div>
         
                 </div>
@@ -356,8 +391,8 @@
                     
             <div style="display: flex; flex-direction: column; align-items: stretch;">
                 <div style="display: flex; align-items: center; width: 100%;">
-                    <div><a href="66_dictationbutton2_v1.html" style="color: #464646;">66 dictationbutton2</a></div>
-                    
+                    <div><a href="68_dictationfunnel_v4.html" style="color: #464646;">68 dictationfunnel</a></div>
+                    <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
                 </div>
                 
                 <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
@@ -375,7 +410,31 @@
             </div>
         
             <div class="animation-container">
-                <canvas id="canvas2" width="200" height="178"></canvas>
+                <canvas id="canvas2" width="200" height="146"></canvas>
+                <div class="description">
+                    
+            <div style="display: flex; flex-direction: column; align-items: stretch;">
+                <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="66_dictationbutton2_v1.html" style="color: #464646;">66 dictationbutton2</a></div>
+                    
+                </div>
+                
+                <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+                        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn2_input0">pressed:</label>
+            <input type="checkbox" id="btn2_input0" />
+        </div>
+        
+                </div>
+                
+            </div>
+        
+                </div>
+            </div>
+        
+            <div class="animation-container">
+                <canvas id="canvas3" width="200" height="178"></canvas>
                 <div class="description">
                     
             <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -390,7 +449,7 @@
             </div>
         
             <div class="animation-container">
-                <canvas id="canvas3" width="200" height="153"></canvas>
+                <canvas id="canvas4" width="200" height="153"></canvas>
                 <div class="description">
                     
             <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -402,9 +461,9 @@
                 <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
                         
         <div class="range-control" style="width:202px;--slider-progress:30.0000%;">
-            <output for="btn3_input0">30</output>
+            <output for="btn4_input0">30</output>
             <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn3_input0" value="30" min="0" max="100" step="1" aria-label="percent" />
+            <input type="range" id="btn4_input0" value="30" min="0" max="100" step="1" aria-label="percent" />
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">100</span>
         </div>
@@ -417,7 +476,7 @@
             </div>
         
             <div class="animation-container">
-                <canvas id="canvas4" width="200" height="217"></canvas>
+                <canvas id="canvas5" width="200" height="217"></canvas>
                 <div class="description">
                     
             <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -429,24 +488,24 @@
                 <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
                         
         <div class="range-control" style="width:202px;--slider-progress:100.0000%;">
-            <output for="btn4_input0">31</output>
+            <output for="btn5_input0">31</output>
             <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn4_input0" value="31" min="1" max="31" step="1" aria-label="daysAmount" />
+            <input type="range" id="btn5_input0" value="31" min="1" max="31" step="1" aria-label="daysAmount" />
             <span class="range-bound range-min">1</span>
             <span class="range-bound range-max">31</span>
         </div>
         
         <div class="range-control" style="width:202px;--slider-progress:40.0000%;">
-            <output for="btn4_input1">40</output>
+            <output for="btn5_input1">40</output>
             <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn4_input1" value="40" min="0" max="100" step="1" aria-label="delay" />
+            <input type="range" id="btn5_input1" value="40" min="0" max="100" step="1" aria-label="delay" />
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">100</span>
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input2">percentToData:</label>
-            <input type="text" id="btn4_input2" value="60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55" style="width:90px;" />
+            <label for="btn5_input2">percentToData:</label>
+            <input type="text" id="btn5_input2" value="60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55" style="width:90px;" />
         </div>
         
                 </div>
@@ -457,7 +516,7 @@
             </div>
         
             <div class="animation-container">
-                <canvas id="canvas5" width="200" height="434"></canvas>
+                <canvas id="canvas6" width="200" height="434"></canvas>
                 <div class="description">
                     
             <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -472,7 +531,7 @@
             </div>
         
             <div class="animation-container">
-                <canvas id="canvas6" width="200" height="444"></canvas>
+                <canvas id="canvas7" width="200" height="444"></canvas>
                 <div class="description">
                     
             <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -485,38 +544,11 @@
         
                 </div>
             </div>
-        
-            <div class="animation-container">
-                <canvas id="canvas7" width="200" height="41"></canvas>
-                <div class="description">
-                    
-            <div style="display: flex; flex-direction: column; align-items: stretch;">
-                <div style="display: flex; align-items: center; width: 100%;">
-                    <div><a href="56_progressbar2_v3.html" style="color: #464646;">56 progressbar2</a></div>
-                    
-                </div>
-                
-                <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
-                        
-        <div class="range-control" style="width:202px;--slider-progress:52.0000%;">
-            <output for="btn7_input0">52</output>
-            <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn7_input0" value="52" min="0" max="100" step="1" aria-label="percent" />
-            <span class="range-bound range-min">0</span>
-            <span class="range-bound range-max">100</span>
-        </div>
-        
-                </div>
-                
-            </div>
-        
-                </div>
-            </div>
         </div>
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/68_dictationfunnel_v4.riv",
+    src: "../riv/69_activitycan_v10.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -525,15 +557,137 @@ const r0 = new rive.Rive({
     const vmi = r0.viewModelInstance;
     let inputFieldBtn0_0 = document.getElementById("btn0_input0");
     if (inputFieldBtn0_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn0_0.addEventListener("change", () => {
-        vmi.boolean("pressed").value = inputFieldBtn0_0.checked;
+      // Update numeric ViewModel variable
+      inputFieldBtn0_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_0.value);
+                if (!isNaN(val)) vmi.number("goal").value = val;
+                const rangeControl = inputFieldBtn0_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_0.value;
+                    const minimum = Number(inputFieldBtn0_0.min);
+                    const maximum = Number(inputFieldBtn0_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
-      // Set initial value
-      vmi.boolean("pressed").value = inputFieldBtn0_0.checked;
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_0.value);
+      if (!isNaN(initVal)) vmi.number("goal").value = initVal;
+    }
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_1.value);
+                if (!isNaN(val)) vmi.number("zone1").value = val;
+                const rangeControl = inputFieldBtn0_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_1.value;
+                    const minimum = Number(inputFieldBtn0_1.min);
+                    const maximum = Number(inputFieldBtn0_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_1.value);
+      if (!isNaN(initVal)) vmi.number("zone1").value = initVal;
+    }
+    let inputFieldBtn0_2 = document.getElementById("btn0_input2");
+    if (inputFieldBtn0_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_2.value);
+                if (!isNaN(val)) vmi.number("zone2").value = val;
+                const rangeControl = inputFieldBtn0_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_2.value;
+                    const minimum = Number(inputFieldBtn0_2.min);
+                    const maximum = Number(inputFieldBtn0_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_2.value);
+      if (!isNaN(initVal)) vmi.number("zone2").value = initVal;
+    }
+    let inputFieldBtn0_3 = document.getElementById("btn0_input3");
+    if (inputFieldBtn0_3 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_3.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_3.value);
+                if (!isNaN(val)) vmi.number("zone3").value = val;
+                const rangeControl = inputFieldBtn0_3.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_3.value;
+                    const minimum = Number(inputFieldBtn0_3.min);
+                    const maximum = Number(inputFieldBtn0_3.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_3.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_3.value);
+      if (!isNaN(initVal)) vmi.number("zone3").value = initVal;
+    }
+    let inputFieldBtn0_4 = document.getElementById("btn0_input4");
+    if (inputFieldBtn0_4 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_4.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_4.value);
+                if (!isNaN(val)) vmi.number("zone4").value = val;
+                const rangeControl = inputFieldBtn0_4.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_4.value;
+                    const minimum = Number(inputFieldBtn0_4.min);
+                    const maximum = Number(inputFieldBtn0_4.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_4.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_4.value);
+      if (!isNaN(initVal)) vmi.number("zone4").value = initVal;
     }
     const inputs = r0.stateMachineInputs("State Machine 1");
     document.getElementById("btn0").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("start");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
+            }
+        }
+        const smTrigger = inputs.find(input => input.name === "start");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): start");
+        }
+    });
+  },
+});
+
+const r1 = new rive.Rive({
+    src: "../riv/68_dictationfunnel_v4.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
+    const vmi = r1.viewModelInstance;
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn1_0.addEventListener("change", () => {
+        vmi.boolean("pressed").value = inputFieldBtn1_0.checked;
+      });
+      // Set initial value
+      vmi.boolean("pressed").value = inputFieldBtn1_0.checked;
+    }
+    const inputs = r1.stateMachineInputs("State Machine 1");
+    document.getElementById("btn1").addEventListener("click", () => {
         if (vmi) {
             const vmTrigger = vmi.trigger("trigger");
             if (vmTrigger) {
@@ -551,71 +705,40 @@ const r0 = new rive.Rive({
   },
 });
 
-const r1 = new rive.Rive({
-    src: "../riv/66_dictationbutton2_v1.riv",
-    canvas: document.getElementById("canvas1"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-
-    onLoad: () => {
-        r1.resizeDrawingSurfaceToCanvas();
-    const vmi = r1.viewModelInstance;
-    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
-    if (inputFieldBtn1_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn1_0.addEventListener("change", () => {
-        vmi.boolean("pressed").value = inputFieldBtn1_0.checked;
-      });
-      // Set initial value
-      vmi.boolean("pressed").value = inputFieldBtn1_0.checked;
-    }
-    const inputs = r1.stateMachineInputs("State Machine 1");
-  },
-});
-
 const r2 = new rive.Rive({
-    src: "../riv/65_healthflower_v3.riv",
+    src: "../riv/66_dictationbutton2_v1.riv",
     canvas: document.getElementById("canvas2"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
+    let inputFieldBtn2_0 = document.getElementById("btn2_input0");
+    if (inputFieldBtn2_0 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn2_0.addEventListener("change", () => {
+        vmi.boolean("pressed").value = inputFieldBtn2_0.checked;
+      });
+      // Set initial value
+      vmi.boolean("pressed").value = inputFieldBtn2_0.checked;
+    }
     const inputs = r2.stateMachineInputs("State Machine 1");
   },
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/64_stressinsight_v3.riv",
+    src: "../riv/65_healthflower_v3.riv",
     canvas: document.getElementById("canvas3"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
-    const vmi = r3.viewModelInstance;
-    let inputFieldBtn3_0 = document.getElementById("btn3_input0");
-    if (inputFieldBtn3_0 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn3_0.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn3_0.value);
-                if (!isNaN(val)) vmi.number("percent").value = val;
-                const rangeControl = inputFieldBtn3_0.closest(".range-control");
-                if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn3_0.value;
-                    const minimum = Number(inputFieldBtn3_0.min);
-                    const maximum = Number(inputFieldBtn3_0.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_0.value - minimum) / (maximum - minimum) * 100;
-                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
-                }
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn3_0.value);
-      if (!isNaN(initVal)) vmi.number("percent").value = initVal;
-    }
     const inputs = r3.stateMachineInputs("State Machine 1");
   },
 });
 
 const r4 = new rive.Rive({
-    src: "../riv/60_stresscalendar2_v2.riv",
+    src: "../riv/64_stressinsight_v3.riv",
     canvas: document.getElementById("canvas4"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -627,7 +750,7 @@ const r4 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn4_0.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn4_0.value);
-                if (!isNaN(val)) vmi.number("daysAmount").value = val;
+                if (!isNaN(val)) vmi.number("percent").value = val;
                 const rangeControl = inputFieldBtn4_0.closest(".range-control");
                 if (rangeControl) {
                     rangeControl.querySelector("output").value = inputFieldBtn4_0.value;
@@ -639,51 +762,71 @@ const r4 = new rive.Rive({
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn4_0.value);
-      if (!isNaN(initVal)) vmi.number("daysAmount").value = initVal;
-    }
-    let inputFieldBtn4_1 = document.getElementById("btn4_input1");
-    if (inputFieldBtn4_1 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn4_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn4_1.value);
-                if (!isNaN(val)) vmi.number("delay").value = val;
-                const rangeControl = inputFieldBtn4_1.closest(".range-control");
-                if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn4_1.value;
-                    const minimum = Number(inputFieldBtn4_1.min);
-                    const maximum = Number(inputFieldBtn4_1.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn4_1.value - minimum) / (maximum - minimum) * 100;
-                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
-                }
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn4_1.value);
-      if (!isNaN(initVal)) vmi.number("delay").value = initVal;
-    }
-    let inputFieldBtn4_2 = document.getElementById("btn4_input2");
-    if (inputFieldBtn4_2 && vmi) {
-      vmi.string("percentToData").value = inputFieldBtn4_2.value;
-      inputFieldBtn4_2.addEventListener("input", () => {
-        vmi.string("percentToData").value = inputFieldBtn4_2.value;
-      });
+      if (!isNaN(initVal)) vmi.number("percent").value = initVal;
     }
     const inputs = r4.stateMachineInputs("State Machine 1");
   },
 });
 
 const r5 = new rive.Rive({
-    src: "../riv/59_paymentcomplete_v4.riv",
+    src: "../riv/60_stresscalendar2_v2.riv",
     canvas: document.getElementById("canvas5"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r5.resizeDrawingSurfaceToCanvas();
+    const vmi = r5.viewModelInstance;
+    let inputFieldBtn5_0 = document.getElementById("btn5_input0");
+    if (inputFieldBtn5_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn5_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn5_0.value);
+                if (!isNaN(val)) vmi.number("daysAmount").value = val;
+                const rangeControl = inputFieldBtn5_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn5_0.value;
+                    const minimum = Number(inputFieldBtn5_0.min);
+                    const maximum = Number(inputFieldBtn5_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn5_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn5_0.value);
+      if (!isNaN(initVal)) vmi.number("daysAmount").value = initVal;
+    }
+    let inputFieldBtn5_1 = document.getElementById("btn5_input1");
+    if (inputFieldBtn5_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn5_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn5_1.value);
+                if (!isNaN(val)) vmi.number("delay").value = val;
+                const rangeControl = inputFieldBtn5_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn5_1.value;
+                    const minimum = Number(inputFieldBtn5_1.min);
+                    const maximum = Number(inputFieldBtn5_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn5_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn5_1.value);
+      if (!isNaN(initVal)) vmi.number("delay").value = initVal;
+    }
+    let inputFieldBtn5_2 = document.getElementById("btn5_input2");
+    if (inputFieldBtn5_2 && vmi) {
+      vmi.string("percentToData").value = inputFieldBtn5_2.value;
+      inputFieldBtn5_2.addEventListener("input", () => {
+        vmi.string("percentToData").value = inputFieldBtn5_2.value;
+      });
+    }
     const inputs = r5.stateMachineInputs("State Machine 1");
   },
 });
 
 const r6 = new rive.Rive({
-    src: "../riv/57_energyfill_v2.riv",
+    src: "../riv/59_paymentcomplete_v4.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -694,32 +837,12 @@ const r6 = new rive.Rive({
 });
 
 const r7 = new rive.Rive({
-    src: "../riv/56_progressbar2_v3.riv",
+    src: "../riv/57_energyfill_v2.riv",
     canvas: document.getElementById("canvas7"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r7.resizeDrawingSurfaceToCanvas();
-    const vmi = r7.viewModelInstance;
-    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
-    if (inputFieldBtn7_0 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn7_0.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn7_0.value);
-                if (!isNaN(val)) vmi.number("percent").value = val;
-                const rangeControl = inputFieldBtn7_0.closest(".range-control");
-                if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn7_0.value;
-                    const minimum = Number(inputFieldBtn7_0.min);
-                    const maximum = Number(inputFieldBtn7_0.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn7_0.value - minimum) / (maximum - minimum) * 100;
-                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
-                }
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn7_0.value);
-      if (!isNaN(initVal)) vmi.number("percent").value = initVal;
-    }
     const inputs = r7.stateMachineInputs("State Machine 1");
   },
 });

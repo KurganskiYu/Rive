@@ -327,7 +327,22 @@
     </script>
     
             <div class="animation-container">
-                <canvas id="canvas0" width="200" height="245"></canvas>
+                <canvas id="canvas0" width="200" height="433"></canvas>
+                <div class="description">
+                    
+            <div style="display: flex; flex-direction: column; align-items: stretch;">
+                <div style="display: flex; align-items: center; width: 100%;">
+                    <div><a href="08_Welcome_v3.html" style="color: #464646;">08 Welcome</a></div>
+                    <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+                </div>
+                
+            </div>
+        
+                </div>
+            </div>
+        
+            <div class="animation-container">
+                <canvas id="canvas1" width="200" height="245"></canvas>
                 <div class="description">
                     
             <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -344,13 +359,40 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/08_stressmonth_v1.riv",
+    src: "../riv/08_Welcome_v3.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
     const inputs = r0.stateMachineInputs("State Machine 1");
+    document.getElementById("btn0").addEventListener("click", () => {
+        if (vmi) {
+            const vmTrigger = vmi.trigger("Trigger 1");
+            if (vmTrigger) {
+                vmTrigger.trigger();
+                return;
+            }
+        }
+        const smTrigger = inputs.find(input => input.name === "Trigger 1");
+        if (smTrigger) {
+            smTrigger.fire();
+        } else {
+            console.warn("Trigger not found (view model or state machine): Trigger 1");
+        }
+    });
+  },
+});
+
+const r1 = new rive.Rive({
+    src: "../riv/08_stressmonth_v1.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
+    const inputs = r1.stateMachineInputs("State Machine 1");
   },
 });
 
