@@ -642,10 +642,11 @@ def generate_image_asset_loader(row, is_root):
     return ""
 
 def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, input_prefix, row, is_root=True):
-        artboard_line = f'artboard: "{artboard}",' if artboard else ""
-        state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
-        asset_loader = generate_image_asset_loader(row, is_root)
-        js = [f'''
+    artboard_line = f'artboard: "{artboard}",' if artboard else ""
+    state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
+    asset_loader = generate_image_asset_loader(row, is_root)
+    trigger_js = ""
+    js = [f'''
 const {var_name} = new rive.Rive({{
     src: "{src}",
     canvas: document.getElementById("{canvas_id}"),
@@ -655,57 +656,62 @@ const {var_name} = new rive.Rive({{
         {var_name}.resizeDrawingSurfaceToCanvas();
 ''']
 
-        js.append(generate_text_input_js(row, input_prefix, var_name, include_vmi=bool(trigger)))
+    js.append(generate_text_input_js(row, input_prefix, var_name, include_vmi=bool(trigger)))
 
-        if state_machine:
-                js.append(f'    const inputs = {var_name}.stateMachineInputs("{state_machine}");\n')
-                if trigger:
-                        js.append(f'''    document.getElementById("{input_prefix}").addEventListener("click", () => {{
-        if (vmi) {{
-            const vmTrigger = vmi.trigger("{trigger}");
-            if (vmTrigger) {{
-                vmTrigger.trigger();
-                return;
-            }}
+    if state_machine:
+        if trigger:
+            trigger_js = f'''document.getElementById("{input_prefix}").addEventListener("click", () => {{
+    const currentVmi = {var_name}.viewModelInstance;
+    if (currentVmi) {{
+        const vmTrigger = currentVmi.trigger("{trigger}");
+        if (vmTrigger) {{
+            vmTrigger.trigger();
+            return;
         }}
-        const smTrigger = inputs.find(input => input.name === "{trigger}");
-        if (smTrigger) {{
-            smTrigger.fire();
-        }} else {{
-            console.warn("Trigger not found (view model or state machine): {trigger}");
-        }}
-    }});
-''')
+    }}
+    const inputs = {var_name}.stateMachineInputs("{state_machine}");
+    const smTrigger = inputs && inputs.find(input => input.name === "{trigger}");
+    if (smTrigger) {{
+        smTrigger.fire();
+    }} else {{
+        console.warn("Trigger not found (view model or state machine): {trigger}");
+    }}
+}});
+'''
 
-                for i, input_value in enumerate(row.get("inputs", [])):
-                        input_type, input_name, _default = parse_input_spec(input_value)
-                        if input_type in ("txt", "col", "v_num", "v_bol", "list"):
-                                continue
-                        input_id = f"{input_prefix}_input{i}"
-                        field_var = f'inputField_{input_prefix}_{i}'
-                        obj_var = f'inputObj_{input_prefix}_{i}'
-                        js.append(f'    let {field_var} = document.getElementById("{input_id}");\n')
-                        js.append(f'    let {obj_var} = inputs.find(input => input.name === "{input_name}");\n')
-                        if input_type == "num":
-                                js.append(f'''    if ({field_var} && {obj_var}) {{
+        if any(parse_input_spec(value)[0] in ("num", "bol") for value in row.get("inputs", [])):
+            js.append(f'    const inputs = {var_name}.stateMachineInputs("{state_machine}");\n')
+
+        for i, input_value in enumerate(row.get("inputs", [])):
+            input_type, input_name, _default = parse_input_spec(input_value)
+            if input_type in ("txt", "col", "v_num", "v_bol", "list"):
+                continue
+            input_id = f"{input_prefix}_input{i}"
+            field_var = f'inputField_{input_prefix}_{i}'
+            obj_var = f'inputObj_{input_prefix}_{i}'
+            js.append(f'    let {field_var} = document.getElementById("{input_id}");\n')
+            js.append(f'    let {obj_var} = inputs.find(input => input.name === "{input_name}");\n')
+            if input_type == "num":
+                js.append(f'''    if ({field_var} && {obj_var}) {{
+        let val = parseFloat({field_var}.value);
+        if (!isNaN(val)) {obj_var}.value = val;
+        {field_var}.addEventListener("input", () => {{
             let val = parseFloat({field_var}.value);
             if (!isNaN(val)) {obj_var}.value = val;
-            {field_var}.addEventListener("input", () => {{
-                let val = parseFloat({field_var}.value);
-                if (!isNaN(val)) {obj_var}.value = val;
-            }});
-        }}
+        }});
+    }}
 ''')
-                        elif input_type == "bol":
-                                js.append(f'''    if ({field_var} && {obj_var}) {{
+            elif input_type == "bol":
+                js.append(f'''    if ({field_var} && {obj_var}) {{
+        {obj_var}.value = {field_var}.checked;
+        {field_var}.addEventListener("change", () => {{
             {obj_var}.value = {field_var}.checked;
-            {field_var}.addEventListener("change", () => {{
-                {obj_var}.value = {field_var}.checked;
-            }});
-        }}
+        }});
+    }}
 ''')
-        js.append('  },\n});\n')
-        return "".join(js)
+    js.append('  },\n});\n')
+    js.append(trigger_js)
+    return "".join(js)
 
 def make_script(rows, is_root=True):
     script_parts = ["<script>\n"]
