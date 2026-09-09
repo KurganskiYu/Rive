@@ -101,3 +101,4 @@ contraTest_v5,375x812,
 68_dictationfunnel_v4,393x286,393x852,v_bol:pressed,trigger:"trigger"
 69_activitycan_v10,393x368,393x795,trigger:"start",v_num:goal(35:5-100),v_num:zone1(25:0-90),v_num:zone2(30:0-90),v_num:zone3(20:0-90),v_num:zone4(5:0-90)
 71_sleeptubes_v2,393x300,393x524,trigger:"start",v_num:height1(50:0-100),v_num:height2(70:0-100),v_num:height3(85:0-100),v_num:height4(99:0-100),v_bol:green4(True),v_bol:light4(True)
+72_gradients_v1,393x226,393x226,
