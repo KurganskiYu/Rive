@@ -15,10 +15,13 @@ pages_dir = os.path.join(script_dir, "pages")
 os.makedirs(pages_dir, exist_ok=True)
 
 # Cache file reads
-@lru_cache(maxsize=1)
-def get_html_head():
+@lru_cache(maxsize=2)
+def get_html_head(is_root=True):
     with open(head_html_path, "r", encoding="utf-8") as head_file:
-        return head_file.read()
+        html_head = head_file.read()
+    if not is_root:
+        html_head = html_head.replace('href="RiveIcon2.svg"', 'href="../RiveIcon2.svg"')
+    return html_head
 
 # NEW: Helper to inject the BG button on every page
 def get_bg_button_html(is_root=True):
@@ -822,7 +825,7 @@ def make_animation_page(row):
                 "artboard": row.get("artboard", "")
             }
 
-    html_parts = [get_html_head()]
+    html_parts = [get_html_head(is_root=False)]
     # Inject BG button (is_root=False because this is in pages/)
     html_parts.append(get_bg_button_html(is_root=False))
     
@@ -1014,7 +1017,7 @@ def write_main_page(page_rows, page_idx, total_pages):
     
     with open(filename, "w", encoding="utf-8") as f:
         content_parts = [
-            get_html_head(),
+            get_html_head(is_root=is_root),
             get_bg_button_html(is_root=is_root),  # Inject BG button
             "".join(make_main_canvas(idx, row, is_root) for idx, row in enumerate(page_rows)),
             "</div>\n",
