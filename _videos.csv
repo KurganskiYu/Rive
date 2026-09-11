@@ -103,3 +103,4 @@ contraTest_v5,375x812,
 71_sleeptubes_v3,393x300,393x524,trigger:"start",v_num:height4(99:0-100),v_bol:green4(True),v_bol:lightGreen4(True),v_bol:orange4(False),v_bol:lightWhite4(False)
 72_gradients_v2,393x226,393x226,
 73_stressliquidformat_v1,393x524,393x524,v_num:percentFrom(5:0-100),v_num:percentTo(75:0-100)
+74_fanlake_v2,393x300,393x524,v_num:stressPercent(99:0-100)
