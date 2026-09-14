@@ -104,4 +104,4 @@ contraTest_v5,375x812,
 72_gradients_v2,393x226,393x226,
 73_stressliquidformat_v1,393x524,393x524,v_num:percentFrom(5:0-100),v_num:percentTo(75:0-100)
 74_fanlake_v2,393x300,393x524,v_num:stressPercent(99:0-100)
-75_awakesclock_v2,393x300,393x524,,v_num:hours(4:0-12),v_num:minutes(0:0-59),v_num:state(1:1-3)
+75_awakesclock_v3,393x300,393x524,,v_num:hours(4:0-12),v_num:minutes(0:0-59),v_num:state(1:1-3)
