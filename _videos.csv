@@ -106,5 +106,5 @@ contraTest_v5,375x812,
 74_fanlake_v2,393x300,393x524,v_num:stressPercent(99:0-100)
 75_awakesclock_v3,393x300,393x524,,v_num:hours(4:0-12),v_num:minutes(0:0-59),v_num:state(1:1-3)
 76_allowaccess_v2,375x328,375x812,v_bol:secondScreen(True)
-77_migrainechart_v3,393x150,393x353,txt:row1("1 1 2 1 2 1 1"),txt:row2("2 1 0 0 1 2 1"),txt:row3("1 2 1 1 2 2 1"),txt:dates("Fri 31 1 2 3 4 5 6"),txt:rowName1("Stress Impact")
+77_migrainechart_v4,393x150,393x353,txt:row1("1 1 2 1 2 1 1"),txt:row2("2 1 0 0 1 2 1"),txt:row3("1 2 1 1 2 2 1"),txt:rowName1("Stress Impact"),note:"+'dates' and 'days' parameters in CSV format"
 77_migrainechartmini_v1,393x150,393x150,v_num:state1(2:0-2),v_num:state2(2:0-2),v_num:state3(1:0-2),txt:name1("Stress Impact"),txt:name2("Active Time"),txt:name3("Sleep Score")

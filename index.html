@@ -390,7 +390,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/77_migrainechart_v3.html" style="color: #464646;">77 migrainechart</a></div>
+          <div><a href="pages/77_migrainechart_v4.html" style="color: #464646;">77 migrainechart</a></div>
           
         </div>
         
@@ -412,13 +412,8 @@
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input3">dates:</label>
-            <input type="text" id="btn1_input3" value="Fri 31 1 2 3 4 5 6" style="width:90px;" />
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn1_input4">rowName1:</label>
-            <input type="text" id="btn1_input4" value="Stress Impact" style="width:90px;" />
+            <label for="btn1_input3">rowName1:</label>
+            <input type="text" id="btn1_input3" value="Stress Impact" style="width:90px;" />
         </div>
         
         </div>
@@ -711,7 +706,7 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-    src: "riv/77_migrainechart_v3.riv",
+    src: "riv/77_migrainechart_v4.riv",
     canvas: document.getElementById("canvas1"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -741,16 +736,9 @@ const r1 = new rive.Rive({
     }
     let inputFieldBtn1_3 = document.getElementById("btn1_input3");
     if (inputFieldBtn1_3 && vmi) {
-      vmi.string("dates").value = inputFieldBtn1_3.value;
+      vmi.string("rowName1").value = inputFieldBtn1_3.value;
       inputFieldBtn1_3.addEventListener("input", () => {
-        vmi.string("dates").value = inputFieldBtn1_3.value;
-      });
-    }
-    let inputFieldBtn1_4 = document.getElementById("btn1_input4");
-    if (inputFieldBtn1_4 && vmi) {
-      vmi.string("rowName1").value = inputFieldBtn1_4.value;
-      inputFieldBtn1_4.addEventListener("input", () => {
-        vmi.string("rowName1").value = inputFieldBtn1_4.value;
+        vmi.string("rowName1").value = inputFieldBtn1_3.value;
       });
     }
   },
