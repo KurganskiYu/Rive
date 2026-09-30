@@ -6,6 +6,7 @@ import shutil
 import time
 import random
 import json
+from html import escape as html_escape
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, "_videos.csv")
@@ -136,7 +137,7 @@ def parse_size(size_str):
 DEFAULT_STATE_MACHINE = "State Machine 1"
 DEFAULT_ARTBOARD = "main"
 SCALAR_KEYS = {"sm": "state_machine", "artboard": "artboard", "trigger": "trigger", "note": "note"}
-INPUT_TYPE_PREFIXES = {"num", "bol", "v_num", "v_bol", "txt", "col", "img", "list"}
+INPUT_TYPE_PREFIXES = {"num", "bol", "v_num", "v_bol", "txt", "col", "img", "list", "enum"}
 
 def strip_quotes(value):
     value = value.strip()
@@ -148,7 +149,7 @@ def load_csv_rows(csv_file_path):
     """Parse the flexible CSV format: src,size,preview,token1,token2,...
     Tokens are freeform `key:value` pairs, any order/count, omitted when unused.
     Recognized scalar keys: sm, artboard, trigger, note.
-    Recognized input-type prefixes: num, bol, v_num, v_bol, txt, col, img, list.
+    Recognized input-type prefixes: num, bol, v_num, v_bol, txt, col, img, list, enum.
     """
     with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
         lines = csvfile.read().splitlines()
@@ -267,10 +268,24 @@ def parse_input_spec(input_value):
         if m:
             name = m.group(1).strip()
             default = m.group(2).strip()
-            # Strip wrapping quotes if present (e.g. from name("value"))
-            if len(default) >= 2 and ((default.startswith('"') and default.endswith('"')) or (default.startswith("'") and default.endswith("'"))):
+            # Strip wrapping quotes if present (e.g. from name("value")); enum keeps its quoted option list
+            if t != "enum" and len(default) >= 2 and ((default.startswith('"') and default.endswith('"')) or (default.startswith("'") and default.endswith("'"))):
                 default = default[1:-1]
     return t, name, default
+
+def parse_enum_spec(value):
+    """Return (default, options) for enum defaults like EN:EN|ES|RU or just EN|ES|RU (pipe-separated, CSV-safe)."""
+    value = value or ""
+    default_part, sep, options_part = value.partition(":")
+    if not sep:
+        default_part, options_part = "", value
+    options = [strip_quotes(o) for o in options_part.split("|") if o.strip()]
+    default = strip_quotes(default_part)
+    if default and default not in options:
+        options.insert(0, default)
+    if not default and options:
+        default = options[0]
+    return default, options
 
 def parse_number_range(value):
     """Return (current, minimum, maximum, step) for current:min-max syntax."""
@@ -383,6 +398,18 @@ def parse_input_field(input_value, input_idx, button_id, control_width=None):
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="{input_id}">{input_name}:</label>
             <input type="checkbox" id="{input_id}"{checked_attr} />
+        </div>
+        '''
+    elif input_type == "enum":  # ViewModel enum variable rendered as a dropdown
+        enum_default, enum_options = parse_enum_spec(default_val)
+        options_html = "".join(
+            f'<option value="{html_escape(o)}"{" selected" if o == enum_default else ""}>{html_escape(o)}</option>'
+            for o in enum_options
+        )
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{input_name}:</label>
+            <select id="{input_id}">{options_html}</select>
         </div>
         '''
     elif input_type == "img":  # NEW: ViewModel image variable (expects filename in img folder)
@@ -505,7 +532,7 @@ def generate_text_input_js(row, prefix, rive_var, include_vmi=False):
             list_match = re.match(r'^([^\[]+)\[(.+)\]$', name_spec)
         input_id = f"{prefix}_input{i}"
         field_var = f"inputField{prefix.title()}_{i}"
-        if input_type in ("txt", "col", "v_num", "v_bol", "img"):
+        if input_type in ("txt", "col", "v_num", "v_bol", "img", "enum"):
             has_vmi_inputs = True
             if input_type == "txt":
                 js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
@@ -560,6 +587,20 @@ def generate_text_input_js(row, prefix, rive_var, include_vmi=False):
       }});
       // Set initial value
       vmi.boolean("{input_name}").value = {field_var}.checked;
+    }}
+""")
+            elif input_type == "enum":
+                js_parts.append(f"    let {field_var} = document.getElementById(\"{input_id}\");\n")
+                js_parts.append(f"""    if ({field_var} && vmi) {{
+      const enumProp_{prefix}_{i} = vmi.enum("{input_name}");
+      if (enumProp_{prefix}_{i}) {{
+        enumProp_{prefix}_{i}.value = {field_var}.value;
+        {field_var}.addEventListener("change", () => {{
+          enumProp_{prefix}_{i}.value = {field_var}.value;
+        }});
+      }} else {{
+        console.warn("Enum not found in view model: {input_name}");
+      }}
     }}
 """)
             elif input_type == "img":
@@ -687,7 +728,7 @@ const {var_name} = new rive.Rive({{
 
         for i, input_value in enumerate(row.get("inputs", [])):
             input_type, input_name, _default = parse_input_spec(input_value)
-            if input_type in ("txt", "col", "v_num", "v_bol", "list"):
+            if input_type in ("txt", "col", "v_num", "v_bol", "list", "enum"):
                 continue
             input_id = f"{input_prefix}_input{i}"
             field_var = f'inputField_{input_prefix}_{i}'
