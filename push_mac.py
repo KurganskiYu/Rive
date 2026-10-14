@@ -43,15 +43,16 @@ def push_changes(commit_message="Updated files"):
     try:
         ensure_git_available()
         git_add()
-        if not changes_pending():
+        if changes_pending():
+            git_commit(commit_message)
+        else:
             print("No changes to commit.")
-            return
-        git_commit(commit_message)
         branch = get_current_branch()
         git_push(branch)
         print("Changes successfully pushed to GitHub.")
     except subprocess.CalledProcessError as e:
         print(f"Error occurred: {e}")
+        raise SystemExit(e.returncode) from e
 
 # Run the script
 if __name__ == "__main__":
