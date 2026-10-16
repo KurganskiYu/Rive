@@ -106,7 +106,8 @@ contraTest_v5,375x812,
 74_fanlake_v2,393x300,393x524,v_num:stressPercent(99:0-100)
 75_awakesclock_v3,393x300,393x524,,v_num:hours(4:0-12),v_num:minutes(0:0-59),v_num:state(1:1-3)
 76_allowaccess_v4,375x328,375x812,v_bol:secondScreen(True),enum:language(EN:EN|ES|RU)
-77_migrainechart_v4,393x150,393x353,txt:row1("1 1 2 1 2 1 1"),txt:row2("2 1 0 0 1 2 1"),txt:row3("1 2 1 1 2 2 1"),txt:rowName1("Stress Impact"),note:"+'dates' and 'days' parameters in CSV format"
+77_migrainechart_v5,393x150,393x353,txt:row1("1 1 2 1 2 1 1"),txt:row2("2 1 0 0 1 2 1"),txt:row3("1 2 1 1 2 2 1"),txt:rowName1("Stress Impact"),note:"+'dates' and 'days' parameters in CSV format | row#pressed triggers for each row tap"
 77_migrainechartmini_v1,393x150,393x150,v_num:state1(2:0-2),v_num:state2(2:0-2),v_num:state3(1:0-2),txt:name1("Stress Impact"),txt:name2("Active Time"),txt:name3("Sleep Score")
 78_cardpocket_v6,393x530,393x530,trigger:"start",txt:text1("Make sense of your days. together"),txt:text2("You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like.")
 79_buttonhand_v6,393x226,,
+77_migrainelog_v2,393x100,393x206,v_bol:tenScale(True),txt:row1("0 99 5 99 99 10 7"),txt:rowName1("Episode logged"),note:"+'dates' and 'days' parameters in CSV format"
