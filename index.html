@@ -477,30 +477,35 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/77_migrainechart_v6.html" style="color: #464646;">77 migrainechart</a></div>
+          <div><a href="pages/77_migrainechart_v7.html" style="color: #464646;">77 migrainechart</a></div>
           
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input0">row1:</label>
-            <input type="text" id="btn4_input0" value="1 1 2 1 2 1 1" style="width:90px;" />
+            <label for="btn4_input0">jumps:</label>
+            <input type="checkbox" id="btn4_input0" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input1">row2:</label>
-            <input type="text" id="btn4_input1" value="2 1 0 0 1 2 1" style="width:90px;" />
+            <label for="btn4_input1">row1:</label>
+            <input type="text" id="btn4_input1" value="1 1 2 1 2 1 1" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input2">row3:</label>
-            <input type="text" id="btn4_input2" value="1 2 1 1 2 2 1" style="width:90px;" />
+            <label for="btn4_input2">row2:</label>
+            <input type="text" id="btn4_input2" value="2 1 0 0 1 2 1" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input3">rowName1:</label>
-            <input type="text" id="btn4_input3" value="Stress Impact" style="width:90px;" />
+            <label for="btn4_input3">row3:</label>
+            <input type="text" id="btn4_input3" value="1 2 1 1 2 2 1" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn4_input4">rowName1:</label>
+            <input type="text" id="btn4_input4" value="Stress Impact" style="width:90px;" />
         </div>
         
         </div>
@@ -787,7 +792,7 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "riv/77_migrainechart_v6.riv",
+    src: "riv/77_migrainechart_v7.riv",
     canvas: document.getElementById("canvas4"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
@@ -796,30 +801,39 @@ const r4 = new rive.Rive({
     const vmi = r4.viewModelInstance;
     let inputFieldBtn4_0 = document.getElementById("btn4_input0");
     if (inputFieldBtn4_0 && vmi) {
-      vmi.string("row1").value = inputFieldBtn4_0.value;
-      inputFieldBtn4_0.addEventListener("input", () => {
-        vmi.string("row1").value = inputFieldBtn4_0.value;
+      // Update boolean ViewModel variable
+      inputFieldBtn4_0.addEventListener("change", () => {
+        vmi.boolean("jumps").value = inputFieldBtn4_0.checked;
       });
+      // Set initial value
+      vmi.boolean("jumps").value = inputFieldBtn4_0.checked;
     }
     let inputFieldBtn4_1 = document.getElementById("btn4_input1");
     if (inputFieldBtn4_1 && vmi) {
-      vmi.string("row2").value = inputFieldBtn4_1.value;
+      vmi.string("row1").value = inputFieldBtn4_1.value;
       inputFieldBtn4_1.addEventListener("input", () => {
-        vmi.string("row2").value = inputFieldBtn4_1.value;
+        vmi.string("row1").value = inputFieldBtn4_1.value;
       });
     }
     let inputFieldBtn4_2 = document.getElementById("btn4_input2");
     if (inputFieldBtn4_2 && vmi) {
-      vmi.string("row3").value = inputFieldBtn4_2.value;
+      vmi.string("row2").value = inputFieldBtn4_2.value;
       inputFieldBtn4_2.addEventListener("input", () => {
-        vmi.string("row3").value = inputFieldBtn4_2.value;
+        vmi.string("row2").value = inputFieldBtn4_2.value;
       });
     }
     let inputFieldBtn4_3 = document.getElementById("btn4_input3");
     if (inputFieldBtn4_3 && vmi) {
-      vmi.string("rowName1").value = inputFieldBtn4_3.value;
+      vmi.string("row3").value = inputFieldBtn4_3.value;
       inputFieldBtn4_3.addEventListener("input", () => {
-        vmi.string("rowName1").value = inputFieldBtn4_3.value;
+        vmi.string("row3").value = inputFieldBtn4_3.value;
+      });
+    }
+    let inputFieldBtn4_4 = document.getElementById("btn4_input4");
+    if (inputFieldBtn4_4 && vmi) {
+      vmi.string("rowName1").value = inputFieldBtn4_4.value;
+      inputFieldBtn4_4.addEventListener("input", () => {
+        vmi.string("rowName1").value = inputFieldBtn4_4.value;
       });
     }
   },
