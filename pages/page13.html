@@ -336,7 +336,51 @@
     </script>
     
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="434"></canvas>
+        <canvas id="canvas0" width="200" height="304"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="River_v1.html" style="color: #464646;">River</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="312"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div><a href="06_GiftBox_v6.html" style="color: #464646;">06 GiftBox</a></div>
+          <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn1_input0">text1:</label>
+            <input type="text" id="btn1_input0" value="25%" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn1_input1">text2:</label>
+            <input type="text" id="btn1_input1" value="discount for 24 hours" style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas2" width="200" height="434"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -351,7 +395,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="200"></canvas>
+        <canvas id="canvas3" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -366,7 +410,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="200"></canvas>
+        <canvas id="canvas4" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -381,7 +425,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="200"></canvas>
+        <canvas id="canvas5" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -396,43 +440,13 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="200"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="03_loaders_v4--EyeLoader.html" style="color: #464646;">03 loaders</a></div>
-          <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas5" width="200" height="200"></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="03_loaders_v4--CircleLoader.html" style="color: #464646;">03 loaders</a></div>
-          
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
         <canvas id="canvas6" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="04_New_v2.html" style="color: #464646;">04 New</a></div>
-          
+          <div><a href="03_loaders_v4--EyeLoader.html" style="color: #464646;">03 loaders</a></div>
+          <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
       </div>
@@ -446,7 +460,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="04_EyeNew_v6.html" style="color: #464646;">04 EyeNew</a></div>
+          <div><a href="03_loaders_v4--CircleLoader.html" style="color: #464646;">03 loaders</a></div>
           
         </div>
         
@@ -458,9 +472,9 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "../riv/01_NightDay_v9.riv",
+    src: "../riv/River_v1.riv",
     canvas: document.getElementById("canvas0"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true, stateMachines: "State Machine 1",
 
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
@@ -468,19 +482,51 @@ const r0 = new rive.Rive({
 });
 
 const r1 = new rive.Rive({
-    src: "../riv/04_PulseWave_full-circle_v7.riv",
+    src: "../riv/06_GiftBox_v6.riv",
     canvas: document.getElementById("canvas1"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
+    const vmi = r1.viewModelInstance;
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      vmi.string("text1").value = inputFieldBtn1_0.value;
+      inputFieldBtn1_0.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn1_0.value;
+      });
+    }
+    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
+    if (inputFieldBtn1_1 && vmi) {
+      vmi.string("text2").value = inputFieldBtn1_1.value;
+      inputFieldBtn1_1.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn1_1.value;
+      });
+    }
   },
+});
+document.getElementById("btn1").addEventListener("click", () => {
+    const currentVmi = r1.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r1.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/03_loaders_v4.riv",
+    src: "../riv/01_NightDay_v9.riv",
     canvas: document.getElementById("canvas2"),
-    autoplay: true, autoBind: true,artboard: "WaveLoader", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
@@ -488,9 +534,9 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/03_loaders_v4.riv",
+    src: "../riv/04_PulseWave_full-circle_v7.riv",
     canvas: document.getElementById("canvas3"),
-    autoplay: true, autoBind: true,artboard: "SpiralLoader", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
@@ -500,15 +546,35 @@ const r3 = new rive.Rive({
 const r4 = new rive.Rive({
     src: "../riv/03_loaders_v4.riv",
     canvas: document.getElementById("canvas4"),
-    autoplay: true, autoBind: true,artboard: "EyeLoader", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "WaveLoader", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
-    const vmi = r4.viewModelInstance;
   },
 });
-document.getElementById("btn4").addEventListener("click", () => {
-    const currentVmi = r4.viewModelInstance;
+
+const r5 = new rive.Rive({
+    src: "../riv/03_loaders_v4.riv",
+    canvas: document.getElementById("canvas5"),
+    autoplay: true, autoBind: true,artboard: "SpiralLoader", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r5.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r6 = new rive.Rive({
+    src: "../riv/03_loaders_v4.riv",
+    canvas: document.getElementById("canvas6"),
+    autoplay: true, autoBind: true,artboard: "EyeLoader", stateMachines: "State Machine 1",
+
+    onLoad: () => {
+        r6.resizeDrawingSurfaceToCanvas();
+    const vmi = r6.viewModelInstance;
+  },
+});
+document.getElementById("btn6").addEventListener("click", () => {
+    const currentVmi = r6.viewModelInstance;
     if (currentVmi) {
         const vmTrigger = currentVmi.trigger("Trigger 1");
         if (vmTrigger) {
@@ -516,7 +582,7 @@ document.getElementById("btn4").addEventListener("click", () => {
             return;
         }
     }
-    const inputs = r4.stateMachineInputs("State Machine 1");
+    const inputs = r6.stateMachineInputs("State Machine 1");
     const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
     if (smTrigger) {
         smTrigger.fire();
@@ -525,30 +591,10 @@ document.getElementById("btn4").addEventListener("click", () => {
     }
 });
 
-const r5 = new rive.Rive({
-    src: "../riv/03_loaders_v4.riv",
-    canvas: document.getElementById("canvas5"),
-    autoplay: true, autoBind: true,artboard: "CircleLoader", stateMachines: "State Machine 1",
-
-    onLoad: () => {
-        r5.resizeDrawingSurfaceToCanvas();
-  },
-});
-
-const r6 = new rive.Rive({
-    src: "../riv/04_New_v2.riv",
-    canvas: document.getElementById("canvas6"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-
-    onLoad: () => {
-        r6.resizeDrawingSurfaceToCanvas();
-  },
-});
-
 const r7 = new rive.Rive({
-    src: "../riv/04_EyeNew_v6.riv",
+    src: "../riv/03_loaders_v4.riv",
     canvas: document.getElementById("canvas7"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "CircleLoader", stateMachines: "State Machine 1",
 
     onLoad: () => {
         r7.resizeDrawingSurfaceToCanvas();
@@ -567,7 +613,7 @@ setTimeout(() => {
   });
 }, 3000);
 </script>
-<div style="margin: 24px 0; text-align:center;"><a href="../index.html"><button class="rive-btn">1</button></a> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a> <a href="page3.html"><button class="rive-btn">4</button></a> <a href="page4.html"><button class="rive-btn">5</button></a> <a href="page5.html"><button class="rive-btn">6</button></a> <a href="page6.html"><button class="rive-btn">7</button></a> <a href="page7.html"><button class="rive-btn">8</button></a> <a href="page8.html"><button class="rive-btn">9</button></a> <a href="page9.html"><button class="rive-btn">10</button></a> <a href="page10.html"><button class="rive-btn">11</button></a> <a href="page11.html"><button class="rive-btn">12</button></a> <a href="page12.html"><button class="rive-btn">13</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">14</button></div>
+<div style="margin: 24px 0; text-align:center;"><a href="../index.html"><button class="rive-btn">1</button></a> <a href="page1.html"><button class="rive-btn">2</button></a> <a href="page2.html"><button class="rive-btn">3</button></a> <a href="page3.html"><button class="rive-btn">4</button></a> <a href="page4.html"><button class="rive-btn">5</button></a> <a href="page5.html"><button class="rive-btn">6</button></a> <a href="page6.html"><button class="rive-btn">7</button></a> <a href="page7.html"><button class="rive-btn">8</button></a> <a href="page8.html"><button class="rive-btn">9</button></a> <a href="page9.html"><button class="rive-btn">10</button></a> <a href="page10.html"><button class="rive-btn">11</button></a> <a href="page11.html"><button class="rive-btn">12</button></a> <a href="page12.html"><button class="rive-btn">13</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">14</button> <a href="page14.html"><button class="rive-btn">15</button></a></div>
     </div>
 </body>
 </html>

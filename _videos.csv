@@ -111,3 +111,5 @@ contraTest_v5,375x812,
 78_cardpocket_v6,393x530,393x530,trigger:"start",txt:text1("Make sense of your days. together"),txt:text2("You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like.")
 79_buttonhand_v6,393x226,,
 77_migrainelog_v2,393x100,393x206,v_bol:tenScale(True),txt:row1("0 99 5 99 99 10 7"),txt:rowName1("Episode logged"),note:"+'dates' and 'days' parameters in CSV format"
+80_heartzones_v1,393x300,393x524,trigger:"start",v_num:which(1:1-5)
+81_rainbowbird_v1,393x300,393x524,
