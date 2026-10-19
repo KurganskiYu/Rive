@@ -136,7 +136,7 @@ def parse_size(size_str):
 
 DEFAULT_STATE_MACHINE = "State Machine 1"
 DEFAULT_ARTBOARD = "main"
-SCALAR_KEYS = {"sm": "state_machine", "artboard": "artboard", "trigger": "trigger", "note": "note"}
+SCALAR_KEYS = {"sm": "state_machine", "artboard": "artboard", "trigger": "trigger"}
 INPUT_TYPE_PREFIXES = {"num", "bol", "v_num", "v_bol", "txt", "col", "img", "list", "enum"}
 
 def strip_quotes(value):
@@ -148,7 +148,8 @@ def strip_quotes(value):
 def load_csv_rows(csv_file_path):
     """Parse the flexible CSV format: src,size,preview,token1,token2,...
     Tokens are freeform `key:value` pairs, any order/count, omitted when unused.
-    Recognized scalar keys: sm, artboard, trigger, note.
+    Recognized scalar keys: sm, artboard, trigger.
+    `note` may repeat; every occurrence is kept in row["notes"].
     Recognized input-type prefixes: num, bol, v_num, v_bol, txt, col, img, list, enum.
     """
     with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
@@ -168,6 +169,7 @@ def load_csv_rows(csv_file_path):
             "size": values[1].strip() if len(values) > 1 else "",
             "preview": values[2].strip() if len(values) > 2 else "",
             "inputs": [],
+            "notes": [],
         }
         if row["src"].lower().endswith(".riv"):
             row["src"] = row["src"][:-4]
@@ -180,7 +182,11 @@ def load_csv_rows(csv_file_path):
             if not sep:
                 print(f"Warning: ignoring malformed token '{token}' for {row['src']}")
                 continue
-            if key in SCALAR_KEYS:
+            if key == "note":
+                note = strip_quotes(rest)
+                if note:
+                    row["notes"].append(note)
+            elif key in SCALAR_KEYS:
                 value = strip_quotes(rest)
                 if key == "artboard" and value == "-":
                     # Explicitly omit the artboard (e.g. old .riv files with a single,
@@ -813,12 +819,14 @@ def make_description_html(row):
     optional_fields = [
         ("artboard", "Artboard"),
         ("trigger", "Trigger"),
-        ("note", "Note"),
     ]
 
     for field, label in optional_fields:
         if row.get(field):
             parts.append(f'{label}: {row[field]}<br>')
+
+    for note in row.get("notes", []):
+        parts.append(f'Note: {note}<br>')
 
     # Add all non-empty inputs
     for input_value in row.get("inputs", []):
