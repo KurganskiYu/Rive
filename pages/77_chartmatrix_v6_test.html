@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2@2.39.2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="../RiveIcon2.svg" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Apply modern font */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 10vh;
+            background-color: #000000;
+            background-image: 
+                repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%);
+            background-size: 20px 20px; /* Adjust size of the checkered pattern */
+            padding: 10px 0;
+        }
+        .animation-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 30px;
+            width: 95%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #292929; 
+            width: auto; /* Ensure the CSS width matches the HTML width */
+            height: auto; /* Ensure the CSS height matches the HTML height */
+        }
+        /* Fit.Layout canvases are measured via getBoundingClientRect, so use an outline
+           instead of a border (a border would be added to the artboard size). */
+        canvas.layout-canvas {
+            border: none;
+            outline: 1px solid #292929;
+        }
+        #bg_button_canvas {
+            border: none !important;
+        }
+        .bg-btn {
+            border: 0px;
+        }
+        .animation-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .description {
+            color: rgb(120, 120, 120);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        .animation-row {
+          display: flex;
+          gap: 32px;
+          align-items: flex-start;
+        }
+        .controls-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .controls-column > * {
+            width: max-content;
+        }
+        .rive-btn {
+            background: #646464;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 8px;
+            cursor: pointer;
+            margin-left: 0; /* Remove left margin for perfect right alignment */
+        }
+        input[type="number"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .range-control {
+            position: relative;
+            padding: 14px 0 13px;
+        }
+        .range-control::before,
+        .range-control::after {
+            position: absolute;
+            top: 19px;
+            width: 1px;
+            height: 6px;
+            background: rgb(120, 120, 120);
+            content: "";
+        }
+        .range-control::before {
+            left: 0;
+        }
+        .range-control::after {
+            right: 0;
+        }
+        .range-control output {
+            position: absolute;
+            top: 0;
+            left: var(--slider-progress);
+            transform: translateX(-50%);
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-ticks {
+            position: absolute;
+            top: 20px;
+            right: 1px;
+            left: 1px;
+            z-index: 0;
+            height: 3px;
+            background: repeating-linear-gradient(to right, transparent 0, transparent 17px, rgb(120, 120, 120) 17px, rgb(120, 120, 120) 18px);
+        }
+        .range-control .range-bound {
+            position: absolute;
+            top: 33px;
+            color: rgb(120, 120, 120);
+            font-size: 10px;
+            line-height: 1;
+        }
+        .range-control .range-min {
+            left: 0;
+        }
+        .range-control .range-max {
+            right: 0;
+        }
+        .range-control input[type="range"] {
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            background: transparent;
+        }
+        .range-control input[type="range"]::-webkit-slider-runnable-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            margin-top: -5px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
+        .range-control input[type="range"]::-moz-range-track {
+            height: 1px;
+            background: rgb(120, 120, 120);
+        }
+        .range-control input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 1px solid rgb(120, 120, 120);
+            border-radius: 50%;
+            background: white;
+        }
+        input[type="text"] {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+        select {
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: 1px solid #8a8a8a;
+            padding: 4px 4px;
+            font-size: 1rem;
+            outline: none;
+            cursor: pointer;
+        }
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: #8a8a8a;
+            border: none;
+            outline: none;
+            accent-color: #646464;
+            appearance: none; /* Remove default checkbox style */
+            -webkit-appearance: none;
+            display: inline-block;
+            /*vertical-align: middle; */
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 6px;
+            top: 1px;
+            width: 8px;
+            height: 14px;
+            border: solid #000000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+        input[type="color"] {
+            border-radius: 8px;
+            background: #000000;
+            border: none;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            outline: none;
+            cursor: pointer;
+            /* Remove default appearance for consistency */
+            -webkit-appearance: none;
+            appearance: none;
+            /* Optional: add a subtle box-shadow for focus */
+            box-shadow: 0 0 0 0px #646464 inset;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 8px;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border-radius: 8px;
+            border: none;
+        }
+        input[type="color"]:focus {
+            box-shadow: 0 0 0 2px #464646;
+        }
+        .rows-panel {
+            width: 100%;
+            color: rgb(160, 160, 160);
+            font-size: 0.9rem;
+        }
+        .rows-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .rows-toolbar input[type="number"] {
+            width: 56px;
+            color: #000;
+        }
+        .tap-indicator {
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid #292929;
+            color: rgb(120, 120, 120);
+            font-weight: 700;
+            min-width: 120px;
+        }
+        .rows-status {
+            font-size: 0.8rem;
+            color: rgb(120, 120, 120);
+            margin-bottom: 8px;
+        }
+        .row-editor {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 6px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            border: 1px solid #292929;
+        }
+        .row-editor .row-index {
+            width: 28px;
+            text-align: right;
+            color: rgb(120, 120, 120);
+        }
+        .row-editor input[type="text"] {
+            color: #000;
+        }
+        .row-editor .row-name {
+            width: 90px;
+        }
+        .row-editor .row-values {
+            width: 105px;
+        }
+        .row-cells {
+            display: flex;
+            gap: 3px;
+        }
+        .row-cell {
+            width: 22px;
+            height: 22px;
+            padding: 0;
+            border: 1px solid #292929;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 0.75rem;
+            cursor: pointer;
+            background: #1a1a1a;
+        }
+        .row-cell[data-state="1"] { background: #646464; }
+        .row-cell[data-state="2"] { background: #2f7de1; }
+    </style>
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+
+
+    <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
+      <div class="animation-container">
+        <canvas id="main_canvas" width="393" height="300" class="layout-canvas" data-auto-h></canvas>
+        <div class="description">
+          <div>
+            <div><a href="../riv/77_chartmatrix_v6.riv" target="_blank" style="color: white;">77 chartmatrix</a><br>Size: 393px × auto (layout)<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:rowHeight(40:30-50)<br></div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+              
+              
+        <div class="range-control" style="width:395px;--slider-progress:50.0000%;">
+            <output for="btn_main_input0">40</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_main_input0" value="40" min="30" max="50" step="1" aria-label="rowHeight" />
+            <span class="range-bound range-min">30</span>
+            <span class="range-bound range-max">50</span>
+        </div>
+        
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="animation-container">
+        <canvas id="preview_canvas" width="393" height="300" class="layout-canvas" data-auto-h></canvas>
+        <div class="description">
+          Preview:<br>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+            
+            
+        <div class="range-control" style="width:395px;--slider-progress:50.0000%;">
+            <output for="btn_preview_input0">40</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn_preview_input0" value="40" min="30" max="50" step="1" aria-label="rowHeight" />
+            <span class="range-bound range-min">30</span>
+            <span class="range-bound range-max">50</span>
+        </div>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rows-panel" id="rows_panel">
+      <div class="rows-toolbar">
+        <label>Rows <input type="number" id="rows_count" min="0" max="50" step="1" value="3" /></label>
+        <span class="tap-indicator" id="tap_indicator">Tap a row</span>
+      </div>
+      <div class="rows-status" id="rows_status">Waiting for animations to load…</div>
+      <div id="rows_list"></div>
+    </div>
+<script>
+
+// Rows list (MainVM.rows -> RowVM { name, values, tap }), driven from one shared model
+// and mirrored into every Rive instance that has the list.
+const rowsPanel = (() => {
+  const MAX_STATE = 2;
+  const model = [];
+  const targets = [];
+  const columns = 7;
+
+  const el = (id) => document.getElementById(id);
+  const listEl = el("rows_list");
+  const countInput = el("rows_count");
+  const indicator = el("tap_indicator");
+  const statusEl = el("rows_status");
+
+  const clampState = (n) => (Number.isFinite(n) ? Math.min(MAX_STATE, Math.max(0, Math.round(n))) : 0);
+  const valuesString = (row) => row.values.join(" ");
+
+  function parseValues(text) {
+    return text.trim() === "" ? [] : text.trim().split(/\s+/).map((t) => clampState(Number(t)));
+  }
+
+  function makeRow(index) {
+    const seeds = ["1 1 2 1 2 1 1", "2 1 1 2 1 1 2", "1 2 1 1 2 1 1"];
+    const values = index < seeds.length ? parseValues(seeds[index]) : [];
+    while (values.length < columns) values.push(1);
+    values.length = columns;
+    return { name: "Row" + (index + 1), values };
+  }
+
+  function pushRow(target, row) {
+    if (!target.list || !target.rowVM) return;
+    const vmi = target.rowVM.instance();
+    const nameProp = vmi.string("name");
+    const valuesProp = vmi.string("values");
+    if (nameProp) nameProp.value = row.name;
+    if (valuesProp) valuesProp.value = valuesString(row);
+    target.list.addInstance(vmi);
+
+    // The closure captures the row object, so the index is resolved at tap time.
+    const handler = () => onTap(row, target.label);
+    const trig = vmi.trigger("tap");
+    if (trig) trig.on(handler);
+    target.entries.set(row, { vmi, trig, handler });
+  }
+
+  function dropRow(target, row) {
+    const entry = target.entries.get(row);
+    if (!entry) return;
+    if (entry.trig) entry.trig.off(entry.handler);
+    target.list.removeInstance(entry.vmi);
+    target.entries.delete(row);
+  }
+
+  function pushValues(row) {
+    targets.forEach((t) => {
+      const entry = t.entries.get(row);
+      const prop = entry && entry.vmi.string("values");
+      if (prop) prop.value = valuesString(row);
+    });
+  }
+
+  function pushName(row) {
+    targets.forEach((t) => {
+      const entry = t.entries.get(row);
+      const prop = entry && entry.vmi.string("name");
+      if (prop) prop.value = row.name;
+    });
+  }
+
+  function renderCells(row, cellsEl) {
+    cellsEl.textContent = "";
+    row.values.forEach((state, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "row-cell";
+      b.dataset.state = state;
+      b.textContent = state;
+      b.title = "Click to cycle 0 → 1 → 2";
+      b.addEventListener("click", () => {
+        row.values[i] = (row.values[i] + 1) % (MAX_STATE + 1);
+        b.dataset.state = row.values[i];
+        b.textContent = row.values[i];
+        row.valuesInput.value = valuesString(row);
+        pushValues(row);
+      });
+      cellsEl.appendChild(b);
+    });
+  }
+
+  function buildEditor(row) {
+    const wrap = document.createElement("div");
+    wrap.className = "row-editor";
+
+    const idx = document.createElement("span");
+    idx.className = "row-index";
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.className = "row-name";
+    nameInput.value = row.name;
+    nameInput.addEventListener("input", () => {
+      row.name = nameInput.value;
+      pushName(row);
+    });
+
+    const valuesInput = document.createElement("input");
+    valuesInput.type = "text";
+    valuesInput.className = "row-values";
+    valuesInput.value = valuesString(row);
+    valuesInput.addEventListener("input", () => {
+      row.values = parseValues(valuesInput.value);
+      renderCells(row, cells);
+      pushValues(row);
+    });
+
+    const cells = document.createElement("div");
+    cells.className = "row-cells";
+    renderCells(row, cells);
+
+    wrap.append(idx, nameInput, valuesInput, cells);
+    row.editor = wrap;
+    row.indexEl = idx;
+    row.valuesInput = valuesInput;
+    row.cellsEl = cells;
+    listEl.appendChild(wrap);
+  }
+
+  function refreshIndexes() {
+    model.forEach((row, i) => (row.indexEl.textContent = "#" + (i + 1)));
+    countInput.value = model.length;
+  }
+
+  function addRow() {
+    const row = makeRow(model.length);
+    model.push(row);
+    buildEditor(row);
+    targets.forEach((t) => pushRow(t, row));
+    refreshIndexes();
+    updateStatus();
+  }
+
+  function removeRow() {
+    const row = model.pop();
+    if (!row) return;
+    targets.forEach((t) => dropRow(t, row));
+    row.editor.remove();
+    refreshIndexes();
+    updateStatus();
+  }
+
+  function setRowCount(n) {
+    n = Math.max(0, Math.min(50, Math.floor(n)));
+    while (model.length < n) addRow();
+    while (model.length > n) removeRow();
+  }
+
+  function onTap(row) {
+    const i = model.indexOf(row);
+    if (i < 0) return;
+    indicator.textContent = `Row ${i + 1} tapped`;
+    indicator.style.color = "#fff";
+    indicator.animate(
+      [
+        { background: "#2f7de1", opacity: 1 },
+        { background: "transparent", opacity: 0.25 },
+        { background: "#2f7de1", opacity: 1 },
+        { background: "transparent", opacity: 1 },
+      ],
+      { duration: 500, easing: "ease-out" }
+    );
+    row.editor.animate(
+      [{ background: "#2f7de1" }, { background: "transparent" }],
+      { duration: 600, easing: "ease-out" }
+    );
+  }
+
+  function updateStatus() {
+    statusEl.textContent = targets.length
+      ? "Bound: " + targets.map((t) => `${t.label} (${t.list.length} rows in Rive)`).join(", ")
+      : "No animation with a 'rows' list is bound yet.";
+  }
+
+  // Call from each Rive instance's onLoad.
+  function attach(label, riveInstance) {
+    const vmi = riveInstance.viewModelInstance;
+    const list = vmi && vmi.list("rows");
+    const rowVM = riveInstance.viewModelByName("RowVM");
+    if (!list || !rowVM) {
+      console.warn(`[rows] "${label}": no 'rows' list or 'RowVM' found`);
+      return;
+    }
+    // Replace the editor's default Row1–Row3 with the rows from the shared model.
+    while (list.length > 0) list.removeInstanceAt(0);
+    const target = { label, list, rowVM, entries: new Map() };
+    targets.push(target);
+    model.forEach((row) => pushRow(target, row));
+    updateStatus();
+  }
+
+  countInput.addEventListener("change", () => setRowCount(Number(countInput.value)));
+
+  setRowCount(3);
+  return { attach };
+})();
+
+// Fit.Layout: the fixed axis keeps its CSS size, while an `auto` axis follows the size
+// the Rive layout reports through bounds (in artboard units, hence the scale factor).
+function autoSizeLayoutCanvas(riveInstance, canvas, autoW, autoH, scale) {
+  const sync = (force) => {
+    const b = riveInstance.bounds;
+    let changed = false;
+    if (autoW) {
+      const w = (b.maxX - b.minX) * scale;
+      if (w > 0 && Math.abs(w - (parseFloat(canvas.style.width) || 0)) > 0.5) {
+        canvas.style.width = w + "px";
+        changed = true;
+      }
+    }
+    if (autoH) {
+      const h = (b.maxY - b.minY) * scale;
+      if (h > 0 && Math.abs(h - (parseFloat(canvas.style.height) || 0)) > 0.5) {
+        canvas.style.height = h + "px";
+        changed = true;
+      }
+    }
+    if (changed || force === true) riveInstance.resizeDrawingSurfaceToCanvas();
+    requestAnimationFrame(() => sync());
+  };
+  // Start from the artboard's own size so a non-hugging artboard keeps its designed size.
+  riveInstance.resetArtboardSize();
+  sync(true);
+  window.addEventListener("resize", () => riveInstance.resizeDrawingSurfaceToCanvas());
+  window
+    .matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`)
+    .addEventListener("change", () => riveInstance.resizeDrawingSurfaceToCanvas());
+}
+
+const mainRive = new rive.Rive({
+  src: "../riv/77_chartmatrix_v6.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+  layout: new rive.Layout({ fit: rive.Fit.Layout, layoutScaleFactor: 1 }),
+
+  onLoad: () => {
+    autoSizeLayoutCanvas(mainRive, document.getElementById("main_canvas"), false, true, 1);
+    rowsPanel.attach("main", mainRive);
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+                if (!isNaN(val)) vmi.number("rowHeight").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("rowHeight").value = initVal;
+    }
+  },
+});
+
+const previewRive = new rive.Rive({
+  src: "../riv/77_chartmatrix_v6.riv",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, autoBind: true, artboard: "preview", stateMachines: "State Machine 1",
+  layout: new rive.Layout({ fit: rive.Fit.Layout, layoutScaleFactor: 1 }),
+
+  onLoad: () => {
+    autoSizeLayoutCanvas(previewRive, document.getElementById("preview_canvas"), false, true, 1);
+    rowsPanel.attach("preview", previewRive);
+    const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_0.value);
+                if (!isNaN(val)) vmi.number("rowHeight").value = val;
+                const rangeControl = inputFieldBtn_Preview_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_0.value;
+                    const minimum = Number(inputFieldBtn_Preview_0.min);
+                    const maximum = Number(inputFieldBtn_Preview_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_0.value);
+      if (!isNaN(initVal)) vmi.number("rowHeight").value = initVal;
+    }
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>
