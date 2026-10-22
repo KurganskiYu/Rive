@@ -482,16 +482,21 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/77_chartmatrix_v3.html" style="color: #464646;">77 chartmatrix</a></div>
+          <div><a href="pages/77_chartmatrix_v4.html" style="color: #464646;">77 chartmatrix</a></div>
           
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn6_input0">jumps:</label>
+            <input type="checkbox" id="btn6_input0" />
+        </div>
+        
         <div class="range-control" style="width:202px;--slider-progress:50.0000%;">
-            <output for="btn6_input0">40</output>
+            <output for="btn6_input1">40</output>
             <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn6_input0" value="40" min="30" max="50" step="1" aria-label="rowHeight" />
+            <input type="range" id="btn6_input1" value="40" min="30" max="50" step="1" aria-label="rowHeight" />
             <span class="range-bound range-min">30</span>
             <span class="range-bound range-max">50</span>
         </div>
@@ -755,7 +760,7 @@ document.getElementById("btn5").addEventListener("click", () => {
 });
 
 const r6 = new rive.Rive({
-    src: "riv/77_chartmatrix_v3.riv",
+    src: "riv/77_chartmatrix_v4.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     layout: new rive.Layout({ fit: rive.Fit.Layout, layoutScaleFactor: 0.508906 }),
@@ -765,21 +770,30 @@ const r6 = new rive.Rive({
     const vmi = r6.viewModelInstance;
     let inputFieldBtn6_0 = document.getElementById("btn6_input0");
     if (inputFieldBtn6_0 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn6_0.addEventListener("change", () => {
+        vmi.boolean("jumps").value = inputFieldBtn6_0.checked;
+      });
+      // Set initial value
+      vmi.boolean("jumps").value = inputFieldBtn6_0.checked;
+    }
+    let inputFieldBtn6_1 = document.getElementById("btn6_input1");
+    if (inputFieldBtn6_1 && vmi) {
       // Update numeric ViewModel variable
-      inputFieldBtn6_0.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn6_0.value);
+      inputFieldBtn6_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn6_1.value);
                 if (!isNaN(val)) vmi.number("rowHeight").value = val;
-                const rangeControl = inputFieldBtn6_0.closest(".range-control");
+                const rangeControl = inputFieldBtn6_1.closest(".range-control");
                 if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn6_0.value;
-                    const minimum = Number(inputFieldBtn6_0.min);
-                    const maximum = Number(inputFieldBtn6_0.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn6_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.querySelector("output").value = inputFieldBtn6_1.value;
+                    const minimum = Number(inputFieldBtn6_1.min);
+                    const maximum = Number(inputFieldBtn6_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn6_1.value - minimum) / (maximum - minimum) * 100;
                     rangeControl.style.setProperty("--slider-progress", `${progress}%`);
                 }
       });
       // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn6_0.value);
+      let initVal = parseFloat(inputFieldBtn6_1.value);
       if (!isNaN(initVal)) vmi.number("rowHeight").value = initVal;
     }
   },
