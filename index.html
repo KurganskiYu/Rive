@@ -482,7 +482,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/77_chartmatrix_v7.html" style="color: #464646;">77 chartmatrix</a></div>
+          <div><a href="pages/77_chartmatrix_v8.html" style="color: #464646;">77 chartmatrix</a></div>
           
         </div>
         
@@ -499,6 +499,14 @@
             <input type="range" id="btn6_input1" value="40" min="30" max="50" step="1" aria-label="rowHeight" />
             <span class="range-bound range-min">30</span>
             <span class="range-bound range-max">50</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:0.0000%;">
+            <output for="btn6_input2">0</output>
+            <span class="range-ticks" aria-hidden="true"></span>
+            <input type="range" id="btn6_input2" value="0" min="0" max="9" step="1" aria-label="tapIndex" />
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">9</span>
         </div>
         
         </div>
@@ -760,7 +768,7 @@ document.getElementById("btn5").addEventListener("click", () => {
 });
 
 const r6 = new rive.Rive({
-    src: "riv/77_chartmatrix_v7.riv",
+    src: "riv/77_chartmatrix_v8.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     layout: new rive.Layout({ fit: rive.Fit.Layout, layoutScaleFactor: 0.508906 }),
@@ -795,6 +803,25 @@ const r6 = new rive.Rive({
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn6_1.value);
       if (!isNaN(initVal)) vmi.number("rowHeight").value = initVal;
+    }
+    let inputFieldBtn6_2 = document.getElementById("btn6_input2");
+    if (inputFieldBtn6_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn6_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn6_2.value);
+                if (!isNaN(val)) vmi.number("tapIndex").value = val;
+                const rangeControl = inputFieldBtn6_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn6_2.value;
+                    const minimum = Number(inputFieldBtn6_2.min);
+                    const maximum = Number(inputFieldBtn6_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn6_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn6_2.value);
+      if (!isNaN(initVal)) vmi.number("tapIndex").value = initVal;
     }
   },
 });
