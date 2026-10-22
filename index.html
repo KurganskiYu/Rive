@@ -438,8 +438,17 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/79_buttonhand_v6.html" style="color: #464646;">79 buttonhand</a></div>
+          <div><a href="pages/79_buttonhand_v7.html" style="color: #464646;">79 buttonhand</a></div>
           
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn4_input0">buttonText:</label>
+            <input type="text" id="btn4_input0" value="Explore patterns in Welltory Care" style="width:90px;" />
+        </div>
+        
         </div>
         
       </div>
@@ -714,13 +723,21 @@ const r3 = new rive.Rive({
 });
 
 const r4 = new rive.Rive({
-    src: "riv/79_buttonhand_v6.riv",
+    src: "riv/79_buttonhand_v7.riv",
     canvas: document.getElementById("canvas4"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
 
     onLoad: () => {
         r4.resizeDrawingSurfaceToCanvas();
+    const vmi = r4.viewModelInstance;
+    let inputFieldBtn4_0 = document.getElementById("btn4_input0");
+    if (inputFieldBtn4_0 && vmi) {
+      vmi.string("buttonText").value = inputFieldBtn4_0.value;
+      inputFieldBtn4_0.addEventListener("input", () => {
+        vmi.string("buttonText").value = inputFieldBtn4_0.value;
+      });
+    }
   },
 });
 
