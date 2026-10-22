@@ -37,6 +37,12 @@
             width: auto; /* Ensure the CSS width matches the HTML width */
             height: auto; /* Ensure the CSS height matches the HTML height */
         }
+        /* Fit.Layout canvases are measured via getBoundingClientRect, so use an outline
+           instead of a border (a border would be added to the artboard size). */
+        canvas.layout-canvas {
+            border: none;
+            outline: 1px solid #292929;
+        }
         #bg_button_canvas {
             border: none !important;
         }

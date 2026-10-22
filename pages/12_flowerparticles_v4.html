@@ -37,6 +37,12 @@
             width: auto; /* Ensure the CSS width matches the HTML width */
             height: auto; /* Ensure the CSS height matches the HTML height */
         }
+        /* Fit.Layout canvases are measured via getBoundingClientRect, so use an outline
+           instead of a border (a border would be added to the artboard size). */
+        canvas.layout-canvas {
+            border: none;
+            outline: 1px solid #292929;
+        }
         #bg_button_canvas {
             border: none !important;
         }
@@ -345,32 +351,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">color1:</label>
-            <input type="color" id="btn_main_input0" value="#cebf74" />
+            <input type="color" id="btn_main_input0" value="#af1cb2" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input1">color2:</label>
-            <input type="color" id="btn_main_input1" value="#27843b" />
+            <input type="color" id="btn_main_input1" value="#738c53" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input2">color3:</label>
-            <input type="color" id="btn_main_input2" value="#6eee1d" />
+            <input type="color" id="btn_main_input2" value="#700b5b" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input3">color4:</label>
-            <input type="color" id="btn_main_input3" value="#7ee25e" />
+            <input type="color" id="btn_main_input3" value="#17ad5c" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input4">color5:</label>
-            <input type="color" id="btn_main_input4" value="#e0e876" />
+            <input type="color" id="btn_main_input4" value="#4a1f1c" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input5">color6:</label>
-            <input type="color" id="btn_main_input5" value="#dc5b47" />
+            <input type="color" id="btn_main_input5" value="#30f92c" />
         </div>
         
           </div>
@@ -383,6 +389,7 @@ const mainRive = new rive.Rive({
   src: "../riv/12_flowerparticles_v4.riv",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+  
 
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
@@ -463,8 +470,8 @@ const mainRive = new rive.Rive({
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {
-  canvas.style.width = canvas.width + "px";
-  canvas.style.height = canvas.height + "px";
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
 });
 </script>
 

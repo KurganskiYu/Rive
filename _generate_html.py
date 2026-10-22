@@ -125,14 +125,127 @@ html_foot = """
 SCALE_TO_200PX = True
 ANIMATIONS_PER_PAGE = 8
 
-def parse_size(size_str):
+LAYOUT_KEYWORD = "layout"
+LAYOUT_PLACEHOLDER_PX = 300  # initial canvas size on an auto axis, replaced once the Rive file loads
+
+def parse_size_spec(size_str):
+    """Parse `WxH`. Either side may be `layout` to let the Rive layout (Fit.Layout) decide
+    that dimension, e.g. `393xlayout` (fixed width, auto height), `layoutx393`
+    (auto width, fixed height) or `layoutxlayout` (both auto)."""
+    spec = {"width": 0, "height": 0, "auto_w": False, "auto_h": False}
     if not size_str:
-        return 0, 0
-    try:
-        parts = size_str.lower().split('x')
-        return int(parts[0]), int(parts[1])
-    except:
-        return 0, 0
+        return spec
+    parts = size_str.lower().split('x')
+    if len(parts) != 2:
+        return spec
+    values = []
+    for part in parts:
+        part = part.strip()
+        if part == LAYOUT_KEYWORD:
+            values.append(None)
+            continue
+        try:
+            values.append(int(part))
+        except ValueError:
+            return spec
+    spec["auto_w"] = values[0] is None
+    spec["auto_h"] = values[1] is None
+    spec["width"] = LAYOUT_PLACEHOLDER_PX if spec["auto_w"] else values[0]
+    spec["height"] = LAYOUT_PLACEHOLDER_PX if spec["auto_h"] else values[1]
+    return spec
+
+def is_layout(ctx):
+    return bool(ctx.get("auto_w") or ctx.get("auto_h"))
+
+def size_label(ctx):
+    w = "auto" if ctx.get("auto_w") else f'{ctx["width"]}px'
+    h = "auto" if ctx.get("auto_h") else f'{ctx["height"]}px'
+    return f'{w} × {h}' + (" (layout)" if is_layout(ctx) else "")
+
+def canvas_attrs(ctx, element_id):
+    attrs = f'id="{element_id}" width="{ctx["width"]}" height="{ctx["height"]}"'
+    if is_layout(ctx):
+        attrs += ' class="layout-canvas"'
+        if ctx.get("auto_w"):
+            attrs += ' data-auto-w'
+        if ctx.get("auto_h"):
+            attrs += ' data-auto-h'
+    return attrs
+
+def control_width_for(ctx):
+    """Width of slider controls; unknown (None) when the width is decided by the layout."""
+    return None if ctx.get("auto_w") else ctx["width"]
+
+def catalog_canvas_size(row):
+    """(width, height, layout_scale_factor) of a catalog canvas.
+    For layout canvases the fixed axis is scaled to 200px through layoutScaleFactor."""
+    if not is_layout(row):
+        w, h = scale_dimensions(row["width"], row["height"])
+        return w, h, 1.0
+    if row["auto_w"] and row["auto_h"]:
+        return row["width"], row["height"], 1.0
+    fixed = row["height"] if row["auto_w"] else row["width"]
+    if not SCALE_TO_200PX or not fixed:
+        return row["width"], row["height"], 1.0
+    scale = 200 / fixed
+    if row["auto_w"]:
+        return row["width"], 200, scale
+    return 200, row["height"], scale
+
+AUTO_SIZE_LAYOUT_JS = """
+// Fit.Layout: the fixed axis keeps its CSS size, while an `auto` axis follows the size
+// the Rive layout reports through bounds (in artboard units, hence the scale factor).
+function autoSizeLayoutCanvas(riveInstance, canvas, autoW, autoH, scale) {
+  const sync = (force) => {
+    const b = riveInstance.bounds;
+    let changed = false;
+    if (autoW) {
+      const w = (b.maxX - b.minX) * scale;
+      if (w > 0 && Math.abs(w - (parseFloat(canvas.style.width) || 0)) > 0.5) {
+        canvas.style.width = w + "px";
+        changed = true;
+      }
+    }
+    if (autoH) {
+      const h = (b.maxY - b.minY) * scale;
+      if (h > 0 && Math.abs(h - (parseFloat(canvas.style.height) || 0)) > 0.5) {
+        canvas.style.height = h + "px";
+        changed = true;
+      }
+    }
+    if (changed || force === true) riveInstance.resizeDrawingSurfaceToCanvas();
+    requestAnimationFrame(() => sync());
+  };
+  // Start from the artboard's own size so a non-hugging artboard keeps its designed size.
+  riveInstance.resetArtboardSize();
+  sync(true);
+  window.addEventListener("resize", () => riveInstance.resizeDrawingSurfaceToCanvas());
+  window
+    .matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`)
+    .addEventListener("change", () => riveInstance.resizeDrawingSurfaceToCanvas());
+}
+"""
+
+CANVAS_SIZING_JS = """
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+"""
+
+def layout_option_js(ctx, scale=1.0):
+    """`layout:` constructor option for Fit.Layout canvases (empty otherwise)."""
+    if not is_layout(ctx):
+        return ""
+    return f'layout: new rive.Layout({{ fit: rive.Fit.Layout, layoutScaleFactor: {scale:.6g} }}),'
+
+def resize_call_js(var_name, canvas_id, ctx, scale=1.0):
+    if not is_layout(ctx):
+        return f'{var_name}.resizeDrawingSurfaceToCanvas();'
+    auto_w = "true" if ctx.get("auto_w") else "false"
+    auto_h = "true" if ctx.get("auto_h") else "false"
+    return (f'autoSizeLayoutCanvas({var_name}, document.getElementById("{canvas_id}"), '
+            f'{auto_w}, {auto_h}, {scale:.6g});')
 
 DEFAULT_STATE_MACHINE = "State Machine 1"
 DEFAULT_ARTBOARD = "main"
@@ -469,7 +582,8 @@ def collect_input_fields(row, button_id, control_width):
 def make_main_canvas(idx, row, is_root=True):
     canvas_id = f"canvas{idx}"
     button_id = f"btn{idx}"
-    width, height = scale_dimensions(row["width"], row["height"])
+    width, height, _scale = catalog_canvas_size(row)
+    canvas_ctx = {**row, "width": width, "height": height}
 
     # Build button HTML
     button_html = ""
@@ -477,7 +591,7 @@ def make_main_canvas(idx, row, is_root=True):
         button_html = f'<button id="{button_id}" class="rive-btn" style="margin-left:auto;">Trigger</button>'
 
     # Collect input fields (below the row)
-    inputs_html = collect_input_fields(row, button_id, width)
+    inputs_html = collect_input_fields(row, button_id, control_width_for(canvas_ctx))
     if inputs_html:
         inputs_html = f'''
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
@@ -498,7 +612,7 @@ def make_main_canvas(idx, row, is_root=True):
     '''
     return f'''
       <div class="animation-container">
-        <canvas id="{canvas_id}" width="{width}" height="{height}"></canvas>
+        <canvas {canvas_attrs(canvas_ctx, canvas_id)}></canvas>
         <div class="description">
           {desc}
         </div>
@@ -691,7 +805,7 @@ def generate_image_asset_loader(row, is_root):
 '''
     return ""
 
-def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, input_prefix, row, is_root=True):
+def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, input_prefix, row, is_root=True, layout_scale=1.0):
     artboard_line = f'artboard: "{artboard}",' if artboard else ""
     state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
     asset_loader = generate_image_asset_loader(row, is_root)
@@ -701,9 +815,10 @@ const {var_name} = new rive.Rive({{
     src: "{src}",
     canvas: document.getElementById("{canvas_id}"),
     autoplay: true, autoBind: true,{artboard_line}{state_machine_line}
+    {layout_option_js(row, layout_scale)}
 {asset_loader}
     onLoad: () => {{
-        {var_name}.resizeDrawingSurfaceToCanvas();
+        {resize_call_js(var_name, canvas_id, row, layout_scale)}
 ''']
 
     js.append(generate_text_input_js(row, input_prefix, var_name, include_vmi=bool(trigger)))
@@ -765,6 +880,8 @@ const {var_name} = new rive.Rive({{
 
 def make_script(rows, is_root=True):
     script_parts = ["<script>\n"]
+    if any(is_layout(row) for row in rows):
+        script_parts.append(AUTO_SIZE_LAYOUT_JS)
     riv_prefix = "" if is_root else "../"
     for idx, row in enumerate(rows):
         canvas_id = f"canvas{idx}"
@@ -785,17 +902,13 @@ def make_script(rows, is_root=True):
                 trigger=trigger,
                 input_prefix=button_id,
                 row=row,
-                is_root=is_root
+                is_root=is_root,
+                layout_scale=catalog_canvas_size(row)[2]
             )
         )
 
     # Canvas sizing and auto-trigger
-    script_parts.append('''
-document.querySelectorAll('canvas').forEach(canvas => {
-  canvas.style.width = canvas.width + "px";
-  canvas.style.height = canvas.height + "px";
-});
-
+    script_parts.append(CANVAS_SIZING_JS + '''
 // Fire all triggers 3 seconds after page load
 setTimeout(() => {
   document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
@@ -809,7 +922,7 @@ setTimeout(() => {
 def make_description_html(row):
     display_name = get_display_name(row["src"])
     # Compose size from width and height
-    size_str = f'{row["width"]}px × {row["height"]}px'
+    size_str = size_label(row)
     parts = [
         f'<a href="../riv/{row["src"]}.riv" target="_blank" style="color: white;">{display_name}</a><br>',
         f'Size: {size_str}<br>',
@@ -856,12 +969,10 @@ def make_animation_page(row):
     preview_ctx = None
     if row.get("preview") and row["preview"].strip():
         # Internal preview
-        w, h = parse_size(row["preview"])
         preview_ctx = {
             "src": main_rive,
-            "width": w,
-            "height": h,
-            "artboard": "preview" 
+            **parse_size_spec(row["preview"]),
+            "artboard": "preview"
         }
     else:
         # External preview check
@@ -871,6 +982,8 @@ def make_animation_page(row):
                 "src": preview_path,
                 "width": row["width"],
                 "height": row["height"],
+                "auto_w": row.get("auto_w", False),
+                "auto_h": row.get("auto_h", False),
                 "artboard": row.get("artboard", "")
             }
 
@@ -896,13 +1009,13 @@ def generate_single_animation_html(row):
     """Generate HTML for single animation layout"""
     return f'''
     <div class="animation-container">
-      <canvas id="main_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
+      <canvas {canvas_attrs(row, "main_canvas")}></canvas>
       <div class="description">
         <div>
           <div>{make_description_html(row)}</div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-            {make_animation_inputs(row, "btn_main", row["width"])}
+            {make_animation_inputs(row, "btn_main", control_width_for(row))}
           </div>
         </div>
       </div>
@@ -914,24 +1027,24 @@ def generate_dual_animation_html(row, preview_ctx):
     return f'''
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
       <div class="animation-container">
-        <canvas id="main_canvas" width="{row["width"]}" height="{row["height"]}"></canvas>
+        <canvas {canvas_attrs(row, "main_canvas")}></canvas>
         <div class="description">
           <div>
             <div>{make_description_html(row)}</div>
             <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
               {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-              {make_animation_inputs(row, "btn_main", row["width"])}
+              {make_animation_inputs(row, "btn_main", control_width_for(row))}
             </div>
           </div>
         </div>
       </div>
       <div class="animation-container">
-        <canvas id="preview_canvas" width="{preview_ctx["width"]}" height="{preview_ctx["height"]}"></canvas>
+        <canvas {canvas_attrs(preview_ctx, "preview_canvas")}></canvas>
         <div class="description">
           Preview:<br>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
             {'<button id="btn_preview" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-            {make_animation_inputs(row, "btn_preview", preview_ctx["width"])}
+            {make_animation_inputs(row, "btn_preview", control_width_for(preview_ctx))}
           </div>
         </div>
       </div>
@@ -941,6 +1054,8 @@ def generate_dual_animation_html(row, preview_ctx):
 def generate_animation_js(row, main_rive, preview_ctx):
     """Generate JavaScript for animation page"""
     js_parts = ['<script>\n']
+    if is_layout(row) or (preview_ctx and is_layout(preview_ctx)):
+        js_parts.append(AUTO_SIZE_LAYOUT_JS)
 
     # Main animation
     asset_loader = generate_image_asset_loader(row, is_root=False)
@@ -949,9 +1064,10 @@ const mainRive = new rive.Rive({{
   src: "{main_rive}",
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true,{f' artboard: "{row["artboard"]}",' if row.get("artboard") else ""}{f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""}
+  {layout_option_js(row)}
 {asset_loader}
   onLoad: () => {{
-    mainRive.resizeDrawingSurfaceToCanvas();
+    {resize_call_js("mainRive", "main_canvas", row)}
 ''')
     
     # Handle text inputs in onLoad for main
@@ -965,13 +1081,7 @@ const mainRive = new rive.Rive({{
     if preview_ctx:
         js_parts.append(generate_preview_animation_js(row, preview_ctx))
     
-    js_parts.append('''
-document.querySelectorAll('canvas').forEach(canvas => {
-  canvas.style.width = canvas.width + "px";
-  canvas.style.height = canvas.height + "px";
-});
-</script>
-''')
+    js_parts.append(CANVAS_SIZING_JS + "</script>\n")
     
     return "".join(js_parts)
 
@@ -1030,9 +1140,10 @@ const previewRive = new rive.Rive({{
   src: "{preview_ctx["src"]}",
   canvas: document.getElementById("preview_canvas"),
   autoplay: true, autoBind: true,{artboard_prop}{f' stateMachines: "{row["state_machine"]}",' if row.get("state_machine") else ""}
+  {layout_option_js(preview_ctx)}
 {asset_loader}
   onLoad: () => {{
-    previewRive.resizeDrawingSurfaceToCanvas();
+    {resize_call_js("previewRive", "preview_canvas", preview_ctx)}
 ''']
     
     js_parts.append(generate_text_input_js(row, "btn_preview", "previewRive"))
@@ -1125,9 +1236,7 @@ def main():
             row["artboard"] = DEFAULT_ARTBOARD
 
         # Parse size column into width/height for backward compatibility
-        w, h = parse_size(row.get("size"))
-        row["width"] = w
-        row["height"] = h
+        row.update(parse_size_spec(row.get("size")))
 
     # Give each row a unique detail-page filename (handles multiple artboards
     # sharing one .riv src).
