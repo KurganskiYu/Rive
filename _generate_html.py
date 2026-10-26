@@ -250,7 +250,7 @@ def resize_call_js(var_name, canvas_id, ctx, scale=1.0):
 DEFAULT_STATE_MACHINE = "State Machine 1"
 DEFAULT_ARTBOARD = "main"
 SCALAR_KEYS = {"sm": "state_machine", "artboard": "artboard", "trigger": "trigger"}
-INPUT_TYPE_PREFIXES = {"num", "bol", "v_num", "v_bol", "txt", "col", "img", "list", "enum"}
+INPUT_TYPE_PREFIXES = {"num", "bol", "v_num", "v_bol", "txt", "col", "img", "list", "enum", "font"}
 
 def strip_quotes(value):
     value = value.strip()
@@ -263,7 +263,7 @@ def load_csv_rows(csv_file_path):
     Tokens are freeform `key:value` pairs, any order/count, omitted when unused.
     Recognized scalar keys: sm, artboard, trigger.
     `note` may repeat; every occurrence is kept in row["notes"].
-    Recognized input-type prefixes: num, bol, v_num, v_bol, txt, col, img, list, enum.
+    Recognized input-type prefixes: num, bol, v_num, v_bol, txt, col, img, list, enum, font.
     """
     with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
         lines = csvfile.read().splitlines()
@@ -391,6 +391,17 @@ def parse_input_spec(input_value):
             if t != "enum" and len(default) >= 2 and ((default.startswith('"') and default.endswith('"')) or (default.startswith("'") and default.endswith("'"))):
                 default = default[1:-1]
     return t, name, default
+
+def parse_font_spec(input_value):
+    """Return (asset_name, filename) for font:"File.otf" tokens.
+    The Rive font asset name is the file name without extension; font:AssetName(File.otf)
+    can be used when the file name differs from the asset name.
+    """
+    _t, name, default = parse_input_spec(input_value)
+    name = strip_quotes(name or "")
+    if default:
+        return os.path.splitext(name)[0], default
+    return os.path.splitext(name)[0], name
 
 def parse_enum_spec(value):
     """Return (default, options) for enum defaults like EN:EN|ES|RU or just EN|ES|RU (pipe-separated, CSV-safe)."""
@@ -537,6 +548,14 @@ def parse_input_field(input_value, input_idx, button_id, control_width=None):
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="{input_id}">{input_name}:</label>
             <input type="text" id="{input_id}" placeholder="filename.ext" value="{value_attr}" style="width:100px;" />
+        </div>
+        '''
+    elif input_type == "font":  # Referenced font asset loaded from the fonts folder by file name
+        asset_name, font_file = parse_font_spec(input_value)
+        return f'''
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="{input_id}">{html_escape(asset_name)}:</label>
+            <input type="text" id="{input_id}" placeholder="font.otf" value="{html_escape(font_file)}" style="width:150px;" />
         </div>
         '''
     return ""
@@ -805,10 +824,55 @@ def generate_image_asset_loader(row, is_root):
 '''
     return ""
 
+def generate_asset_loader(row, is_root, prefix):
+    """Generate the assetLoader option: referenced fonts (file name taken from the page's text
+    field, so editing it swaps the font live) plus the existing image asset loader."""
+    font_fields = {}
+    for i, input_value in enumerate(row.get("inputs", [])):
+        if parse_input_spec(input_value)[0] == "font":
+            asset_name, _font_file = parse_font_spec(input_value)
+            font_fields[asset_name] = f"{prefix}_input{i}"
+    if not font_fields:
+        return generate_image_asset_loader(row, is_root)
+
+    fonts_dir = "fonts/" if is_root else "../fonts/"
+    image_loader = generate_image_asset_loader(row, is_root)
+    image_branch = ""
+    if image_loader:
+        # Reuse the image loader's body, nested after the font branch.
+        body = image_loader.split("assetLoader: (asset) => {", 1)[1].rsplit("},", 1)[0]
+        image_branch = body
+    else:
+        image_branch = "\n      return false;\n    "
+    return f'''    assetLoader: (asset) => {{
+      const fontFields = {json.dumps(font_fields)};
+      if (asset.isFont && fontFields[asset.name]) {{
+        const field = document.getElementById(fontFields[asset.name]);
+        const loadFont = (file) => {{
+          const name = (file || "").trim();
+          if (!name) return;
+          fetch({json.dumps(fonts_dir)} + name)
+            .then(response => {{
+              if (!response.ok) throw new Error("HTTP " + response.status);
+              return response.arrayBuffer();
+            }})
+            .then(bytes => rive.decodeFont(new Uint8Array(bytes)))
+            .then(font => {{
+              asset.setFont(font);
+              font.unref();
+            }})
+            .catch(error => console.error("Failed to load Rive font asset:", name, error));
+        }};
+        loadFont(field && field.value);
+        if (field) field.addEventListener("change", () => loadFont(field.value));
+        return true;
+      }}{image_branch}}},
+'''
+
 def generate_rive_js_block(var_name, canvas_id, src, artboard, state_machine, trigger, input_prefix, row, is_root=True, layout_scale=1.0):
     artboard_line = f'artboard: "{artboard}",' if artboard else ""
     state_machine_line = f' stateMachines: "{state_machine}",' if state_machine else ""
-    asset_loader = generate_image_asset_loader(row, is_root)
+    asset_loader = generate_asset_loader(row, is_root, input_prefix)
     trigger_js = ""
     js = [f'''
 const {var_name} = new rive.Rive({{
@@ -849,7 +913,7 @@ const {var_name} = new rive.Rive({{
 
         for i, input_value in enumerate(row.get("inputs", [])):
             input_type, input_name, _default = parse_input_spec(input_value)
-            if input_type in ("txt", "col", "v_num", "v_bol", "list", "enum"):
+            if input_type in ("txt", "col", "v_num", "v_bol", "list", "enum", "font"):
                 continue
             input_id = f"{input_prefix}_input{i}"
             field_var = f'inputField_{input_prefix}_{i}'
@@ -1058,7 +1122,7 @@ def generate_animation_js(row, main_rive, preview_ctx):
         js_parts.append(AUTO_SIZE_LAYOUT_JS)
 
     # Main animation
-    asset_loader = generate_image_asset_loader(row, is_root=False)
+    asset_loader = generate_asset_loader(row, is_root=False, prefix="btn_main")
     js_parts.append(f'''
 const mainRive = new rive.Rive({{
   src: "{main_rive}",
@@ -1133,7 +1197,7 @@ def generate_preview_animation_js(row, preview_ctx):
     """Generate preview animation JavaScript"""
     artboard_val = preview_ctx.get("artboard", "")
     artboard_prop = f' artboard: "{artboard_val}",' if artboard_val else ""
-    asset_loader = generate_image_asset_loader(row, is_root=False)
+    asset_loader = generate_asset_loader(row, is_root=False, prefix="btn_preview")
 
     js_parts = [f'''
 const previewRive = new rive.Rive({{

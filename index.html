@@ -489,20 +489,30 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/78_cardpocket_v6.html" style="color: #464646;">78 cardpocket</a></div>
+          <div><a href="pages/78_cardpocket_v10.html" style="color: #464646;">78 cardpocket</a></div>
           <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input0">text1:</label>
-            <input type="text" id="btn6_input0" value="Make sense of your days. together" style="width:90px;" />
+            <label for="btn6_input0">NovemberLC-Regular:</label>
+            <input type="text" id="btn6_input0" placeholder="font.otf" value="NovemberLC-Regular.otf" style="width:150px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input1">text2:</label>
-            <input type="text" id="btn6_input1" value="You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like." style="width:90px;" />
+            <label for="btn6_input1">NovemberLC-Heavy:</label>
+            <input type="text" id="btn6_input1" placeholder="font.otf" value="NovemberLC-Heavy.otf" style="width:150px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn6_input2">text1:</label>
+            <input type="text" id="btn6_input2" value="Make sense of your days. together" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn6_input3">text2:</label>
+            <input type="text" id="btn6_input3" value="You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like." style="width:90px;" />
         </div>
         
         </div>
@@ -742,26 +752,51 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-    src: "riv/78_cardpocket_v6.riv",
+    src: "riv/78_cardpocket_v10.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
+    assetLoader: (asset) => {
+      const fontFields = {"NovemberLC-Regular": "btn6_input0", "NovemberLC-Heavy": "btn6_input1"};
+      if (asset.isFont && fontFields[asset.name]) {
+        const field = document.getElementById(fontFields[asset.name]);
+        const loadFont = (file) => {
+          const name = (file || "").trim();
+          if (!name) return;
+          fetch("fonts/" + name)
+            .then(response => {
+              if (!response.ok) throw new Error("HTTP " + response.status);
+              return response.arrayBuffer();
+            })
+            .then(bytes => rive.decodeFont(new Uint8Array(bytes)))
+            .then(font => {
+              asset.setFont(font);
+              font.unref();
+            })
+            .catch(error => console.error("Failed to load Rive font asset:", name, error));
+        };
+        loadFont(field && field.value);
+        if (field) field.addEventListener("change", () => loadFont(field.value));
+        return true;
+      }
+      return false;
+    },
 
     onLoad: () => {
         r6.resizeDrawingSurfaceToCanvas();
     const vmi = r6.viewModelInstance;
-    let inputFieldBtn6_0 = document.getElementById("btn6_input0");
-    if (inputFieldBtn6_0 && vmi) {
-      vmi.string("text1").value = inputFieldBtn6_0.value;
-      inputFieldBtn6_0.addEventListener("input", () => {
-        vmi.string("text1").value = inputFieldBtn6_0.value;
+    let inputFieldBtn6_2 = document.getElementById("btn6_input2");
+    if (inputFieldBtn6_2 && vmi) {
+      vmi.string("text1").value = inputFieldBtn6_2.value;
+      inputFieldBtn6_2.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn6_2.value;
       });
     }
-    let inputFieldBtn6_1 = document.getElementById("btn6_input1");
-    if (inputFieldBtn6_1 && vmi) {
-      vmi.string("text2").value = inputFieldBtn6_1.value;
-      inputFieldBtn6_1.addEventListener("input", () => {
-        vmi.string("text2").value = inputFieldBtn6_1.value;
+    let inputFieldBtn6_3 = document.getElementById("btn6_input3");
+    if (inputFieldBtn6_3 && vmi) {
+      vmi.string("text2").value = inputFieldBtn6_3.value;
+      inputFieldBtn6_3.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn6_3.value;
       });
     }
   },
