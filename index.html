@@ -6,11 +6,13 @@
     <title>Yuri's Rive Animations</title>
     <script src="https://unpkg.com/@rive-app/webgl2@2.39.2"></script>
     <!-- Add Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="RiveIcon2.svg" />
     <style>
         body {
-            font-family: 'Roboto', sans-serif; /* Apply modern font */
+            font-family: 'Inter', sans-serif; /* Apply modern font */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -55,8 +57,8 @@
             margin-bottom: 20px;
         }
         .description {
-            color: rgb(120, 120, 120);
-            font-size: 0.9rem;
+            color: rgb(80, 80, 80);
+            font-size: 0.8rem;
             margin-top: 8px;
             line-height: 1.4;
         }
@@ -69,20 +71,26 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 8px;
-            gap: 8px;
+            gap: 2px;
             margin-left: auto;
         }
         .controls-column > * {
             width: max-content;
         }
+        .controls-column label {
+            max-width: 90px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
         .rive-btn {
-            background: #646464;
+            background: #64646400;
             color: white;
-            border: none;
-            border-radius: 8px;
+            border: 0.5px solid #464646;
+            border-radius: 0px;
             padding: 6px 8px;
             cursor: pointer;
+            font-family: 'Inter', sans-serif;
             margin-left: 0; /* Remove left margin for perfect right alignment */
         }
         input[type="number"] {
@@ -95,14 +103,15 @@
         }
         .range-control {
             position: relative;
-            padding: 14px 0 13px;
+            padding: 14px 0 0;
         }
         .range-control::before,
         .range-control::after {
             position: absolute;
-            top: 19px;
-            width: 1px;
-            height: 6px;
+            top: 18px;
+            width: 2px;
+            height: 8px;
+            z-index: 2;
             background: rgb(120, 120, 120);
             content: "";
         }
@@ -117,31 +126,34 @@
             top: 0;
             left: var(--slider-progress);
             transform: translateX(-50%);
-            color: rgb(120, 120, 120);
+            color: rgb(255, 255, 255);
             font-size: 10px;
-            line-height: 1;
+            line-height: 1.5;
+            z-index: 3;
         }
         .range-control .range-ticks {
             position: absolute;
             top: 20px;
-            right: 1px;
-            left: 1px;
+            right: 4px;
+            left: 4px;
             z-index: 0;
-            height: 3px;
+            height: 2px;
             background: repeating-linear-gradient(to right, transparent 0, transparent 17px, rgb(120, 120, 120) 17px, rgb(120, 120, 120) 18px);
         }
         .range-control .range-bound {
             position: absolute;
-            top: 33px;
-            color: rgb(120, 120, 120);
+            top: 2px;
+            color: rgb(80, 80, 80);
             font-size: 10px;
             line-height: 1;
         }
         .range-control .range-min {
-            left: 0;
+            left: 1px;
+            transform: translateX(-50%);
         }
         .range-control .range-max {
-            right: 0;
+            right: 1px;
+            transform: translateX(50%);
         }
         .range-control input[type="range"] {
             appearance: none;
@@ -156,7 +168,7 @@
         }
         .range-control input[type="range"]::-webkit-slider-runnable-track {
             height: 1px;
-            background: rgb(120, 120, 120);
+            background: rgb(90, 90, 90);
         }
         .range-control input[type="range"]::-webkit-slider-thumb {
             appearance: none;
@@ -180,28 +192,31 @@
             background: white;
         }
         input[type="text"] {
-            border-radius: 8px;
-            background: #8a8a8a;
-            border: 1px solid #8a8a8a;
-            padding: 4px 4px;
-            font-size: 1rem;
+            border-radius: 0px;
+            background: #8a8a8a00;
+            border: 0.5px solid #323232;
+            padding: 2px 6px;
+            font-size: 0.8rem;
             outline: none;
+            font-family: 'Roboto Condensed', sans-serif;
+            color: #8a8a8a;
         }
         select {
-            border-radius: 8px;
-            background: #8a8a8a;
-            border: 1px solid #8a8a8a;
-            padding: 4px 4px;
-            font-size: 1rem;
-            outline: none;
+            border: 0.5px solid #323232;
+            border-radius: 0;
+            background: transparent;
+            color: #8a8a8a;
+            font: 0.8rem 'Roboto Condensed', sans-serif;
+            padding: 2px 6px;
+            color-scheme: dark;
             cursor: pointer;
         }
         input[type="checkbox"] {
-            width: 24px;
-            height: 24px;
-            border-radius: 8px;
-            background: #8a8a8a;
-            border: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 0px;
+            background: #8a8a8a00;
+            border: 0.5px solid #8a8a8a;
             outline: none;
             accent-color: #646464;
             appearance: none; /* Remove default checkbox style */
@@ -210,25 +225,26 @@
             /*vertical-align: middle; */
             position: relative;
             cursor: pointer;
+            margin-right: 0;
         }
         input[type="checkbox"]:checked::after {
             content: "";
             display: block;
             position: absolute;
-            left: 6px;
+            left: 5px;
             top: 1px;
-            width: 8px;
-            height: 14px;
-            border: solid #000000;
-            border-width: 0 3px 3px 0;
+            width: 5px;
+            height: 9px;
+            border: solid #8a8a8a;
+            border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
         input[type="color"] {
-            border-radius: 8px;
+            border-radius: 0px;
             background: #000000;
             border: none;
-            width: 24px;
-            height: 24px;
+            width: 16px;
+            height: 16px;
             padding: 0;
             outline: none;
             cursor: pointer;
@@ -240,10 +256,10 @@
         }
         input[type="color"]::-webkit-color-swatch-wrapper {
             padding: 0;
-            border-radius: 8px;
+            border-radius: 0px;
         }
         input[type="color"]::-webkit-color-swatch {
-            border-radius: 8px;
+            border-radius: 0px;
             border: none;
         }
         input[type="color"]:focus {
@@ -347,11 +363,11 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/83_trackersetting_v1.html" style="color: #464646;">83 trackersetting</a></div>
+          <div><a href="pages/83_trackersetting_v1.html" style="color: #888888;">83 trackersetting</a></div>
           
         </div>
         
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div class="range-control" style="width:202px;--slider-progress:0.0000%;">
             <output for="btn0_input0">0</output>
@@ -374,7 +390,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/82_carecorner_v3.html" style="color: #464646;">82 carecorner</a></div>
+          <div><a href="pages/82_carecorner_v3.html" style="color: #888888;">82 carecorner</a></div>
           
         </div>
         
@@ -389,7 +405,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/81_rainbowbird_v2.html" style="color: #464646;">81 rainbowbird</a></div>
+          <div><a href="pages/81_rainbowbird_v2.html" style="color: #888888;">81 rainbowbird</a></div>
           
         </div>
         
@@ -404,11 +420,11 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/80_heartzones_v1.html" style="color: #464646;">80 heartzones</a></div>
+          <div><a href="pages/80_heartzones_v1.html" style="color: #888888;">80 heartzones</a></div>
           <button id="btn3" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div class="range-control" style="width:202px;--slider-progress:0.0000%;">
             <output for="btn3_input0">1</output>
@@ -431,11 +447,11 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/77_migrainelog_v3.html" style="color: #464646;">77 migrainelog</a></div>
+          <div><a href="pages/77_migrainelog_v3.html" style="color: #888888;">77 migrainelog</a></div>
           
         </div>
         
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn4_input0">tenScale:</label>
@@ -465,11 +481,11 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/79_buttonhand_v7.html" style="color: #464646;">79 buttonhand</a></div>
+          <div><a href="pages/79_buttonhand_v7.html" style="color: #888888;">79 buttonhand</a></div>
           
         </div>
         
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input0">buttonText:</label>
@@ -489,20 +505,20 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/78_cardpocket_v10.html" style="color: #464646;">78 cardpocket</a></div>
+          <div><a href="pages/78_cardpocket_v10.html" style="color: #888888;">78 cardpocket</a></div>
           <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn6_input0">NovemberLC-Regular:</label>
-            <input type="text" id="btn6_input0" placeholder="font.otf" value="NovemberLC-Regular.otf" style="width:150px;" />
+            <input type="text" id="btn6_input0" placeholder="font.otf" value="NovemberLC-Regular.otf" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn6_input1">NovemberLC-Heavy:</label>
-            <input type="text" id="btn6_input1" placeholder="font.otf" value="NovemberLC-Heavy.otf" style="width:150px;" />
+            <input type="text" id="btn6_input1" placeholder="font.otf" value="NovemberLC-Heavy.otf" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
@@ -528,11 +544,11 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div><a href="pages/77_chartmatrix_v8.html" style="color: #464646;">77 chartmatrix</a></div>
+          <div><a href="pages/77_chartmatrix_v8.html" style="color: #888888;">77 chartmatrix</a></div>
           
         </div>
         
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn7_input0">jumps:</label>

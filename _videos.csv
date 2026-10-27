@@ -114,5 +114,5 @@ contraTest_v5,375x812,
 77_migrainelog_v3,393x100,393x206,v_bol:tenScale(True),txt:row1("0 99 5 99 99 10 7"),txt:rowName1("Episode logged"),note:"+'dates' and 'days' parameters in CSV format",note:"trigger# for each day tap"
 80_heartzones_v1,393x300,393x524,trigger:"start",v_num:which(1:1-5)
 81_rainbowbird_v2,393x300,393x524,
-82_carecorner_v3,393x300,393x520,
-83_trackersetting_v1,326x329,,v_num:mode(0:0-1)
+82_carecorner_v3,393x300,393x520, 
+83_trackersetting_v1,326x329,,v_num:mode(0:0-1) 

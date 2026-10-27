@@ -366,7 +366,7 @@ def make_main_link(row, is_root=True):
     page_name = row.get("page_stem", row["src"]) + ".html"
     display_name = get_display_name(row["src"])
     prefix = "pages/" if is_root else ""
-    return f'<a href="{prefix}{page_name}" style="color: #464646;">{display_name}</a>'
+    return f'<a href="{prefix}{page_name}" style="color: #888888;">{display_name}</a>'
 
 def parse_input_type_name(input_value):
     """Parse input value and return type and name"""
@@ -555,7 +555,7 @@ def parse_input_field(input_value, input_idx, button_id, control_width=None):
         return f'''
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="{input_id}">{html_escape(asset_name)}:</label>
-            <input type="text" id="{input_id}" placeholder="font.otf" value="{html_escape(font_file)}" style="width:150px;" />
+            <input type="text" id="{input_id}" placeholder="font.otf" value="{html_escape(font_file)}" style="width:90px;" />
         </div>
         '''
     return ""
@@ -613,7 +613,7 @@ def make_main_canvas(idx, row, is_root=True):
     inputs_html = collect_input_fields(row, button_id, control_width_for(canvas_ctx))
     if inputs_html:
         inputs_html = f'''
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:8px;">
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             {inputs_html}
         </div>
         '''
