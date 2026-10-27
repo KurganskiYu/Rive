@@ -9,8 +9,11 @@ import random
 import json
 from html import escape as html_escape
 
+from _navigation import load_navigation_entries, render_navigation
+
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, "_videos.csv")
+names_path = os.path.join(script_dir, "_videos_names.csv")
 output_html = os.path.join(script_dir, "index.html")
 head_html_path = os.path.join(script_dir, "head.html")
 pages_dir = os.path.join(script_dir, "pages")
@@ -29,9 +32,9 @@ def get_html_head(is_root=True):
 # NEW: Helper to inject the BG button on every page
 def get_bg_button_html(is_root=True):
     riv_path = "bg_button.riv" if is_root else "../bg_button.riv"
-    # CSS for top-right fixed position
+    # CSS for top-left fixed position
     html = f'''
-    <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
     <script>
@@ -1245,7 +1248,7 @@ def make_pagination_buttons(current_page, total_pages):
     
     return '<div style="margin: 24px 0; text-align:center;">' + " ".join(buttons) + "</div>"
 
-def write_main_page(page_rows, page_idx, total_pages):
+def write_main_page(page_rows, page_idx, total_pages, navigation_entries):
     filename = output_html if page_idx == 0 else os.path.join(pages_dir, f"page{page_idx}.html")
     is_root = (page_idx == 0)
     
@@ -1253,6 +1256,7 @@ def write_main_page(page_rows, page_idx, total_pages):
         content_parts = [
             get_html_head(is_root=is_root),
             get_bg_button_html(is_root=is_root),  # Inject BG button
+            render_navigation(navigation_entries, is_root),
             "".join(make_main_canvas(idx, row, is_root) for idx, row in enumerate(page_rows)),
             "</div>\n",
             make_script(page_rows, is_root),
@@ -1315,6 +1319,7 @@ def main():
     # Give each row a unique detail-page filename (handles multiple artboards
     # sharing one .riv src).
     assign_page_stems(rows)
+    navigation_entries = load_navigation_entries(rows, names_path)
 
     # Generate per-animation pages
     for row in rows:
@@ -1326,7 +1331,7 @@ def main():
         start = page_idx * ANIMATIONS_PER_PAGE
         end = start + ANIMATIONS_PER_PAGE
         page_rows = rows[start:end]
-        write_main_page(page_rows, page_idx, total_pages)
+        write_main_page(page_rows, page_idx, total_pages, navigation_entries)
 
     print(f"Generated {output_html}, {total_pages-1} extra pages, and {len(rows)} animation pages in 'pages/'")
 

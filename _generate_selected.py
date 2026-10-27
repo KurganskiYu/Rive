@@ -32,9 +32,9 @@ def get_html_head():
 # NEW: Helper to inject the BG button on every page
 def get_bg_button_html(is_root=True):
     riv_path = "bg_button.riv" if is_root else "../bg_button.riv"
-    # CSS for top-right fixed position
+    # CSS for top-left fixed position
     html = f'''
-    <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
     <script>

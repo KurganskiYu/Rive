@@ -1,3 +1,4 @@
+        /* Page-wide font, centered layout, and checkerboard background. */
         body {
             font-family: 'Inter', sans-serif; /* Apply modern font */
             display: flex;
@@ -8,19 +9,99 @@
             background-color: #000000;
             background-image: 
                 repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%);
-            background-size: 20px 20px; /* Adjust size of the checkered pattern */
-            padding: 10px 0;
+            background-size: 10px 10px; /* Adjust size of the checkered pattern */
+            box-sizing: border-box;
+            padding: 20px 0;
         }
+        /* Gradually reserve space for the navigation on narrower catalog pages. */
+        body:has(.animation-nav) {
+            padding-left: clamp(0px, calc(1240px - 100vw), min(150px, 25vw));
+        }
+        /* Center the animation cards and wrap them into rows. */
         .animation-wrapper {
+            box-sizing: border-box;
             display: flex;
             flex-wrap: wrap;
-            justify-content: flex-start;
-            gap: 30px;
+            justify-content: center;
+            gap: 20px;
             width: 95%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
+            max-width: 940px;
+            margin: 20px auto;
+            padding: 20px 0px;
         }
+        /* Fixed animation navigation below the background button. */
+        .animation-nav {
+            position: fixed;
+            top: 100px;
+            left: 12px;
+            z-index: 9998;
+            width: max-content;
+            max-width: min(220px, calc(100vw - 24px));
+            color: #888;
+            background: rgba(0, 0, 0, 0);
+            text-align: left;
+        }
+        /* Clickable heading that expands or collapses the navigation. */
+        .animation-nav summary {
+            padding: 3px 4px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+        /* Scrollable list of animation links. */
+        .animation-nav ul {
+            max-height: calc(100vh - 135px);
+            margin: 0;
+            padding: 0 4px 4px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            list-style: none;
+            scrollbar-width: none;
+        }
+        /* Hide the scrollbar in WebKit browsers while keeping the list scrollable. */
+        .animation-nav ul::-webkit-scrollbar {
+            display: none;
+        }
+        /* Default appearance of every animation link: size, color, spacing, and transition speed. */
+        .animation-nav a {
+            display: block;
+            padding: 1px 2px;
+            color: #616161;
+            font-size: 8px;
+            line-height: 1.15;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+            transition: font-size 180ms ease, padding 180ms ease, color 180ms ease;
+        }
+        /* Enlarge the items immediately before and after the hovered or focused item. */
+        .animation-nav li:has(+ li:is(:hover, :focus-within)) a,
+        .animation-nav li:is(:hover, :focus-within) + li a {
+            padding-block: 2px;
+            font-size: 12px;
+        }
+        /* Enlarge and brighten the hovered or keyboard-focused item. */
+        .animation-nav li:is(:hover, :focus-within) a {
+            padding-block: 4px;
+            color: #ccc;
+            font-size: 15px;
+        }
+        /* Show an outline when navigating links with the keyboard. */
+        .animation-nav a:focus-visible {
+            outline: 1px solid #888;
+            outline-offset: -1px;
+        }
+        /* Limit the fixed navigation's width on narrow screens. */
+        @media (max-width: 600px) {
+            .animation-nav {
+                max-width: min(150px, calc(100vw - 24px));
+            }
+        }
+        /* Respect the operating system's reduced-motion preference. */
+        @media (prefers-reduced-motion: reduce) {
+            .animation-nav a {
+                transition: none;
+            }
+        }
+        /* Default border and sizing for Rive canvases. */
         canvas {
             border: 1px solid #292929; 
             width: auto; /* Ensure the CSS width matches the HTML width */
@@ -32,12 +113,14 @@
             border: none;
             outline: 1px solid #292929;
         }
+        /* Remove the border from the floating background button. */
         #bg_button_canvas {
             border: none !important;
         }
         .bg-btn {
             border: 0px;
         }
+        /* Animation card layout and descriptive text. */
         .animation-container {
             display: flex;
             flex-direction: column;
@@ -49,16 +132,19 @@
             margin-top: 8px;
             line-height: 1.4;
         }
+        /* File-size text displayed beside an animation name. */
         .riv-file-size {
             font-family: 'Roboto Condensed', sans-serif;
             color: rgb(80, 80, 80);
             font-size: 0.85rem;
         }
+        /* Place the main animation and its preview side by side. */
         .animation-row {
           display: flex;
           gap: 32px;
           align-items: flex-start;
         }
+        /* Stack an animation's parameter controls below its canvas. */
         .controls-column {
             display: flex;
             flex-direction: column;
@@ -80,6 +166,7 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        /* Size detail-page descriptions and controls to match their canvas. */
         .detail-animation {
             width: min-content;
         }
@@ -99,6 +186,7 @@
             flex: 0 0 50%;
             min-width: 0;
         }
+        /* Trigger and pagination buttons. */
         .rive-btn {
             background: #222222;
             color: rgb(200, 200, 200);
@@ -110,6 +198,7 @@
             font-size: 0.8rem;
             margin-left: 0; /* Remove left margin for perfect right alignment */
         }
+        /* Numeric parameter fields that are not sliders. */
         input[type="number"] {
             border-radius: 8px;
             background: #8a8a8a;
@@ -118,6 +207,7 @@
             font-size: 1rem;
             outline: none;
         }
+        /* Slider container and floating parameter-name hint. */
         .range-control {
             position: relative;
             padding: 14px 0 0;
@@ -138,10 +228,12 @@
             visibility: hidden;
             pointer-events: none;
         }
+        /* Show the hint on hover or keyboard focus, but not after a mouse click alone. */
         .range-control input[type="range"]:hover + .range-hint,
         .range-control input[type="range"]:focus-visible + .range-hint {
             visibility: visible;
         }
+        /* Marks at the two ends of the slider track. */
         .range-control::before,
         .range-control::after {
             position: absolute;
@@ -158,6 +250,7 @@
         .range-control::after {
             right: 0;
         }
+        /* Current slider value; JavaScript updates --slider-progress as the value changes. */
         .range-control output {
             position: absolute;
             top: 0;
@@ -168,6 +261,7 @@
             line-height: 1.5;
             z-index: 3;
         }
+        /* Intermediate tick marks along the slider track. */
         .range-control .range-ticks {
             position: absolute;
             top: 20px;
@@ -183,6 +277,7 @@
             transform: translateX(-50%);
             background: rgb(120, 120, 120);
         }
+        /* Minimum and maximum values displayed at the ends of the slider. */
         .range-control .range-bound {
             position: absolute;
             top: 2px;
@@ -198,6 +293,7 @@
             right: 1px;
             transform: translateX(50%);
         }
+        /* Slider input, followed by browser-specific track and thumb styling. */
         .range-control input[type="range"] {
             appearance: none;
             -webkit-appearance: none;
@@ -235,6 +331,7 @@
             border-radius: 50%;
             background: white;
         }
+        /* Text fields and dropdowns for animation parameters. */
         input[type="text"] {
             border-radius: 0px;
             background: #8a8a8a00;
@@ -255,6 +352,7 @@
             color-scheme: dark;
             cursor: pointer;
         }
+        /* Custom checkbox and its checkmark. */
         input[type="checkbox"] {
             width: 18px;
             height: 18px;
@@ -283,6 +381,7 @@
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
+        /* Color picker and its browser-specific swatch. */
         input[type="color"] {
             border-radius: 0px;
             background: #000000;
