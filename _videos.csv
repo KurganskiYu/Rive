@@ -110,7 +110,7 @@ contraTest_v5,375x812,
 77_migrainechartmini_v1,393x150,393x150,v_num:state1(2:0-2),v_num:state2(2:0-2),v_num:state3(1:0-2),txt:name1("Stress Impact"),txt:name2("Active Time"),txt:name3("Sleep Score")
 77_chartmatrix_v8,393xlayout,393xlayout,v_bol:jumps(False),v_num:rowHeight(40:30-50),v_num:tapIndex(0:0-9),note:"+'dates' and 'days' parameters in CSV format"
 78_cardpocket_v10,393x530,393x530,trigger:"start",font:"NovemberLC-Regular.otf",font:"NovemberLC-Heavy.otf",txt:text1("Make sense of your days. together"),txt:text2("You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like.")
-79_buttonhand_v7,393x226,,txt:buttonText("Explore patterns in Welltory Care")
+79_buttonhand_v8,393x226,,txt:buttonText("Explore patterns in Welltory Care"),font:"NovemberLC-Bold.otf"
 77_migrainelog_v3,393x100,393x206,v_bol:tenScale(True),txt:row1("0 99 5 99 99 10 7"),txt:rowName1("Episode logged"),note:"+'dates' and 'days' parameters in CSV format",note:"trigger# for each day tap"
 80_heartzones_v1,393x300,393x524,trigger:"start",v_num:which(1:1-5)
 81_rainbowbird_v2,393x300,393x524,

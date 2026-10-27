@@ -387,11 +387,16 @@
             <div><a href="../riv/79_buttonhand_v7.riv" target="_blank" style="color: white;">79 buttonhand</a></div>
             
           </div>
-          Size: 393px × 226px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: txt:buttonText("Explore patterns in Welltory Care")<br>
+          Size: 393px × 226px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: txt:buttonText("Explore patterns in Welltory Care")<br>Input: font:"NovemberLC-Bold.otf"<br>
           <div class="controls-column" style="margin-top:8px;">
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">buttonText:</label>
             <input type="text" id="btn_main_input0" value="Explore patterns in Welltory Care" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input1">NovemberLC-Bold:</label>
+            <input type="text" id="btn_main_input1" placeholder="font.otf" value="NovemberLC-Bold.otf" style="width:90px;" />
         </div>
         </div>
         </div>
@@ -403,6 +408,31 @@ const mainRive = new rive.Rive({
   canvas: document.getElementById("main_canvas"),
   autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
   
+    assetLoader: (asset) => {
+      const fontFields = {"NovemberLC-Bold": "btn_main_input1"};
+      if (asset.isFont && fontFields[asset.name]) {
+        const field = document.getElementById(fontFields[asset.name]);
+        const loadFont = (file) => {
+          const name = (file || "").trim();
+          if (!name) return;
+          fetch("../fonts/" + name)
+            .then(response => {
+              if (!response.ok) throw new Error("HTTP " + response.status);
+              return response.arrayBuffer();
+            })
+            .then(bytes => rive.decodeFont(new Uint8Array(bytes)))
+            .then(font => {
+              asset.setFont(font);
+              font.unref();
+            })
+            .catch(error => console.error("Failed to load Rive font asset:", name, error));
+        };
+        loadFont(field && field.value);
+        if (field) field.addEventListener("change", () => loadFont(field.value));
+        return true;
+      }
+      return false;
+    },
 
   onLoad: () => {
     mainRive.resizeDrawingSurfaceToCanvas();
