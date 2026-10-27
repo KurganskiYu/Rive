@@ -62,6 +62,11 @@
             margin-top: 8px;
             line-height: 1.4;
         }
+        .riv-file-size {
+            font-family: 'Roboto Condensed', sans-serif;
+            color: rgb(80, 80, 80);
+            font-size: 0.85rem;
+        }
         .animation-row {
           display: flex;
           gap: 32px;
@@ -108,13 +113,14 @@
             min-width: 0;
         }
         .rive-btn {
-            background: #64646400;
-            color: white;
+            background: #222222;
+            color: rgb(200, 200, 200);
             border: 0.5px solid #464646;
             border-radius: 0px;
-            padding: 6px 8px;
+            padding: 4px 8px;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
             margin-left: 0; /* Remove left margin for perfect right alignment */
         }
         input[type="number"] {
@@ -135,7 +141,7 @@
             top: 18px;
             width: 2px;
             height: 8px;
-            z-index: 2;
+            z-index: 0;
             background: rgb(120, 120, 120);
             content: "";
         }
@@ -158,11 +164,17 @@
         .range-control .range-ticks {
             position: absolute;
             top: 20px;
-            right: 4px;
-            left: 4px;
+            right: 6px;
+            left: 6px;
             z-index: 0;
             height: 2px;
-            background: repeating-linear-gradient(to right, transparent 0, transparent 17px, rgb(120, 120, 120) 17px, rgb(120, 120, 120) 18px);
+        }
+        .range-control .range-ticks > span {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            transform: translateX(-50%);
+            background: rgb(120, 120, 120);
         }
         .range-control .range-bound {
             position: absolute;
@@ -201,8 +213,9 @@
             height: 12px;
             margin-top: -5px;
             border: 1px solid rgb(214, 214, 214);
-            border-radius: 6px;
-            background: rgb(60, 60, 60);
+            border-radius: 0px;
+            background: rgb(22, 22, 22);
+            z-index: 2;
         }
         .range-control input[type="range"]::-moz-range-track {
             height: 0.5px;
@@ -294,7 +307,6 @@
   <body>
     <div class="animation-wrapper">
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -384,14 +396,14 @@
         <canvas id="main_canvas" width="393" height="620"></canvas>
         <div class="description">
           <div style="display:flex;align-items:center;width:100%;">
-            <div><span style="white-space: nowrap;"><a href="../riv/45_activityring_v6.riv" target="_blank" style="color: white;">45 activityring</a><span>&nbsp;964 KB</span></span></div>
+            <div><span style="white-space: nowrap;"><a href="../riv/45_activityring_v6.riv" target="_blank" style="color: white;">45 activityring</a><span class="riv-file-size">&nbsp&nbsp;964 KB</span></span></div>
             <button id="btn_main" class="rive-btn" style="margin-left:auto;">Trigger</button>
           </div>
           Size: 393px × 620px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: start<br>Input: v_num:goal(35:5-100)<br>Input: v_num:activeMinutes(66:5-90)<br>Input: v_num:size2mult(1.0:0.3-1.0)<br>
           <div class="controls-column" style="margin-top:8px;">
         <div class="range-control" style="width:100%;--slider-progress:31.5789%;">
             <output for="btn_main_input0">35</output>
-            <span class="range-ticks" aria-hidden="true"></span>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.10526316%;"></span><span style="left:4.21052632%;"></span><span style="left:6.31578947%;"></span><span style="left:8.42105263%;"></span><span style="left:10.52631579%;"></span><span style="left:12.63157895%;"></span><span style="left:14.73684211%;"></span><span style="left:16.84210526%;"></span><span style="left:18.94736842%;"></span><span style="left:21.05263158%;"></span><span style="left:23.15789474%;"></span><span style="left:25.26315789%;"></span><span style="left:27.36842105%;"></span><span style="left:29.47368421%;"></span><span style="left:31.57894737%;"></span><span style="left:33.68421053%;"></span><span style="left:35.78947368%;"></span><span style="left:37.89473684%;"></span><span style="left:40.00000000%;"></span><span style="left:42.10526316%;"></span><span style="left:44.21052632%;"></span><span style="left:46.31578947%;"></span><span style="left:48.42105263%;"></span><span style="left:50.52631579%;"></span><span style="left:52.63157895%;"></span><span style="left:54.73684211%;"></span><span style="left:56.84210526%;"></span><span style="left:58.94736842%;"></span><span style="left:61.05263158%;"></span><span style="left:63.15789474%;"></span><span style="left:65.26315789%;"></span><span style="left:67.36842105%;"></span><span style="left:69.47368421%;"></span><span style="left:71.57894737%;"></span><span style="left:73.68421053%;"></span><span style="left:75.78947368%;"></span><span style="left:77.89473684%;"></span><span style="left:80.00000000%;"></span><span style="left:82.10526316%;"></span><span style="left:84.21052632%;"></span><span style="left:86.31578947%;"></span><span style="left:88.42105263%;"></span><span style="left:90.52631579%;"></span><span style="left:92.63157895%;"></span><span style="left:94.73684211%;"></span><span style="left:96.84210526%;"></span><span style="left:98.94736842%;"></span></span>
             <input type="range" id="btn_main_input0" value="35" min="5" max="100" step="1" aria-label="goal" />
             <span class="range-bound range-min">5</span>
             <span class="range-bound range-max">100</span>
@@ -399,7 +411,7 @@
         
         <div class="range-control" style="width:100%;--slider-progress:71.7647%;">
             <output for="btn_main_input1">66</output>
-            <span class="range-ticks" aria-hidden="true"></span>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.35294118%;"></span><span style="left:4.70588235%;"></span><span style="left:7.05882353%;"></span><span style="left:9.41176471%;"></span><span style="left:11.76470588%;"></span><span style="left:14.11764706%;"></span><span style="left:16.47058824%;"></span><span style="left:18.82352941%;"></span><span style="left:21.17647059%;"></span><span style="left:23.52941176%;"></span><span style="left:25.88235294%;"></span><span style="left:28.23529412%;"></span><span style="left:30.58823529%;"></span><span style="left:32.94117647%;"></span><span style="left:35.29411765%;"></span><span style="left:37.64705882%;"></span><span style="left:40.00000000%;"></span><span style="left:42.35294118%;"></span><span style="left:44.70588235%;"></span><span style="left:47.05882353%;"></span><span style="left:49.41176471%;"></span><span style="left:51.76470588%;"></span><span style="left:54.11764706%;"></span><span style="left:56.47058824%;"></span><span style="left:58.82352941%;"></span><span style="left:61.17647059%;"></span><span style="left:63.52941176%;"></span><span style="left:65.88235294%;"></span><span style="left:68.23529412%;"></span><span style="left:70.58823529%;"></span><span style="left:72.94117647%;"></span><span style="left:75.29411765%;"></span><span style="left:77.64705882%;"></span><span style="left:80.00000000%;"></span><span style="left:82.35294118%;"></span><span style="left:84.70588235%;"></span><span style="left:87.05882353%;"></span><span style="left:89.41176471%;"></span><span style="left:91.76470588%;"></span><span style="left:94.11764706%;"></span><span style="left:96.47058824%;"></span><span style="left:98.82352941%;"></span></span>
             <input type="range" id="btn_main_input1" value="66" min="5" max="90" step="1" aria-label="activeMinutes" />
             <span class="range-bound range-min">5</span>
             <span class="range-bound range-max">90</span>
@@ -407,7 +419,7 @@
         
         <div class="range-control" style="width:100%;--slider-progress:100.0000%;">
             <output for="btn_main_input2">1.0</output>
-            <span class="range-ticks" aria-hidden="true"></span>
+            <span class="range-ticks" aria-hidden="true"><span style="left:14.28571429%;"></span><span style="left:28.57142857%;"></span><span style="left:42.85714286%;"></span><span style="left:57.14285714%;"></span><span style="left:71.42857143%;"></span><span style="left:85.71428571%;"></span></span>
             <input type="range" id="btn_main_input2" value="1.0" min="0.3" max="1.0" step="0.1" aria-label="size2mult" />
             <span class="range-bound range-min">0.3</span>
             <span class="range-bound range-max">1.0</span>

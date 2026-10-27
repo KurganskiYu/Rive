@@ -1,6 +1,7 @@
 import os
 import csv
 import re
+from decimal import Decimal
 from functools import lru_cache
 import shutil
 import time
@@ -336,7 +337,7 @@ def get_display_name(src):
 def make_file_size_html(row):
     riv_path = os.path.join(script_dir, "riv", f'{row["src"]}.riv')
     size_kb = (os.path.getsize(riv_path) + 512) // 1024
-    return f'<span>&nbsp;{size_kb} KB</span>'
+    return f'<span class="riv-file-size">&nbsp&nbsp;{size_kb} KB</span>'
 
 def sanitize_for_filename(value):
     value = (value or "").strip()
@@ -438,6 +439,16 @@ def parse_number_range(value):
     step = "1" if precision == 0 else f"{10 ** -precision:.{precision}f}"
     return current, minimum, maximum, step
 
+def make_range_ticks(minimum, maximum, step):
+    intervals = int((Decimal(maximum) - Decimal(minimum)) / Decimal(step))
+    if intervals <= 1:
+        return ""
+    stride = max(1, (intervals - 1 + 49) // 50)
+    return "".join(
+        f'<span style="left:{index * 100 / intervals:.8f}%;"></span>'
+        for index in range(stride, intervals, stride)
+    )
+
 # NEW helpers for list input
 def camel_to_words(name: str):
     return re.sub(r'(?<!^)(?=[A-Z])', '', name).strip()
@@ -483,10 +494,11 @@ def parse_input_field(input_value, input_idx, button_id, control_width=None, det
             maximum_value = float(maximum)
             progress = 0 if maximum_value == minimum_value else (float(current) - minimum_value) / (maximum_value - minimum_value) * 100
             slider_width = "100%" if detail else f"{control_width + 2 if control_width is not None else 180}px"
+            ticks = make_range_ticks(minimum, maximum, step)
             return f'''
         <div class="range-control" style="width:{slider_width};--slider-progress:{progress:.4f}%;">
             <output for="{input_id}">{current}</output>
-            <span class="range-ticks" aria-hidden="true"></span>
+            <span class="range-ticks" aria-hidden="true">{ticks}</span>
             <input type="range" id="{input_id}" value="{current}" min="{minimum}" max="{maximum}" step="{step}" aria-label="{input_name}" />
             <span class="range-bound range-min">{minimum}</span>
             <span class="range-bound range-max">{maximum}</span>
