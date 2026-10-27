@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -363,15 +381,17 @@
     </script>
     
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
+      
+      <div class="animation-container detail-animation">
         <canvas id="main_canvas" width="325" height="352"></canvas>
         <div class="description">
-          <div>
-            <div><a href="../riv/60_stresscalendar2_v2.riv" target="_blank" style="color: white;">60 stresscalendar2</a><br>Size: 325px × 352px<br>State Machine: State Machine 1<br>Artboard: main<br>Note: Scripting<br>Input: v_num:daysAmount(31:1-31)<br>Input: v_num:delay(40:0-100)<br>Input: txt:percentToData("60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55")<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              
-              
-        <div class="range-control" style="width:327px;--slider-progress:100.0000%;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/60_stresscalendar2_v2.riv" target="_blank" style="color: white;">60 stresscalendar2</a></div>
+            
+          </div>
+          Size: 325px × 352px<br>State Machine: State Machine 1<br>Artboard: main<br>Note: Scripting<br>Input: v_num:daysAmount(31:1-31)<br>Input: v_num:delay(40:0-100)<br>Input: txt:percentToData("60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55")<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:100.0000%;">
             <output for="btn_main_input0">31</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input0" value="31" min="1" max="31" step="1" aria-label="daysAmount" />
@@ -379,7 +399,7 @@
             <span class="range-bound range-max">31</span>
         </div>
         
-        <div class="range-control" style="width:327px;--slider-progress:40.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:40.0000%;">
             <output for="btn_main_input1">40</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input1" value="40" min="0" max="100" step="1" aria-label="delay" />
@@ -391,19 +411,21 @@
             <label for="btn_main_input2">percentToData:</label>
             <input type="text" id="btn_main_input2" value="60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55" style="width:90px;" />
         </div>
-        
-            </div>
-          </div>
+        </div>
         </div>
       </div>
-      <div class="animation-container">
+
+      
+      <div class="animation-container detail-animation">
         <canvas id="preview_canvas" width="375" height="812"></canvas>
         <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>Preview:</div>
             
-            
-        <div class="range-control" style="width:377px;--slider-progress:100.0000%;">
+          </div>
+          
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:100.0000%;">
             <output for="btn_preview_input0">31</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input0" value="31" min="1" max="31" step="1" aria-label="daysAmount" />
@@ -411,7 +433,7 @@
             <span class="range-bound range-max">31</span>
         </div>
         
-        <div class="range-control" style="width:377px;--slider-progress:40.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:40.0000%;">
             <output for="btn_preview_input1">40</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input1" value="40" min="0" max="100" step="1" aria-label="delay" />
@@ -423,10 +445,10 @@
             <label for="btn_preview_input2">percentToData:</label>
             <input type="text" id="btn_preview_input2" value="60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55" style="width:90px;" />
         </div>
-        
-          </div>
+        </div>
         </div>
       </div>
+
     </div>
 <script>
 

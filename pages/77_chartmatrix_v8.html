@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -363,20 +381,22 @@
     </script>
     
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
+      
+      <div class="animation-container detail-animation">
         <canvas id="main_canvas" width="393" height="300" class="layout-canvas" data-auto-h></canvas>
         <div class="description">
-          <div>
-            <div><a href="../riv/77_chartmatrix_v8.riv" target="_blank" style="color: white;">77 chartmatrix</a><br>Size: 393px × auto (layout)<br>State Machine: State Machine 1<br>Artboard: main<br>Note: +'dates' and 'days' parameters in CSV format<br>Input: v_bol:jumps(False)<br>Input: v_num:rowHeight(40:30-50)<br>Input: v_num:tapIndex(0:0-9)<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              
-              
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/77_chartmatrix_v8.riv" target="_blank" style="color: white;">77 chartmatrix</a></div>
+            
+          </div>
+          Size: 393px × auto (layout)<br>State Machine: State Machine 1<br>Artboard: main<br>Note: +'dates' and 'days' parameters in CSV format<br>Input: v_bol:jumps(False)<br>Input: v_num:rowHeight(40:30-50)<br>Input: v_num:tapIndex(0:0-9)<br>
+          <div class="controls-column" style="margin-top:8px;">
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">jumps:</label>
             <input type="checkbox" id="btn_main_input0" />
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:50.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:50.0000%;">
             <output for="btn_main_input1">40</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input1" value="40" min="30" max="50" step="1" aria-label="rowHeight" />
@@ -384,31 +404,33 @@
             <span class="range-bound range-max">50</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:0.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:0.0000%;">
             <output for="btn_main_input2">0</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input2" value="0" min="0" max="9" step="1" aria-label="tapIndex" />
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">9</span>
         </div>
-        
-            </div>
-          </div>
+        </div>
         </div>
       </div>
-      <div class="animation-container">
+
+      
+      <div class="animation-container detail-animation">
         <canvas id="preview_canvas" width="393" height="300" class="layout-canvas" data-auto-h></canvas>
         <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>Preview:</div>
             
-            
+          </div>
+          
+          <div class="controls-column" style="margin-top:8px;">
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_preview_input0">jumps:</label>
             <input type="checkbox" id="btn_preview_input0" />
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:50.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:50.0000%;">
             <output for="btn_preview_input1">40</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input1" value="40" min="30" max="50" step="1" aria-label="rowHeight" />
@@ -416,17 +438,17 @@
             <span class="range-bound range-max">50</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:0.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:0.0000%;">
             <output for="btn_preview_input2">0</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input2" value="0" min="0" max="9" step="1" aria-label="tapIndex" />
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">9</span>
         </div>
-        
-          </div>
+        </div>
         </div>
       </div>
+
     </div>
 <script>
 

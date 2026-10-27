@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -362,26 +380,25 @@
       })();
     </script>
     
-    <div class="animation-container">
-      <canvas id="main_canvas" width="326" height="329"></canvas>
-      <div class="description">
-        <div>
-          <div><a href="../riv/83_trackersetting_v1.riv" target="_blank" style="color: white;">83 trackersetting</a><br>Size: 326px × 329px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:mode(0:0-1)<br></div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+      <div class="animation-container detail-animation">
+        <canvas id="main_canvas" width="326" height="329"></canvas>
+        <div class="description">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/83_trackersetting_v1.riv" target="_blank" style="color: white;">83 trackersetting</a></div>
             
-            
-        <div class="range-control" style="width:328px;--slider-progress:0.0000%;">
+          </div>
+          Size: 326px × 329px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:mode(0:0-1)<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:0.0000%;">
             <output for="btn_main_input0">0</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input0" value="0" min="0" max="1" step="1" aria-label="mode" />
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">1</span>
         </div>
-        
-          </div>
+        </div>
         </div>
       </div>
-    </div>
 <script>
 
 const mainRive = new rive.Rive({

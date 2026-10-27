@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -363,15 +381,17 @@
     </script>
     
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
+      
+      <div class="animation-container detail-animation">
         <canvas id="main_canvas" width="196" height="187"></canvas>
         <div class="description">
-          <div>
-            <div><a href="../riv/14_BatteryWidget_v6.riv" target="_blank" style="color: white;">14 BatteryWidget</a><br>Size: 196px × 187px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: Trigger 1<br>Input: v_num:BatteryPercentFrom(10:1-100)<br>Input: v_num:BatteryPercentTo(80:1-100)<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              <button id="btn_main" class="rive-btn">Trigger</button>
-              
-        <div class="range-control" style="width:198px;--slider-progress:9.0909%;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/14_BatteryWidget_v6.riv" target="_blank" style="color: white;">14 BatteryWidget</a></div>
+            <button id="btn_main" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          </div>
+          Size: 196px × 187px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: Trigger 1<br>Input: v_num:BatteryPercentFrom(10:1-100)<br>Input: v_num:BatteryPercentTo(80:1-100)<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:9.0909%;">
             <output for="btn_main_input0">10</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input0" value="10" min="1" max="100" step="1" aria-label="BatteryPercentFrom" />
@@ -379,26 +399,28 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:198px;--slider-progress:79.7980%;">
+        <div class="range-control" style="width:100%;--slider-progress:79.7980%;">
             <output for="btn_main_input1">80</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input1" value="80" min="1" max="100" step="1" aria-label="BatteryPercentTo" />
             <span class="range-bound range-min">1</span>
             <span class="range-bound range-max">100</span>
         </div>
-        
-            </div>
-          </div>
+        </div>
         </div>
       </div>
-      <div class="animation-container">
+
+      
+      <div class="animation-container detail-animation">
         <canvas id="preview_canvas" width="196" height="187"></canvas>
         <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            <button id="btn_preview" class="rive-btn">Trigger</button>
-            
-        <div class="range-control" style="width:198px;--slider-progress:9.0909%;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>Preview:</div>
+            <button id="btn_preview" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          </div>
+          
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:9.0909%;">
             <output for="btn_preview_input0">10</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input0" value="10" min="1" max="100" step="1" aria-label="BatteryPercentFrom" />
@@ -406,17 +428,17 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:198px;--slider-progress:79.7980%;">
+        <div class="range-control" style="width:100%;--slider-progress:79.7980%;">
             <output for="btn_preview_input1">80</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input1" value="80" min="1" max="100" step="1" aria-label="BatteryPercentTo" />
             <span class="range-bound range-min">1</span>
             <span class="range-bound range-max">100</span>
         </div>
-        
-          </div>
+        </div>
         </div>
       </div>
+
     </div>
 <script>
 

@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -363,15 +381,17 @@
     </script>
     
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
+      
+      <div class="animation-container detail-animation">
         <canvas id="main_canvas" width="393" height="150"></canvas>
         <div class="description">
-          <div>
-            <div><a href="../riv/77_migrainechartmini_v1.riv" target="_blank" style="color: white;">77 migrainechartmini</a><br>Size: 393px × 150px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:state1(2:0-2)<br>Input: v_num:state2(2:0-2)<br>Input: v_num:state3(1:0-2)<br>Input: txt:name1("Stress Impact")<br>Input: txt:name2("Active Time")<br>Input: txt:name3("Sleep Score")<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              
-              
-        <div class="range-control" style="width:395px;--slider-progress:100.0000%;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/77_migrainechartmini_v1.riv" target="_blank" style="color: white;">77 migrainechartmini</a></div>
+            
+          </div>
+          Size: 393px × 150px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:state1(2:0-2)<br>Input: v_num:state2(2:0-2)<br>Input: v_num:state3(1:0-2)<br>Input: txt:name1("Stress Impact")<br>Input: txt:name2("Active Time")<br>Input: txt:name3("Sleep Score")<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:100.0000%;">
             <output for="btn_main_input0">2</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input0" value="2" min="0" max="2" step="1" aria-label="state1" />
@@ -379,7 +399,7 @@
             <span class="range-bound range-max">2</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:100.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:100.0000%;">
             <output for="btn_main_input1">2</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input1" value="2" min="0" max="2" step="1" aria-label="state2" />
@@ -387,7 +407,7 @@
             <span class="range-bound range-max">2</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:50.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:50.0000%;">
             <output for="btn_main_input2">1</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input2" value="1" min="0" max="2" step="1" aria-label="state3" />
@@ -409,19 +429,21 @@
             <label for="btn_main_input5">name3:</label>
             <input type="text" id="btn_main_input5" value="Sleep Score" style="width:90px;" />
         </div>
-        
-            </div>
-          </div>
+        </div>
         </div>
       </div>
-      <div class="animation-container">
+
+      
+      <div class="animation-container detail-animation">
         <canvas id="preview_canvas" width="393" height="150"></canvas>
         <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>Preview:</div>
             
-            
-        <div class="range-control" style="width:395px;--slider-progress:100.0000%;">
+          </div>
+          
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:100.0000%;">
             <output for="btn_preview_input0">2</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input0" value="2" min="0" max="2" step="1" aria-label="state1" />
@@ -429,7 +451,7 @@
             <span class="range-bound range-max">2</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:100.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:100.0000%;">
             <output for="btn_preview_input1">2</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input1" value="2" min="0" max="2" step="1" aria-label="state2" />
@@ -437,7 +459,7 @@
             <span class="range-bound range-max">2</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:50.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:50.0000%;">
             <output for="btn_preview_input2">1</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input2" value="1" min="0" max="2" step="1" aria-label="state3" />
@@ -459,10 +481,10 @@
             <label for="btn_preview_input5">name3:</label>
             <input type="text" id="btn_preview_input5" value="Sleep Score" style="width:90px;" />
         </div>
-        
-          </div>
+        </div>
         </div>
       </div>
+
     </div>
 <script>
 

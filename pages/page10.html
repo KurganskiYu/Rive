@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -274,7 +293,6 @@
   </head>
   <body>
     <div class="animation-wrapper">
-
 
 
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
@@ -524,32 +542,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input0">color1:</label>
-            <input type="color" id="btn5_input0" value="#dd6650" />
+            <input type="color" id="btn5_input0" value="#999ebc" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input1">color2:</label>
-            <input type="color" id="btn5_input1" value="#3f2ee0" />
+            <input type="color" id="btn5_input1" value="#8dd40f" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input2">color3:</label>
-            <input type="color" id="btn5_input2" value="#ce6bf5" />
+            <input type="color" id="btn5_input2" value="#581a28" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input3">color4:</label>
-            <input type="color" id="btn5_input3" value="#601cd4" />
+            <input type="color" id="btn5_input3" value="#496f48" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input4">color5:</label>
-            <input type="color" id="btn5_input4" value="#46be8e" />
+            <input type="color" id="btn5_input4" value="#f8c488" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn5_input5">color6:</label>
-            <input type="color" id="btn5_input5" value="#93ca8c" />
+            <input type="color" id="btn5_input5" value="#53604a" />
         </div>
         
         </div>

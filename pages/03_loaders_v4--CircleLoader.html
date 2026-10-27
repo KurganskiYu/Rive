@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -362,18 +380,17 @@
       })();
     </script>
     
-    <div class="animation-container">
-      <canvas id="main_canvas" width="200" height="200"></canvas>
-      <div class="description">
-        <div>
-          <div><a href="../riv/03_loaders_v4.riv" target="_blank" style="color: white;">03 loaders</a><br>Size: 200px × 200px<br>State Machine: State Machine 1<br>Artboard: CircleLoader<br></div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            
+      <div class="animation-container detail-animation">
+        <canvas id="main_canvas" width="200" height="200"></canvas>
+        <div class="description">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/03_loaders_v4.riv" target="_blank" style="color: white;">03 loaders</a></div>
             
           </div>
+          Size: 200px × 200px<br>State Machine: State Machine 1<br>Artboard: CircleLoader<br>
+          
         </div>
       </div>
-    </div>
 <script>
 
 const mainRive = new rive.Rive({

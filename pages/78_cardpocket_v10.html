@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -363,14 +381,16 @@
     </script>
     
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
+      
+      <div class="animation-container detail-animation">
         <canvas id="main_canvas" width="393" height="530"></canvas>
         <div class="description">
-          <div>
-            <div><a href="../riv/78_cardpocket_v10.riv" target="_blank" style="color: white;">78 cardpocket</a><br>Size: 393px × 530px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: start<br>Input: font:"NovemberLC-Regular.otf"<br>Input: font:"NovemberLC-Heavy.otf"<br>Input: txt:text1("Make sense of your days. together")<br>Input: txt:text2("You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like.")<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              <button id="btn_main" class="rive-btn">Trigger</button>
-              
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/78_cardpocket_v10.riv" target="_blank" style="color: white;">78 cardpocket</a></div>
+            <button id="btn_main" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          </div>
+          Size: 393px × 530px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: start<br>Input: font:"NovemberLC-Regular.otf"<br>Input: font:"NovemberLC-Heavy.otf"<br>Input: txt:text1("Make sense of your days. together")<br>Input: txt:text2("You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like.")<br>
+          <div class="controls-column" style="margin-top:8px;">
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">NovemberLC-Regular:</label>
             <input type="text" id="btn_main_input0" placeholder="font.otf" value="NovemberLC-Regular.otf" style="width:90px;" />
@@ -390,18 +410,20 @@
             <label for="btn_main_input3">text2:</label>
             <input type="text" id="btn_main_input3" value="You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like." style="width:90px;" />
         </div>
-        
-            </div>
-          </div>
+        </div>
         </div>
       </div>
-      <div class="animation-container">
+
+      
+      <div class="animation-container detail-animation">
         <canvas id="preview_canvas" width="393" height="530"></canvas>
         <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            <button id="btn_preview" class="rive-btn">Trigger</button>
-            
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>Preview:</div>
+            <button id="btn_preview" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          </div>
+          
+          <div class="controls-column" style="margin-top:8px;">
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_preview_input0">NovemberLC-Regular:</label>
             <input type="text" id="btn_preview_input0" placeholder="font.otf" value="NovemberLC-Regular.otf" style="width:90px;" />
@@ -421,10 +443,10 @@
             <label for="btn_preview_input3">text2:</label>
             <input type="text" id="btn_preview_input3" value="You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like." style="width:90px;" />
         </div>
-        
-          </div>
+        </div>
         </div>
       </div>
+
     </div>
 <script>
 

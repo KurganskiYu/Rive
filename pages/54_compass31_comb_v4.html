@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -363,15 +381,17 @@
     </script>
     
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
+      
+      <div class="animation-container detail-animation">
         <canvas id="main_canvas" width="500" height="500"></canvas>
         <div class="description">
-          <div>
-            <div><a href="../riv/54_compass31_comb_v4.riv" target="_blank" style="color: white;">54 compass31 comb</a><br>Size: 500px × 500px<br>State Machine: State Machine 1<br>Artboard: combined<br>Note: Scripting<br>Input: v_num:state1(96:0-100)<br>Input: v_num:state2(80:0-100)<br>Input: v_num:state3(20:0-100)<br>Input: v_num:state4(65:0-100)<br>Input: v_num:state5(0:0-100)<br>Input: v_num:state6(36:0-100)<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              
-              
-        <div class="range-control" style="width:502px;--slider-progress:96.0000%;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/54_compass31_comb_v4.riv" target="_blank" style="color: white;">54 compass31 comb</a></div>
+            
+          </div>
+          Size: 500px × 500px<br>State Machine: State Machine 1<br>Artboard: combined<br>Note: Scripting<br>Input: v_num:state1(96:0-100)<br>Input: v_num:state2(80:0-100)<br>Input: v_num:state3(20:0-100)<br>Input: v_num:state4(65:0-100)<br>Input: v_num:state5(0:0-100)<br>Input: v_num:state6(36:0-100)<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:96.0000%;">
             <output for="btn_main_input0">96</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input0" value="96" min="0" max="100" step="1" aria-label="state1" />
@@ -379,7 +399,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:502px;--slider-progress:80.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:80.0000%;">
             <output for="btn_main_input1">80</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input1" value="80" min="0" max="100" step="1" aria-label="state2" />
@@ -387,7 +407,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:502px;--slider-progress:20.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:20.0000%;">
             <output for="btn_main_input2">20</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input2" value="20" min="0" max="100" step="1" aria-label="state3" />
@@ -395,7 +415,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:502px;--slider-progress:65.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:65.0000%;">
             <output for="btn_main_input3">65</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input3" value="65" min="0" max="100" step="1" aria-label="state4" />
@@ -403,7 +423,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:502px;--slider-progress:0.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:0.0000%;">
             <output for="btn_main_input4">0</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input4" value="0" min="0" max="100" step="1" aria-label="state5" />
@@ -411,26 +431,28 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:502px;--slider-progress:36.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:36.0000%;">
             <output for="btn_main_input5">36</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input5" value="36" min="0" max="100" step="1" aria-label="state6" />
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">100</span>
         </div>
-        
-            </div>
-          </div>
+        </div>
         </div>
       </div>
-      <div class="animation-container">
+
+      
+      <div class="animation-container detail-animation">
         <canvas id="preview_canvas" width="393" height="852"></canvas>
         <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>Preview:</div>
             
-            
-        <div class="range-control" style="width:395px;--slider-progress:96.0000%;">
+          </div>
+          
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:96.0000%;">
             <output for="btn_preview_input0">96</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input0" value="96" min="0" max="100" step="1" aria-label="state1" />
@@ -438,7 +460,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:80.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:80.0000%;">
             <output for="btn_preview_input1">80</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input1" value="80" min="0" max="100" step="1" aria-label="state2" />
@@ -446,7 +468,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:20.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:20.0000%;">
             <output for="btn_preview_input2">20</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input2" value="20" min="0" max="100" step="1" aria-label="state3" />
@@ -454,7 +476,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:65.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:65.0000%;">
             <output for="btn_preview_input3">65</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input3" value="65" min="0" max="100" step="1" aria-label="state4" />
@@ -462,7 +484,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:0.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:0.0000%;">
             <output for="btn_preview_input4">0</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input4" value="0" min="0" max="100" step="1" aria-label="state5" />
@@ -470,17 +492,17 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:36.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:36.0000%;">
             <output for="btn_preview_input5">36</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input5" value="36" min="0" max="100" step="1" aria-label="state6" />
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">100</span>
         </div>
-        
-          </div>
+        </div>
         </div>
       </div>
+
     </div>
 <script>
 

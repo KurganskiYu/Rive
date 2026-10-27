@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -363,15 +381,17 @@
     </script>
     
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
+      
+      <div class="animation-container detail-animation">
         <canvas id="main_canvas" width="393" height="368"></canvas>
         <div class="description">
-          <div>
-            <div><a href="../riv/69_activitycan_v10.riv" target="_blank" style="color: white;">69 activitycan</a><br>Size: 393px × 368px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: start<br>Input: v_num:goal(35:5-100)<br>Input: v_num:zone1(25:0-90)<br>Input: v_num:zone2(30:0-90)<br>Input: v_num:zone3(20:0-90)<br>Input: v_num:zone4(5:0-90)<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              <button id="btn_main" class="rive-btn">Trigger</button>
-              
-        <div class="range-control" style="width:395px;--slider-progress:31.5789%;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/69_activitycan_v10.riv" target="_blank" style="color: white;">69 activitycan</a></div>
+            <button id="btn_main" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          </div>
+          Size: 393px × 368px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: start<br>Input: v_num:goal(35:5-100)<br>Input: v_num:zone1(25:0-90)<br>Input: v_num:zone2(30:0-90)<br>Input: v_num:zone3(20:0-90)<br>Input: v_num:zone4(5:0-90)<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:31.5789%;">
             <output for="btn_main_input0">35</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input0" value="35" min="5" max="100" step="1" aria-label="goal" />
@@ -379,7 +399,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:27.7778%;">
+        <div class="range-control" style="width:100%;--slider-progress:27.7778%;">
             <output for="btn_main_input1">25</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input1" value="25" min="0" max="90" step="1" aria-label="zone1" />
@@ -387,7 +407,7 @@
             <span class="range-bound range-max">90</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:33.3333%;">
+        <div class="range-control" style="width:100%;--slider-progress:33.3333%;">
             <output for="btn_main_input2">30</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input2" value="30" min="0" max="90" step="1" aria-label="zone2" />
@@ -395,7 +415,7 @@
             <span class="range-bound range-max">90</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:22.2222%;">
+        <div class="range-control" style="width:100%;--slider-progress:22.2222%;">
             <output for="btn_main_input3">20</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input3" value="20" min="0" max="90" step="1" aria-label="zone3" />
@@ -403,26 +423,28 @@
             <span class="range-bound range-max">90</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:5.5556%;">
+        <div class="range-control" style="width:100%;--slider-progress:5.5556%;">
             <output for="btn_main_input4">5</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input4" value="5" min="0" max="90" step="1" aria-label="zone4" />
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">90</span>
         </div>
-        
-            </div>
-          </div>
+        </div>
         </div>
       </div>
-      <div class="animation-container">
+
+      
+      <div class="animation-container detail-animation">
         <canvas id="preview_canvas" width="393" height="795"></canvas>
         <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            <button id="btn_preview" class="rive-btn">Trigger</button>
-            
-        <div class="range-control" style="width:395px;--slider-progress:31.5789%;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>Preview:</div>
+            <button id="btn_preview" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          </div>
+          
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:31.5789%;">
             <output for="btn_preview_input0">35</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input0" value="35" min="5" max="100" step="1" aria-label="goal" />
@@ -430,7 +452,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:27.7778%;">
+        <div class="range-control" style="width:100%;--slider-progress:27.7778%;">
             <output for="btn_preview_input1">25</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input1" value="25" min="0" max="90" step="1" aria-label="zone1" />
@@ -438,7 +460,7 @@
             <span class="range-bound range-max">90</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:33.3333%;">
+        <div class="range-control" style="width:100%;--slider-progress:33.3333%;">
             <output for="btn_preview_input2">30</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input2" value="30" min="0" max="90" step="1" aria-label="zone2" />
@@ -446,7 +468,7 @@
             <span class="range-bound range-max">90</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:22.2222%;">
+        <div class="range-control" style="width:100%;--slider-progress:22.2222%;">
             <output for="btn_preview_input3">20</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input3" value="20" min="0" max="90" step="1" aria-label="zone3" />
@@ -454,17 +476,17 @@
             <span class="range-bound range-max">90</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:5.5556%;">
+        <div class="range-control" style="width:100%;--slider-progress:5.5556%;">
             <output for="btn_preview_input4">5</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input4" value="5" min="0" max="90" step="1" aria-label="zone4" />
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">90</span>
         </div>
-        
-          </div>
+        </div>
         </div>
       </div>
+
     </div>
 <script>
 

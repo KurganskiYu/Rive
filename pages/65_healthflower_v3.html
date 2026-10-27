@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -363,28 +381,32 @@
     </script>
     
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
+      
+      <div class="animation-container detail-animation">
         <canvas id="main_canvas" width="360" height="320"></canvas>
         <div class="description">
-          <div>
-            <div><a href="../riv/65_healthflower_v3.riv" target="_blank" style="color: white;">65 healthflower</a><br>Size: 360px × 320px<br>State Machine: State Machine 1<br>Artboard: main<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              
-              
-            </div>
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/65_healthflower_v3.riv" target="_blank" style="color: white;">65 healthflower</a></div>
+            
           </div>
+          Size: 360px × 320px<br>State Machine: State Machine 1<br>Artboard: main<br>
+          
         </div>
       </div>
-      <div class="animation-container">
+
+      
+      <div class="animation-container detail-animation">
         <canvas id="preview_canvas" width="393" height="852"></canvas>
         <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>Preview:</div>
             
           </div>
+          
+          
         </div>
       </div>
+
     </div>
 <script>
 

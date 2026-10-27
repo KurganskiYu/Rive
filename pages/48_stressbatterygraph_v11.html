@@ -88,6 +88,25 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-animation {
+            width: min-content;
+        }
+        .detail-animation .description {
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .detail-animation .controls-column label {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
+        .detail-animation .controls-column > div:not(.range-control) > input:not([type="checkbox"]):not([type="color"]),
+        .detail-animation .controls-column select {
+            box-sizing: border-box;
+            flex: 0 0 50%;
+            min-width: 0;
+        }
         .rive-btn {
             background: #64646400;
             color: white;
@@ -276,7 +295,6 @@
     <div class="animation-wrapper">
 
 
-
     <div style="position:fixed; top:10px; right:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
         <canvas id="bg_button_canvas" width="80" height="80"></canvas>
     </div>
@@ -363,15 +381,17 @@
     </script>
     
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
+      
+      <div class="animation-container detail-animation">
         <canvas id="main_canvas" width="393" height="852"></canvas>
         <div class="description">
-          <div>
-            <div><a href="../riv/48_stressbatterygraph_v11.riv" target="_blank" style="color: white;">48 stressbatterygraph</a><br>Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:stressStart(15:0-100)<br>Input: v_num:stressNow(55:0-100)<br>Input: v_num:bar1(97:0-100)<br>Input: v_num:bar5(65:0-100)<br>Input: txt:duration("120 min")<br>Input: txt:timeBefore("9:00am")<br></div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              
-              
-        <div class="range-control" style="width:395px;--slider-progress:15.0000%;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div><a href="../riv/48_stressbatterygraph_v11.riv" target="_blank" style="color: white;">48 stressbatterygraph</a></div>
+            
+          </div>
+          Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:stressStart(15:0-100)<br>Input: v_num:stressNow(55:0-100)<br>Input: v_num:bar1(97:0-100)<br>Input: v_num:bar5(65:0-100)<br>Input: txt:duration("120 min")<br>Input: txt:timeBefore("9:00am")<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:15.0000%;">
             <output for="btn_main_input0">15</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input0" value="15" min="0" max="100" step="1" aria-label="stressStart" />
@@ -379,7 +399,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:55.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:55.0000%;">
             <output for="btn_main_input1">55</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input1" value="55" min="0" max="100" step="1" aria-label="stressNow" />
@@ -387,7 +407,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:97.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:97.0000%;">
             <output for="btn_main_input2">97</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input2" value="97" min="0" max="100" step="1" aria-label="bar1" />
@@ -395,7 +415,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:65.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:65.0000%;">
             <output for="btn_main_input3">65</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_main_input3" value="65" min="0" max="100" step="1" aria-label="bar5" />
@@ -412,19 +432,21 @@
             <label for="btn_main_input5">timeBefore:</label>
             <input type="text" id="btn_main_input5" value="9:00am" style="width:90px;" />
         </div>
-        
-            </div>
-          </div>
+        </div>
         </div>
       </div>
-      <div class="animation-container">
+
+      
+      <div class="animation-container detail-animation">
         <canvas id="preview_canvas" width="393" height="852"></canvas>
         <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>Preview:</div>
             
-            
-        <div class="range-control" style="width:395px;--slider-progress:15.0000%;">
+          </div>
+          
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:15.0000%;">
             <output for="btn_preview_input0">15</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input0" value="15" min="0" max="100" step="1" aria-label="stressStart" />
@@ -432,7 +454,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:55.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:55.0000%;">
             <output for="btn_preview_input1">55</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input1" value="55" min="0" max="100" step="1" aria-label="stressNow" />
@@ -440,7 +462,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:97.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:97.0000%;">
             <output for="btn_preview_input2">97</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input2" value="97" min="0" max="100" step="1" aria-label="bar1" />
@@ -448,7 +470,7 @@
             <span class="range-bound range-max">100</span>
         </div>
         
-        <div class="range-control" style="width:395px;--slider-progress:65.0000%;">
+        <div class="range-control" style="width:100%;--slider-progress:65.0000%;">
             <output for="btn_preview_input3">65</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="btn_preview_input3" value="65" min="0" max="100" step="1" aria-label="bar5" />
@@ -465,10 +487,10 @@
             <label for="btn_preview_input5">timeBefore:</label>
             <input type="text" id="btn_preview_input5" value="9:00am" style="width:90px;" />
         </div>
-        
-          </div>
+        </div>
         </div>
       </div>
+
     </div>
 <script>
 

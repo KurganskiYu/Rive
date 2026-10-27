@@ -452,7 +452,7 @@ def random_color_hex():
     # Returns a random color in #RRGGBB format
     return "#{:06x}".format(random.randint(0, 0xFFFFFF))
 
-def parse_input_field(input_value, input_idx, button_id, control_width=None):
+def parse_input_field(input_value, input_idx, button_id, control_width=None, detail=False):
     input_type, input_name, default_val = parse_input_spec(input_value)
     # Handle list:Name[innerSpec] -> no direct HTML, skip rendering
     if input_type == "list":
@@ -477,9 +477,9 @@ def parse_input_field(input_value, input_idx, button_id, control_width=None):
             minimum_value = float(minimum)
             maximum_value = float(maximum)
             progress = 0 if maximum_value == minimum_value else (float(current) - minimum_value) / (maximum_value - minimum_value) * 100
-            slider_width = (control_width + 2) if control_width is not None else 180
+            slider_width = "100%" if detail else f"{control_width + 2 if control_width is not None else 180}px"
             return f'''
-        <div class="range-control" style="width:{slider_width}px;--slider-progress:{progress:.4f}%;">
+        <div class="range-control" style="width:{slider_width};--slider-progress:{progress:.4f}%;">
             <output for="{input_id}">{current}</output>
             <span class="range-ticks" aria-hidden="true"></span>
             <input type="range" id="{input_id}" value="{current}" min="{minimum}" max="{maximum}" step="{step}" aria-label="{input_name}" />
@@ -984,11 +984,9 @@ setTimeout(() => {
     return "".join(script_parts)
 
 def make_description_html(row):
-    display_name = get_display_name(row["src"])
     # Compose size from width and height
     size_str = size_label(row)
     parts = [
-        f'<a href="../riv/{row["src"]}.riv" target="_blank" style="color: white;">{display_name}</a><br>',
         f'Size: {size_str}<br>',
         f'State Machine: {row["state_machine"]}<br>'
     ]
@@ -1015,7 +1013,7 @@ def make_animation_inputs(row, prefix, control_width):
     """Generate animation input HTML"""
     html_parts = []
     for i, input_value in enumerate(row.get("inputs", [])):
-        html_parts.append(parse_input_field(input_value, i, prefix, control_width))
+        html_parts.append(parse_input_field(input_value, i, prefix, control_width, detail=True))
     return "".join(html_parts)
 
 def check_preview_exists(row):
@@ -1069,49 +1067,41 @@ def make_animation_page(row):
     with open(os.path.join(pages_dir, page_name), "w", encoding="utf-8") as f:
         f.write("".join(html_parts))
 
-def generate_single_animation_html(row):
-    """Generate HTML for single animation layout"""
+def generate_detail_animation_html(row, canvas_ctx, canvas_type):
+    prefix = f"btn_{canvas_type}"
+    if canvas_type == "main":
+        title = f'<a href="../riv/{row["src"]}.riv" target="_blank" style="color: white;">{get_display_name(row["src"])}</a>'
+        metadata = make_description_html(row)
+    else:
+        title = "Preview:"
+        metadata = ""
+    button = f'<button id="{prefix}" class="rive-btn" style="margin-left:auto;">Trigger</button>' if row.get("trigger") else ""
+    inputs = make_animation_inputs(row, prefix, control_width_for(canvas_ctx))
+    controls = f'<div class="controls-column" style="margin-top:8px;">{inputs}</div>' if inputs else ""
     return f'''
-    <div class="animation-container">
-      <canvas {canvas_attrs(row, "main_canvas")}></canvas>
-      <div class="description">
-        <div>
-          <div>{make_description_html(row)}</div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-            {make_animation_inputs(row, "btn_main", control_width_for(row))}
+      <div class="animation-container detail-animation">
+        <canvas {canvas_attrs(canvas_ctx, f"{canvas_type}_canvas")}></canvas>
+        <div class="description">
+          <div style="display:flex;align-items:center;width:100%;">
+            <div>{title}</div>
+            {button}
           </div>
+          {metadata}
+          {controls}
         </div>
       </div>
-    </div>
 '''
+
+def generate_single_animation_html(row):
+    """Generate HTML for single animation layout"""
+    return generate_detail_animation_html(row, row, "main")
 
 def generate_dual_animation_html(row, preview_ctx):
     """Generate HTML for dual animation layout"""
     return f'''
     <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
-      <div class="animation-container">
-        <canvas {canvas_attrs(row, "main_canvas")}></canvas>
-        <div class="description">
-          <div>
-            <div>{make_description_html(row)}</div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-              {'<button id="btn_main" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-              {make_animation_inputs(row, "btn_main", control_width_for(row))}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="animation-container">
-        <canvas {canvas_attrs(preview_ctx, "preview_canvas")}></canvas>
-        <div class="description">
-          Preview:<br>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 16px; gap: 12px;">
-            {'<button id="btn_preview" class="rive-btn">Trigger</button>' if row.get("trigger") else ''}
-            {make_animation_inputs(row, "btn_preview", control_width_for(preview_ctx))}
-          </div>
-        </div>
-      </div>
+      {generate_detail_animation_html(row, row, "main")}
+      {generate_detail_animation_html(row, preview_ctx, "preview")}
     </div>
 '''
 
