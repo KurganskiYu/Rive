@@ -138,11 +138,33 @@
             color: rgb(80, 80, 80);
             font-size: 0.85rem;
         }
-        /* Place the main animation and its preview side by side. */
+        /* Place the main animation and its preview side by side when space allows. */
         .animation-row {
           display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
           gap: 32px;
           align-items: flex-start;
+          max-width: 100%;
+          min-width: 0;
+        }
+        /* Keep detail canvases and controls within the available screen width. */
+        .animation-container:has(> #main_canvas),
+        .animation-container:has(> #preview_canvas) {
+            max-width: 100%;
+            min-width: 0;
+        }
+        .animation-container > canvas:is(#main_canvas, #preview_canvas) {
+            max-width: 100%;
+        }
+        .animation-container > canvas:is(#main_canvas, #preview_canvas):not(.layout-canvas) {
+            max-width: calc(100% - 2px);
+            height: auto !important;
+        }
+        .animation-container:has(> #main_canvas) .range-control,
+        .animation-container:has(> #preview_canvas) .range-control {
+            box-sizing: border-box;
+            max-width: 100%;
         }
         /* Stack an animation's parameter controls below its canvas. */
         .controls-column {
@@ -168,7 +190,7 @@
         }
         /* Size detail-page descriptions and controls to match their canvas. */
         .detail-animation {
-            width: min-content;
+            width: fit-content;
         }
         .detail-animation .description {
             width: 0;
@@ -185,6 +207,14 @@
             box-sizing: border-box;
             flex: 0 0 50%;
             min-width: 0;
+        }
+        @media (max-width: 600px) {
+            .detail-animation .description > div:first-child > div {
+                min-width: 0;
+            }
+            .detail-animation .description > div:first-child > div > span {
+                white-space: normal !important;
+            }
         }
         /* Trigger and pagination buttons. */
         .rive-btn {
