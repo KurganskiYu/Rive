@@ -333,6 +333,11 @@ def get_display_name(src):
     name = re.sub(r'_v\d+[a-zA-Z0-9]*', '', name)
     return name.replace('_', ' ')
 
+def make_file_size_html(row):
+    riv_path = os.path.join(script_dir, "riv", f'{row["src"]}.riv')
+    size_kb = (os.path.getsize(riv_path) + 512) // 1024
+    return f'<span>&nbsp;{size_kb} KB</span>'
+
 def sanitize_for_filename(value):
     value = (value or "").strip()
     value = re.sub(r'[^A-Za-z0-9_-]+', '_', value)
@@ -623,7 +628,7 @@ def make_main_canvas(idx, row, is_root=True):
     desc = f'''
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div>{make_main_link(row, is_root)}</div>
+          <div style="white-space: nowrap;">{make_main_link(row, is_root)}{make_file_size_html(row)}</div>
           {button_html}
         </div>
         {inputs_html}
@@ -1070,7 +1075,7 @@ def make_animation_page(row):
 def generate_detail_animation_html(row, canvas_ctx, canvas_type):
     prefix = f"btn_{canvas_type}"
     if canvas_type == "main":
-        title = f'<a href="../riv/{row["src"]}.riv" target="_blank" style="color: white;">{get_display_name(row["src"])}</a>'
+        title = f'<span style="white-space: nowrap;"><a href="../riv/{row["src"]}.riv" target="_blank" style="color: white;">{get_display_name(row["src"])}</a>{make_file_size_html(row)}</span>'
         metadata = make_description_html(row)
     else:
         title = "Preview:"
