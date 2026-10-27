@@ -73,6 +73,11 @@
             align-items: flex-end;
             gap: 2px;
             margin-left: auto;
+            width: 100%;
+        }
+        .controls-column > div:not(.range-control) {
+            width: 100%;
+            justify-content: space-between;
         }
         .controls-column > * {
             width: max-content;
@@ -167,8 +172,8 @@
             background: transparent;
         }
         .range-control input[type="range"]::-webkit-slider-runnable-track {
-            height: 1px;
-            background: rgb(90, 90, 90);
+            height: 0.5px;
+            background: rgb(80, 80, 80);
         }
         .range-control input[type="range"]::-webkit-slider-thumb {
             appearance: none;
@@ -176,13 +181,13 @@
             width: 12px;
             height: 12px;
             margin-top: -5px;
-            border: 1px solid rgb(120, 120, 120);
-            border-radius: 50%;
-            background: white;
+            border: 1px solid rgb(214, 214, 214);
+            border-radius: 6px;
+            background: rgb(60, 60, 60);
         }
         .range-control input[type="range"]::-moz-range-track {
-            height: 1px;
-            background: rgb(120, 120, 120);
+            height: 0.5px;
+            background: rgb(90, 90, 90);
         }
         .range-control input[type="range"]::-moz-range-thumb {
             width: 10px;
@@ -367,32 +372,32 @@
             
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input0">color1:</label>
-            <input type="color" id="btn_main_input0" value="#beb497" />
+            <input type="color" id="btn_main_input0" value="#8faf37" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input1">color2:</label>
-            <input type="color" id="btn_main_input1" value="#9778ed" />
+            <input type="color" id="btn_main_input1" value="#064590" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input2">color3:</label>
-            <input type="color" id="btn_main_input2" value="#eec22b" />
+            <input type="color" id="btn_main_input2" value="#587c89" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input3">color4:</label>
-            <input type="color" id="btn_main_input3" value="#96ec52" />
+            <input type="color" id="btn_main_input3" value="#a9597e" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input4">color5:</label>
-            <input type="color" id="btn_main_input4" value="#9b7aa7" />
+            <input type="color" id="btn_main_input4" value="#6a379c" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
             <label for="btn_main_input5">color6:</label>
-            <input type="color" id="btn_main_input5" value="#be61fe" />
+            <input type="color" id="btn_main_input5" value="#2f4c9b" />
         </div>
         
           </div>
