@@ -27,7 +27,7 @@ def find_selected_catalogs():
 @lru_cache(maxsize=1)
 def get_html_head():
     with open(head_html_path, "r", encoding="utf-8") as head_file:
-        return head_file.read()
+        return head_file.read().replace('href="styles.css"', 'href="../styles.css"')
 
 # NEW: Helper to inject the BG button on every page
 def get_bg_button_html(is_root=True):
@@ -352,11 +352,13 @@ def parse_input_field(input_value, input_idx, button_id, control_width=None):
             maximum_value = float(maximum)
             progress = 0 if maximum_value == minimum_value else (float(current) - minimum_value) / (maximum_value - minimum_value) * 100
             slider_width = (control_width + 2) if control_width is not None else 180
+            name_html = html_escape(input_name, quote=True)
             return f'''
         <div class="range-control" style="width:{slider_width}px;--slider-progress:{progress:.4f}%;">
             <output for="{input_id}">{current}</output>
             <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="{input_id}" value="{current}" min="{minimum}" max="{maximum}" step="{step}" aria-label="{input_name}" />
+            <input type="range" id="{input_id}" value="{current}" min="{minimum}" max="{maximum}" step="{step}" aria-label="{name_html}" />
+            <span class="range-hint" aria-hidden="true">{name_html}</span>
             <span class="range-bound range-min">{minimum}</span>
             <span class="range-bound range-max">{maximum}</span>
         </div>

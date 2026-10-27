@@ -23,6 +23,7 @@ def get_html_head(is_root=True):
         html_head = head_file.read()
     if not is_root:
         html_head = html_head.replace('href="RiveIcon2.svg"', 'href="../RiveIcon2.svg"')
+        html_head = html_head.replace('href="styles.css"', 'href="../styles.css"')
     return html_head
 
 # NEW: Helper to inject the BG button on every page
@@ -495,11 +496,13 @@ def parse_input_field(input_value, input_idx, button_id, control_width=None, det
             progress = 0 if maximum_value == minimum_value else (float(current) - minimum_value) / (maximum_value - minimum_value) * 100
             slider_width = "100%" if detail else f"{control_width + 2 if control_width is not None else 180}px"
             ticks = make_range_ticks(minimum, maximum, step)
+            name_html = html_escape(input_name, quote=True)
             return f'''
         <div class="range-control" style="width:{slider_width};--slider-progress:{progress:.4f}%;">
             <output for="{input_id}">{current}</output>
             <span class="range-ticks" aria-hidden="true">{ticks}</span>
-            <input type="range" id="{input_id}" value="{current}" min="{minimum}" max="{maximum}" step="{step}" aria-label="{input_name}" />
+            <input type="range" id="{input_id}" value="{current}" min="{minimum}" max="{maximum}" step="{step}" aria-label="{name_html}" />
+            <span class="range-hint" aria-hidden="true">{name_html}</span>
             <span class="range-bound range-min">{minimum}</span>
             <span class="range-bound range-max">{maximum}</span>
         </div>
