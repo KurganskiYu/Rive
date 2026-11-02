@@ -109,7 +109,7 @@
           <li><a href="pages/81_rainbowbird_v2.html">81 Rainbow Bird</a></li>
           <li><a href="pages/80_heartzones_v1.html">80 Heart Zones</a></li>
           <li><a href="pages/77_migrainelog_v3.html">77 Migraine Log</a></li>
-          <li><a href="pages/79_buttonhand_v9.html">79 Button Hand</a></li>
+          <li><a href="pages/79_buttonhand_v10.html">79 Button Hand</a></li>
           <li><a href="pages/78_cardpocket_v10.html">78 Card Pocket</a></li>
           <li><a href="pages/77_chartmatrix_v8.html">77 Chart Matrix</a></li>
           <li><a href="pages/77_migrainechartmini_v1.html">77 Migraine Chart Mini</a></li>
@@ -351,8 +351,8 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div style="white-space: nowrap;"><a href="pages/79_buttonhand_v9.html" style="color: #888888;">79 buttonhand</a><span class="riv-file-size">&nbsp&nbsp;68 KB</span></div>
-          
+          <div style="white-space: nowrap;"><a href="pages/79_buttonhand_v10.html" style="color: #888888;">79 buttonhand</a><span class="riv-file-size">&nbsp&nbsp;69 KB</span></div>
+          <button id="btn5" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
@@ -363,13 +363,18 @@
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn5_input1">buttonText:</label>
-            <input type="text" id="btn5_input1" value="Explore patterns in Welltory Care" style="width:90px;" />
+            <label for="btn5_input1">pressed:</label>
+            <input type="checkbox" id="btn5_input1" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn5_input2">NovemberLC-Bold:</label>
-            <input type="text" id="btn5_input2" placeholder="font.otf" value="NovemberLC-Bold.otf" style="width:90px;" />
+            <label for="btn5_input2">buttonText:</label>
+            <input type="text" id="btn5_input2" value="Explore patterns in Welltory Care" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn5_input3">NovemberLC-Bold:</label>
+            <input type="text" id="btn5_input3" placeholder="font.otf" value="NovemberLC-Bold.otf" style="width:90px;" />
         </div>
         
         </div>
@@ -631,12 +636,12 @@ const r4 = new rive.Rive({
 });
 
 const r5 = new rive.Rive({
-    src: "riv/79_buttonhand_v9.riv",
+    src: "riv/79_buttonhand_v10.riv",
     canvas: document.getElementById("canvas5"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
     assetLoader: (asset) => {
-      const fontFields = {"NovemberLC-Bold": "btn5_input2"};
+      const fontFields = {"NovemberLC-Bold": "btn5_input3"};
       if (asset.isFont && fontFields[asset.name]) {
         const field = document.getElementById(fontFields[asset.name]);
         const loadFont = (file) => {
@@ -675,12 +680,38 @@ const r5 = new rive.Rive({
     }
     let inputFieldBtn5_1 = document.getElementById("btn5_input1");
     if (inputFieldBtn5_1 && vmi) {
-      vmi.string("buttonText").value = inputFieldBtn5_1.value;
-      inputFieldBtn5_1.addEventListener("input", () => {
-        vmi.string("buttonText").value = inputFieldBtn5_1.value;
+      // Update boolean ViewModel variable
+      inputFieldBtn5_1.addEventListener("change", () => {
+        vmi.boolean("pressed").value = inputFieldBtn5_1.checked;
+      });
+      // Set initial value
+      vmi.boolean("pressed").value = inputFieldBtn5_1.checked;
+    }
+    let inputFieldBtn5_2 = document.getElementById("btn5_input2");
+    if (inputFieldBtn5_2 && vmi) {
+      vmi.string("buttonText").value = inputFieldBtn5_2.value;
+      inputFieldBtn5_2.addEventListener("input", () => {
+        vmi.string("buttonText").value = inputFieldBtn5_2.value;
       });
     }
   },
+});
+document.getElementById("btn5").addEventListener("click", () => {
+    const currentVmi = r5.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("press");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r5.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "press");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): press");
+    }
 });
 
 const r6 = new rive.Rive({
