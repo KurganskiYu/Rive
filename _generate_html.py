@@ -7,9 +7,11 @@ import shutil
 import time
 import random
 import json
+import tempfile
+import zipfile
 from html import escape as html_escape
 
-from _navigation import load_navigation_entries, render_navigation
+from _navigation import load_navigation_entries, render_navigation, sanitize_for_filename
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, "_videos.csv")
@@ -342,11 +344,6 @@ def make_file_size_html(row):
     riv_path = os.path.join(script_dir, "riv", f'{row["src"]}.riv')
     size_kb = (os.path.getsize(riv_path) + 512) // 1024
     return f'<span class="riv-file-size">&nbsp&nbsp;{size_kb} KB</span>'
-
-def sanitize_for_filename(value):
-    value = (value or "").strip()
-    value = re.sub(r'[^A-Za-z0-9_-]+', '_', value)
-    return value.strip('_') or "artboard"
 
 def assign_page_stems(rows):
     """Compute a unique detail-page filename stem for every row.
@@ -1259,24 +1256,96 @@ def write_main_page(page_rows, page_idx, total_pages, navigation_entries):
         ]
         f.write("".join(content_parts))
 
+def archive_file_signature(path):
+    stat = os.stat(path)
+    return stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns
+
+
+def extract_riv_archive(archive_path, dst_dir):
+    """Copy the uniquely matching .riv beside its ZIP and to dst_dir before deleting the ZIP.
+
+    The ZIP stem supplies the output name, including any version and _preview suffix.
+    Its matching member omits those suffixes. Other archive contents are not extracted.
+    """
+    signature = archive_file_signature(archive_path)
+    archive_stem = os.path.splitext(os.path.basename(archive_path))[0]
+    source_path = os.path.join(os.path.dirname(archive_path), archive_stem + ".riv")
+    destination_path = os.path.join(dst_dir, archive_stem + ".riv")
+    source_signature = archive_file_signature(source_path) if os.path.exists(source_path) else None
+    if source_signature and source_signature[3] > signature[3]:
+        raise ValueError(f"source file is newer than archive: {os.path.basename(source_path)}")
+
+    source_temp = None
+    destination_temp = None
+    try:
+        with zipfile.ZipFile(archive_path) as archive:
+            members = [
+                member for member in archive.infolist()
+                if not member.is_dir() and member.filename.lower().endswith(".riv")
+            ]
+            base = re.sub(r"_preview$", "", archive_stem, flags=re.IGNORECASE)
+            base = re.sub(r"_v\d+[a-zA-Z0-9]*$", "", base, flags=re.IGNORECASE)
+            base = re.sub(r"_preview$", "", base, flags=re.IGNORECASE)
+            members = [
+                member for member in members
+                if os.path.splitext(os.path.basename(member.filename.replace("\\", "/")))[0].casefold()
+                == base.casefold()
+            ]
+            if len(members) != 1:
+                raise ValueError("archive must contain exactly one .riv matching its unversioned name")
+            with tempfile.NamedTemporaryFile(dir=os.path.dirname(archive_path), delete=False) as output:
+                source_temp = output.name
+                with archive.open(members[0]) as source:
+                    shutil.copyfileobj(source, output)
+
+        if archive_file_signature(archive_path) != signature:
+            raise ValueError("archive changed during extraction")
+        current_source = archive_file_signature(source_path) if os.path.exists(source_path) else None
+        if current_source != source_signature:
+            raise ValueError(f"source file changed during extraction: {os.path.basename(source_path)}")
+        os.utime(source_temp, ns=(os.stat(archive_path).st_atime_ns, signature[3]))
+        os.replace(source_temp, source_path)
+        source_temp = None
+
+        if not (os.path.exists(destination_path) and os.path.samefile(source_path, destination_path)):
+            with tempfile.NamedTemporaryFile(dir=dst_dir, delete=False) as output:
+                destination_temp = output.name
+            shutil.copy2(source_path, destination_temp)
+            os.replace(destination_temp, destination_path)
+            destination_temp = None
+
+        if archive_file_signature(archive_path) != signature:
+            raise ValueError("archive changed during copying; archive retained")
+        os.remove(archive_path)
+        print(f"Extracted {os.path.basename(archive_path)} -> {os.path.basename(source_path)} (copied; archive deleted)")
+    finally:
+        for temp_path in (source_temp, destination_temp):
+            if temp_path and os.path.exists(temp_path):
+                os.remove(temp_path)
+
+
 def copy_recent_riv_files(src_dir, dst_dir, age_seconds=300):
-    """Recursively copy .riv files less than `age_seconds` old from src_dir to dst_dir."""
+    """Copy .riv files and extract .zip exports newer than age_seconds recursively."""
     if not src_dir or not os.path.isdir(src_dir):
-        print(f"Skip copying .riv files: source directory not found: {src_dir}")
+        print("No source folder found. Set RIV_SRC_DIR to enable copying.")
         return
     os.makedirs(dst_dir, exist_ok=True)
     now = time.time()
     for root, _, files in os.walk(src_dir):
         for file in files:
-            if file.lower().endswith('.riv'):
+            if file.lower().endswith(('.riv', '.zip')):
                 src_path = os.path.join(root, file)
                 if now - os.path.getmtime(src_path) < age_seconds:
                     dst_path = os.path.join(dst_dir, file)
                     try:
-                        shutil.copy2(src_path, dst_path)
-                        print(f"Copied {src_path} to {dst_path}")
-                    except Exception as e:
-                        print(f"Failed to copy {src_path} to {dst_path}: {e}")
+                        if file.lower().endswith('.zip'):
+                            extract_riv_archive(src_path, dst_dir)
+                        else:
+                            shutil.copy2(src_path, dst_path)
+                            print(f"Copied {file}")
+                    except (OSError, ValueError, zipfile.BadZipFile, RuntimeError, NotImplementedError) as e:
+                        reason = e.strerror if isinstance(e, OSError) and e.strerror else str(e)
+                        print(f"Failed to process {file}: {reason}")
 
 # NEW: Resolve cross-platform source directory (env var first, then common defaults)
 def resolve_src_dir():
@@ -1327,18 +1396,22 @@ def main():
         page_rows = rows[start:end]
         write_main_page(page_rows, page_idx, total_pages, navigation_entries)
 
-    print(f"Generated {output_html}, {total_pages-1} extra pages, and {len(rows)} animation pages in 'pages/'")
+    if total_pages:
+        extra_pages = total_pages - 1
+        extra_label = "page" if extra_pages == 1 else "pages"
+        animation_label = "page" if len(rows) == 1 else "pages"
+        print(f"Generated index.html, {extra_pages} additional {extra_label}, and {len(rows)} animation {animation_label}.")
+    else:
+        print("No pages generated: the catalog is empty.")
 
 if __name__ == "__main__":
     # Ensure destination riv folder exists
     dest_riv_dir = os.path.join(script_dir, "riv")
     os.makedirs(dest_riv_dir, exist_ok=True)
 
-    # Copy recent .riv files before generating HTML (cross-platform)
+    # Copy recent .riv files and extract ZIP exports before generating HTML.
     src_dir = resolve_src_dir()
     age = int(os.environ.get("RIV_COPY_AGE_SECONDS", "300"))
-    if not src_dir:
-        print("No .riv source directory found. Set RIV_SRC_DIR to your .riv folder to enable auto-copy.")
     copy_recent_riv_files(src_dir, dest_riv_dir, age_seconds=age)
 
     main()

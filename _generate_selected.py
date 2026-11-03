@@ -1,3 +1,5 @@
+# deprecated script, do not update
+
 import os
 import csv
 import re
