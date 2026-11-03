@@ -104,7 +104,7 @@
       <details open>
         <summary>Animations</summary>
         <ul>
-          <li><a href="pages/84_careheader_v5.html">84 Care Header</a></li>
+          <li><a href="pages/84_careheader_v7.html">84 Care Header</a></li>
           <li><a href="pages/83_trackersetting_v1.html">83 Tracker Setting</a></li>
           <li><a href="pages/82_carecorner_v3.html">82 Care Corner</a></li>
           <li><a href="pages/81_rainbowbird_v2.html">81 Rainbow Bird</a></li>
@@ -227,12 +227,12 @@
     </nav>
 
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="102"></canvas>
+        <canvas id="canvas0" width="200" height="127"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div style="white-space: nowrap;"><a href="pages/84_careheader_v5.html" style="color: #888888;">84 careheader</a><span class="riv-file-size">&nbsp&nbsp;399 KB</span></div>
+          <div style="white-space: nowrap;"><a href="pages/84_careheader_v7.html" style="color: #888888;">84 careheader</a><span class="riv-file-size">&nbsp&nbsp;2 KB</span></div>
           
         </div>
         
@@ -248,8 +248,13 @@
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn0_input1">headerText:</label>
-            <input type="text" id="btn0_input1" value="Take a look inside Care: expert answers and women who get it" style="width:90px;" />
+            <label for="btn0_input1">NovemberLC-Heavy:</label>
+            <input type="text" id="btn0_input1" placeholder="font.otf" value="NovemberLC-Heavy.otf" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input2">headerText:</label>
+            <input type="text" id="btn0_input2" value="Take a look inside Care: expert answers and women who get it" style="width:90px;" />
         </div>
         
         </div>
@@ -460,10 +465,35 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "riv/84_careheader_v5.riv",
+    src: "riv/84_careheader_v7.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
+    assetLoader: (asset) => {
+      const fontFields = {"NovemberLC-Heavy": "btn0_input1"};
+      if (asset.isFont && fontFields[asset.name]) {
+        const field = document.getElementById(fontFields[asset.name]);
+        const loadFont = (file) => {
+          const name = (file || "").trim();
+          if (!name) return;
+          fetch("fonts/" + name)
+            .then(response => {
+              if (!response.ok) throw new Error("HTTP " + response.status);
+              return response.arrayBuffer();
+            })
+            .then(bytes => rive.decodeFont(new Uint8Array(bytes)))
+            .then(font => {
+              asset.setFont(font);
+              font.unref();
+            })
+            .catch(error => console.error("Failed to load Rive font asset:", name, error));
+        };
+        loadFont(field && field.value);
+        if (field) field.addEventListener("change", () => loadFont(field.value));
+        return true;
+      }
+      return false;
+    },
 
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
@@ -487,11 +517,11 @@ const r0 = new rive.Rive({
       let initVal = parseFloat(inputFieldBtn0_0.value);
       if (!isNaN(initVal)) vmi.number("scrollAmount").value = initVal;
     }
-    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
-    if (inputFieldBtn0_1 && vmi) {
-      vmi.string("headerText").value = inputFieldBtn0_1.value;
-      inputFieldBtn0_1.addEventListener("input", () => {
-        vmi.string("headerText").value = inputFieldBtn0_1.value;
+    let inputFieldBtn0_2 = document.getElementById("btn0_input2");
+    if (inputFieldBtn0_2 && vmi) {
+      vmi.string("headerText").value = inputFieldBtn0_2.value;
+      inputFieldBtn0_2.addEventListener("input", () => {
+        vmi.string("headerText").value = inputFieldBtn0_2.value;
       });
     }
   },
