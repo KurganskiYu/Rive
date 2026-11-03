@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Yuri's Rive Animations</title>
-    <script src="https://unpkg.com/@rive-app/webgl2@2.39.2"></script>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
     <!-- Add Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
@@ -104,6 +104,7 @@
       <details open>
         <summary>Animations</summary>
         <ul>
+          <li><a href="pages/84_careheader_v5.html">84 Care Header</a></li>
           <li><a href="pages/83_trackersetting_v1.html">83 Tracker Setting</a></li>
           <li><a href="pages/82_carecorner_v3.html">82 Care Corner</a></li>
           <li><a href="pages/81_rainbowbird_v2.html">81 Rainbow Bird</a></li>
@@ -226,7 +227,40 @@
     </nav>
 
       <div class="animation-container">
-        <canvas id="canvas0" width="200" height="202"></canvas>
+        <canvas id="canvas0" width="200" height="102"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
+          <div style="white-space: nowrap;"><a href="pages/84_careheader_v5.html" style="color: #888888;">84 careheader</a><span class="riv-file-size">&nbsp&nbsp;399 KB</span></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:0.0000%;">
+            <output for="btn0_input0">0</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:10.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:90.00000000%;"></span></span>
+            <input type="range" id="btn0_input0" value="0" min="0.0" max="1.0" step="0.1" aria-label="scrollAmount" />
+            <span class="range-hint" aria-hidden="true">scrollAmount</span>
+            <span class="range-bound range-min">0.0</span>
+            <span class="range-bound range-max">1.0</span>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input1">headerText:</label>
+            <input type="text" id="btn0_input1" value="Take a look inside Care: expert answers and women who get it" style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas1" width="200" height="202"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -238,9 +272,9 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div class="range-control" style="width:202px;--slider-progress:0.0000%;">
-            <output for="btn0_input0">0</output>
+            <output for="btn1_input0">0</output>
             <span class="range-ticks" aria-hidden="true"></span>
-            <input type="range" id="btn0_input0" value="0" min="0" max="1" step="1" aria-label="mode" />
+            <input type="range" id="btn1_input0" value="0" min="0" max="1" step="1" aria-label="mode" />
             <span class="range-hint" aria-hidden="true">mode</span>
             <span class="range-bound range-min">0</span>
             <span class="range-bound range-max">1</span>
@@ -254,7 +288,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas1" width="200" height="153"></canvas>
+        <canvas id="canvas2" width="200" height="153"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -269,7 +303,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas2" width="200" height="153"></canvas>
+        <canvas id="canvas3" width="200" height="153"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -284,21 +318,21 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="153"></canvas>
+        <canvas id="canvas4" width="200" height="153"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
           <div style="white-space: nowrap;"><a href="pages/80_heartzones_v1.html" style="color: #888888;">80 heartzones</a><span class="riv-file-size">&nbsp&nbsp;331 KB</span></div>
-          <button id="btn3" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <button id="btn4" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div class="range-control" style="width:202px;--slider-progress:0.0000%;">
-            <output for="btn3_input0">1</output>
+            <output for="btn4_input0">1</output>
             <span class="range-ticks" aria-hidden="true"><span style="left:25.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:75.00000000%;"></span></span>
-            <input type="range" id="btn3_input0" value="1" min="1" max="5" step="1" aria-label="which" />
+            <input type="range" id="btn4_input0" value="1" min="1" max="5" step="1" aria-label="which" />
             <span class="range-hint" aria-hidden="true">which</span>
             <span class="range-bound range-min">1</span>
             <span class="range-bound range-max">5</span>
@@ -312,7 +346,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas4" width="200" height="51"></canvas>
+        <canvas id="canvas5" width="200" height="51"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -324,18 +358,18 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input0">tenScale:</label>
-            <input type="checkbox" id="btn4_input0" checked />
+            <label for="btn5_input0">tenScale:</label>
+            <input type="checkbox" id="btn5_input0" checked />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input1">row1:</label>
-            <input type="text" id="btn4_input1" value="0 99 5 99 99 10 7" style="width:90px;" />
+            <label for="btn5_input1">row1:</label>
+            <input type="text" id="btn5_input1" value="0 99 5 99 99 10 7" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn4_input2">rowName1:</label>
-            <input type="text" id="btn4_input2" value="Episode logged" style="width:90px;" />
+            <label for="btn5_input2">rowName1:</label>
+            <input type="text" id="btn5_input2" value="Episode logged" style="width:90px;" />
         </div>
         
         </div>
@@ -346,7 +380,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas5" width="200" height="115"></canvas>
+        <canvas id="canvas6" width="200" height="115"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -358,23 +392,23 @@
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn5_input0">background:</label>
-            <input type="checkbox" id="btn5_input0" />
+            <label for="btn6_input0">background:</label>
+            <input type="checkbox" id="btn6_input0" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn5_input1">pressed:</label>
-            <input type="checkbox" id="btn5_input1" />
+            <label for="btn6_input1">pressed:</label>
+            <input type="checkbox" id="btn6_input1" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn5_input2">buttonText:</label>
-            <input type="text" id="btn5_input2" value="Explore patterns in Welltory Care" style="width:90px;" />
+            <label for="btn6_input2">buttonText:</label>
+            <input type="text" id="btn6_input2" value="Explore patterns in Welltory Care" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn5_input3">NovemberLC-Bold:</label>
-            <input type="text" id="btn5_input3" placeholder="font.otf" value="NovemberLC-Bold.otf" style="width:90px;" />
+            <label for="btn6_input3">NovemberLC-Bold:</label>
+            <input type="text" id="btn6_input3" placeholder="font.otf" value="NovemberLC-Bold.otf" style="width:90px;" />
         </div>
         
         </div>
@@ -385,77 +419,35 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas6" width="200" height="270"></canvas>
+        <canvas id="canvas7" width="200" height="270"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
           <div style="white-space: nowrap;"><a href="pages/78_cardpocket_v10.html" style="color: #888888;">78 cardpocket</a><span class="riv-file-size">&nbsp&nbsp;265 KB</span></div>
-          <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <button id="btn7" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
             
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input0">NovemberLC-Regular:</label>
-            <input type="text" id="btn6_input0" placeholder="font.otf" value="NovemberLC-Regular.otf" style="width:90px;" />
+            <label for="btn7_input0">NovemberLC-Regular:</label>
+            <input type="text" id="btn7_input0" placeholder="font.otf" value="NovemberLC-Regular.otf" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input1">NovemberLC-Heavy:</label>
-            <input type="text" id="btn6_input1" placeholder="font.otf" value="NovemberLC-Heavy.otf" style="width:90px;" />
+            <label for="btn7_input1">NovemberLC-Heavy:</label>
+            <input type="text" id="btn7_input1" placeholder="font.otf" value="NovemberLC-Heavy.otf" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input2">text1:</label>
-            <input type="text" id="btn6_input2" value="Make sense of your days. together" style="width:90px;" />
+            <label for="btn7_input2">text1:</label>
+            <input type="text" id="btn7_input2" value="Make sense of your days. together" style="width:90px;" />
         </div>
         
         <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn6_input3">text2:</label>
-            <input type="text" id="btn6_input3" value="You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like." style="width:90px;" />
-        </div>
-        
-        </div>
-        
-      </div>
-    
-        </div>
-      </div>
-    
-      <div class="animation-container">
-        <canvas id="canvas7" width="200" height="300" class="layout-canvas" data-auto-h></canvas>
-        <div class="description">
-          
-      <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div style="white-space: nowrap;"><a href="pages/77_chartmatrix_v8.html" style="color: #888888;">77 chartmatrix</a><span class="riv-file-size">&nbsp&nbsp;497 KB</span></div>
-          
-        </div>
-        
-        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
-            
-        <div style="display:flex;align-items:center;gap:4px;">
-            <label for="btn7_input0">jumps:</label>
-            <input type="checkbox" id="btn7_input0" />
-        </div>
-        
-        <div class="range-control" style="width:202px;--slider-progress:50.0000%;">
-            <output for="btn7_input1">40</output>
-            <span class="range-ticks" aria-hidden="true"><span style="left:5.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:15.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:25.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:35.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:45.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:55.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:65.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:75.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:85.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:95.00000000%;"></span></span>
-            <input type="range" id="btn7_input1" value="40" min="30" max="50" step="1" aria-label="rowHeight" />
-            <span class="range-hint" aria-hidden="true">rowHeight</span>
-            <span class="range-bound range-min">30</span>
-            <span class="range-bound range-max">50</span>
-        </div>
-        
-        <div class="range-control" style="width:202px;--slider-progress:0.0000%;">
-            <output for="btn7_input2">0</output>
-            <span class="range-ticks" aria-hidden="true"><span style="left:11.11111111%;"></span><span style="left:22.22222222%;"></span><span style="left:33.33333333%;"></span><span style="left:44.44444444%;"></span><span style="left:55.55555556%;"></span><span style="left:66.66666667%;"></span><span style="left:77.77777778%;"></span><span style="left:88.88888889%;"></span></span>
-            <input type="range" id="btn7_input2" value="0" min="0" max="9" step="1" aria-label="tapIndex" />
-            <span class="range-hint" aria-hidden="true">tapIndex</span>
-            <span class="range-bound range-min">0</span>
-            <span class="range-bound range-max">9</span>
+            <label for="btn7_input3">text2:</label>
+            <input type="text" id="btn7_input3" value="You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like." style="width:90px;" />
         </div>
         
         </div>
@@ -467,40 +459,8 @@
     </div>
 <script>
 
-// Fit.Layout: the fixed axis keeps its CSS size, while an `auto` axis follows the size
-// the Rive layout reports through bounds (in artboard units, hence the scale factor).
-function autoSizeLayoutCanvas(riveInstance, canvas, autoW, autoH, scale) {
-  const sync = (force) => {
-    const b = riveInstance.bounds;
-    let changed = false;
-    if (autoW) {
-      const w = (b.maxX - b.minX) * scale;
-      if (w > 0 && Math.abs(w - (parseFloat(canvas.style.width) || 0)) > 0.5) {
-        canvas.style.width = w + "px";
-        changed = true;
-      }
-    }
-    if (autoH) {
-      const h = (b.maxY - b.minY) * scale;
-      if (h > 0 && Math.abs(h - (parseFloat(canvas.style.height) || 0)) > 0.5) {
-        canvas.style.height = h + "px";
-        changed = true;
-      }
-    }
-    if (changed || force === true) riveInstance.resizeDrawingSurfaceToCanvas();
-    requestAnimationFrame(() => sync());
-  };
-  // Start from the artboard's own size so a non-hugging artboard keeps its designed size.
-  riveInstance.resetArtboardSize();
-  sync(true);
-  window.addEventListener("resize", () => riveInstance.resizeDrawingSurfaceToCanvas());
-  window
-    .matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`)
-    .addEventListener("change", () => riveInstance.resizeDrawingSurfaceToCanvas());
-}
-
 const r0 = new rive.Rive({
-    src: "riv/83_trackersetting_v1.riv",
+    src: "riv/84_careheader_v5.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
@@ -513,7 +473,7 @@ const r0 = new rive.Rive({
       // Update numeric ViewModel variable
       inputFieldBtn0_0.addEventListener("input", () => {
         let val = parseFloat(inputFieldBtn0_0.value);
-                if (!isNaN(val)) vmi.number("mode").value = val;
+                if (!isNaN(val)) vmi.number("scrollAmount").value = val;
                 const rangeControl = inputFieldBtn0_0.closest(".range-control");
                 if (rangeControl) {
                     rangeControl.querySelector("output").value = inputFieldBtn0_0.value;
@@ -525,24 +485,51 @@ const r0 = new rive.Rive({
       });
       // Set initial value if present
       let initVal = parseFloat(inputFieldBtn0_0.value);
-      if (!isNaN(initVal)) vmi.number("mode").value = initVal;
+      if (!isNaN(initVal)) vmi.number("scrollAmount").value = initVal;
+    }
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      vmi.string("headerText").value = inputFieldBtn0_1.value;
+      inputFieldBtn0_1.addEventListener("input", () => {
+        vmi.string("headerText").value = inputFieldBtn0_1.value;
+      });
     }
   },
 });
 
 const r1 = new rive.Rive({
-    src: "riv/82_carecorner_v3.riv",
+    src: "riv/83_trackersetting_v1.riv",
     canvas: document.getElementById("canvas1"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
 
     onLoad: () => {
         r1.resizeDrawingSurfaceToCanvas();
+    const vmi = r1.viewModelInstance;
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn1_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn1_0.value);
+                if (!isNaN(val)) vmi.number("mode").value = val;
+                const rangeControl = inputFieldBtn1_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn1_0.value;
+                    const minimum = Number(inputFieldBtn1_0.min);
+                    const maximum = Number(inputFieldBtn1_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn1_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn1_0.value);
+      if (!isNaN(initVal)) vmi.number("mode").value = initVal;
+    }
   },
 });
 
 const r2 = new rive.Rive({
-    src: "riv/81_rainbowbird_v2.riv",
+    src: "riv/82_carecorner_v3.riv",
     canvas: document.getElementById("canvas2"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
@@ -553,55 +540,18 @@ const r2 = new rive.Rive({
 });
 
 const r3 = new rive.Rive({
-    src: "riv/80_heartzones_v1.riv",
+    src: "riv/81_rainbowbird_v2.riv",
     canvas: document.getElementById("canvas3"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
 
     onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
-    const vmi = r3.viewModelInstance;
-    let inputFieldBtn3_0 = document.getElementById("btn3_input0");
-    if (inputFieldBtn3_0 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn3_0.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn3_0.value);
-                if (!isNaN(val)) vmi.number("which").value = val;
-                const rangeControl = inputFieldBtn3_0.closest(".range-control");
-                if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn3_0.value;
-                    const minimum = Number(inputFieldBtn3_0.min);
-                    const maximum = Number(inputFieldBtn3_0.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn3_0.value - minimum) / (maximum - minimum) * 100;
-                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
-                }
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn3_0.value);
-      if (!isNaN(initVal)) vmi.number("which").value = initVal;
-    }
   },
-});
-document.getElementById("btn3").addEventListener("click", () => {
-    const currentVmi = r3.viewModelInstance;
-    if (currentVmi) {
-        const vmTrigger = currentVmi.trigger("start");
-        if (vmTrigger) {
-            vmTrigger.trigger();
-            return;
-        }
-    }
-    const inputs = r3.stateMachineInputs("State Machine 1");
-    const smTrigger = inputs && inputs.find(input => input.name === "start");
-    if (smTrigger) {
-        smTrigger.fire();
-    } else {
-        console.warn("Trigger not found (view model or state machine): start");
-    }
 });
 
 const r4 = new rive.Rive({
-    src: "riv/77_migrainelog_v3.riv",
+    src: "riv/80_heartzones_v1.riv",
     canvas: document.getElementById("canvas4"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
@@ -611,60 +561,48 @@ const r4 = new rive.Rive({
     const vmi = r4.viewModelInstance;
     let inputFieldBtn4_0 = document.getElementById("btn4_input0");
     if (inputFieldBtn4_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn4_0.addEventListener("change", () => {
-        vmi.boolean("tenScale").value = inputFieldBtn4_0.checked;
+      // Update numeric ViewModel variable
+      inputFieldBtn4_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn4_0.value);
+                if (!isNaN(val)) vmi.number("which").value = val;
+                const rangeControl = inputFieldBtn4_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn4_0.value;
+                    const minimum = Number(inputFieldBtn4_0.min);
+                    const maximum = Number(inputFieldBtn4_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn4_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
       });
-      // Set initial value
-      vmi.boolean("tenScale").value = inputFieldBtn4_0.checked;
-    }
-    let inputFieldBtn4_1 = document.getElementById("btn4_input1");
-    if (inputFieldBtn4_1 && vmi) {
-      vmi.string("row1").value = inputFieldBtn4_1.value;
-      inputFieldBtn4_1.addEventListener("input", () => {
-        vmi.string("row1").value = inputFieldBtn4_1.value;
-      });
-    }
-    let inputFieldBtn4_2 = document.getElementById("btn4_input2");
-    if (inputFieldBtn4_2 && vmi) {
-      vmi.string("rowName1").value = inputFieldBtn4_2.value;
-      inputFieldBtn4_2.addEventListener("input", () => {
-        vmi.string("rowName1").value = inputFieldBtn4_2.value;
-      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn4_0.value);
+      if (!isNaN(initVal)) vmi.number("which").value = initVal;
     }
   },
 });
+document.getElementById("btn4").addEventListener("click", () => {
+    const currentVmi = r4.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("start");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r4.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "start");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): start");
+    }
+});
 
 const r5 = new rive.Rive({
-    src: "riv/79_buttonhand_v12.riv",
+    src: "riv/77_migrainelog_v3.riv",
     canvas: document.getElementById("canvas5"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
-    assetLoader: (asset) => {
-      const fontFields = {"NovemberLC-Bold": "btn5_input3"};
-      if (asset.isFont && fontFields[asset.name]) {
-        const field = document.getElementById(fontFields[asset.name]);
-        const loadFont = (file) => {
-          const name = (file || "").trim();
-          if (!name) return;
-          fetch("fonts/" + name)
-            .then(response => {
-              if (!response.ok) throw new Error("HTTP " + response.status);
-              return response.arrayBuffer();
-            })
-            .then(bytes => rive.decodeFont(new Uint8Array(bytes)))
-            .then(font => {
-              asset.setFont(font);
-              font.unref();
-            })
-            .catch(error => console.error("Failed to load Rive font asset:", name, error));
-        };
-        loadFont(field && field.value);
-        if (field) field.addEventListener("change", () => loadFont(field.value));
-        return true;
-      }
-      return false;
-    },
 
     onLoad: () => {
         r5.resizeDrawingSurfaceToCanvas();
@@ -673,37 +611,35 @@ const r5 = new rive.Rive({
     if (inputFieldBtn5_0 && vmi) {
       // Update boolean ViewModel variable
       inputFieldBtn5_0.addEventListener("change", () => {
-        vmi.boolean("background").value = inputFieldBtn5_0.checked;
+        vmi.boolean("tenScale").value = inputFieldBtn5_0.checked;
       });
       // Set initial value
-      vmi.boolean("background").value = inputFieldBtn5_0.checked;
+      vmi.boolean("tenScale").value = inputFieldBtn5_0.checked;
     }
     let inputFieldBtn5_1 = document.getElementById("btn5_input1");
     if (inputFieldBtn5_1 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn5_1.addEventListener("change", () => {
-        vmi.boolean("pressed").value = inputFieldBtn5_1.checked;
+      vmi.string("row1").value = inputFieldBtn5_1.value;
+      inputFieldBtn5_1.addEventListener("input", () => {
+        vmi.string("row1").value = inputFieldBtn5_1.value;
       });
-      // Set initial value
-      vmi.boolean("pressed").value = inputFieldBtn5_1.checked;
     }
     let inputFieldBtn5_2 = document.getElementById("btn5_input2");
     if (inputFieldBtn5_2 && vmi) {
-      vmi.string("buttonText").value = inputFieldBtn5_2.value;
+      vmi.string("rowName1").value = inputFieldBtn5_2.value;
       inputFieldBtn5_2.addEventListener("input", () => {
-        vmi.string("buttonText").value = inputFieldBtn5_2.value;
+        vmi.string("rowName1").value = inputFieldBtn5_2.value;
       });
     }
   },
 });
 
 const r6 = new rive.Rive({
-    src: "riv/78_cardpocket_v10.riv",
+    src: "riv/79_buttonhand_v12.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
     assetLoader: (asset) => {
-      const fontFields = {"NovemberLC-Regular": "btn6_input0", "NovemberLC-Heavy": "btn6_input1"};
+      const fontFields = {"NovemberLC-Bold": "btn6_input3"};
       if (asset.isFont && fontFields[asset.name]) {
         const field = document.getElementById(fontFields[asset.name]);
         const loadFont = (file) => {
@@ -731,24 +667,86 @@ const r6 = new rive.Rive({
     onLoad: () => {
         r6.resizeDrawingSurfaceToCanvas();
     const vmi = r6.viewModelInstance;
+    let inputFieldBtn6_0 = document.getElementById("btn6_input0");
+    if (inputFieldBtn6_0 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn6_0.addEventListener("change", () => {
+        vmi.boolean("background").value = inputFieldBtn6_0.checked;
+      });
+      // Set initial value
+      vmi.boolean("background").value = inputFieldBtn6_0.checked;
+    }
+    let inputFieldBtn6_1 = document.getElementById("btn6_input1");
+    if (inputFieldBtn6_1 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn6_1.addEventListener("change", () => {
+        vmi.boolean("pressed").value = inputFieldBtn6_1.checked;
+      });
+      // Set initial value
+      vmi.boolean("pressed").value = inputFieldBtn6_1.checked;
+    }
     let inputFieldBtn6_2 = document.getElementById("btn6_input2");
     if (inputFieldBtn6_2 && vmi) {
-      vmi.string("text1").value = inputFieldBtn6_2.value;
+      vmi.string("buttonText").value = inputFieldBtn6_2.value;
       inputFieldBtn6_2.addEventListener("input", () => {
-        vmi.string("text1").value = inputFieldBtn6_2.value;
-      });
-    }
-    let inputFieldBtn6_3 = document.getElementById("btn6_input3");
-    if (inputFieldBtn6_3 && vmi) {
-      vmi.string("text2").value = inputFieldBtn6_3.value;
-      inputFieldBtn6_3.addEventListener("input", () => {
-        vmi.string("text2").value = inputFieldBtn6_3.value;
+        vmi.string("buttonText").value = inputFieldBtn6_2.value;
       });
     }
   },
 });
-document.getElementById("btn6").addEventListener("click", () => {
-    const currentVmi = r6.viewModelInstance;
+
+const r7 = new rive.Rive({
+    src: "riv/78_cardpocket_v10.riv",
+    canvas: document.getElementById("canvas7"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+    assetLoader: (asset) => {
+      const fontFields = {"NovemberLC-Regular": "btn7_input0", "NovemberLC-Heavy": "btn7_input1"};
+      if (asset.isFont && fontFields[asset.name]) {
+        const field = document.getElementById(fontFields[asset.name]);
+        const loadFont = (file) => {
+          const name = (file || "").trim();
+          if (!name) return;
+          fetch("fonts/" + name)
+            .then(response => {
+              if (!response.ok) throw new Error("HTTP " + response.status);
+              return response.arrayBuffer();
+            })
+            .then(bytes => rive.decodeFont(new Uint8Array(bytes)))
+            .then(font => {
+              asset.setFont(font);
+              font.unref();
+            })
+            .catch(error => console.error("Failed to load Rive font asset:", name, error));
+        };
+        loadFont(field && field.value);
+        if (field) field.addEventListener("change", () => loadFont(field.value));
+        return true;
+      }
+      return false;
+    },
+
+    onLoad: () => {
+        r7.resizeDrawingSurfaceToCanvas();
+    const vmi = r7.viewModelInstance;
+    let inputFieldBtn7_2 = document.getElementById("btn7_input2");
+    if (inputFieldBtn7_2 && vmi) {
+      vmi.string("text1").value = inputFieldBtn7_2.value;
+      inputFieldBtn7_2.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn7_2.value;
+      });
+    }
+    let inputFieldBtn7_3 = document.getElementById("btn7_input3");
+    if (inputFieldBtn7_3 && vmi) {
+      vmi.string("text2").value = inputFieldBtn7_3.value;
+      inputFieldBtn7_3.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn7_3.value;
+      });
+    }
+  },
+});
+document.getElementById("btn7").addEventListener("click", () => {
+    const currentVmi = r7.viewModelInstance;
     if (currentVmi) {
         const vmTrigger = currentVmi.trigger("start");
         if (vmTrigger) {
@@ -756,72 +754,13 @@ document.getElementById("btn6").addEventListener("click", () => {
             return;
         }
     }
-    const inputs = r6.stateMachineInputs("State Machine 1");
+    const inputs = r7.stateMachineInputs("State Machine 1");
     const smTrigger = inputs && inputs.find(input => input.name === "start");
     if (smTrigger) {
         smTrigger.fire();
     } else {
         console.warn("Trigger not found (view model or state machine): start");
     }
-});
-
-const r7 = new rive.Rive({
-    src: "riv/77_chartmatrix_v8.riv",
-    canvas: document.getElementById("canvas7"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
-    layout: new rive.Layout({ fit: rive.Fit.Layout, layoutScaleFactor: 0.508906 }),
-
-    onLoad: () => {
-        autoSizeLayoutCanvas(r7, document.getElementById("canvas7"), false, true, 0.508906);
-    const vmi = r7.viewModelInstance;
-    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
-    if (inputFieldBtn7_0 && vmi) {
-      // Update boolean ViewModel variable
-      inputFieldBtn7_0.addEventListener("change", () => {
-        vmi.boolean("jumps").value = inputFieldBtn7_0.checked;
-      });
-      // Set initial value
-      vmi.boolean("jumps").value = inputFieldBtn7_0.checked;
-    }
-    let inputFieldBtn7_1 = document.getElementById("btn7_input1");
-    if (inputFieldBtn7_1 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn7_1.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn7_1.value);
-                if (!isNaN(val)) vmi.number("rowHeight").value = val;
-                const rangeControl = inputFieldBtn7_1.closest(".range-control");
-                if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn7_1.value;
-                    const minimum = Number(inputFieldBtn7_1.min);
-                    const maximum = Number(inputFieldBtn7_1.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn7_1.value - minimum) / (maximum - minimum) * 100;
-                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
-                }
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn7_1.value);
-      if (!isNaN(initVal)) vmi.number("rowHeight").value = initVal;
-    }
-    let inputFieldBtn7_2 = document.getElementById("btn7_input2");
-    if (inputFieldBtn7_2 && vmi) {
-      // Update numeric ViewModel variable
-      inputFieldBtn7_2.addEventListener("input", () => {
-        let val = parseFloat(inputFieldBtn7_2.value);
-                if (!isNaN(val)) vmi.number("tapIndex").value = val;
-                const rangeControl = inputFieldBtn7_2.closest(".range-control");
-                if (rangeControl) {
-                    rangeControl.querySelector("output").value = inputFieldBtn7_2.value;
-                    const minimum = Number(inputFieldBtn7_2.min);
-                    const maximum = Number(inputFieldBtn7_2.max);
-                    const progress = maximum === minimum ? 0 : (inputFieldBtn7_2.value - minimum) / (maximum - minimum) * 100;
-                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
-                }
-      });
-      // Set initial value if present
-      let initVal = parseFloat(inputFieldBtn7_2.value);
-      if (!isNaN(initVal)) vmi.number("tapIndex").value = initVal;
-    }
-  },
 });
 
 document.querySelectorAll('canvas').forEach(canvas => {

@@ -116,3 +116,4 @@ contraTest_v5,375x812,
 81_rainbowbird_v2,393x300,393x524,
 82_carecorner_v3,393x300,393x520, 
 83_trackersetting_v1,326x329,,v_num:mode(0:0-1) 
+84_careheader_v5,393x200,393x852,v_num:scrollAmount(0:0.0-1.0),txt:headerText("Take a look inside Care: expert answers and women who get it")

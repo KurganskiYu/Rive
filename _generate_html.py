@@ -1050,27 +1050,21 @@ def make_animation_page(row):
     page_name = row.get("page_stem", row["src"]) + ".html"
     main_rive = f'../riv/{row["src"]}.riv'
     
-    # Determine preview configuration
     preview_ctx = None
-    if row.get("preview") and row["preview"].strip():
-        # Internal preview
+    preview_path = check_preview_exists(row)
+    preview_size = row.get("preview", "").strip()
+    if preview_path or preview_size:
+        size_spec = parse_size_spec(preview_size) if preview_size else {
+            "width": row["width"],
+            "height": row["height"],
+            "auto_w": row.get("auto_w", False),
+            "auto_h": row.get("auto_h", False),
+        }
         preview_ctx = {
-            "src": main_rive,
-            **parse_size_spec(row["preview"]),
+            "src": preview_path or main_rive,
+            **size_spec,
             "artboard": "preview"
         }
-    else:
-        # External preview check
-        preview_path = check_preview_exists(row)
-        if preview_path:
-            preview_ctx = {
-                "src": preview_path,
-                "width": row["width"],
-                "height": row["height"],
-                "auto_w": row.get("auto_w", False),
-                "auto_h": row.get("auto_h", False),
-                "artboard": row.get("artboard", "")
-            }
 
     html_parts = [get_html_head(is_root=False)]
     # Inject BG button (is_root=False because this is in pages/)

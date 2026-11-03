@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Yuri's Rive Animations</title>
-    <script src="https://unpkg.com/@rive-app/webgl2@2.39.2"></script>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
     <!-- Add Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
@@ -144,7 +144,7 @@ const mainRive = new rive.Rive({
 const previewRive = new rive.Rive({
   src: "../riv/35_scatterpluses_v4_preview.riv",
   canvas: document.getElementById("preview_canvas"),
-  autoplay: true, autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+  autoplay: true, autoBind: true, artboard: "preview", stateMachines: "State Machine 1",
   
 
   onLoad: () => {
