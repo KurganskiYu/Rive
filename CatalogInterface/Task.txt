@@ -1,0 +1,46 @@
+So I have a _generate_html.py python script that makes an online catalog for my Rive animations.
+
+Instead of editing CSV files directly, I want to make a nice interface to manage animations and site catalog.
+
+I made a Rive interface prototype. It's not completely finished. It's quite raw. But I want you to make it work.
+
+There are a lot of features that I need working, so let's start by making a list of features by looking at _generate_html.py script and files connected to it.
+
+Also, take a look at the Rive scene and how it's organized and the view models and parameters.
+
+It is going to be a macOS application with a Rive-based interface, but not all of it because Rive does not allow to implement all the features, like text inputs, for example.
+So, we should keep it in mind, but for now, we are not going to do the application itself. We just need to prepare Rive scene and data and parameters to be functional and working.
+
+For Some features We better use Rive scripting to implement as I need the less complex way to make the interface work.
+
+So my pipeline looks like this:
+I make Rive animation. Save it as a .riv or .zip file to my project folder.
+Then I edit the _videos.csv file with all the parameters. And then I should also add a name to the _videos_names.csv file.
+After that, I run _generate_html.py python script.
+Then I run a local server to check my site if the animation works correctly and all the parameters are binded and working.
+If everything is fine, I'm pushing the repository to the GitHub. And then I wait a bit till the site is updated and check it, and copy a link to this new animation and send it to my colleagues.
+If I have to update the animation to a new version, I have to manually edit CSV file and set a new version, and repeat the process of generation pages, checking and pushing to the GitHub.
+There is also an iOS app that uses the same CSV tables and animations that I sync by a separate Python script. It's just a simple copying files to the app folder.
+Also, the process of manually editing the CSV file is not great.
+
+I want to improve my experience working with this pipeline by making a nice interface to do all these steps inside it.
+
+But I want the core of this pipeline to be the same as I probably want to manually edit some functionality and I'm always in the process of adding new features like adding new type of parameters and so on.
+I want the _generate_html.py python file as well as CSV tables to stay functional, so the new interface should be working with them, and we need a solution for that.
+
+The reason why I use Rive Interface is because:
+- I'm working as a Rive expert and this project is a part of learning the Rive
+- I have a better control over the design and improvements of this interface
+- As well as adding animations and even new functionality to it
+
+So I need you to take a look at the files and make a solid plan how to make this interface work.Read AGENTS.md file for instructions of how to read Rive scenes and work with Rive.
+
+Maybe we should also start building the macOS app to test this interface. So, add it to the plan too.
+
+We do not need to build all the functionality at the first iteration, but we need to build a solid base.
+
+Also I want to add that there is no interface for adding new animations by adding its details and params.
+Mainly because I'm confused because Rive has no text input functionality for macOS. But take a look at the current design and make an interface for adding new animations. Maybe we can build most of it in Rive, but make macOS text input fields that appear by clicking on the parameter. Or maybe you have a better suggestion?
+
+Okay, go take a look at the files and make a solid plan. Ask questions along the way.
+Save it to an .md file.

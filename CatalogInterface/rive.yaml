@@ -1,0 +1,8 @@
+name: CatalogInterface
+logs:
+  file: build/rive.log
+  problems: build/problems.log
+main: "CatalogInterface"
+push:
+  projectId: 645917
+  fileId: 2688046
