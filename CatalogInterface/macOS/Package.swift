@@ -10,7 +10,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "CatalogManager",
-            dependencies: [.product(name: "RiveRuntime", package: "rive-ios")]
+            dependencies: [.product(name: "RiveRuntime", package: "rive-ios")],
+            linkerSettings: [
+                .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@executable_path"])
+            ]
         ),
         .testTarget(name: "CatalogManagerTests", dependencies: ["CatalogManager"])
     ]

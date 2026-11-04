@@ -1,14 +1,21 @@
-"""Read-only JSON bridge for the macOS catalog prototype."""
+"""Versioned JSON bridge for catalog drafts and recoverable saves."""
 
 import csv
 import hashlib
+import io
 import json
 import math
 import re
 import sys
 from pathlib import Path
 
-from _navigation import load_navigation_entries, name_key
+from _navigation import (
+    name_key, navigation_labels, parse_navigation_names, resolve_navigation_names,
+)
+from catalog_persistence import (
+    CatalogConflict, JOURNAL, RecoveryRequired, catalog_lock, read_tables,
+    recover_tables, require_recovered, revision, save_tables,
+)
 from catalog_core import (
     DEFAULT_ARTBOARD,
     DEFAULT_STATE_MACHINE,
@@ -24,9 +31,11 @@ from catalog_core import (
 PROTOCOL_VERSION = 1
 
 
-def read_catalog(root: Path) -> dict:
-    table = root / "_videos.csv"
-    contents = table.read_bytes()
+def read_catalog(root: Path, *, tables=None) -> dict:
+    tables = read_tables(root) if tables is None else tables
+    contents = tables["_videos.csv"]
+    if contents is None:
+        raise ValueError("_videos.csv is missing.")
     lines = contents.decode("utf-8-sig").splitlines()
     if not lines or next(csv.reader([lines[0]]))[:3] != ["src", "size", "preview"]:
         raise ValueError("_videos.csv must start with src,size,preview")
@@ -53,7 +62,12 @@ def read_catalog(root: Path) -> dict:
 
     rows = [record[3] for record in reversed(records)]
     assign_page_stems(rows)
-    labels = dict(load_navigation_entries(rows, root / "_videos_names.csv", synchronize=False))
+    names_contents = tables["_videos_names.csv"]
+    existing = parse_navigation_names(names_contents) if names_contents is not None else []
+    resolved_names, catalog = resolve_navigation_names(rows, existing)
+    labels = dict(navigation_labels(catalog, resolved_names))
+    keys = {row["page_stem"]: key for row, key in catalog}
+    names = dict(resolved_names)
     entries = []
     identities = set()
     for line_number, raw_line, values, row, mode in reversed(records):
@@ -140,6 +154,8 @@ def read_catalog(root: Path) -> dict:
             "fields": values,
             "src": src,
             "label": labels[row["page_stem"]],
+            "name": names[keys[row["page_stem"]]],
+            "name_key": keys[row["page_stem"]],
             "size": row["size"],
             "size_x": "layout" if row["auto_w"] else str(row["width"]),
             "size_y": "layout" if row["auto_h"] else str(row["height"]),
@@ -159,30 +175,153 @@ def read_catalog(root: Path) -> dict:
     return {
         "entries": entries,
         "diagnostics": diagnostics,
-        "revision": hashlib.sha256(contents).hexdigest(),
+        "revision": revision(tables),
     }
+
+
+def _csv_record(fields, ending):
+    output = io.StringIO(newline="")
+    csv.writer(output, lineterminator="\r\n").writerow(fields)
+    return output.getvalue()[:-2] + ending
+
+
+def _encode_like(text, original):
+    return (b"\xef\xbb\xbf" if original and original.startswith(b"\xef\xbb\xbf") else b"") + text.encode("utf-8")
+
+
+def prepare_draft(root, before, request):
+    if request.get("base_revision") != revision(before):
+        raise CatalogConflict("Catalog CSV, names or metadata changed outside the app. Reload before saving.")
+    edits = request.get("edits")
+    if not isinstance(edits, list):
+        raise ValueError("A draft must contain an edits array.")
+    snapshot = read_catalog(root, tables=before)
+    entries = {entry["id"]: entry for entry in snapshot["entries"]}
+    lines = before["_videos.csv"].decode("utf-8-sig").splitlines(keepends=True)
+    name_edits = {}
+    seen = set()
+    for edit in edits:
+        if (not isinstance(edit, dict) or not isinstance(edit.get("id"), str)
+                or set(edit) - {"id", "fields", "name"} or len(edit) == 1):
+            raise ValueError("Each edit needs an id and fields or name; unknown edit properties are not supported.")
+        entry_id = edit["id"]
+        if entry_id not in entries or entry_id in seen:
+            raise ValueError(f"Unknown or repeated draft entry: {entry_id}")
+        seen.add(entry_id)
+        entry = entries[entry_id]
+        if "fields" in edit:
+            fields = edit["fields"]
+            if (not isinstance(fields, list) or len(fields) < 3
+                    or any(not isinstance(value, str) or any(c in value for c in "\r\n\0")
+                           for value in fields)):
+                raise ValueError(f"Row {entry['line']}: fields must be single-line strings with src, size and preview.")
+            if fields != entry["fields"]:
+                old = lines[entry["line"] - 1]
+                ending = "\r\n" if old.endswith("\r\n") else old[-1:] if old.endswith(("\n", "\r")) else ""
+                lines[entry["line"] - 1] = _csv_record(fields, ending)
+        if "name" in edit:
+            name = edit["name"]
+            if not isinstance(name, str) or any(c in name for c in "\r\n\0"):
+                raise ValueError(f"Row {entry['line']}, name: a single-line string is required.")
+            name_edits[entry["line"]] = name
+    after = dict(before)
+    after["_videos.csv"] = _encode_like("".join(lines), before["_videos.csv"])
+    draft = read_catalog(root, tables=after)
+    old_by_line = {entry["line"]: entry for entry in snapshot["entries"]}
+    desired = {}
+    for entry in draft["entries"]:
+        old = old_by_line[entry["line"]]
+        name = name_edits.get(entry["line"], old["name"])
+        if name != entry["name"]:
+            desired[entry["name_key"]] = name
+    if desired:
+        contents = before["_videos_names.csv"]
+        existing = parse_navigation_names(contents) if contents is not None else []
+        # Resolve legacy repeated names once through the same algorithm as the generator.
+        original_rows = []
+        for entry in snapshot["entries"]:
+            row = parse_csv_row(entry["fields"], lambda warning: None)
+            row["artboard"] = entry["artboard"]
+            row["page_stem"] = entry["page_stem"]
+            original_rows.append(row)
+        updated, _ = resolve_navigation_names(original_rows, existing)
+        values = [(key, desired.pop(key, name)) for key, name in updated]
+        values.extend(desired.items())
+        # Canonical, ordinary name tables can retain every untouched physical line.
+        if contents is not None and existing == updated and all(
+            "\n" not in name and "\r" not in name for _, name in existing
+        ):
+            name_lines = contents.decode("utf-8-sig").splitlines(keepends=True)
+            positions = [index for index, line in enumerate(name_lines[1:], 1) if line.strip()]
+            if len(positions) == len(existing):
+                for position, old, new in zip(positions, existing, values):
+                    if old != new:
+                        line = name_lines[position]
+                        ending = "\r\n" if line.endswith("\r\n") else line[-1:] if line.endswith(("\n", "\r")) else ""
+                        name_lines[position] = _csv_record(new, ending)
+                if len(values) > len(existing):
+                    ending = "\r\n" if b"\r\n" in contents else "\n"
+                    if name_lines and not name_lines[-1].endswith(("\r", "\n")):
+                        name_lines[-1] += ending
+                    name_lines.extend(_csv_record(value, ending) for value in values[len(existing):])
+                after["_videos_names.csv"] = _encode_like("".join(name_lines), contents)
+            else:
+                raise ValueError("Cannot safely locate names-table rows.")
+        else:
+            ending = "\r\n" if contents is None or b"\r\n" in contents else "\n"
+            after["_videos_names.csv"] = _encode_like(
+                _csv_record(["filename", "name"], ending)
+                + "".join(_csv_record(value, ending) for value in values), contents,
+            )
+        draft = read_catalog(root, tables=after)
+    return after, draft
+
+
+def execute(request):
+    if (not isinstance(request, dict) or type(request.get("version")) is not int
+            or request["version"] != PROTOCOL_VERSION):
+        raise ValueError("Request must specify protocol version 1.")
+    command = request.get("command")
+    if command not in ("load", "validate", "save", "recover"):
+        raise ValueError("Supported commands: load, validate, save, recover.")
+    root_value = request.get("root")
+    if not isinstance(root_value, str) or not root_value:
+        raise ValueError("Request must specify a repository root.")
+    root = Path(root_value).resolve()
+    with catalog_lock(root):
+        if command == "recover":
+            recover_tables(root)
+        require_recovered(root)
+        before = read_tables(root)
+        if command == "save" or (command == "validate" and "edits" in request):
+            after, data = prepare_draft(root, before, request)
+        else:
+            after, data = before, read_catalog(root, tables=before)
+        success = command in ("load", "recover") or not any(
+            issue["severity"] == "error" for issue in data["diagnostics"]
+        )
+        if command == "save" and success:
+            try:
+                save_tables(root, before, after)
+            except (OSError, CatalogConflict) as error:
+                if (root / JOURNAL).exists():
+                    raise RecoveryRequired(f"Save interrupted: {error}. Restore the pre-save files before editing.") from error
+                raise
+        return {
+            "version": PROTOCOL_VERSION, "success": success, "data": data,
+            "error": None if success else "Validation failed. Fix the located catalog diagnostics before saving.",
+            "error_code": None if success else "validation",
+        }
 
 
 def main() -> int:
     try:
-        request = json.load(sys.stdin)
-        if (not isinstance(request, dict) or type(request.get("version")) is not int
-                or request["version"] != PROTOCOL_VERSION):
-            raise ValueError("Request must specify protocol version 1.")
-        command = request.get("command")
-        if command not in ("load", "validate"):
-            raise ValueError("Supported commands: load, validate. Writes are not enabled.")
-        root_value = request.get("root")
-        if not isinstance(root_value, str) or not root_value:
-            raise ValueError("Request must specify a repository root.")
-        data = read_catalog(Path(root_value).resolve())
-        success = command == "load" or not any(
-            issue["severity"] == "error" for issue in data["diagnostics"]
-        )
-        response = {"version": PROTOCOL_VERSION, "success": success, "data": data, "error": None}
+        response = execute(json.load(sys.stdin))
     except (OSError, UnicodeError, ValueError, csv.Error) as error:
         response = {
-            "version": PROTOCOL_VERSION, "success": False, "data": None, "error": str(error)
+            "version": PROTOCOL_VERSION, "success": False, "data": None, "error": str(error),
+            "error_code": "recovery_required" if isinstance(error, RecoveryRequired) else
+                "conflict" if isinstance(error, CatalogConflict) else "error",
         }
     json.dump(response, sys.stdout, ensure_ascii=False)
     sys.stdout.write("\n")

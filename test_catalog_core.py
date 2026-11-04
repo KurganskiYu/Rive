@@ -108,6 +108,18 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(core.parse_font_spec("font:Asset(Font.otf)"), ("Asset", "Font.otf"))
         self.assertEqual(core.parse_enum_spec("ES:EN|ES|RU"), ("ES", ["EN", "ES", "RU"]))
 
+    def test_dimension_labels_use_shared_case_insensitive_parser(self):
+        for size, labels in (
+            ("393X852", ("393", "852")),
+            ("LAYOUTx393", ("layout", "393")),
+            ("393XLayout", ("393", "layout")),
+            ("LayoutXLAYOUT", ("layout", "layout")),
+        ):
+            with self.subTest(size=size):
+                self.write_rows([["demo_v1", size, ""]])
+                entry = read_catalog(self.root)["entries"][0]
+                self.assertEqual((entry["size_x"], entry["size_y"]), labels)
+
     def test_missing_files_and_invalid_sizes_are_located(self):
         self.write_rows([["missing_v1", "0x80", "invalid"]])
         (self.root / "riv" / "missing_v1.riv").unlink()

@@ -1,7 +1,7 @@
 <Rive version="1" kind="fragment">
     <Artboard defaultStateMachineId="1:32895" viewModelId="3:34115" viewModelInstanceId="3:34116" isComponent="true" spaceId="1:34092" width="934" height="800" styleId="1:32893" name="CatalogInterface" id="1:32890">
-        <LayoutComponentStyle id="1:32893"/>
-        <LayoutComponent width="934" height="800" styleId="1:32903" name="Catalog Interface" id="1:32902">
+        <LayoutComponentStyle intrinsicallySizedValue="true" layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:32893"/>
+        <LayoutComponent width="954" height="800" styleId="1:32903" name="Catalog Interface" id="1:32902">
             <Fill fillRule="clockwise" id="1:32904">
                 <SolidColor colorValue="FF393D49" id="1:32905">
                     <DataBindContext sourcePathIds="3:34117-3:34121" propertyKey="37" nameBased="true" id="1:33619"/>
@@ -10,170 +10,78 @@
             <LayoutComponent styleId="1:32907" name="Catalog" id="1:32906">
                 <LayoutComponentStyle gapVertical="16" flexDirectionValue="column" layoutWidthScaleType="fill" layoutHeightScaleType="fill" widthUnitsValue="auto" heightUnitsValue="auto" id="1:32907"/>
                 <LayoutComponent width="564" height="53" styleId="1:32913" name="CatalogFolders" id="1:32912">
-                    <LayoutComponent styleId="1:32917" blendModeValue="additive" additiveAmount="0" name="AllProjects" id="1:32916">
-                        <Fill fillRule="clockwise" id="1:32918">
-                            <SolidColor colorValue="4D000000" id="1:32919">
-                                <DataBindContext sourcePathIds="3:34117-3:34145" propertyKey="37" nameBased="true" id="1:33620"/>
-                            </SolidColor>
-                        </Fill>
-                        <Text id="1:32920">
-                            <TextStylePaint fontSize="16" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:32922">
-                                <Fill fillRule="clockwise" id="1:32923">
-                                    <SolidColor colorValue="FFAEAEAE" id="1:32924">
-                                        <DataBindContext sourcePathIds="3:34117-3:34153" propertyKey="37" nameBased="true" id="1:33630"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="1:32925"/>
-                                <TextStyleAxis tag="2003265652" axisValue="700" id="1:32926"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="1:32922" text="All" id="1:32927"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:32928"/>
-                        </Text>
-                        <LayoutComponentStyle gapHorizontal="10" paddingLeft="16" paddingRight="16" paddingTop="8" paddingBottom="8" layoutAlignmentType="center" intrinsicallySizedValue="true" cornerRadiusTL="16" layoutWidthScaleType="hug" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="1:32917"/>
-                    </LayoutComponent>
-                    <LayoutComponent styleId="1:32930" name="WelltoryProjects" id="1:32929">
-                        <Text id="1:32931">
-                            <TextStylePaint fontSize="16" fontAssetId="1:32932" familyName="Inter" styleName="Regular" id="1:32933">
-                                <Fill fillRule="clockwise" id="1:32934">
-                                    <SolidColor colorValue="FF252525" id="1:32935">
-                                        <DataBindContext sourcePathIds="3:34117-3:34155" propertyKey="37" nameBased="true" id="1:33631"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="1:32936"/>
-                                <TextStyleAxis tag="2003265652" axisValue="700" id="1:32937"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="1:32933" text="Welltory" id="1:32938"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:32939"/>
-                        </Text>
-                        <LayoutComponentStyle gapHorizontal="10" paddingLeft="16" paddingRight="16" paddingTop="8" paddingBottom="8" layoutAlignmentType="center" intrinsicallySizedValue="true" cornerRadiusTL="16" layoutWidthScaleType="hug" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="1:32930"/>
-                        <Fill fillRule="clockwise" id="4:34526">
-                            <SolidColor colorValue="1A000000" id="4:34527"/>
-                        </Fill>
-                    </LayoutComponent>
-                    <LayoutComponent styleId="3:34094" name="PersonalProjects" id="3:34093">
-                        <Text id="3:34095">
-                            <TextStylePaint fontSize="16" fontAssetId="1:32943" familyName="Inter" styleName="Regular" id="3:34096">
-                                <Fill fillRule="clockwise" id="3:34097">
-                                    <SolidColor colorValue="FF252525" id="3:34098">
-                                        <DataBindContext sourcePathIds="3:34117-3:34155" propertyKey="37" nameBased="true" id="3:34103"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="3:34099"/>
-                                <TextStyleAxis tag="2003265652" axisValue="700" id="3:34100"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="3:34096" text="Personal" id="3:34101"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="3:34102"/>
-                        </Text>
-                        <LayoutComponentStyle gapHorizontal="10" paddingLeft="16" paddingRight="16" paddingTop="8" paddingBottom="8" layoutAlignmentType="center" intrinsicallySizedValue="true" cornerRadiusTL="16" layoutWidthScaleType="hug" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="3:34094"/>
-                        <Fill fillRule="clockwise" id="4:34528">
-                            <SolidColor colorValue="1A000000" id="4:34529"/>
-                        </Fill>
-                    </LayoutComponent>
-                    <LayoutComponent styleId="3:34105" name="CrewMingleProjects 2" id="3:34104">
-                        <Text id="3:34106">
-                            <TextStylePaint fontSize="16" fontAssetId="1:32943" familyName="Inter" styleName="Regular" id="3:34107">
-                                <Fill fillRule="clockwise" id="3:34108">
-                                    <SolidColor colorValue="FF252525" id="3:34109">
-                                        <DataBindContext sourcePathIds="3:34117-3:34155" propertyKey="37" nameBased="true" id="3:34114"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="3:34110"/>
-                                <TextStyleAxis tag="2003265652" axisValue="700" id="3:34111"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="3:34107" text="Crew Mingle" id="3:34112"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="3:34113"/>
-                        </Text>
-                        <LayoutComponentStyle gapHorizontal="10" paddingLeft="16" paddingRight="16" paddingTop="8" paddingBottom="8" layoutAlignmentType="center" intrinsicallySizedValue="true" cornerRadiusTL="16" layoutWidthScaleType="hug" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="3:34105"/>
-                        <Fill fillRule="clockwise" id="4:34530">
-                            <SolidColor colorValue="1A000000" id="4:34531"/>
-                        </Fill>
-                    </LayoutComponent>
+                    <ArtboardComponentList name="Group tabs" participatesInLayout="true" id="10:200">
+                        <DataBindContext sourcePathIds="3:34115-10:201" propertyKey="800" id="10:202"/>
+                    </ArtboardComponentList>
                     <LayoutComponentStyle gapHorizontal="6" paddingLeft="32" paddingRight="32" layoutAlignmentType="centerLeft" cornerRadiusTL="16" id="1:32913"/>
                 </LayoutComponent>
                 <LayoutComponent styleId="1:32952" name="Projects" id="1:32951">
-                    <LayoutComponent styleId="1:32954" name="ProjectsList" id="1:32953">
-                        <LayoutComponentStyle gapVertical="4" flexDirectionValue="column" layoutWidthScaleType="fill" layoutHeightScaleType="fill" widthUnitsValue="auto" heightUnitsValue="auto" id="1:32954"/>
-                        <ArtboardComponentList participatesInLayout="true" id="5:34538">
-                            <DataBindContext sourcePathIds="3:34115-5:34539" propertyKey="800" id="5:34589"/>
-                        </ArtboardComponentList>
-                        <LayoutComponent height="24" styleId="1:33516" name="AddButton" id="1:33515">
-                            <LayoutComponent width="22" height="24" styleId="1:33518" name="Checkbox" id="1:33517">
-                                <LayoutComponentStyle layoutAlignmentType="centerLeft" flexDirectionValue="column" id="1:33518"/>
+                    <LayoutComponent clip="true" width="578" styleId="1:32954" name="ProjectsList" id="1:32953">
+                        <LayoutComponentStyle gapVertical="4" flexDirectionValue="column" layoutHeightScaleType="fill" heightUnitsValue="auto" id="1:32954"/>
+                        <LayoutComponent styleId="10:229" name="Scrolling projects" id="10:228">
+                            <LayoutComponentStyle gapVertical="4" flexDirectionValue="column" layoutWidthScaleType="fill" layoutHeightScaleType="hug" heightUnitsValue="auto" id="10:229"/>
+                            <ScrollConstraint physicsId="10:1" virtualize="true" virtualizeBuffer="2" name="Catalog scroll" id="10:230">
+                                <DataBindContext sourcePathIds="3:34115-10:231" propertyKey="760" twoWay="true" id="10:232"/>
+                                <DataBindContext sourcePathIds="3:34115-10:233" propertyKey="1070" direction="true" id="10:234"/>
+                            </ScrollConstraint>
+                            <ArtboardComponentList participatesInLayout="true" complexDependency="true" id="5:34538">
+                                <DataBindContext sourcePathIds="3:34115-5:34539" propertyKey="800" id="5:34589"/>
+                            </ArtboardComponentList>
+                            <LayoutComponent height="24" styleId="1:33516" name="AddButton" complexDependency="true" id="1:33515">
+                                <LayoutComponent width="22" height="24" styleId="1:33518" name="Checkbox" id="1:33517">
+                                    <LayoutComponentStyle layoutAlignmentType="centerLeft" flexDirectionValue="column" id="1:33518"/>
+                                </LayoutComponent>
+                                <LayoutComponent width="47" height="24" styleId="1:33520" name="ProjectBlock" id="1:33519">
+                                    <Text id="1:33521">
+                                        <TextStylePaint fontSize="18" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33522">
+                                            <Fill fillRule="clockwise" id="1:33523">
+                                                <SolidColor colorValue="FFFFFFFF" id="1:33524">
+                                                    <DataBindContext sourcePathIds="3:34117-3:34163" propertyKey="37" nameBased="true" id="1:33648"/>
+                                                </SolidColor>
+                                            </Fill>
+                                            <TextStyleAxis tag="1869640570" axisValue="14" id="1:33525"/>
+                                            <TextStyleAxis tag="2003265652" axisValue="400" id="1:33526"/>
+                                        </TextStylePaint>
+                                        <TextValueRun styleId="1:33522" text="+" id="1:33527"/>
+                                        <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33528"/>
+                                    </Text>
+                                    <LayoutComponentStyle paddingLeft="12" paddingRight="12" layoutAlignmentType="center" cornerRadiusTL="16" id="1:33520"/>
+                                    <Stroke thickness="0.30000001" id="1:33533">
+                                        <SolidColor colorValue="FF636363" id="1:33534">
+                                            <DataBindContext sourcePathIds="3:34117-3:34119" propertyKey="37" nameBased="true" id="1:33643"/>
+                                        </SolidColor>
+                                    </Stroke>
+                                </LayoutComponent>
+                                <LayoutComponentStyle gapHorizontal="16" layoutAlignmentType="centerLeft" layoutWidthScaleType="fill" widthUnitsValue="auto" id="1:33516"/>
                             </LayoutComponent>
-                            <LayoutComponent width="47" height="24" styleId="1:33520" name="ProjectBlock" id="1:33519">
-                                <Text id="1:33521">
-                                    <TextStylePaint fontSize="18" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33522">
-                                        <Fill fillRule="clockwise" id="1:33523">
-                                            <SolidColor colorValue="FFFFFFFF" id="1:33524">
-                                                <DataBindContext sourcePathIds="3:34117-3:34163" propertyKey="37" nameBased="true" id="1:33648"/>
-                                            </SolidColor>
-                                        </Fill>
-                                        <TextStyleAxis tag="1869640570" axisValue="14" id="1:33525"/>
-                                        <TextStyleAxis tag="2003265652" axisValue="400" id="1:33526"/>
-                                    </TextStylePaint>
-                                    <TextValueRun styleId="1:33522" text="+" id="1:33527"/>
-                                    <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33528"/>
-                                </Text>
-                                <LayoutComponentStyle paddingLeft="12" paddingRight="12" layoutAlignmentType="center" cornerRadiusTL="16" id="1:33520"/>
-                                <Stroke thickness="0.30000001" id="1:33533">
-                                    <SolidColor colorValue="FF636363" id="1:33534">
-                                        <DataBindContext sourcePathIds="3:34117-3:34119" propertyKey="37" nameBased="true" id="1:33643"/>
-                                    </SolidColor>
-                                </Stroke>
-                            </LayoutComponent>
-                            <LayoutComponentStyle gapHorizontal="16" layoutAlignmentType="centerLeft" layoutWidthScaleType="fill" widthUnitsValue="auto" id="1:33516"/>
                         </LayoutComponent>
+                        <DataBindContext sourcePathIds="3:34115-10:220" propertyKey="864" direction="true" id="10:224"/>
+                        <DataBindContext sourcePathIds="3:34115-10:221" propertyKey="865" direction="true" id="10:225"/>
+                        <DataBindContext sourcePathIds="3:34115-10:222" propertyKey="810" direction="true" id="10:226"/>
+                        <DataBindContext sourcePathIds="3:34115-10:223" propertyKey="811" direction="true" id="10:227"/>
                     </LayoutComponent>
                     <LayoutComponentStyle gapHorizontal="32" layoutWidthScaleType="fill" layoutHeightScaleType="fill" widthUnitsValue="auto" heightUnitsValue="auto" id="1:32952"/>
                 </LayoutComponent>
                 <LayoutComponent width="530" height="47" styleId="1:32956" name="BottomButtons" id="1:32955">
-                    <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" isStateful="true" name="GitPushAll Button" id="6:34902">
+                    <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" dataBindPathIds="3:34115-10:211" name="GitPushAll Button" id="6:34902">
                         <NestedStateMachine animationId="1:34069" id="6:34903"/>
-                        <ViewModelInstance viewModelId="1:33739" exports="true" name="UpdateButton Instance" id="6:34904">
-                            <ViewModelInstanceString propertyValue="Git Push All" viewModelPropertyId="1:33741" id="6:34905"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="6:34906"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="6:34907"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="6:34908"/>
-                            <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="3:34194" id="6:34909"/>
-                        </ViewModelInstance>
                     </NestedArtboardLayout>
-                    <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" isStateful="true" name="Server Button" id="6:34910">
+                    <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" dataBindPathIds="3:34115-10:212" name="Server Button" id="6:34910">
                         <NestedStateMachine animationId="1:34069" id="6:34911"/>
-                        <ViewModelInstance viewModelId="1:33739" exports="true" name="UpdateButton Instance" id="6:34912">
-                            <ViewModelInstanceString propertyValue="Server" viewModelPropertyId="1:33741" id="6:34913"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="6:34914"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="6:34915"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="6:34916"/>
-                            <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="3:34194" id="6:34917"/>
-                        </ViewModelInstance>
                     </NestedArtboardLayout>
-                    <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" isStateful="true" name="UpdateAll Button" id="6:34918">
+                    <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" dataBindPathIds="3:34115-10:213" name="UpdateAll Button" id="6:34918">
                         <NestedStateMachine animationId="1:34069" id="6:34919"/>
-                        <ViewModelInstance viewModelId="1:33739" exports="true" name="UpdateButton Instance" id="6:34920">
-                            <ViewModelInstanceString propertyValue="Update All" viewModelPropertyId="1:33741" id="6:34921"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="6:34922"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="6:34923"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="6:34924"/>
-                            <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="3:34194" id="6:34925"/>
-                        </ViewModelInstance>
                     </NestedArtboardLayout>
-                    <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" isStateful="true" name="SyncFiles Button" id="6:34926">
+                    <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" dataBindPathIds="3:34115-10:214" name="SyncFiles Button" id="6:34926">
                         <NestedStateMachine animationId="1:34069" id="6:34927"/>
-                        <ViewModelInstance viewModelId="1:33739" exports="true" name="UpdateButton Instance" id="6:34928">
-                            <ViewModelInstanceString propertyValue="Sync Files" viewModelPropertyId="1:33741" id="6:34929"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="6:34930"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="6:34931"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="6:34932"/>
-                            <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="3:34194" id="6:34933"/>
-                        </ViewModelInstance>
                     </NestedArtboardLayout>
                     <LayoutComponentStyle gapHorizontal="8" paddingLeft="36" paddingRight="36" paddingTop="10" paddingBottom="10" layoutAlignmentType="center" id="1:32956"/>
                 </LayoutComponent>
             </LayoutComponent>
-            <NestedArtboardLayout instanceWidth="300" instanceHeight="0" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="fill" artboardId="4:34487" name="ProjectPreviewBlock" id="4:34498">
+            <NestedArtboardLayout instanceWidth="300" instanceHeight="0" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="fill" artboardId="4:34487" dataBindPathIds="3:34115-10:210" name="ProjectPreviewBlock" id="4:34498">
                 <NestedStateMachine animationId="4:34490" id="4:34499"/>
             </NestedArtboardLayout>
-            <LayoutComponentStyle gapHorizontal="24" paddingLeft="16" paddingRight="16" paddingTop="16" paddingBottom="16" cornerRadiusTL="42" id="1:32903"/>
+            <LayoutComponentStyle gapHorizontal="24" paddingLeft="16" paddingRight="16" paddingTop="16" paddingBottom="16" intrinsicallySizedValue="true" cornerRadiusTL="42" layoutWidthScaleType="hug" id="1:32903"/>
         </LayoutComponent>
         <StateMachine name="State Machine 1" id="1:32895">
             <StateMachineLayer name="Layer 1" id="1:32896">
@@ -196,7 +104,7 @@
                 </SolidColor>
             </Stroke>
             <Text id="8:10">
-                <TextStylePaint fontSize="12" fontAssetId="1:32921" id="8:11">
+                <TextStylePaint fontAssetId="1:32921" id="8:11">
                     <Fill id="8:12">
                         <SolidColor colorValue="FFFFFFFF" id="8:13"/>
                     </Fill>
@@ -218,28 +126,29 @@
                     </GradientStop>
                 </LinearGradient>
             </Fill>
-            <LayoutComponent height="22" styleId="1:33188" name="NumberAndVersion" id="1:33187">
-                <LayoutComponent styleId="1:33190" name="ProjectNumber" id="1:33189">
-                    <Text id="1:33191">
-                        <TextStylePaint fontSize="16" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33192">
+            <LayoutComponent width="62" height="22" styleId="1:33188" name="NumberAndVersion" id="1:33187">
+                <LayoutComponent width="34" styleId="1:33190" name="ProjectNumber" id="1:33189">
+                    <Text alignValue="right" id="1:33191">
+                        <TextStylePaint fontSize="14" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33192">
                             <Fill fillRule="clockwise" id="1:33193">
                                 <SolidColor colorValue="FFFFFFFF" id="1:33194">
                                     <DataBindContext sourcePathIds="3:34117-3:34163" propertyKey="37" nameBased="true" id="1:33644"/>
                                 </SolidColor>
                             </Fill>
-                            <TextStyleAxis tag="1869640570" axisValue="14" id="1:33195"/>
-                            <TextStyleAxis tag="2003265652" axisValue="400" id="1:33196"/>
+                            <TextStyleAxis tag="1869640570" axisValue="14" id="21:26"/>
+                            <TextStyleAxis tag="2003265652" axisValue="400" id="21:27"/>
+                            <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:23"/>
                         </TextStylePaint>
                         <TextValueRun styleId="1:33192" text="76" id="1:33197">
-                            <DataBindContext sourcePathIds="1:33717-8:200" propertyKey="268" id="1:33762"/>
+                            <DataBindContext sourcePathIds="1:33717-8:200" propertyKey="268" converterId="0:0" id="1:33762"/>
                         </TextValueRun>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33198"/>
                     </Text>
-                    <LayoutComponentStyle gapHorizontal="10" layoutAlignmentType="centerRight" intrinsicallySizedValue="true" layoutWidthScaleType="hug" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="1:33190"/>
+                    <LayoutComponentStyle gapHorizontal="10" layoutAlignmentType="centerRight" intrinsicallySizedValue="true" layoutHeightScaleType="hug" heightUnitsValue="auto" id="1:33190"/>
                 </LayoutComponent>
-                <LayoutComponent height="20" styleId="1:33200" name="Version" id="1:33199">
+                <LayoutComponent width="20" height="20" styleId="1:33200" name="Version" id="1:33199">
                     <Text verticalAlignValue="bottom" name="VersionNewerText" id="1:33201">
-                        <TextStylePaint fontSize="10" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33202">
+                        <TextStylePaint fontSize="8" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33202">
                             <Fill fillRule="clockwise" id="1:33203">
                                 <SolidColor colorValue="FF03A300" id="1:33204">
                                     <DataBindContext sourcePathIds="3:34117-3:34167" propertyKey="37" nameBased="true" id="1:33633"/>
@@ -247,15 +156,16 @@
                             </Fill>
                             <TextStyleAxis tag="1869640570" axisValue="14" id="1:33205"/>
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33206"/>
+                            <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:21"/>
                         </TextStylePaint>
                         <TextValueRun styleId="1:33202" name="v" id="1:33207"/>
                         <TextValueRun styleId="1:33202" text="5" name="Number" id="1:33769">
-                            <DataBindContext sourcePathIds="1:33717-8:202" propertyKey="268" id="1:33778"/>
+                            <DataBindContext sourcePathIds="1:33717-8:202" propertyKey="268" converterId="0:0" id="1:33778"/>
                         </TextValueRun>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33208"/>
                     </Text>
                     <Text name="VersionText" id="1:33209">
-                        <TextStylePaint fontSize="10" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33210">
+                        <TextStylePaint fontSize="8" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33210">
                             <Fill fillRule="clockwise" id="1:33211">
                                 <SolidColor colorValue="FF878787" id="1:33212">
                                     <DataBindContext sourcePathIds="3:34117-3:34159" propertyKey="37" nameBased="true" id="1:33651"/>
@@ -263,36 +173,38 @@
                             </Fill>
                             <TextStyleAxis tag="1869640570" axisValue="14" id="1:33213"/>
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33214"/>
+                            <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:22"/>
                         </TextStylePaint>
                         <TextValueRun styleId="1:33210" name="v" id="1:33215"/>
                         <TextValueRun styleId="1:33210" text="4" name="Number" id="1:33776">
-                            <DataBindContext sourcePathIds="1:33717-8:201" propertyKey="268" id="1:33779"/>
+                            <DataBindContext sourcePathIds="1:33717-8:201" propertyKey="268" converterId="0:0" id="1:33779"/>
                         </TextValueRun>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33216"/>
                     </Text>
-                    <LayoutComponentStyle layoutAlignmentType="centerLeft" flexDirectionValue="column" intrinsicallySizedValue="true" layoutWidthScaleType="hug" widthUnitsValue="auto" id="1:33200"/>
+                    <LayoutComponentStyle layoutAlignmentType="centerLeft" flexDirectionValue="column" id="1:33200"/>
                 </LayoutComponent>
-                <LayoutComponentStyle gapHorizontal="4" layoutAlignmentType="centerLeft" intrinsicallySizedValue="true" layoutWidthScaleType="hug" widthUnitsValue="auto" id="1:33188"/>
+                <LayoutComponentStyle gapHorizontal="2" layoutAlignmentType="centerRight" id="1:33188"/>
             </LayoutComponent>
             <LayoutComponent width="200" height="17" styleId="1:33218" name="AnimationName" id="1:33217">
                 <Text id="1:33219">
-                    <TextStylePaint fontSize="14" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33220">
+                    <TextStylePaint fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33220">
                         <Fill fillRule="clockwise" id="1:33221">
                             <SolidColor colorValue="FFFFFFFF" id="1:33222">
                                 <DataBindContext sourcePathIds="3:34117-3:34163" propertyKey="37" nameBased="true" id="1:33645"/>
                             </SolidColor>
                         </Fill>
-                        <TextStyleAxis tag="1869640570" axisValue="14" id="1:33223"/>
-                        <TextStyleAxis tag="2003265652" axisValue="400" id="1:33224"/>
+                        <TextStyleAxis tag="1869640570" axisValue="14" id="21:24"/>
+                        <TextStyleAxis tag="2003265652" axisValue="400" id="21:25"/>
+                        <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:16"/>
                     </TextStylePaint>
                     <TextValueRun styleId="1:33220" text="Stress Calendar" id="1:33225">
                         <DataBindContext sourcePathIds="1:33717-1:33721" propertyKey="268" id="1:33780"/>
                     </TextValueRun>
                     <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33226"/>
                 </Text>
-                <LayoutComponentStyle gapHorizontal="10" paddingLeft="16" paddingRight="16" layoutAlignmentType="centerLeft" id="1:33218"/>
+                <LayoutComponentStyle gapHorizontal="10" paddingLeft="6" paddingRight="6" layoutAlignmentType="centerLeft" layoutWidthScaleType="fill" id="1:33218"/>
             </LayoutComponent>
-            <LayoutComponent height="24" styleId="1:33228" name="Parameters" id="1:33227">
+            <LayoutComponent width="280" height="24" styleId="1:33228" name="Parameters" id="1:33227">
                 <LayoutComponent width="40" height="12" styleId="1:33230" name="Size" id="1:33229">
                     <Text alignValue="right" id="1:33231">
                         <TextStylePaint fontSize="10" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33232">
@@ -303,9 +215,10 @@
                             </Fill>
                             <TextStyleAxis tag="1869640570" axisValue="14" id="1:33235"/>
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33236"/>
+                            <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:17"/>
                         </TextStylePaint>
                         <TextValueRun styleId="1:33232" text="256" id="1:33237">
-                            <DataBindContext sourcePathIds="1:33717-8:203" propertyKey="268" id="1:33781"/>
+                            <DataBindContext sourcePathIds="1:33717-8:203" propertyKey="268" converterId="0:0" id="1:33781"/>
                         </TextValueRun>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33238"/>
                     </Text>
@@ -318,13 +231,14 @@
                             </Fill>
                             <TextStyleAxis tag="1869640570" axisValue="14" id="1:33243"/>
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33244"/>
+                            <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:18"/>
                         </TextStylePaint>
                         <TextValueRun styleId="1:33240" text="KB" id="1:33245"/>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33246"/>
                     </Text>
                     <LayoutComponentStyle gapHorizontal="2" layoutAlignmentType="centerRight" id="1:33230"/>
                 </LayoutComponent>
-                <LayoutComponent height="24" styleId="1:33248" name="Resolution" id="1:33247">
+                <LayoutComponent width="40" height="24" styleId="1:33248" name="Resolution" id="1:33247">
                     <Text verticalAlignValue="bottom" id="1:33249">
                         <TextStylePaint fontSize="10" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33250">
                             <Fill fillRule="clockwise" id="1:33251">
@@ -334,6 +248,7 @@
                             </Fill>
                             <TextStyleAxis tag="1869640570" axisValue="14" id="1:33253"/>
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33254"/>
+                            <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:19"/>
                         </TextStylePaint>
                         <TextValueRun styleId="1:33250" text="393" id="1:33255">
                             <DataBindContext sourcePathIds="1:33717-1:33731" propertyKey="268" id="1:33782"/>
@@ -349,176 +264,24 @@
                             </Fill>
                             <TextStyleAxis tag="1869640570" axisValue="14" id="1:33261"/>
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33262"/>
+                            <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:20"/>
                         </TextStylePaint>
                         <TextValueRun styleId="1:33258" text="300" id="1:33263">
                             <DataBindContext sourcePathIds="1:33717-1:33733" propertyKey="268" id="1:33783"/>
                         </TextValueRun>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33264"/>
                     </Text>
-                    <LayoutComponentStyle paddingLeft="8" paddingRight="8" layoutAlignmentType="center" flexDirectionValue="column" intrinsicallySizedValue="true" layoutWidthScaleType="hug" widthUnitsValue="auto" id="1:33248"/>
+                    <LayoutComponentStyle paddingLeft="8" paddingRight="8" layoutAlignmentType="center" flexDirectionValue="column" id="1:33248"/>
                 </LayoutComponent>
                 <LayoutComponent height="15" styleId="1:33266" name="Tags" id="1:33265">
                     <ArtboardComponentList name="Artboard List Tags" participatesInLayout="true" id="1:33816">
                         <DataBindContext sourcePathIds="1:33717-1:33817" propertyKey="800" id="1:33855"/>
                     </ArtboardComponentList>
-                    <NestedArtboardLayout instanceWidth="20" instanceHeight="15" artboardId="1:33784" isStateful="true" name="PreviewTag" hidden="true" id="1:33795">
-                        <NestedStateMachine animationId="1:33787" id="1:33796"/>
-                        <ViewModelInstance viewModelId="6:34735" exports="true" name="PreviewTag Instance" id="6:34808">
-                            <ViewModelInstanceString propertyValue="T" viewModelPropertyId="6:34746" id="6:34809"/>
-                        </ViewModelInstance>
-                    </NestedArtboardLayout>
-                    <LayoutComponent width="20" height="15" styleId="1:33280" name="TriggerTag" hidden="true" id="1:33279">
-                        <Fill fillRule="clockwise" id="1:33281">
-                            <SolidColor colorValue="FF4B8F02" id="1:33282">
-                                <DataBindContext sourcePathIds="3:34117-3:34125" propertyKey="37" nameBased="true" id="1:33693"/>
-                            </SolidColor>
-                        </Fill>
-                        <Text id="1:33283">
-                            <TextStylePaint fontAssetId="1:32921" familyName="Inter" styleName="SemiBold" id="1:33284">
-                                <Fill fillRule="clockwise" id="1:33285">
-                                    <SolidColor colorValue="FF000000" id="1:33286">
-                                        <DataBindContext sourcePathIds="3:34117-3:34161" propertyKey="37" nameBased="true" id="1:33671"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="1:33712"/>
-                                <TextStyleAxis tag="2003265652" axisValue="600" id="1:33713"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="1:33284" text="T" id="1:33289"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33290"/>
-                        </Text>
-                        <LayoutComponentStyle layoutAlignmentType="center" cornerRadiusTL="6" id="1:33280"/>
-                    </LayoutComponent>
-                    <LayoutComponent width="20" height="15" styleId="1:33292" name="NumberTag" hidden="true" id="1:33291">
-                        <Fill fillRule="clockwise" id="1:33293">
-                            <SolidColor colorValue="FF2752B0" id="1:33294">
-                                <DataBindContext sourcePathIds="3:34117-3:34129" propertyKey="37" nameBased="true" id="1:33696"/>
-                            </SolidColor>
-                        </Fill>
-                        <Text id="1:33295">
-                            <TextStylePaint fontAssetId="1:32921" familyName="Inter" styleName="SemiBold" id="1:33296">
-                                <Fill fillRule="clockwise" id="1:33297">
-                                    <SolidColor colorValue="FF000000" id="1:33298">
-                                        <DataBindContext sourcePathIds="3:34117-3:34161" propertyKey="37" nameBased="true" id="1:33672"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="1:33714"/>
-                                <TextStyleAxis tag="2003265652" axisValue="600" id="1:33715"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="1:33296" text="N" id="1:33301"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33302"/>
-                        </Text>
-                        <LayoutComponentStyle layoutAlignmentType="center" cornerRadiusTL="6" id="1:33292"/>
-                    </LayoutComponent>
-                    <LayoutComponent width="20" height="15" styleId="1:33304" name="BooleanTag" hidden="true" id="1:33303">
-                        <Fill fillRule="clockwise" id="1:33305">
-                            <SolidColor colorValue="FF7B0B77" id="1:33306">
-                                <DataBindContext sourcePathIds="3:34117-3:34127" propertyKey="37" nameBased="true" id="1:33698"/>
-                            </SolidColor>
-                        </Fill>
-                        <Text id="1:33307">
-                            <TextStylePaint fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33308">
-                                <Fill fillRule="clockwise" id="1:33309">
-                                    <SolidColor colorValue="FF000000" id="1:33310">
-                                        <DataBindContext sourcePathIds="3:34117-3:34161" propertyKey="37" nameBased="true" id="1:33673"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="1:33311"/>
-                                <TextStyleAxis tag="2003265652" axisValue="600" id="1:33312"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="1:33308" text="B" id="1:33313"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33314"/>
-                        </Text>
-                        <LayoutComponentStyle layoutAlignmentType="center" cornerRadiusTL="6" id="1:33304"/>
-                    </LayoutComponent>
-                    <LayoutComponent width="20" height="15" styleId="1:33316" name="StringTag" hidden="true" id="1:33315">
-                        <Fill fillRule="clockwise" id="1:33317">
-                            <SolidColor colorValue="FF00797F" id="1:33318">
-                                <DataBindContext sourcePathIds="3:34117-3:34131" propertyKey="37" nameBased="true" id="1:33701"/>
-                            </SolidColor>
-                        </Fill>
-                        <Text id="1:33319">
-                            <TextStylePaint fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33320">
-                                <Fill fillRule="clockwise" id="1:33321">
-                                    <SolidColor colorValue="FF000000" id="1:33322">
-                                        <DataBindContext sourcePathIds="3:34117-3:34161" propertyKey="37" nameBased="true" id="1:33674"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="1:33323"/>
-                                <TextStyleAxis tag="2003265652" axisValue="600" id="1:33324"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="1:33320" text="S" id="1:33325"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33326"/>
-                        </Text>
-                        <LayoutComponentStyle layoutAlignmentType="center" cornerRadiusTL="6" id="1:33316"/>
-                    </LayoutComponent>
-                    <LayoutComponent width="20" height="15" styleId="1:33328" name="EnumTag" hidden="true" id="1:33327">
-                        <Fill fillRule="clockwise" id="1:33329">
-                            <SolidColor colorValue="FF9D3816" id="1:33330">
-                                <DataBindContext sourcePathIds="3:34117-3:34133" propertyKey="37" nameBased="true" id="1:33704"/>
-                            </SolidColor>
-                        </Fill>
-                        <Text id="1:33331">
-                            <TextStylePaint fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33332">
-                                <Fill fillRule="clockwise" id="1:33333">
-                                    <SolidColor colorValue="FF000000" id="1:33334">
-                                        <DataBindContext sourcePathIds="3:34117-3:34161" propertyKey="37" nameBased="true" id="1:33675"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="1:33335"/>
-                                <TextStyleAxis tag="2003265652" axisValue="600" id="1:33336"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="1:33332" text="E" id="1:33337"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33338"/>
-                        </Text>
-                        <LayoutComponentStyle layoutAlignmentType="center" cornerRadiusTL="6" id="1:33328"/>
-                    </LayoutComponent>
-                    <LayoutComponent width="20" height="15" styleId="1:33340" name="FontTag" hidden="true" id="1:33339">
-                        <Fill fillRule="clockwise" id="1:33341">
-                            <SolidColor colorValue="FF1D32B8" id="1:33342">
-                                <DataBindContext sourcePathIds="3:34117-3:34135" propertyKey="37" nameBased="true" id="1:33706"/>
-                            </SolidColor>
-                        </Fill>
-                        <Text id="1:33343">
-                            <TextStylePaint fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33344">
-                                <Fill fillRule="clockwise" id="1:33345">
-                                    <SolidColor colorValue="FF000000" id="1:33346">
-                                        <DataBindContext sourcePathIds="3:34117-3:34161" propertyKey="37" nameBased="true" id="1:33676"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="1:33347"/>
-                                <TextStyleAxis tag="2003265652" axisValue="600" id="1:33348"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="1:33344" text="F" id="1:33349"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33350"/>
-                        </Text>
-                        <LayoutComponentStyle layoutAlignmentType="center" cornerRadiusTL="6" id="1:33340"/>
-                    </LayoutComponent>
-                    <LayoutComponent width="20" height="15" styleId="1:33352" name="NoteTag" hidden="true" id="1:33351">
-                        <Fill fillRule="clockwise" id="1:33353">
-                            <SolidColor colorValue="FF6A6A6A" id="1:33354">
-                                <DataBindContext sourcePathIds="3:34117-3:34137" propertyKey="37" nameBased="true" id="1:33708"/>
-                            </SolidColor>
-                        </Fill>
-                        <Text id="1:33355">
-                            <TextStylePaint fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="1:33356">
-                                <Fill fillRule="clockwise" id="1:33357">
-                                    <SolidColor colorValue="FF000000" id="1:33358">
-                                        <DataBindContext sourcePathIds="3:34117-3:34161" propertyKey="37" nameBased="true" id="1:33677"/>
-                                    </SolidColor>
-                                </Fill>
-                                <TextStyleAxis tag="1869640570" axisValue="14" id="1:33359"/>
-                                <TextStyleAxis tag="2003265652" axisValue="600" id="1:33360"/>
-                            </TextStylePaint>
-                            <TextValueRun styleId="1:33356" text="n" id="1:33361"/>
-                            <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33362"/>
-                        </Text>
-                        <LayoutComponentStyle layoutAlignmentType="center" cornerRadiusTL="6" id="1:33352"/>
-                    </LayoutComponent>
-                    <LayoutComponentStyle gapHorizontal="4" layoutAlignmentType="centerLeft" intrinsicallySizedValue="true" layoutWidthScaleType="hug" widthUnitsValue="auto" id="1:33266"/>
+                    <LayoutComponentStyle gapHorizontal="4" layoutAlignmentType="centerLeft" layoutWidthScaleType="fill" widthUnitsValue="auto" id="1:33266"/>
                 </LayoutComponent>
-                <LayoutComponentStyle gapHorizontal="2" layoutAlignmentType="centerLeft" layoutWidthScaleType="fill" widthUnitsValue="auto" id="1:33228"/>
+                <LayoutComponentStyle gapHorizontal="2" layoutAlignmentType="centerLeft" id="1:33228"/>
             </LayoutComponent>
-            <LayoutComponentStyle gapHorizontal="2" paddingLeft="12" paddingRight="12" layoutAlignmentType="centerLeft" cornerRadiusTL="16" layoutWidthScaleType="fill" widthUnitsValue="auto" id="1:33182"/>
+            <LayoutComponentStyle gapHorizontal="2" layoutAlignmentType="spaceBetweenCenter" cornerRadiusTL="16" layoutWidthScaleType="fill" widthUnitsValue="auto" id="1:33182"/>
         </LayoutComponent>
         <LayoutComponent styleId="1:33364" name="VersionUpButon" id="1:33363">
             <Fill fillRule="clockwise" id="1:33365">
@@ -631,10 +394,16 @@
             </StateMachineLayer>
             <StateMachineListener targetId="1:33181" name="ProjectBlock" id="6:34874">
                 <ListenerInputType listenerTypeValue="click" id="6:34875"/>
-                <ListenerViewModelChange id="6:34876">
+                <ListenerViewModelChange fromDataBindId="0:0" id="6:34876">
                     <BindablePropertyTrigger id="8:1">
                         <DataBindContext sourcePathIds="1:33717-8:2" propertyKey="686" direction="true" id="8:3"/>
                     </BindablePropertyTrigger>
+                </ListenerViewModelChange>
+                <ListenerViewModelChange fromViewModelProperty="true" fromDataBindId="18:4" id="18:1">
+                    <BindablePropertyBoolean id="18:2">
+                        <DataBindContext sourcePathIds="1:33717-3:34170" propertyKey="634" direction="true" id="18:3"/>
+                        <DataBindContext sourcePathIds="1:33717-3:34170" propertyKey="634" converterId="6:34879" id="18:4"/>
+                    </BindablePropertyBoolean>
                 </ListenerViewModelChange>
             </StateMachineListener>
             <StateMachineListener targetId="1:33179" name="Toggle checkbox" id="8:4">
@@ -708,6 +477,7 @@
                     </Fill>
                     <TextStyleAxis tag="1869640570" axisValue="14" id="1:33710"/>
                     <TextStyleAxis tag="2003265652" axisValue="600" id="1:33711"/>
+                    <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:15"/>
                 </TextStylePaint>
                 <TextValueRun styleId="1:33272" text="P" id="1:33277">
                     <DataBindContext sourcePathIds="6:34735-6:34746" propertyKey="268" id="1:33856"/>
@@ -871,11 +641,11 @@
             </KeyedObject>
         </LinearAnimation>
     </Artboard>
-    <Artboard defaultStateMachineId="1:34056" viewModelId="1:33739" viewModelInstanceId="1:33740" isComponent="true" spaceId="1:34092" clip="true" width="58" height="19" styleId="1:34054" x="1005" y="443" name="StartAndPreviewButton" id="1:34053">
+    <Artboard defaultStateMachineId="1:34056" viewModelId="9:1500" viewModelInstanceId="9:1510" isComponent="true" spaceId="1:34092" clip="true" width="58" height="19" styleId="1:34054" x="1005" y="443" name="StartAndPreviewButton" id="1:34053">
         <LayoutComponent height="19" styleId="1:33030" name="TriggerButton Start" id="1:33029">
             <Fill fillRule="clockwise" id="1:33031">
                 <SolidColor colorValue="FF4B8F02" id="1:33032">
-                    <DataBindContext sourcePathIds="1:33739-3:34194" propertyKey="37" id="1:33695"/>
+                    <DataBindContext sourcePathIds="9:1500-9:1505" propertyKey="37" id="1:33695"/>
                 </SolidColor>
             </Fill>
             <Text id="1:33033">
@@ -887,16 +657,59 @@
                     </Fill>
                     <TextStyleAxis tag="1869640570" axisValue="14" id="1:33037"/>
                     <TextStyleAxis tag="2003265652" axisValue="600" id="1:33038"/>
+                    <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:11"/>
                 </TextStylePaint>
                 <TextValueRun styleId="1:33034" text="Start" id="1:33039">
-                    <DataBindContext sourcePathIds="1:33739-1:33741" propertyKey="268" id="3:34193"/>
+                    <DataBindContext sourcePathIds="9:1500-9:1501" propertyKey="268" id="3:34193"/>
                 </TextValueRun>
                 <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33040"/>
             </Text>
             <LayoutComponentStyle gapHorizontal="10" paddingLeft="10" paddingRight="10" layoutAlignmentType="center" intrinsicallySizedValue="true" cornerRadiusTL="6" layoutWidthScaleType="hug" widthUnitsValue="auto" id="1:33030"/>
+            <DataBindContext sourcePathIds="9:1500-10:4" propertyKey="18" converterId="9:208" id="10:260"/>
         </LayoutComponent>
         <LayoutComponentStyle intrinsicallySizedValue="true" layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:34054"/>
         <StateMachine name="State Machine 1" id="1:34056">
+            <StateMachineListenerSingle targetId="1:33029" name="Hover" id="10:400">
+                <ListenerViewModelChange id="10:401">
+                    <BindablePropertyBoolean propertyValue="true" id="10:402">
+                        <DataBindContext sourcePathIds="9:1500-9:1502" propertyKey="634" direction="true" id="10:403"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+            </StateMachineListenerSingle>
+            <StateMachineListenerSingle listenerTypeValue="down" targetId="1:33029" name="Press" id="10:404">
+                <ListenerViewModelChange id="10:405">
+                    <BindablePropertyBoolean propertyValue="true" id="10:406">
+                        <DataBindContext sourcePathIds="9:1500-9:1503" propertyKey="634" direction="true" id="10:407"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+            </StateMachineListenerSingle>
+            <StateMachineListenerSingle listenerTypeValue="up" targetId="1:33029" name="Release" id="10:408">
+                <ListenerViewModelChange id="10:409">
+                    <BindablePropertyBoolean id="10:410">
+                        <DataBindContext sourcePathIds="9:1500-9:1503" propertyKey="634" direction="true" id="10:411"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+            </StateMachineListenerSingle>
+            <StateMachineListenerSingle listenerTypeValue="exit" targetId="1:33029" name="Leave" id="10:412">
+                <ListenerViewModelChange id="10:413">
+                    <BindablePropertyBoolean id="10:414">
+                        <DataBindContext sourcePathIds="9:1500-9:1502" propertyKey="634" direction="true" id="10:415"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+                <ListenerViewModelChange id="10:416">
+                    <BindablePropertyBoolean id="10:417">
+                        <DataBindContext sourcePathIds="9:1500-9:1503" propertyKey="634" direction="true" id="10:418"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+            </StateMachineListenerSingle>
+            <StateMachineListener targetId="1:33029" name="Activate" id="10:261">
+                <ListenerInputType listenerTypeValue="click" id="10:262"/>
+                <ListenerViewModelChange id="10:263">
+                    <BindablePropertyTrigger id="10:264">
+                        <DataBindContext sourcePathIds="9:1500-10:3" propertyKey="686" direction="true" id="10:265"/>
+                    </BindablePropertyTrigger>
+                </ListenerViewModelChange>
+            </StateMachineListener>
             <StateMachineLayer name="Layer 1" id="1:34057">
                 <AnyState x="400" id="1:34058"/>
                 <ExitState x="480" id="1:34059"/>
@@ -924,6 +737,7 @@
                     </Fill>
                     <TextStyleAxis tag="1869640570" axisValue="14" id="1:33149"/>
                     <TextStyleAxis tag="2003265652" axisValue="700" id="1:33150"/>
+                    <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:14"/>
                 </TextStylePaint>
                 <TextValueRun styleId="1:33146" text="Update" id="1:33151">
                     <DataBindContext sourcePathIds="1:33739-1:33741" propertyKey="268" id="3:34169"/>
@@ -931,9 +745,51 @@
                 <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33152"/>
             </Text>
             <LayoutComponentStyle gapHorizontal="10" paddingLeft="16" paddingRight="16" paddingTop="4" paddingBottom="4" layoutAlignmentType="center" intrinsicallySizedValue="true" cornerRadiusTL="8" layoutWidthScaleType="hug" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="1:33142"/>
+            <DataBindContext sourcePathIds="1:33739-9:206" propertyKey="18" converterId="9:208" id="9:207"/>
         </LayoutComponent>
         <LayoutComponentStyle intrinsicallySizedValue="true" layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:34067"/>
         <StateMachine name="State Machine 1" id="1:34069">
+            <StateMachineListenerSingle targetId="1:33141" name="Hover" id="10:420">
+                <ListenerViewModelChange id="10:421">
+                    <BindablePropertyBoolean propertyValue="true" id="10:422">
+                        <DataBindContext sourcePathIds="1:33739-1:33743" propertyKey="634" direction="true" id="10:423"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+            </StateMachineListenerSingle>
+            <StateMachineListenerSingle listenerTypeValue="down" targetId="1:33141" name="Press" id="10:424">
+                <ListenerViewModelChange id="10:425">
+                    <BindablePropertyBoolean propertyValue="true" id="10:426">
+                        <DataBindContext sourcePathIds="1:33739-1:33745" propertyKey="634" direction="true" id="10:427"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+            </StateMachineListenerSingle>
+            <StateMachineListenerSingle listenerTypeValue="up" targetId="1:33141" name="Release" id="10:428">
+                <ListenerViewModelChange id="10:429">
+                    <BindablePropertyBoolean id="10:430">
+                        <DataBindContext sourcePathIds="1:33739-1:33745" propertyKey="634" direction="true" id="10:431"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+            </StateMachineListenerSingle>
+            <StateMachineListenerSingle listenerTypeValue="exit" targetId="1:33141" name="Leave" id="10:432">
+                <ListenerViewModelChange id="10:433">
+                    <BindablePropertyBoolean id="10:434">
+                        <DataBindContext sourcePathIds="1:33739-1:33743" propertyKey="634" direction="true" id="10:435"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+                <ListenerViewModelChange id="10:436">
+                    <BindablePropertyBoolean id="10:437">
+                        <DataBindContext sourcePathIds="1:33739-1:33745" propertyKey="634" direction="true" id="10:438"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+            </StateMachineListenerSingle>
+            <StateMachineListener targetId="1:33141" name="Activate" id="9:200">
+                <ListenerInputType listenerTypeValue="click" id="9:201"/>
+                <ListenerViewModelChange id="9:202">
+                    <BindablePropertyTrigger id="9:203">
+                        <DataBindContext sourcePathIds="1:33739-9:204" propertyKey="686" direction="true" id="9:205"/>
+                    </BindablePropertyTrigger>
+                </ListenerViewModelChange>
+            </StateMachineListener>
             <StateMachineLayer name="Layer 1" id="1:34070">
                 <AnyState x="400" id="1:34071"/>
                 <ExitState x="480" id="1:34072"/>
@@ -957,6 +813,7 @@
                     </Fill>
                     <TextStyleAxis tag="1869640570" axisValue="14" id="3:34216"/>
                     <TextStyleAxis tag="2003265652" axisValue="600" id="3:34217"/>
+                    <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:12"/>
                 </TextStylePaint>
                 <TextValueRun styleId="3:34213" text="isDark" id="3:34218">
                     <DataBindContext sourcePathIds="1:33797-1:33799" propertyKey="268" nameBased="true" id="3:34315"/>
@@ -1138,7 +995,7 @@
             </KeyedObject>
         </LinearAnimation>
     </Artboard>
-    <Artboard defaultStateMachineId="4:34490" isComponent="true" spaceId="1:34092" width="300" height="768" styleId="4:34488" x="1278" name="ProjectDetails" id="4:34487">
+    <Artboard defaultStateMachineId="4:34490" viewModelId="10:10" viewModelInstanceId="10:20" isComponent="true" spaceId="1:34092" width="300" height="768" styleId="4:34488" x="1278" name="ProjectDetails" id="4:34487">
         <LayoutComponent width="320" height="736" styleId="4:34501" id="4:34500">
             <LayoutComponent styleId="1:33010" name="Preview" id="1:33009">
                 <LayoutComponent height="400" styleId="1:33012" name="Screen" id="1:33011">
@@ -1149,6 +1006,10 @@
                             </SolidColor>
                         </Fill>
                         <LayoutComponentStyle cornerRadiusTL="16" layoutWidthScaleType="fill" layoutHeightScaleType="fill" widthUnitsValue="auto" heightUnitsValue="auto" id="1:33014"/>
+                        <DataBindContext sourcePathIds="10:10-10:720" propertyKey="864" direction="true" id="10:728"/>
+                        <DataBindContext sourcePathIds="10:10-10:721" propertyKey="865" direction="true" id="10:729"/>
+                        <DataBindContext sourcePathIds="10:10-10:722" propertyKey="810" direction="true" id="10:730"/>
+                        <DataBindContext sourcePathIds="10:10-10:723" propertyKey="811" direction="true" id="10:731"/>
                     </LayoutComponent>
                     <LayoutComponentStyle gapHorizontal="10" layoutWidthScaleType="fill" widthUnitsValue="auto" id="1:33012"/>
                 </LayoutComponent>
@@ -1162,21 +1023,16 @@
                                 <TextStyleAxis tag="1869640570" axisValue="14" id="4:34536"/>
                                 <TextStyleAxis tag="2003265652" axisValue="600" id="4:34537"/>
                             </TextStylePaint>
-                            <TextValueRun styleId="1:33022" text="76_stresscalendar_v4" id="1:33027"/>
+                            <TextValueRun styleId="1:33022" text="76_stresscalendar_v4" id="1:33027">
+                                <DataBindContext sourcePathIds="10:10-10:11" propertyKey="268" id="10:266"/>
+                            </TextValueRun>
                             <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33028"/>
                         </Text>
                         <LayoutComponentStyle gapHorizontal="10" layoutAlignmentType="center" intrinsicallySizedValue="true" layoutWidthScaleType="hug" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="1:33020"/>
                     </LayoutComponent>
                     <LayoutComponentStyle gapHorizontal="10" layoutAlignmentType="spaceBetweenCenter" layoutWidthScaleType="fill" widthUnitsValue="auto" id="1:33018"/>
-                    <NestedArtboardLayout instanceWidth="0" instanceHeight="19" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="1:34053" isStateful="true" name="TriggerButton Start" id="1:34064">
+                    <NestedArtboardLayout instanceWidth="0" instanceHeight="19" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="1:34053" dataBindPathIds="10:10-10:14" name="TriggerButton Start" id="1:34064">
                         <NestedStateMachine animationId="1:34056" id="1:34065"/>
-                        <ViewModelInstance viewModelId="1:33739" exports="true" name="TriggerButton Start Instance" id="3:34188">
-                            <ViewModelInstanceString propertyValue="Start" viewModelPropertyId="1:33741" id="3:34189"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="3:34190"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="3:34191"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="3:34192"/>
-                            <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="3:34194" id="3:34204"/>
-                        </ViewModelInstance>
                     </NestedArtboardLayout>
                 </LayoutComponent>
                 <LayoutComponent height="19" styleId="1:33042" name="Block 2" id="1:33041">
@@ -1189,136 +1045,49 @@
                                 <TextStyleAxis tag="1869640570" axisValue="14" id="4:34534"/>
                                 <TextStyleAxis tag="2003265652" axisValue="600" id="4:34535"/>
                             </TextStylePaint>
-                            <TextValueRun styleId="1:33046" text="artboard: Calendar" id="1:33051"/>
+                            <TextValueRun styleId="1:33046" text="artboard: Calendar" id="1:33051">
+                                <DataBindContext sourcePathIds="10:10-10:12" propertyKey="268" id="10:267"/>
+                            </TextValueRun>
                             <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33052"/>
                         </Text>
                         <LayoutComponentStyle gapHorizontal="10" layoutAlignmentType="center" intrinsicallySizedValue="true" layoutWidthScaleType="hug" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="1:33044"/>
                     </LayoutComponent>
-                    <NestedArtboardLayout instanceWidth="0" instanceHeight="19" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="1:34053" isStateful="true" name="PreviewButton" id="3:34180">
+                    <NestedArtboardLayout instanceWidth="0" instanceHeight="19" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="1:34053" dataBindPathIds="10:10-10:15" name="PreviewButton" id="3:34180">
                         <NestedStateMachine animationId="1:34056" id="3:34181"/>
-                        <ViewModelInstance viewModelId="1:33739" exports="true" name="PreviewButton Instance" id="3:34183">
-                            <ViewModelInstanceString propertyValue="Preview" viewModelPropertyId="1:33741" id="3:34184"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="3:34185"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="3:34186"/>
-                            <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="3:34187"/>
-                            <ViewModelInstanceColor propertyValue="FFBB7D00" viewModelPropertyId="3:34194" id="3:34205"/>
-                        </ViewModelInstance>
                     </NestedArtboardLayout>
                     <LayoutComponentStyle gapHorizontal="10" layoutAlignmentType="spaceBetweenCenter" layoutWidthScaleType="fill" widthUnitsValue="auto" id="1:33042"/>
                 </LayoutComponent>
                 <LayoutComponentStyle gapVertical="8" flexDirectionValue="column" intrinsicallySizedValue="true" layoutWidthScaleType="fill" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="1:33010"/>
             </LayoutComponent>
-            <LayoutComponent styleId="1:33066" name="Params" id="1:33065">
-                <NestedArtboardLayout instanceWidth="0" instanceHeight="15" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="3:34207" isStateful="true" name="BooleanParam" id="3:34319">
-                    <NestedStateMachine animationId="3:34309" id="3:34320"/>
-                    <ViewModelInstance viewModelId="1:33797" exports="true" name="BooleanParam Instance" id="3:34326">
-                        <ViewModelInstanceString propertyValue="isDark" viewModelPropertyId="1:33799" id="3:34327"/>
-                        <ViewModelInstanceEnum propertyValue="1:33805" playbackValue="1:33805" viewModelPropertyId="1:33810" id="3:34329"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34591" id="6:34592"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34607" id="6:34608"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34623" id="6:34624"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="6:34639" id="6:34640"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34671" id="6:34672"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34719" id="6:34720"/>
-                    </ViewModelInstance>
-                </NestedArtboardLayout>
-                <NestedArtboardLayout instanceWidth="0" instanceHeight="15" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="3:34207" isStateful="true" name="NumberParam" id="1:34090">
-                    <NestedStateMachine animationId="3:34309" id="3:34318"/>
-                    <ViewModelInstance viewModelId="1:33797" exports="true" name="Param2 Instance" id="3:34321">
-                        <ViewModelInstanceString propertyValue="daysAmount" viewModelPropertyId="1:33799" id="3:34322"/>
-                        <ViewModelInstanceEnum propertyValue="1:33804" playbackValue="1:33804" viewModelPropertyId="1:33810" id="3:34324"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34591" id="6:34593"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34607" id="6:34609"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34623" id="6:34625"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="6:34639" id="6:34641"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34671" id="6:34673"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34719" id="6:34721"/>
-                    </ViewModelInstance>
-                </NestedArtboardLayout>
-                <NestedArtboardLayout instanceWidth="0" instanceHeight="15" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="3:34207" isStateful="true" name="StringParam" id="3:34331">
-                    <NestedStateMachine animationId="3:34309" id="3:34332"/>
-                    <ViewModelInstance viewModelId="1:33797" exports="true" name="Param2 Instance" id="3:34333">
-                        <ViewModelInstanceString propertyValue="monthName" viewModelPropertyId="1:33799" id="3:34334"/>
-                        <ViewModelInstanceEnum propertyValue="1:33806" playbackValue="1:33806" viewModelPropertyId="1:33810" id="3:34336"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34591" id="6:34594"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34607" id="6:34610"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34623" id="6:34626"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="6:34639" id="6:34642"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34671" id="6:34674"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34719" id="6:34722"/>
-                    </ViewModelInstance>
-                </NestedArtboardLayout>
-                <NestedArtboardLayout instanceWidth="0" instanceHeight="15" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="3:34207" isStateful="true" name="EnumParam" id="3:34338">
-                    <NestedStateMachine animationId="3:34309" id="3:34339"/>
-                    <ViewModelInstance viewModelId="1:33797" exports="true" name="Param2 Instance" id="3:34340">
-                        <ViewModelInstanceString propertyValue="language" viewModelPropertyId="1:33799" id="3:34341"/>
-                        <ViewModelInstanceEnum propertyValue="1:33807" playbackValue="1:33807" viewModelPropertyId="1:33810" id="3:34343"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34591" id="6:34595"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34607" id="6:34611"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34623" id="6:34627"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="6:34639" id="6:34643"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34671" id="6:34675"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34719" id="6:34723"/>
-                    </ViewModelInstance>
-                </NestedArtboardLayout>
-                <NestedArtboardLayout instanceWidth="0" instanceHeight="15" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="3:34207" isStateful="true" name="FontParam" id="3:34345">
-                    <NestedStateMachine animationId="3:34309" id="3:34346"/>
-                    <ViewModelInstance viewModelId="1:33797" exports="true" name="Param2 Instance" id="3:34347">
-                        <ViewModelInstanceString propertyValue="NovemberLC-Regular" viewModelPropertyId="1:33799" id="3:34348"/>
-                        <ViewModelInstanceEnum propertyValue="3:34471" playbackValue="3:34471" viewModelPropertyId="1:33810" id="3:34350"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34591" id="6:34596"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34607" id="6:34612"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34623" id="6:34628"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="6:34639" id="6:34644"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34671" id="6:34676"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34719" id="6:34724"/>
-                    </ViewModelInstance>
-                </NestedArtboardLayout>
-                <NestedArtboardLayout instanceWidth="0" instanceHeight="15" instanceWidthUnitsValue="auto" instanceWidthScaleType="hug" artboardId="3:34207" isStateful="true" name="NoteParam" id="3:34480">
-                    <NestedStateMachine animationId="3:34309" id="3:34481"/>
-                    <ViewModelInstance viewModelId="1:33797" exports="true" name="Param2 Instance" id="3:34482">
-                        <ViewModelInstanceString propertyValue="note" viewModelPropertyId="1:33799" id="3:34483"/>
-                        <ViewModelInstanceEnum propertyValue="1:33809" playbackValue="1:33809" viewModelPropertyId="1:33810" id="3:34485"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34591" id="6:34597"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34607" id="6:34613"/>
-                        <ViewModelInstanceNumber viewModelPropertyId="6:34623" id="6:34629"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="6:34639" id="6:34645"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34671" id="6:34677"/>
-                        <ViewModelInstanceString propertyValue="Initial value" viewModelPropertyId="6:34719" id="6:34725"/>
-                    </ViewModelInstance>
-                </NestedArtboardLayout>
+            <LayoutComponent clip="true" styleId="1:33066" name="Params" id="1:33065">
+                <LayoutComponent clip="true" styleId="10:761" name="Parameter viewport" id="10:760">
+                    <LayoutComponentStyle flexDirectionValue="column" layoutWidthScaleType="fill" layoutHeightScaleType="fill" id="10:761"/>
+                    <LayoutComponent styleId="10:270" name="Parameter scroll content" id="10:269">
+                        <LayoutComponentStyle gapVertical="8" flexDirectionValue="column" layoutWidthScaleType="fill" layoutHeightScaleType="hug" heightUnitsValue="auto" id="10:270"/>
+                        <ScrollConstraint physicsId="10:2" name="Parameter scroll" id="10:271">
+                            <DataBindContext sourcePathIds="10:10-10:25" propertyKey="760" twoWay="true" id="10:272"/>
+                            <DataBindContext sourcePathIds="10:10-10:26" propertyKey="1070" direction="true" id="10:273"/>
+                        </ScrollConstraint>
+                        <ArtboardComponentList name="Selected animation parameters" participatesInLayout="true" complexDependency="true" id="10:274">
+                            <DataBindContext sourcePathIds="10:10-10:13" propertyKey="800" id="10:275"/>
+                        </ArtboardComponentList>
+                    </LayoutComponent>
+                    <DataBindContext sourcePathIds="10:10-10:27" propertyKey="811" direction="true" id="10:268"/>
+                    <DataBindContext sourcePathIds="10:10-10:750" propertyKey="864" direction="true" id="10:762"/>
+                    <DataBindContext sourcePathIds="10:10-10:751" propertyKey="865" direction="true" id="10:763"/>
+                    <DataBindContext sourcePathIds="10:10-10:752" propertyKey="810" direction="true" id="10:764"/>
+                </LayoutComponent>
                 <LayoutComponentStyle gapVertical="8" paddingTop="16" paddingBottom="16" flexDirectionValue="column" layoutWidthScaleType="fill" layoutHeightScaleType="fill" widthUnitsValue="auto" heightUnitsValue="auto" id="1:33066"/>
             </LayoutComponent>
             <LayoutComponent height="47" styleId="1:33140" name="BottomButtons Preview" id="1:33139">
-                <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" isStateful="true" name="UpdateButton" id="1:34077">
+                <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" dataBindPathIds="10:10-10:16" name="UpdateButton" id="1:34077">
                     <NestedStateMachine animationId="1:34069" id="1:34078"/>
-                    <ViewModelInstance viewModelId="1:33739" exports="true" name="UpdateButton Instance" id="4:34504">
-                        <ViewModelInstanceString propertyValue="Update" viewModelPropertyId="1:33741" id="4:34505"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="4:34506"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="4:34507"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="4:34508"/>
-                        <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="3:34194" id="4:34509"/>
-                    </ViewModelInstance>
                 </NestedArtboardLayout>
-                <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" isStateful="true" name="PushButton" id="4:34510">
+                <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" dataBindPathIds="10:10-10:17" name="PushButton" id="4:34510">
                     <NestedStateMachine animationId="1:34069" id="4:34511"/>
-                    <ViewModelInstance viewModelId="1:33739" exports="true" name="UpdateButton Instance" id="4:34512">
-                        <ViewModelInstanceString propertyValue="Push" viewModelPropertyId="1:33741" id="4:34513"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="4:34514"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="4:34515"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="4:34516"/>
-                        <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="3:34194" id="4:34517"/>
-                    </ViewModelInstance>
                 </NestedArtboardLayout>
-                <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" isStateful="true" name="LinkButton" id="4:34518">
+                <NestedArtboardLayout instanceWidth="0" instanceHeight="0" instanceWidthUnitsValue="auto" instanceHeightUnitsValue="auto" instanceWidthScaleType="hug" instanceHeightScaleType="hug" artboardId="1:34066" dataBindPathIds="10:10-10:18" name="LinkButton" id="4:34518">
                     <NestedStateMachine animationId="1:34069" id="4:34519"/>
-                    <ViewModelInstance viewModelId="1:33739" exports="true" name="UpdateButton Instance" id="4:34520">
-                        <ViewModelInstanceString propertyValue="Link" viewModelPropertyId="1:33741" id="4:34521"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="4:34522"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="4:34523"/>
-                        <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="4:34524"/>
-                        <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="3:34194" id="4:34525"/>
-                    </ViewModelInstance>
                 </NestedArtboardLayout>
                 <LayoutComponentStyle gapHorizontal="8" paddingTop="10" paddingBottom="10" layoutAlignmentType="center" intrinsicallySizedValue="true" layoutWidthScaleType="hug" widthUnitsValue="auto" id="1:33140"/>
             </LayoutComponent>
@@ -1329,6 +1098,15 @@
         </LayoutComponent>
         <LayoutComponentStyle gapVertical="10" layoutAlignmentType="spaceBetweenCenter" flexDirectionValue="column" intrinsicallySizedValue="true" cornerRadiusTL="32" layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="4:34488"/>
         <StateMachine name="State Machine 1" id="4:34490">
+            <StateMachineListener targetId="4:34500" name="Toggle main and preview" id="10:740">
+                <ListenerInputTypeViewModel viewModelPathIds="10:10-10:15-10:3" listenerTypeValue="viewModel" id="10:741"/>
+                <ListenerViewModelChange fromViewModelProperty="true" fromDataBindId="10:745" id="10:742">
+                    <BindablePropertyBoolean id="10:743">
+                        <DataBindContext sourcePathIds="10:10-10:19" propertyKey="634" direction="true" id="10:744"/>
+                        <DataBindContext sourcePathIds="10:10-10:19" propertyKey="634" converterId="6:34879" id="10:745"/>
+                    </BindablePropertyBoolean>
+                </ListenerViewModelChange>
+            </StateMachineListener>
             <StateMachineLayer name="Layer 1" id="4:34491">
                 <AnyState x="400" id="4:34492"/>
                 <ExitState x="480" id="4:34493"/>
@@ -1340,7 +1118,7 @@
         </StateMachine>
         <LinearAnimation name="Timeline 1" id="4:34489"/>
     </Artboard>
-    <Artboard defaultStateMachineId="6:34886" isComponent="true" spaceId="1:34092" width="578" height="600" styleId="6:34884" x="-754" name="AddProjectForm" id="6:34881">
+    <Artboard defaultStateMachineId="6:34886" viewModelId="0:0" viewModelInstanceId="0:0" isComponent="true" spaceId="1:34092" width="578" height="600" styleId="6:34884" x="-754" name="AddProjectForm" id="6:34881">
         <LayoutComponentStyle id="6:34884"/>
         <LayoutComponent width="578" height="600" styleId="6:34935" id="6:34934">
             <Fill fillRule="clockwise" id="6:34936">
@@ -1368,29 +1146,6 @@
     <ComponentAsset artboardId="4:34487" name="ProjectPreviewBlock" id="4:34497"/>
     <ComponentAsset artboardId="6:34881" name="AddProjectForm" id="6:34893"/>
     <ComponentAsset artboardId="3:34207" name="Parameter" id="8:17"/>
-    <Artboard name="IntegrationHarness" x="1000" y="900" width="578" height="480" viewModelId="3:34115" viewModelInstanceId="3:34116" defaultStateMachineId="8:105" styleId="8:101" id="8:100">
-        <LayoutComponentStyle layoutWidthScaleType="fixed" layoutHeightScaleType="fixed" id="8:101"/>
-        <LayoutComponent width="578" height="480" styleId="8:103" id="8:102">
-            <LayoutComponentStyle flexDirectionValue="column" gapVertical="4" layoutWidthScaleType="fixed" layoutHeightScaleType="fixed" id="8:103"/>
-            <Fill id="8:104">
-                <SolidColor colorValue="FF393D49" id="8:114"/>
-            </Fill>
-            <ArtboardComponentList participatesInLayout="true" id="8:115">
-                <DataBindContext sourcePathIds="3:34115-5:34539" propertyKey="800" id="8:116"/>
-            </ArtboardComponentList>
-        </LayoutComponent>
-        <StateMachine name="State Machine 1" id="8:105">
-            <StateMachineLayer name="Rows" id="8:106">
-                <AnyState x="400" id="8:107"/>
-                <ExitState x="480" id="8:108"/>
-                <EntryState id="8:109">
-                    <StateTransition stateToId="8:110" id="8:111"/>
-                </EntryState>
-                <AnimationState x="160" animationId="8:112" id="8:110"/>
-            </StateMachineLayer>
-        </StateMachine>
-        <LinearAnimation name="Idle" id="8:112"/>
-    </Artboard>
     <DataConverterBooleanNegate name="Toggle 1" id="6:34879"/>
     <DataConverterToString round="true" trailingZeros="true" name="Convert to String 1" id="1:33763"/>
     <DataEnumCustom name="ParamType" id="1:33803">
@@ -1494,6 +1249,7 @@
     </LibraryAsset>
     <Space name="Space 1" id="1:34092"/>
     <ViewModel defaultInstanceId="1:33718" name="ProjectVM" id="1:33717">
+        <ViewModelPropertyString name="group" id="10:240"/>
         <ViewModelPropertyString name="numberLabel" id="8:200"/>
         <ViewModelPropertyString name="versionLabel" id="8:201"/>
         <ViewModelPropertyString name="newerVersionLabel" id="8:202"/>
@@ -1514,10 +1270,6 @@
         <ViewModelPropertyList name="propsList" id="6:34895"/>
         <ViewModelPropertyList name="tagsList" id="1:33817"/>
         <ViewModelInstance exports="true" id="1:33718">
-            <ViewModelInstanceString propertyValue="76" viewModelPropertyId="8:200" id="8:210"/>
-            <ViewModelInstanceString propertyValue="v4" viewModelPropertyId="8:201" id="8:211"/>
-            <ViewModelInstanceString propertyValue="v5" viewModelPropertyId="8:202" id="8:212"/>
-            <ViewModelInstanceString propertyValue="256" viewModelPropertyId="8:203" id="8:213"/>
             <ViewModelInstanceNumber propertyValue="76" viewModelPropertyId="1:33719" id="1:33720"/>
             <ViewModelInstanceString propertyValue="Stress Calendar" viewModelPropertyId="1:33721" id="1:33722"/>
             <ViewModelInstanceString propertyValue="76_stresscalendar_v4" viewModelPropertyId="1:33723" id="1:33724"/>
@@ -1542,12 +1294,12 @@
             <ViewModelInstanceList viewModelPropertyId="6:34895" id="6:34896">
                 <ViewModelInstanceListItem name="List Item 1" viewModelId="1:33797" viewModelInstanceId="1:33798" id="6:34899"/>
             </ViewModelInstanceList>
+            <ViewModelInstanceString propertyValue="76" viewModelPropertyId="8:200" id="8:210"/>
+            <ViewModelInstanceString propertyValue="v5" viewModelPropertyId="8:201" id="8:211"/>
+            <ViewModelInstanceString viewModelPropertyId="8:202" id="8:212"/>
+            <ViewModelInstanceString propertyValue="256" viewModelPropertyId="8:203" id="8:213"/>
         </ViewModelInstance>
         <ViewModelInstance exports="true" name="Instance 1" id="5:34546">
-            <ViewModelInstanceString propertyValue="78" viewModelPropertyId="8:200" id="8:220"/>
-            <ViewModelInstanceString propertyValue="v3" viewModelPropertyId="8:201" id="8:221"/>
-            <ViewModelInstanceString propertyValue="v3" viewModelPropertyId="8:202" id="8:222"/>
-            <ViewModelInstanceString propertyValue="1453" viewModelPropertyId="8:203" id="8:223"/>
             <ViewModelInstanceNumber propertyValue="78" viewModelPropertyId="1:33719" id="5:34547"/>
             <ViewModelInstanceString propertyValue="Stress Liquid Format" viewModelPropertyId="1:33721" id="5:34548"/>
             <ViewModelInstanceString propertyValue="78_stresscliquidformat_v3" viewModelPropertyId="1:33723" id="5:34549"/>
@@ -1568,12 +1320,12 @@
             <ViewModelInstanceList viewModelPropertyId="6:34895" id="6:34897">
                 <ViewModelInstanceListItem name="List Item 1" viewModelId="1:33797" viewModelInstanceId="1:33798" id="6:34900"/>
             </ViewModelInstanceList>
+            <ViewModelInstanceString propertyValue="78" viewModelPropertyId="8:200" id="8:220"/>
+            <ViewModelInstanceString propertyValue="v3" viewModelPropertyId="8:201" id="8:221"/>
+            <ViewModelInstanceString propertyValue="v12" viewModelPropertyId="8:202" id="8:222"/>
+            <ViewModelInstanceString propertyValue="1453" viewModelPropertyId="8:203" id="8:223"/>
         </ViewModelInstance>
         <ViewModelInstance exports="true" name="Instance 2" id="5:34569">
-            <ViewModelInstanceString propertyValue="124" viewModelPropertyId="8:200" id="8:230"/>
-            <ViewModelInstanceString propertyValue="v2" viewModelPropertyId="8:201" id="8:231"/>
-            <ViewModelInstanceString propertyValue="v2" viewModelPropertyId="8:202" id="8:232"/>
-            <ViewModelInstanceString propertyValue="475" viewModelPropertyId="8:203" id="8:233"/>
             <ViewModelInstanceNumber propertyValue="124" viewModelPropertyId="1:33719" id="5:34570"/>
             <ViewModelInstanceString propertyValue="Button Hand" viewModelPropertyId="1:33721" id="5:34571"/>
             <ViewModelInstanceString propertyValue="124_buttonhand_v2" viewModelPropertyId="1:33723" id="5:34572"/>
@@ -1596,23 +1348,83 @@
             <ViewModelInstanceList viewModelPropertyId="6:34895" id="6:34898">
                 <ViewModelInstanceListItem name="List Item 1" viewModelId="1:33797" viewModelInstanceId="1:33798" id="6:34901"/>
             </ViewModelInstanceList>
+            <ViewModelInstanceString propertyValue="124" viewModelPropertyId="8:200" id="8:230"/>
+            <ViewModelInstanceString propertyValue="v25" viewModelPropertyId="8:201" id="8:231"/>
+            <ViewModelInstanceString propertyValue="v26" viewModelPropertyId="8:202" id="8:232"/>
+            <ViewModelInstanceString propertyValue="475" viewModelPropertyId="8:203" id="8:233"/>
         </ViewModelInstance>
     </ViewModel>
     <ViewModel defaultInstanceId="1:33740" name="ButtonVM" id="1:33739">
+        <ViewModelPropertyTrigger name="activate" id="9:204"/>
+        <ViewModelPropertyNumber name="buttonDimming" id="9:206"/>
         <ViewModelPropertyBoolean name="active" id="1:33747"/>
         <ViewModelPropertyBoolean name="pressed" id="1:33745"/>
         <ViewModelPropertyBoolean name="hover" id="1:33743"/>
         <ViewModelPropertyColor componentProps="1" name="buttonColor" id="3:34194"/>
         <ViewModelPropertyString componentProps="1" name="buttonName" id="1:33741"/>
+        <ViewModelInstance exports="true" name="Push all" id="10:300">
+            <ViewModelInstanceString propertyValue="Git Push All" viewModelPropertyId="1:33741" id="10:301"/>
+            <ViewModelInstanceNumber viewModelPropertyId="9:206" id="10:302"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="9:204" id="10:630"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="10:631"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="10:632"/>
+        </ViewModelInstance>
+        <ViewModelInstance exports="true" name="Server" id="10:304">
+            <ViewModelInstanceString propertyValue="Server" viewModelPropertyId="1:33741" id="10:305"/>
+            <ViewModelInstanceNumber viewModelPropertyId="9:206" id="10:306"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="9:204" id="10:633"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="10:634"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="10:635"/>
+        </ViewModelInstance>
+        <ViewModelInstance exports="true" name="Generate all" id="10:308">
+            <ViewModelInstanceString propertyValue="Update All" viewModelPropertyId="1:33741" id="10:309"/>
+            <ViewModelInstanceNumber viewModelPropertyId="9:206" id="10:310"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="9:204" id="10:636"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="10:637"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="10:638"/>
+        </ViewModelInstance>
+        <ViewModelInstance exports="true" name="Sync" id="10:312">
+            <ViewModelInstanceString propertyValue="Sync Files" viewModelPropertyId="1:33741" id="10:313"/>
+            <ViewModelInstanceNumber viewModelPropertyId="9:206" id="10:314"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="9:204" id="10:639"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="10:640"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="10:641"/>
+        </ViewModelInstance>
+        <ViewModelInstance exports="true" name="Generate selected" id="10:316">
+            <ViewModelInstanceString propertyValue="Update" viewModelPropertyId="1:33741" id="10:317"/>
+            <ViewModelInstanceNumber viewModelPropertyId="9:206" id="10:318"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="9:204" id="10:642"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="10:643"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="10:644"/>
+        </ViewModelInstance>
+        <ViewModelInstance exports="true" name="Push selected" id="10:320">
+            <ViewModelInstanceString propertyValue="Push" viewModelPropertyId="1:33741" id="10:321"/>
+            <ViewModelInstanceNumber viewModelPropertyId="9:206" id="10:322"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="9:204" id="10:645"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="10:646"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="10:647"/>
+        </ViewModelInstance>
+        <ViewModelInstance exports="true" name="Link" id="10:324">
+            <ViewModelInstanceString propertyValue="Link" viewModelPropertyId="1:33741" id="10:325"/>
+            <ViewModelInstanceNumber viewModelPropertyId="9:206" id="10:326"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="9:204" id="10:648"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="10:649"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="10:650"/>
+        </ViewModelInstance>
         <ViewModelInstance exports="true" id="1:33740">
             <ViewModelInstanceString propertyValue="Start" viewModelPropertyId="1:33741" id="1:33742"/>
             <ViewModelInstanceBoolean viewModelPropertyId="1:33743" id="1:33744"/>
             <ViewModelInstanceBoolean viewModelPropertyId="1:33745" id="1:33746"/>
             <ViewModelInstanceBoolean viewModelPropertyId="1:33747" id="1:33748"/>
             <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="3:34194" id="3:34206"/>
+            <ViewModelInstanceNumber viewModelPropertyId="9:206" id="10:439"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="9:204" id="10:651"/>
         </ViewModelInstance>
     </ViewModel>
     <ViewModel defaultInstanceId="1:33798" name="ParameterVM" id="1:33797">
+        <ViewModelPropertyString name="configuredDefault" id="10:350"/>
+        <ViewModelPropertyString name="rawToken" id="10:351"/>
+        <ViewModelPropertyString name="kind" id="10:352"/>
         <ViewModelPropertyString name="noteProp" id="6:34719"/>
         <ViewModelPropertyString name="fontProp" id="6:34671"/>
         <ViewModelPropertyBoolean name="booleanProp" id="6:34639"/>
@@ -1703,6 +1515,18 @@
         </ViewModelInstance>
     </ViewModel>
     <ViewModel defaultInstanceId="3:34116" name="MainVM" id="3:34115">
+        <ViewModelPropertyList name="setButtons" id="10:201"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="10:10" name="details" id="10:210"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="1:33739" name="pushAllButton" id="10:211"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="1:33739" name="serverButton" id="10:212"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="1:33739" name="generateAllButton" id="10:213"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="1:33739" name="syncButton" id="10:214"/>
+        <ViewModelPropertyNumber name="listX" id="10:220"/>
+        <ViewModelPropertyNumber name="listY" id="10:221"/>
+        <ViewModelPropertyNumber name="listWidth" id="10:222"/>
+        <ViewModelPropertyNumber name="listHeight" id="10:223"/>
+        <ViewModelPropertyNumber name="scrollOffset" id="10:231"/>
+        <ViewModelPropertyNumber name="contentHeight" id="10:233"/>
         <ViewModelPropertyList name="projectsList" id="5:34539"/>
         <ViewModelInstance exports="true" id="3:34116">
             <ViewModelInstanceList viewModelPropertyId="5:34539" id="5:34540">
@@ -1710,9 +1534,27 @@
                 <ViewModelInstanceListItem name="List Item 2" viewModelId="1:33717" viewModelInstanceId="5:34546" id="5:34542"/>
                 <ViewModelInstanceListItem name="List Item 3" viewModelId="1:33717" viewModelInstanceId="5:34569" id="5:34543"/>
             </ViewModelInstanceList>
+            <ViewModelInstanceViewModel propertyValue="10:20" viewModelPropertyId="10:210" id="10:250"/>
+            <ViewModelInstanceViewModel propertyValue="10:300" viewModelPropertyId="10:211" id="10:251"/>
+            <ViewModelInstanceViewModel propertyValue="10:304" viewModelPropertyId="10:212" id="10:252"/>
+            <ViewModelInstanceViewModel propertyValue="10:308" viewModelPropertyId="10:213" id="10:253"/>
+            <ViewModelInstanceViewModel propertyValue="10:312" viewModelPropertyId="10:214" id="10:254"/>
+            <ViewModelInstanceList viewModelPropertyId="10:201" id="10:255">
+                <ViewModelInstanceListItem viewModelId="10:100" viewModelInstanceId="10:110" id="10:256"/>
+                <ViewModelInstanceListItem viewModelId="10:100" viewModelInstanceId="10:113" id="10:257"/>
+                <ViewModelInstanceListItem viewModelId="10:100" viewModelInstanceId="10:115" id="10:258"/>
+                <ViewModelInstanceListItem viewModelId="10:100" viewModelInstanceId="10:117" id="10:259"/>
+            </ViewModelInstanceList>
+            <ViewModelInstanceNumber viewModelPropertyId="10:220" id="10:700"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:221" id="10:701"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:222" id="10:702"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:223" id="10:703"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:231" id="10:704"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:233" id="10:705"/>
         </ViewModelInstance>
     </ViewModel>
     <ViewModel defaultInstanceId="3:34118" viewModelType="global" name="ColorsGVM" id="3:34117">
+        <ViewModelPropertyAssetFont name="mainFont" id="21:9"/>
         <ViewModelPropertyColor name="addButtonBorder" id="3:34119"/>
         <ViewModelPropertyColor name="background" id="3:34121"/>
         <ViewModelPropertyColor name="border" id="3:34123"/>
@@ -1764,6 +1606,7 @@
             <ViewModelInstanceColor propertyValue="FFFFFFFF" viewModelPropertyId="3:34163" id="3:34164"/>
             <ViewModelInstanceColor propertyValue="FF027000" viewModelPropertyId="3:34165" id="3:34166"/>
             <ViewModelInstanceColor propertyValue="FF03A300" viewModelPropertyId="3:34167" id="3:34168"/>
+            <ViewModelInstanceAssetFont propertyValue="22:58" viewModelPropertyId="21:9" id="21:10"/>
         </ViewModelInstance>
     </ViewModel>
     <ViewModel defaultInstanceId="6:34736" name="TagVM" id="6:34735">

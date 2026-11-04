@@ -1,4 +1,5 @@
 import csv
+import io
 import os
 import re
 import tempfile
@@ -22,26 +23,20 @@ def sanitize_for_filename(value):
     return value.strip("_") or "artboard"
 
 
-def load_navigation_entries(rows, names_path, *, synchronize=True):
-    """Synchronize names in catalog order and return entries in navigation order.
-
-    Keys omit the version and include the page's artboard suffix for shared files.
-    New names are blank, and unused names are retained to avoid losing edits.
-    Legacy repeated filenames are migrated in their original catalog order.
-    Set synchronize=False to resolve labels without writing the names table.
-    """
-    names_path = Path(names_path)
+def parse_navigation_names(contents, source="Names table"):
     existing = []
-    if names_path.exists():
-        with names_path.open(newline="", encoding="utf-8-sig") as names_file:
-            reader = csv.DictReader(names_file)
-            if reader.fieldnames != ["filename", "name"]:
-                raise ValueError(f"{names_path} must have filename and name columns")
-            for name_row in reader:
-                if None in name_row or not (name_row["filename"] or "").strip():
-                    raise ValueError(f"{names_path} contains an invalid name row")
-                existing.append((name_row["filename"].strip(), name_row["name"] or ""))
+    reader = csv.DictReader(io.StringIO(contents.decode("utf-8-sig"), newline=""))
+    if reader.fieldnames != ["filename", "name"]:
+        raise ValueError(f"{source} must have filename and name columns")
+    for name_row in reader:
+        if None in name_row or not (name_row["filename"] or "").strip():
+            raise ValueError(f"{source} contains an invalid name row")
+        existing.append((name_row["filename"].strip(), name_row["name"] or ""))
+    return existing
 
+
+def resolve_navigation_names(rows, existing):
+    """Resolve canonical keys and legacy names without writing any files."""
     groups = defaultdict(list)
     for filename, name in existing:
         groups[name_key(filename)].append(name)
@@ -77,12 +72,19 @@ def load_navigation_entries(rows, names_path, *, synchronize=True):
         if candidates and len(groups[key]) == len(candidates):
             names.update(zip(candidates, groups.pop(key)))
         elif len(groups[key]) > 1 and candidates:
-            raise ValueError(f"{names_path} has ambiguous legacy names for {key}")
+            raise ValueError(f"Names table has ambiguous legacy names for {key}")
 
     updated = [(key, names.get(key, "")) for _, key in catalog]
     for key, values in groups.items():
         updated.extend((key, value) for value in values)
+    return updated, catalog
 
+
+def load_navigation_entries(rows, names_path, *, synchronize=True):
+    """Resolve version-independent names; optionally synchronize the names table."""
+    names_path = Path(names_path)
+    existing = parse_navigation_names(names_path.read_bytes(), names_path) if names_path.exists() else []
+    updated, catalog = resolve_navigation_names(rows, existing)
     if synchronize and (updated != existing or not names_path.exists()):
         temp_path = None
         try:
@@ -100,6 +102,11 @@ def load_navigation_entries(rows, names_path, *, synchronize=True):
             if temp_path is not None and temp_path.exists():
                 temp_path.unlink()
 
+    return navigation_labels(catalog, updated)
+
+
+def navigation_labels(catalog, updated):
+    names = dict(updated)
     entries = []
     for row, key in reversed(catalog):
         base = name_key(row["src"])

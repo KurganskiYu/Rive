@@ -1,0 +1,235 @@
+<Rive version="1" kind="fragment">
+    <Artboard defaultStateMachineId="10:150" viewModelId="10:100" viewModelInstanceId="10:110" isComponent="true" spaceId="1:34092" width="53" height="35" styleId="10:131" x="1005" y="600" name="SetButton" id="10:130">
+        <LayoutComponentStyle intrinsicallySizedValue="true" layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="10:131"/>
+        <LayoutComponent styleId="10:133" name="Set tab" id="10:132">
+            <LayoutComponentStyle gapHorizontal="10" paddingLeft="16" paddingRight="16" paddingTop="8" paddingBottom="8" layoutAlignmentType="center" intrinsicallySizedValue="true" cornerRadiusTL="16" layoutWidthScaleType="hug" layoutHeightScaleType="hug" widthUnitsValue="auto" heightUnitsValue="auto" id="10:133"/>
+            <Fill id="10:134">
+                <SolidColor colorValue="1A000000" id="10:135"/>
+            </Fill>
+            <Text id="10:136">
+                <TextStylePaint fontSize="16" fontAssetId="1:32921" familyName="Inter" styleName="Regular" id="10:137">
+                    <Fill id="10:138">
+                        <SolidColor colorValue="FF252525" id="10:139"/>
+                    </Fill>
+                    <TextStyleAxis tag="1869640570" axisValue="14" id="10:140"/>
+                    <TextStyleAxis tag="2003265652" axisValue="700" id="10:141"/>
+                    <DataBindContext sourcePathIds="3:34117-21:9" propertyKey="279" nameBased="true" id="21:13"/>
+                </TextStylePaint>
+                <TextValueRun styleId="10:137" text="All" id="10:142">
+                    <DataBindContext sourcePathIds="10:100-10:101" propertyKey="268" id="10:143"/>
+                </TextValueRun>
+                <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="10:144"/>
+            </Text>
+        </LayoutComponent>
+        <StateMachine name="State Machine 1" id="10:150">
+            <StateMachineLayer name="Selection" id="10:151">
+                <AnyState x="400" id="10:152"/>
+                <ExitState x="480" id="10:153"/>
+                <EntryState id="10:154">
+                    <StateTransition stateToId="10:155" id="10:156"/>
+                </EntryState>
+                <AnimationState animationId="10:170" x="160" id="10:155">
+                    <StateTransition stateToId="10:157" duration="100" id="10:158">
+                        <TransitionViewModelCondition id="10:159">
+                            <TransitionPropertyViewModelComparator id="10:160">
+                                <BindablePropertyBoolean id="10:161">
+                                    <DataBindContext sourcePathIds="10:100-10:102" propertyKey="634" id="10:162"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator value="true" id="10:163"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="10:175" x="160" y="120" id="10:157">
+                    <StateTransition stateToId="10:155" duration="100" id="10:164">
+                        <TransitionViewModelCondition id="10:165">
+                            <TransitionPropertyViewModelComparator id="10:166">
+                                <BindablePropertyBoolean id="10:167">
+                                    <DataBindContext sourcePathIds="10:100-10:102" propertyKey="634" id="10:168"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator id="10:169"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+            </StateMachineLayer>
+            <StateMachineListener targetId="10:132" name="Select set" id="10:180">
+                <ListenerInputType listenerTypeValue="click" id="10:181"/>
+                <ListenerViewModelChange id="10:182">
+                    <BindablePropertyTrigger id="10:183">
+                        <DataBindContext sourcePathIds="10:100-10:103" propertyKey="686" direction="true" id="10:184"/>
+                    </BindablePropertyTrigger>
+                </ListenerViewModelChange>
+            </StateMachineListener>
+        </StateMachine>
+        <LinearAnimation name="Unselected" id="10:170">
+            <KeyedObject objectId="10:135" id="10:171">
+                <KeyedProperty property="colorValue" id="10:172">
+                    <KeyFrameColor value="1A000000" id="10:173"/>
+                </KeyedProperty>
+            </KeyedObject>
+            <KeyedObject objectId="10:139" id="10:185">
+                <KeyedProperty property="colorValue" id="10:186">
+                    <KeyFrameColor value="FF252525" id="10:187"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+        <LinearAnimation name="Selected" id="10:175">
+            <KeyedObject objectId="10:135" id="10:176">
+                <KeyedProperty property="colorValue" id="10:177">
+                    <KeyFrameColor value="4D000000" id="10:178"/>
+                </KeyedProperty>
+            </KeyedObject>
+            <KeyedObject objectId="10:139" id="10:188">
+                <KeyedProperty property="colorValue" id="10:189">
+                    <KeyFrameColor value="FFAEAEAE" id="10:190"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+    </Artboard>
+    <Artboard defaultStateMachineId="21:33" includeInExport="false" spaceId="1:34092" width="182" height="67" styleId="21:31" y="-313" name="Artboard 1" id="21:28">
+        <Text alignValue="right" x="44" y="27" id="21:40">
+            <TextStylePaint fontSize="24" fontAssetId="23:68" familyName="PT Sans" styleName="Regular" id="21:41">
+                <Fill fillRule="clockwise" id="21:42">
+                    <SolidColor colorValue="FFFFFFFF" id="21:43"/>
+                </Fill>
+            </TextStylePaint>
+            <TextValueRun styleId="21:41" text="text" id="21:46"/>
+        </Text>
+        <Fill fillRule="clockwise" id="21:29">
+            <SolidColor colorValue="FF282828" id="21:30"/>
+        </Fill>
+        <LayoutComponentStyle id="21:31"/>
+        <StateMachine name="State Machine 1" id="21:33">
+            <StateMachineLayer name="Layer 1" id="21:34">
+                <AnyState x="400" id="21:35"/>
+                <ExitState x="480" id="21:36"/>
+                <EntryState id="21:37">
+                    <StateTransition stateToId="21:38" id="21:39"/>
+                </EntryState>
+                <AnimationState animationId="21:32" x="160" id="21:38"/>
+            </StateMachineLayer>
+        </StateMachine>
+        <LinearAnimation name="Timeline 1" id="21:32"/>
+    </Artboard>
+    <ComponentAsset artboardId="10:130" name="Set tab" id="10:191"/>
+    <DataConverterRangeMapper minInput="0" maxOutput="0.34999999" name="Disabled button appearance" id="9:208"/>
+    <ElasticScrollPhysics friction="2.5" speedMultiplier="1.2" constraintId="10:230" name="Catalog list physics" id="10:1"/>
+    <ElasticScrollPhysics friction="2.5" speedMultiplier="1.2" constraintId="10:271" name="Parameter list physics" id="10:2"/>
+    <FontAsset file="Intel One Mono.ttf" isCustom="false" assetId="4228757" name="Intel One Mono" id="20:1"/>
+    <FontAsset file="Inter Tight.ttf" isCustom="false" assetId="4228761" name="Inter Tight" id="20:3"/>
+    <FontAsset file="Roboto Mono.ttf" isCustom="false" assetId="4230199" name="Roboto Mono" id="21:47"/>
+    <FontAsset file="Oxygen Mono.ttf" isCustom="false" assetId="4229811" name="Oxygen Mono" id="22:50"/>
+    <FontAsset file="Reddit Mono.ttf" isCustom="false" assetId="4230165" name="Reddit Mono" id="22:51"/>
+    <FontAsset file="JetBrains Mono.ttf" isCustom="false" assetId="4228795" name="JetBrains Mono" id="22:53"/>
+    <FontAsset file="Victor Mono.ttf" isCustom="false" assetId="4230766" name="Victor Mono" id="22:55"/>
+    <FontAsset file="IBM Plex Mono.ttf" isCustom="false" assetId="4228527" name="IBM Plex Mono" id="22:57"/>
+    <FontAsset file="Roboto.ttf" isCustom="false" assetId="4230194" name="Roboto" id="22:58"/>
+    <FontAsset file="Rubik.ttf" isCustom="false" assetId="4230227" name="Rubik" id="23:61"/>
+    <FontAsset file="Manrope.ttf" isCustom="false" assetId="4229200" name="Manrope" id="23:63"/>
+    <FontAsset file="IBM Plex Sans.ttf" isCustom="false" assetId="4228533" name="IBM Plex Sans" id="23:65"/>
+    <FontAsset file="PT Sans.ttf" isCustom="false" assetId="4230089" name="PT Sans" id="23:68"/>
+    <ViewModel defaultInstanceId="9:1510" name="StartButtonVM" id="9:1500">
+        <ViewModelPropertyString componentProps="1" name="buttonName" id="9:1501"/>
+        <ViewModelPropertyBoolean name="hover" id="9:1502"/>
+        <ViewModelPropertyBoolean name="pressed" id="9:1503"/>
+        <ViewModelPropertyBoolean name="active" id="9:1504"/>
+        <ViewModelPropertyColor componentProps="1" name="buttonColor" id="9:1505"/>
+        <ViewModelPropertyTrigger name="activate" id="10:3"/>
+        <ViewModelPropertyNumber name="dimming" id="10:4"/>
+        <ViewModelInstance id="9:1510">
+            <ViewModelInstanceString propertyValue="Start" viewModelPropertyId="9:1501" id="9:1511"/>
+            <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="9:1505" id="9:1512"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:4" id="10:339"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="10:3" id="10:600"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="9:1502" id="10:601"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="9:1503" id="10:602"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="9:1504" id="10:603"/>
+        </ViewModelInstance>
+        <ViewModelInstance exports="true" name="Trigger button" id="10:330">
+            <ViewModelInstanceString propertyValue="Start" viewModelPropertyId="9:1501" id="10:331"/>
+            <ViewModelInstanceColor propertyValue="FF4B8F02" viewModelPropertyId="9:1505" id="10:332"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:4" id="10:333"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="10:3" id="10:604"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="9:1502" id="10:605"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="9:1503" id="10:606"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="9:1504" id="10:607"/>
+        </ViewModelInstance>
+        <ViewModelInstance exports="true" name="Preview button" id="10:335">
+            <ViewModelInstanceString propertyValue="Preview" viewModelPropertyId="9:1501" id="10:336"/>
+            <ViewModelInstanceColor propertyValue="FFBB7D00" viewModelPropertyId="9:1505" id="10:337"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:4" id="10:338"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="10:3" id="10:608"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="9:1502" id="10:609"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="9:1503" id="10:610"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="9:1504" id="10:611"/>
+        </ViewModelInstance>
+    </ViewModel>
+    <ViewModel defaultInstanceId="10:20" name="DetailsVM" id="10:10">
+        <ViewModelPropertyString name="fileName" id="10:11"/>
+        <ViewModelPropertyString name="artboardLabel" id="10:12"/>
+        <ViewModelPropertyList name="parameters" id="10:13"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="9:1500" name="triggerButton" id="10:14"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="9:1500" name="previewButton" id="10:15"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="1:33739" name="updateButton" id="10:16"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="1:33739" name="pushButton" id="10:17"/>
+        <ViewModelPropertyViewModel viewModelReferenceId="1:33739" name="linkButton" id="10:18"/>
+        <ViewModelPropertyBoolean name="previewMode" id="10:19"/>
+        <ViewModelPropertyNumber name="scrollOffset" id="10:25"/>
+        <ViewModelPropertyNumber name="contentHeight" id="10:26"/>
+        <ViewModelPropertyNumber name="viewportHeight" id="10:27"/>
+        <ViewModelPropertyNumber name="viewportX" id="10:750"/>
+        <ViewModelPropertyNumber name="viewportY" id="10:751"/>
+        <ViewModelPropertyNumber name="viewportWidth" id="10:752"/>
+        <ViewModelPropertyNumber name="screenX" id="10:720"/>
+        <ViewModelPropertyNumber name="screenY" id="10:721"/>
+        <ViewModelPropertyNumber name="screenWidth" id="10:722"/>
+        <ViewModelPropertyNumber name="screenHeight" id="10:723"/>
+        <ViewModelInstance id="10:20">
+            <ViewModelInstanceString propertyValue="Select an animation" viewModelPropertyId="10:11" id="10:21"/>
+            <ViewModelInstanceString propertyValue="artboard: -" viewModelPropertyId="10:12" id="10:22"/>
+            <ViewModelInstanceViewModel propertyValue="10:330" viewModelPropertyId="10:14" id="10:23"/>
+            <ViewModelInstanceViewModel propertyValue="10:335" viewModelPropertyId="10:15" id="10:24"/>
+            <ViewModelInstanceViewModel propertyValue="10:316" viewModelPropertyId="10:16" id="10:28"/>
+            <ViewModelInstanceViewModel propertyValue="10:320" viewModelPropertyId="10:17" id="10:29"/>
+            <ViewModelInstanceViewModel propertyValue="10:324" viewModelPropertyId="10:18" id="10:30"/>
+            <ViewModelInstanceList viewModelPropertyId="10:13" id="10:612"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="10:19" id="10:613"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:25" id="10:614"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:26" id="10:615"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:27" id="10:616"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:720" id="10:724"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:721" id="10:725"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:722" id="10:726"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:723" id="10:727"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:750" id="10:753"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:751" id="10:754"/>
+            <ViewModelInstanceNumber viewModelPropertyId="10:752" id="10:755"/>
+        </ViewModelInstance>
+    </ViewModel>
+    <ViewModel defaultInstanceId="10:110" name="SetButtonVM" id="10:100">
+        <ViewModelPropertyString name="label" id="10:101"/>
+        <ViewModelPropertyBoolean name="selected" id="10:102"/>
+        <ViewModelPropertyTrigger name="activate" id="10:103"/>
+        <ViewModelInstance id="10:110">
+            <ViewModelInstanceString propertyValue="All" viewModelPropertyId="10:101" id="10:111"/>
+            <ViewModelInstanceBoolean propertyValue="true" viewModelPropertyId="10:102" id="10:112"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="10:103" id="10:617"/>
+        </ViewModelInstance>
+        <ViewModelInstance name="Welltory" id="10:113">
+            <ViewModelInstanceString propertyValue="Welltory" viewModelPropertyId="10:101" id="10:114"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="10:102" id="10:618"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="10:103" id="10:619"/>
+        </ViewModelInstance>
+        <ViewModelInstance name="Personal" id="10:115">
+            <ViewModelInstanceString propertyValue="Personal" viewModelPropertyId="10:101" id="10:116"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="10:102" id="10:620"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="10:103" id="10:621"/>
+        </ViewModelInstance>
+        <ViewModelInstance name="Crew Mingle" id="10:117">
+            <ViewModelInstanceString propertyValue="Crew Mingle" viewModelPropertyId="10:101" id="10:118"/>
+            <ViewModelInstanceBoolean viewModelPropertyId="10:102" id="10:622"/>
+            <ViewModelInstanceTrigger viewModelPropertyId="10:103" id="10:623"/>
+        </ViewModelInstance>
+    </ViewModel>
+</Rive>

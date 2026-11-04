@@ -4,7 +4,10 @@ struct CatalogEntry: Decodable, Identifiable, Sendable {
     let id: String
     let src: String
     let label: String
+    let name: String
     let size: String
+    let sizeX: String
+    let sizeY: String
     let preview: String
     let hasPreview: Bool
     let artboard: String
@@ -20,6 +23,19 @@ struct CatalogEntry: Decodable, Identifiable, Sendable {
     var displayName: String {
         guard number != nil, let separator = label.firstIndex(of: " ") else { return label }
         return String(label[label.index(after: separator)...])
+    }
+
+    var tags: [String] {
+        var result: [String] = []
+        if hasPreview { result.append("P") }
+        if parameters.contains(where: { $0.kind == "font" }) { result.append("F") }
+        if parameters.contains(where: { ["num", "v_num"].contains($0.kind) }) { result.append("N") }
+        if parameters.contains(where: { ["bol", "v_bol"].contains($0.kind) }) { result.append("B") }
+        if parameters.contains(where: { $0.kind == "txt" }) { result.append("S") }
+        if parameters.contains(where: { $0.kind == "enum" }) { result.append("E") }
+        if trigger?.isEmpty == false { result.append("T") }
+        if !notes.isEmpty { result.append("n") }
+        return result
     }
 }
 
@@ -48,8 +64,15 @@ struct CatalogSnapshot: Decodable, Sendable {
     let revision: String
 }
 
+struct CatalogEdit: Encodable, Sendable {
+    let id: String
+    let name: String
+}
+
 struct CatalogFailure: LocalizedError {
     let message: String
+    var code: String? = nil
+    var diagnostics: [CatalogDiagnostic] = []
     var errorDescription: String? { message }
 }
 
@@ -79,9 +102,32 @@ enum CatalogBridge {
         let success: Bool
         let data: CatalogSnapshot?
         let error: String?
+        let errorCode: String?
+    }
+
+    private struct Request: Encodable {
+        let version = 1
+        let command: String
+        let root: String
+        let baseRevision: String?
+        let edits: [CatalogEdit]?
     }
 
     static func load(_ configuration: CatalogConfiguration) async throws -> CatalogSnapshot {
+        try await execute(configuration, command: "load")
+    }
+
+    static func save(_ configuration: CatalogConfiguration, revision: String,
+                     edits: [CatalogEdit]) async throws -> CatalogSnapshot {
+        try await execute(configuration, command: "save", revision: revision, edits: edits)
+    }
+
+    static func recover(_ configuration: CatalogConfiguration) async throws -> CatalogSnapshot {
+        try await execute(configuration, command: "recover")
+    }
+
+    private static func execute(_ configuration: CatalogConfiguration, command: String,
+                                revision: String? = nil, edits: [CatalogEdit]? = nil) async throws -> CatalogSnapshot {
         let task = Task.detached {
             let process = Process()
             process.executableURL = configuration.python
@@ -93,9 +139,16 @@ enum CatalogBridge {
             process.standardInput = input
             process.standardOutput = output
             process.standardError = errors
-            let request = try JSONSerialization.data(withJSONObject: [
-                "version": 1, "command": "load", "root": configuration.root.path
-            ])
+            let encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            let request = try encoder.encode(Request(
+                command: command, root: configuration.root.path, baseRevision: revision, edits: edits
+            ))
+            var inputClosed = false
+            defer {
+                if !inputClosed { input.fileHandleForWriting.closeFile() }
+                if process.isRunning { process.terminate() }
+            }
             let (stdout, stderr) = try await withTaskCancellationHandler {
                 try Task.checkCancellation()
                 try process.run()
@@ -110,6 +163,7 @@ enum CatalogBridge {
                     try input.fileHandleForWriting.write(contentsOf: request)
                 }
                 input.fileHandleForWriting.closeFile()
+                inputClosed = true
                 process.waitUntilExit()
                 let data = await outputData
                 let errors = String(decoding: await errorData, as: UTF8.self)
@@ -130,7 +184,10 @@ enum CatalogBridge {
                 throw CatalogFailure(message: "Unsupported catalog protocol version.")
             }
             guard process.terminationStatus == 0, response.success, let snapshot = response.data else {
-                throw CatalogFailure(message: response.error ?? "Catalog command failed: \(stderr)")
+                throw CatalogFailure(
+                    message: response.error ?? "Catalog command failed: \(stderr)",
+                    code: response.errorCode, diagnostics: response.data?.diagnostics ?? []
+                )
             }
             guard stderr.isEmpty else {
                 throw CatalogFailure(message: "Catalog command reported an error: \(stderr)")
