@@ -104,13 +104,13 @@
       <details open>
         <summary>Animations</summary>
         <ul>
-          <li><a href="pages/84_careheader_v7.html">84 Care Header</a></li>
+          <li><a href="pages/84_careheader_v8.html">84 Care Header</a></li>
           <li><a href="pages/83_trackersetting_v1.html">83 Tracker Setting</a></li>
           <li><a href="pages/82_carecorner_v3.html">82 Care Corner</a></li>
           <li><a href="pages/81_rainbowbird_v2.html">81 Rainbow Bird</a></li>
           <li><a href="pages/80_heartzones_v1.html">80 Heart Zones</a></li>
           <li><a href="pages/77_migrainelog_v3.html">77 Migraine Log</a></li>
-          <li><a href="pages/79_buttonhand_v13.html">79 Button Hand</a></li>
+          <li><a href="pages/79_buttonhand_v15.html">79 Button Hand</a></li>
           <li><a href="pages/78_cardpocket_v10.html">78 Card Pocket</a></li>
           <li><a href="pages/77_chartmatrix_v8.html">77 Chart Matrix</a></li>
           <li><a href="pages/77_migrainechartmini_v1.html">77 Migraine Chart Mini</a></li>
@@ -130,7 +130,7 @@
           <li><a href="pages/62_patternpill_v1.html">62 Pattern Pill</a></li>
           <li><a href="pages/61_umbrellas_v2.html">61 Umbrellas</a></li>
           <li><a href="pages/60_stresscalendar2_v2.html">60 Stress Calendar 2</a></li>
-          <li><a href="pages/59_paymentcomplete_v4.html">59 Payment Complete</a></li>
+          <li><a href="pages/59_paymentcomplete_v5.html">59 Payment Complete</a></li>
           <li><a href="pages/58_mountain_v3.html">58 Mountain</a></li>
           <li><a href="pages/57_energyfill_v2.html">57 Energy Fill</a></li>
           <li><a href="pages/56_progressbar2_v3.html">56 Progress Bar 2</a></li>
@@ -232,8 +232,8 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div style="white-space: nowrap;"><a href="pages/84_careheader_v7.html" style="color: #888888;">84 careheader</a><span class="riv-file-size">&nbsp&nbsp;2 KB</span></div>
-          
+          <div style="white-space: nowrap;"><a href="pages/84_careheader_v8.html" style="color: #888888;">84 careheader</a><span class="riv-file-size">&nbsp&nbsp;2 KB</span></div>
+          <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
@@ -390,8 +390,8 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div style="white-space: nowrap;"><a href="pages/79_buttonhand_v13.html" style="color: #888888;">79 buttonhand</a><span class="riv-file-size">&nbsp&nbsp;69 KB</span></div>
-          
+          <div style="white-space: nowrap;"><a href="pages/79_buttonhand_v15.html" style="color: #888888;">79 buttonhand</a><span class="riv-file-size">&nbsp&nbsp;69 KB</span></div>
+          <button id="btn6" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
         <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
@@ -465,7 +465,7 @@
 <script>
 
 const r0 = new rive.Rive({
-    src: "riv/84_careheader_v7.riv",
+    src: "riv/84_careheader_v8.riv",
     canvas: document.getElementById("canvas0"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
@@ -525,6 +525,23 @@ const r0 = new rive.Rive({
       });
     }
   },
+});
+document.getElementById("btn0").addEventListener("click", () => {
+    const currentVmi = r0.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("start");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r0.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "start");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): start");
+    }
 });
 
 const r1 = new rive.Rive({
@@ -664,7 +681,7 @@ const r5 = new rive.Rive({
 });
 
 const r6 = new rive.Rive({
-    src: "riv/79_buttonhand_v13.riv",
+    src: "riv/79_buttonhand_v15.riv",
     canvas: document.getElementById("canvas6"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
@@ -723,6 +740,23 @@ const r6 = new rive.Rive({
       });
     }
   },
+});
+document.getElementById("btn6").addEventListener("click", () => {
+    const currentVmi = r6.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("start");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r6.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "start");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): start");
+    }
 });
 
 const r7 = new rive.Rive({

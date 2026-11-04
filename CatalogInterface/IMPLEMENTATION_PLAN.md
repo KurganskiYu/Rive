@@ -26,6 +26,105 @@ Decisions confirmed during this investigation:
 
 This document is a plan, not an implementation of the app or scene changes.
 
+### Implementation progress
+
+The first foundation milestone is implemented:
+
+- [Shared catalog grammar](../catalog_core.py), re-exported by the existing
+  generator without changing its CLI behavior.
+- [Read-only JSON bridge](../catalog_cli.py): versioned `load`/`validate`
+  commands, located diagnostics, raw-row/token preservation, and read-only
+  resolution of names.
+- [macOS integration prototype](./macOS/): actual catalog rows in a Rive
+  component list, search/pagination, row selection, independent checkboxes,
+  temporary name-editing popovers, and a separate native animation preview.
+- The scene's new `IntegrationHarness` reuses the existing `Project`/`Tag`
+  design without prematurely redesigning the full catalog interface.
+- `Param` is now registered as a component. The unfinished add form no longer
+  shares the row view-model type. Host selection replaces per-row selection
+  toggling; display strings distinguish missing metadata from zero values.
+
+Run from the repository root:
+
+```bash
+CatalogInterface/macOS/run.sh
+# Optional: choose a Python executable explicitly.
+CatalogInterface/macOS/run.sh --python /opt/homebrew/bin/python3
+
+python3 -B -m unittest test_catalog_core test_copy_recent
+swift test --package-path CatalogInterface/macOS \
+  --scratch-path "$HOME/Library/Caches/RiveCatalogManager"
+```
+
+The launcher compiles the local scene before opening the app. Native build
+products live outside Dropbox: cloud-added Finder metadata caused code-signing
+failure when the default build directory was inside this workspace.
+
+**Not implemented yet:** persisted drafts/safe multi-file saves, ownership/set
+metadata and migration, the complete add/edit form, live parameter/default
+editing, generation from the app, recent-export import, deployment, and iOS sync.
+The original full details panel remains a design prototype; the test app uses
+an explicit native preview pane rather than a guessed overlay frame. Reload
+discards name drafts. Script execution and text-input-library support remain
+separate feasibility gates, not verified capabilities of this app.
+
+The measurements and "no Swift app was built" statements below describe the
+original planning baseline, before this implementation milestone.
+
+#### Session handoff: 2026-11-04
+
+**Stopping point:** a working read-only foundation, not the full first
+edit/save/generate iteration. Phase 0's native binding/gesture/list/preview
+integration is established; Phase 1's persisted drafts and recovery are still
+pending.
+
+Verified today:
+
+- The real catalog loads **118 entries with no diagnostics**, without changing
+  the CSV or names table.
+- **23 Python tests** passed, covering shared parsing, raw tokens, name-table
+  read-only behavior, identities, validation, and existing ZIP/import behavior.
+- **2 native integration tests** passed: actual list creation/mutation,
+  independent VM values, draft-name updates, real AppKit mouse gestures,
+  exclusive selection, independent checkboxes, one host event per row click,
+  rapid preview switching, and separate animation loading.
+- The macOS executable builds with Apple runtime **6.29.0**.
+- Rive compile verification and inspection both report **no problems**.
+- The original generator still re-exports the extracted helpers; its existing
+  import/generation-summary tests pass. No real catalog generation, import,
+  archive deletion, publishing, or iOS sync was performed.
+
+Implementation details worth preserving:
+
+- Build/test with the external scratch directory shown above. The abandoned
+  default `.build` directory in Dropbox is not the working build.
+- Native gesture tests must wait for the asynchronously created Metal subview
+  and a laid-out window before sending events.
+- Keep one host subscription per action property. Event-count verification uses
+  the store's counter, not a second subscription to the same trigger stream.
+- Cancelled/stale preview operations must not overwrite the current preview's
+  error state. The SDK can report cancellation as its own error type.
+- All editing is currently temporary. Reload discards draft names; there is no
+  CSV save command, and the bridge explicitly rejects writes.
+
+**Small unfinished wiring:** the backend now returns parsed `size_x`/`size_y`
+labels. Add them to the Swift DTO and use them in `CatalogStore.updateRows`
+instead of splitting the raw size string in Swift. This preserves Python's
+case-insensitive/fixed/layout parsing and keeps grammar out of the host.
+
+Recommended order tomorrow:
+
+1. Finish that dimension-label wiring and add its mixed-case/layout regression.
+2. Re-run the commands above; launch the prototype and review native editing UX.
+3. Implement Phase 1's editable draft and safe save/recovery boundary with
+   temporary-directory tests before enabling any real catalog writes.
+4. Then wire the full Rive details/add form and the save/generate/local-preview
+   loop. Ownership groups/presentation sets follow; publishing/sync stay disabled.
+
+Changes are uncommitted. The working files are the shared core/bridge and Python
+tests, the navigation helper and maintained generator, the scene, this plan, and
+the `macOS` package/launcher/tests. No other task needs to be started tonight.
+
 ## 2. Findings from the current project
 
 ### 2.1 Pipeline inventory

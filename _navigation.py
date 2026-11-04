@@ -22,12 +22,13 @@ def sanitize_for_filename(value):
     return value.strip("_") or "artboard"
 
 
-def load_navigation_entries(rows, names_path):
+def load_navigation_entries(rows, names_path, *, synchronize=True):
     """Synchronize names in catalog order and return entries in navigation order.
 
     Keys omit the version and include the page's artboard suffix for shared files.
     New names are blank, and unused names are retained to avoid losing edits.
     Legacy repeated filenames are migrated in their original catalog order.
+    Set synchronize=False to resolve labels without writing the names table.
     """
     names_path = Path(names_path)
     existing = []
@@ -82,7 +83,7 @@ def load_navigation_entries(rows, names_path):
     for key, values in groups.items():
         updated.extend((key, value) for value in values)
 
-    if updated != existing or not names_path.exists():
+    if synchronize and (updated != existing or not names_path.exists()):
         temp_path = None
         try:
             with tempfile.NamedTemporaryFile(

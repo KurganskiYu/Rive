@@ -104,13 +104,13 @@
       <details open>
         <summary>Animations</summary>
         <ul>
-          <li><a href="84_careheader_v7.html">84 Care Header</a></li>
+          <li><a href="84_careheader_v8.html">84 Care Header</a></li>
           <li><a href="83_trackersetting_v1.html">83 Tracker Setting</a></li>
           <li><a href="82_carecorner_v3.html">82 Care Corner</a></li>
           <li><a href="81_rainbowbird_v2.html">81 Rainbow Bird</a></li>
           <li><a href="80_heartzones_v1.html">80 Heart Zones</a></li>
           <li><a href="77_migrainelog_v3.html">77 Migraine Log</a></li>
-          <li><a href="79_buttonhand_v13.html">79 Button Hand</a></li>
+          <li><a href="79_buttonhand_v15.html">79 Button Hand</a></li>
           <li><a href="78_cardpocket_v10.html">78 Card Pocket</a></li>
           <li><a href="77_chartmatrix_v8.html">77 Chart Matrix</a></li>
           <li><a href="77_migrainechartmini_v1.html">77 Migraine Chart Mini</a></li>
@@ -130,7 +130,7 @@
           <li><a href="62_patternpill_v1.html">62 Pattern Pill</a></li>
           <li><a href="61_umbrellas_v2.html">61 Umbrellas</a></li>
           <li><a href="60_stresscalendar2_v2.html">60 Stress Calendar 2</a></li>
-          <li><a href="59_paymentcomplete_v4.html">59 Payment Complete</a></li>
+          <li><a href="59_paymentcomplete_v5.html">59 Payment Complete</a></li>
           <li><a href="58_mountain_v3.html">58 Mountain</a></li>
           <li><a href="57_energyfill_v2.html">57 Energy Fill</a></li>
           <li><a href="56_progressbar2_v3.html">56 Progress Bar 2</a></li>
@@ -289,8 +289,8 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div style="white-space: nowrap;"><a href="59_paymentcomplete_v4.html" style="color: #888888;">59 paymentcomplete</a><span class="riv-file-size">&nbsp&nbsp;1092 KB</span></div>
-          
+          <div style="white-space: nowrap;"><a href="59_paymentcomplete_v5.html" style="color: #888888;">59 paymentcomplete</a><span class="riv-file-size">&nbsp&nbsp;150 KB</span></div>
+          <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
       </div>
@@ -543,14 +543,32 @@ const r1 = new rive.Rive({
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/59_paymentcomplete_v4.riv",
+    src: "../riv/59_paymentcomplete_v5.riv",
     canvas: document.getElementById("canvas2"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
 
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
   },
+});
+document.getElementById("btn2").addEventListener("click", () => {
+    const currentVmi = r2.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("start");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r2.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "start");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): start");
+    }
 });
 
 const r3 = new rive.Rive({

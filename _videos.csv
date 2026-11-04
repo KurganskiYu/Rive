@@ -90,7 +90,7 @@ contraTest_v5,375x812,
 56_progressbar2_v3,393x80,,v_num:percent(52:0-100)
 57_energyfill_v2,360x800,360x800,
 58_mountain_v3,360x800,360x800,
-59_paymentcomplete_v4,393x852,393x852,
+59_paymentcomplete_v5,393x852,393x852,trigger:"start"
 60_stresscalendar2_v2,325x352,375x812,v_num:daysAmount(31:1-31),v_num:delay(40:0-100),txt:percentToData("60 80 65 99 31 10 5 78 60 45 87 39 50 10 98 76 65 12 32 76 88 55 38 1 54 23 34 5 8 78 21 55"),note:"Scripting"
 61_umbrellas_v2,393x206,,
 62_patternpill_v1,360x800,360x800, 
@@ -110,10 +110,10 @@ contraTest_v5,375x812,
 77_migrainechartmini_v1,393x150,393x150,v_num:state1(2:0-2),v_num:state2(2:0-2),v_num:state3(1:0-2),txt:name1("Stress Impact"),txt:name2("Active Time"),txt:name3("Sleep Score")
 77_chartmatrix_v8,393xlayout,393xlayout,v_bol:jumps(False),v_num:rowHeight(40:30-50),v_num:tapIndex(0:0-9),note:"+'dates' and 'days' parameters in CSV format"
 78_cardpocket_v10,393x530,393x530,trigger:"start",font:"NovemberLC-Regular.otf",font:"NovemberLC-Heavy.otf",txt:text1("Make sense of your days. together"),txt:text2("You’ve started tracking your crashes. Care helps you look at what was happening around them over time. with guidance from medical experts and people who understand what crashes feel like.")
-79_buttonhand_v13,393x226,,v_bol:background(False),v_bol:pressed(False),txt:buttonText("Explore patterns in Welltory Care"),font:"NovemberLC-Bold.otf",note:"'press' trigger"
+79_buttonhand_v15,393x226,,trigger:"start",v_bol:background(False),v_bol:pressed(False),txt:buttonText("Explore patterns in Welltory Care"),font:"NovemberLC-Bold.otf",note:"'press' trigger"
 77_migrainelog_v3,393x100,393x206,v_bol:tenScale(True),txt:row1("0 99 5 99 99 10 7"),txt:rowName1("Episode logged"),note:"+'dates' and 'days' parameters in CSV format",note:"trigger# for each day tap"
 80_heartzones_v1,393x300,393x524,trigger:"start",v_num:which(1:1-5)
 81_rainbowbird_v2,393x300,393x524,
 82_carecorner_v3,393x300,393x520, 
 83_trackersetting_v1,326x329,,v_num:mode(0:0-1) 
-84_careheader_v7,393x250,393x852,v_num:scrollAmount(0:0.0-1.0),font:"NovemberLC-Heavy.otf",txt:headerText("Take a look inside Care: expert answers and women who get it")
+84_careheader_v8,393x250,393x852,trigger:"start",v_num:scrollAmount(0:0.0-1.0),font:"NovemberLC-Heavy.otf",txt:headerText("Take a look inside Care: expert answers and women who get it")

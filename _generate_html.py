@@ -12,6 +12,12 @@ import zipfile
 from html import escape as html_escape
 
 from _navigation import load_navigation_entries, render_navigation, sanitize_for_filename
+from catalog_core import (
+    DEFAULT_ARTBOARD, DEFAULT_STATE_MACHINE, INPUT_TYPE_PREFIXES, LAYOUT_KEYWORD,
+    LAYOUT_PLACEHOLDER_PX, SCALAR_KEYS, assign_page_stems, load_csv_rows,
+    parse_enum_spec, parse_font_spec, parse_input_spec, parse_input_type_name,
+    parse_number_range, parse_size_spec, strip_quotes,
+)
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, "_videos.csv")
@@ -132,35 +138,6 @@ html_foot = """
 SCALE_TO_200PX = True
 ANIMATIONS_PER_PAGE = 8
 
-LAYOUT_KEYWORD = "layout"
-LAYOUT_PLACEHOLDER_PX = 300  # initial canvas size on an auto axis, replaced once the Rive file loads
-
-def parse_size_spec(size_str):
-    """Parse `WxH`. Either side may be `layout` to let the Rive layout (Fit.Layout) decide
-    that dimension, e.g. `393xlayout` (fixed width, auto height), `layoutx393`
-    (auto width, fixed height) or `layoutxlayout` (both auto)."""
-    spec = {"width": 0, "height": 0, "auto_w": False, "auto_h": False}
-    if not size_str:
-        return spec
-    parts = size_str.lower().split('x')
-    if len(parts) != 2:
-        return spec
-    values = []
-    for part in parts:
-        part = part.strip()
-        if part == LAYOUT_KEYWORD:
-            values.append(None)
-            continue
-        try:
-            values.append(int(part))
-        except ValueError:
-            return spec
-    spec["auto_w"] = values[0] is None
-    spec["auto_h"] = values[1] is None
-    spec["width"] = LAYOUT_PLACEHOLDER_PX if spec["auto_w"] else values[0]
-    spec["height"] = LAYOUT_PLACEHOLDER_PX if spec["auto_h"] else values[1]
-    return spec
-
 def is_layout(ctx):
     return bool(ctx.get("auto_w") or ctx.get("auto_h"))
 
@@ -254,74 +231,6 @@ def resize_call_js(var_name, canvas_id, ctx, scale=1.0):
     return (f'autoSizeLayoutCanvas({var_name}, document.getElementById("{canvas_id}"), '
             f'{auto_w}, {auto_h}, {scale:.6g});')
 
-DEFAULT_STATE_MACHINE = "State Machine 1"
-DEFAULT_ARTBOARD = "main"
-SCALAR_KEYS = {"sm": "state_machine", "artboard": "artboard", "trigger": "trigger"}
-INPUT_TYPE_PREFIXES = {"num", "bol", "v_num", "v_bol", "txt", "col", "img", "list", "enum", "font"}
-
-def strip_quotes(value):
-    value = value.strip()
-    if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
-        return value[1:-1]
-    return value
-
-def load_csv_rows(csv_file_path):
-    """Parse the flexible CSV format: src,size,preview,token1,token2,...
-    Tokens are freeform `key:value` pairs, any order/count, omitted when unused.
-    Recognized scalar keys: sm, artboard, trigger.
-    `note` may repeat; every occurrence is kept in row["notes"].
-    Recognized input-type prefixes: num, bol, v_num, v_bol, txt, col, img, list, enum, font.
-    """
-    with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
-        lines = csvfile.read().splitlines()
-
-    if not lines:
-        return []
-
-    rows = []
-    for raw_line in lines[1:]:
-        if not raw_line.strip():
-            continue
-
-        values = next(csv.reader([raw_line]))
-        row = {
-            "src": values[0].strip() if len(values) > 0 else "",
-            "size": values[1].strip() if len(values) > 1 else "",
-            "preview": values[2].strip() if len(values) > 2 else "",
-            "inputs": [],
-            "notes": [],
-        }
-        if row["src"].lower().endswith(".riv"):
-            row["src"] = row["src"][:-4]
-
-        for raw_token in values[3:]:
-            token = raw_token.strip()
-            if not token:
-                continue
-            key, sep, rest = token.partition(":")
-            if not sep:
-                print(f"Warning: ignoring malformed token '{token}' for {row['src']}")
-                continue
-            if key == "note":
-                note = strip_quotes(rest)
-                if note:
-                    row["notes"].append(note)
-            elif key in SCALAR_KEYS:
-                value = strip_quotes(rest)
-                if key == "artboard" and value == "-":
-                    # Explicitly omit the artboard (e.g. old .riv files with a single,
-                    # arbitrarily-named artboard) - let Rive use the file's only/default artboard.
-                    value = ""
-                row[SCALAR_KEYS[key]] = value
-            elif key in INPUT_TYPE_PREFIXES:
-                row["inputs"].append(token)
-            else:
-                print(f"Warning: unknown key '{key}' in token '{token}' for {row['src']}")
-
-        rows.append(row)
-
-    return rows
-
 def scale_dimensions(width, height):
     if not SCALE_TO_200PX:
         return width, height
@@ -345,100 +254,11 @@ def make_file_size_html(row):
     size_kb = (os.path.getsize(riv_path) + 512) // 1024
     return f'<span class="riv-file-size">&nbsp&nbsp;{size_kb} KB</span>'
 
-def assign_page_stems(rows):
-    """Compute a unique detail-page filename stem for every row.
-    Multiple rows can share the same .riv src (e.g. different artboards in one
-    file) - each still needs its own detail page, otherwise later rows
-    overwrite the page generated by earlier ones.
-    """
-    src_counts = {}
-    for row in rows:
-        src_counts[row["src"]] = src_counts.get(row["src"], 0) + 1
-
-    seen_stems = set()
-    for row in rows:
-        stem = row["src"]
-        if src_counts[row["src"]] > 1:
-            suffix = sanitize_for_filename(row.get("artboard") or row.get("trigger") or "default")
-            base_stem = f'{row["src"]}--{suffix}'
-            stem = base_stem
-            n = 2
-            while stem in seen_stems:
-                stem = f'{base_stem}-{n}'
-                n += 1
-        row["page_stem"] = stem
-        seen_stems.add(stem)
-
 def make_main_link(row, is_root=True):
     page_name = row.get("page_stem", row["src"]) + ".html"
     display_name = get_display_name(row["src"])
     prefix = "pages/" if is_root else ""
     return f'<a href="{prefix}{page_name}" style="color: #888888;">{display_name}</a>'
-
-def parse_input_type_name(input_value):
-    """Parse input value and return type and name"""
-    if not input_value:
-        return None, None
-    input_value = input_value.strip()
-    if ":" in input_value:
-        t, n = input_value.split(":", 1)
-        return t.strip(), n.strip()
-    return "num", input_value.strip()
-
-def parse_input_spec(input_value):
-    """Return (type, name_without_default, default_value_or_None). Supports name(default)."""
-    t, name = parse_input_type_name(input_value)
-    default = None
-    if name and name.endswith(")") and "(" in name:
-        m = re.match(r'^(.*)\(([^()]*)\)\s*$', name)
-        if m:
-            name = m.group(1).strip()
-            default = m.group(2).strip()
-            # Strip wrapping quotes if present (e.g. from name("value")); enum keeps its quoted option list
-            if t != "enum" and len(default) >= 2 and ((default.startswith('"') and default.endswith('"')) or (default.startswith("'") and default.endswith("'"))):
-                default = default[1:-1]
-    return t, name, default
-
-def parse_font_spec(input_value):
-    """Return (asset_name, filename) for font:"File.otf" tokens.
-    The Rive font asset name is the file name without extension; font:AssetName(File.otf)
-    can be used when the file name differs from the asset name.
-    """
-    _t, name, default = parse_input_spec(input_value)
-    name = strip_quotes(name or "")
-    if default:
-        return os.path.splitext(name)[0], default
-    return os.path.splitext(name)[0], name
-
-def parse_enum_spec(value):
-    """Return (default, options) for enum defaults like EN:EN|ES|RU or just EN|ES|RU (pipe-separated, CSV-safe)."""
-    value = value or ""
-    default_part, sep, options_part = value.partition(":")
-    if not sep:
-        default_part, options_part = "", value
-    options = [strip_quotes(o) for o in options_part.split("|") if o.strip()]
-    default = strip_quotes(default_part)
-    if default and default not in options:
-        options.insert(0, default)
-    if not default and options:
-        default = options[0]
-    return default, options
-
-def parse_number_range(value):
-    """Return (current, minimum, maximum, step) for current:min-max syntax."""
-    if not value:
-        return None
-    match = re.fullmatch(r'\s*(-?(?:\d+(?:\.\d*)?|\.\d+))\s*:\s*(-?(?:\d+(?:\.\d*)?|\.\d+))\s*-\s*(-?(?:\d+(?:\.\d*)?|\.\d+))\s*', value)
-    if not match:
-        return None
-
-    current, minimum, maximum = match.groups()
-    precision = max(
-        len(part.partition(".")[2]) if "." in part else 0
-        for part in (current, minimum, maximum)
-    )
-    step = "1" if precision == 0 else f"{10 ** -precision:.{precision}f}"
-    return current, minimum, maximum, step
 
 def make_range_ticks(minimum, maximum, step):
     intervals = int((Decimal(maximum) - Decimal(minimum)) / Decimal(step))

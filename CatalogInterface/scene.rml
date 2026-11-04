@@ -195,6 +195,17 @@
                     <DataBindContext sourcePathIds="3:34117-3:34123" propertyKey="37" nameBased="true" id="1:33639"/>
                 </SolidColor>
             </Stroke>
+            <Text id="8:10">
+                <TextStylePaint fontSize="12" fontAssetId="1:32921" id="8:11">
+                    <Fill id="8:12">
+                        <SolidColor colorValue="FFFFFFFF" id="8:13"/>
+                    </Fill>
+                </TextStylePaint>
+                <TextValueRun styleId="8:11" id="8:14">
+                    <DataBindContext sourcePathIds="1:33717-8:9" propertyKey="268" id="8:15"/>
+                </TextValueRun>
+                <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="8:16"/>
+            </Text>
         </LayoutComponent>
         <LayoutComponent height="24" styleId="1:33182" name="ProjectBlock" id="1:33181">
             <Fill fillRule="clockwise" id="1:33183">
@@ -220,7 +231,7 @@
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33196"/>
                         </TextStylePaint>
                         <TextValueRun styleId="1:33192" text="76" id="1:33197">
-                            <DataBindContext sourcePathIds="1:33717-1:33719" propertyKey="268" converterId="1:33763" id="1:33762"/>
+                            <DataBindContext sourcePathIds="1:33717-8:200" propertyKey="268" id="1:33762"/>
                         </TextValueRun>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33198"/>
                     </Text>
@@ -237,9 +248,9 @@
                             <TextStyleAxis tag="1869640570" axisValue="14" id="1:33205"/>
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33206"/>
                         </TextStylePaint>
-                        <TextValueRun styleId="1:33202" text="v" name="v" id="1:33207"/>
+                        <TextValueRun styleId="1:33202" name="v" id="1:33207"/>
                         <TextValueRun styleId="1:33202" text="5" name="Number" id="1:33769">
-                            <DataBindContext sourcePathIds="1:33717-1:33727" propertyKey="268" converterId="1:33763" id="1:33778"/>
+                            <DataBindContext sourcePathIds="1:33717-8:202" propertyKey="268" id="1:33778"/>
                         </TextValueRun>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33208"/>
                     </Text>
@@ -253,9 +264,9 @@
                             <TextStyleAxis tag="1869640570" axisValue="14" id="1:33213"/>
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33214"/>
                         </TextStylePaint>
-                        <TextValueRun styleId="1:33210" text="v" name="v" id="1:33215"/>
+                        <TextValueRun styleId="1:33210" name="v" id="1:33215"/>
                         <TextValueRun styleId="1:33210" text="4" name="Number" id="1:33776">
-                            <DataBindContext sourcePathIds="1:33717-1:33725" propertyKey="268" converterId="1:33763" id="1:33779"/>
+                            <DataBindContext sourcePathIds="1:33717-8:201" propertyKey="268" id="1:33779"/>
                         </TextValueRun>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33216"/>
                     </Text>
@@ -294,7 +305,7 @@
                             <TextStyleAxis tag="2003265652" axisValue="400" id="1:33236"/>
                         </TextStylePaint>
                         <TextValueRun styleId="1:33232" text="256" id="1:33237">
-                            <DataBindContext sourcePathIds="1:33717-1:33729" propertyKey="268" converterId="1:33763" id="1:33781"/>
+                            <DataBindContext sourcePathIds="1:33717-8:203" propertyKey="268" id="1:33781"/>
                         </TextValueRun>
                         <LayoutParticipant layoutWidthScaleType="hug" layoutHeightScaleType="hug" id="1:33238"/>
                     </Text>
@@ -620,10 +631,18 @@
             </StateMachineLayer>
             <StateMachineListener targetId="1:33181" name="ProjectBlock" id="6:34874">
                 <ListenerInputType listenerTypeValue="click" id="6:34875"/>
-                <ListenerViewModelChange fromViewModelProperty="true" fromDataBindId="6:34880" id="6:34876">
+                <ListenerViewModelChange id="6:34876">
+                    <BindablePropertyTrigger id="8:1">
+                        <DataBindContext sourcePathIds="1:33717-8:2" propertyKey="686" direction="true" id="8:3"/>
+                    </BindablePropertyTrigger>
+                </ListenerViewModelChange>
+            </StateMachineListener>
+            <StateMachineListener targetId="1:33179" name="Toggle checkbox" id="8:4">
+                <ListenerInputType listenerTypeValue="click" id="8:5"/>
+                <ListenerViewModelChange fromViewModelProperty="true" fromDataBindId="8:8" id="8:6">
                     <BindablePropertyBoolean id="6:34877">
-                        <DataBindContext sourcePathIds="1:33717-3:34170" propertyKey="634" direction="true" nameBased="true" id="6:34878"/>
-                        <DataBindContext sourcePathIds="1:33717-3:34170" propertyKey="634" nameBased="true" converterId="6:34879" id="6:34880"/>
+                        <DataBindContext sourcePathIds="1:33717-6:34856" propertyKey="634" direction="true" id="6:34878"/>
+                        <DataBindContext sourcePathIds="1:33717-6:34856" propertyKey="634" converterId="6:34879" id="8:8"/>
                     </BindablePropertyBoolean>
                 </ListenerViewModelChange>
             </StateMachineListener>
@@ -1321,7 +1340,7 @@
         </StateMachine>
         <LinearAnimation name="Timeline 1" id="4:34489"/>
     </Artboard>
-    <Artboard defaultStateMachineId="6:34886" viewModelId="1:33717" viewModelInstanceId="1:33718" isComponent="true" spaceId="1:34092" width="578" height="600" styleId="6:34884" x="-754" name="AddProjectForm" id="6:34881">
+    <Artboard defaultStateMachineId="6:34886" isComponent="true" spaceId="1:34092" width="578" height="600" styleId="6:34884" x="-754" name="AddProjectForm" id="6:34881">
         <LayoutComponentStyle id="6:34884"/>
         <LayoutComponent width="578" height="600" styleId="6:34935" id="6:34934">
             <Fill fillRule="clockwise" id="6:34936">
@@ -1348,6 +1367,30 @@
     <ComponentAsset artboardId="1:34066" name="UpdateButton" id="1:34076"/>
     <ComponentAsset artboardId="4:34487" name="ProjectPreviewBlock" id="4:34497"/>
     <ComponentAsset artboardId="6:34881" name="AddProjectForm" id="6:34893"/>
+    <ComponentAsset artboardId="3:34207" name="Parameter" id="8:17"/>
+    <Artboard name="IntegrationHarness" x="1000" y="900" width="578" height="480" viewModelId="3:34115" viewModelInstanceId="3:34116" defaultStateMachineId="8:105" styleId="8:101" id="8:100">
+        <LayoutComponentStyle layoutWidthScaleType="fixed" layoutHeightScaleType="fixed" id="8:101"/>
+        <LayoutComponent width="578" height="480" styleId="8:103" id="8:102">
+            <LayoutComponentStyle flexDirectionValue="column" gapVertical="4" layoutWidthScaleType="fixed" layoutHeightScaleType="fixed" id="8:103"/>
+            <Fill id="8:104">
+                <SolidColor colorValue="FF393D49" id="8:114"/>
+            </Fill>
+            <ArtboardComponentList participatesInLayout="true" id="8:115">
+                <DataBindContext sourcePathIds="3:34115-5:34539" propertyKey="800" id="8:116"/>
+            </ArtboardComponentList>
+        </LayoutComponent>
+        <StateMachine name="State Machine 1" id="8:105">
+            <StateMachineLayer name="Rows" id="8:106">
+                <AnyState x="400" id="8:107"/>
+                <ExitState x="480" id="8:108"/>
+                <EntryState id="8:109">
+                    <StateTransition stateToId="8:110" id="8:111"/>
+                </EntryState>
+                <AnimationState x="160" animationId="8:112" id="8:110"/>
+            </StateMachineLayer>
+        </StateMachine>
+        <LinearAnimation name="Idle" id="8:112"/>
+    </Artboard>
     <DataConverterBooleanNegate name="Toggle 1" id="6:34879"/>
     <DataConverterToString round="true" trailingZeros="true" name="Convert to String 1" id="1:33763"/>
     <DataEnumCustom name="ParamType" id="1:33803">
@@ -1451,6 +1494,12 @@
     </LibraryAsset>
     <Space name="Space 1" id="1:34092"/>
     <ViewModel defaultInstanceId="1:33718" name="ProjectVM" id="1:33717">
+        <ViewModelPropertyString name="numberLabel" id="8:200"/>
+        <ViewModelPropertyString name="versionLabel" id="8:201"/>
+        <ViewModelPropertyString name="newerVersionLabel" id="8:202"/>
+        <ViewModelPropertyString name="fileSizeLabel" id="8:203"/>
+        <ViewModelPropertyTrigger name="openDetails" id="8:2"/>
+        <ViewModelPropertyString name="checkedLabel" id="8:9"/>
         <ViewModelPropertyBoolean name="checked" id="6:34856"/>
         <ViewModelPropertyBoolean name="selected" id="3:34170"/>
         <ViewModelPropertyNumber name="number" id="1:33719"/>
@@ -1465,6 +1514,10 @@
         <ViewModelPropertyList name="propsList" id="6:34895"/>
         <ViewModelPropertyList name="tagsList" id="1:33817"/>
         <ViewModelInstance exports="true" id="1:33718">
+            <ViewModelInstanceString propertyValue="76" viewModelPropertyId="8:200" id="8:210"/>
+            <ViewModelInstanceString propertyValue="v4" viewModelPropertyId="8:201" id="8:211"/>
+            <ViewModelInstanceString propertyValue="v5" viewModelPropertyId="8:202" id="8:212"/>
+            <ViewModelInstanceString propertyValue="256" viewModelPropertyId="8:203" id="8:213"/>
             <ViewModelInstanceNumber propertyValue="76" viewModelPropertyId="1:33719" id="1:33720"/>
             <ViewModelInstanceString propertyValue="Stress Calendar" viewModelPropertyId="1:33721" id="1:33722"/>
             <ViewModelInstanceString propertyValue="76_stresscalendar_v4" viewModelPropertyId="1:33723" id="1:33724"/>
@@ -1491,6 +1544,10 @@
             </ViewModelInstanceList>
         </ViewModelInstance>
         <ViewModelInstance exports="true" name="Instance 1" id="5:34546">
+            <ViewModelInstanceString propertyValue="78" viewModelPropertyId="8:200" id="8:220"/>
+            <ViewModelInstanceString propertyValue="v3" viewModelPropertyId="8:201" id="8:221"/>
+            <ViewModelInstanceString propertyValue="v3" viewModelPropertyId="8:202" id="8:222"/>
+            <ViewModelInstanceString propertyValue="1453" viewModelPropertyId="8:203" id="8:223"/>
             <ViewModelInstanceNumber propertyValue="78" viewModelPropertyId="1:33719" id="5:34547"/>
             <ViewModelInstanceString propertyValue="Stress Liquid Format" viewModelPropertyId="1:33721" id="5:34548"/>
             <ViewModelInstanceString propertyValue="78_stresscliquidformat_v3" viewModelPropertyId="1:33723" id="5:34549"/>
@@ -1513,6 +1570,10 @@
             </ViewModelInstanceList>
         </ViewModelInstance>
         <ViewModelInstance exports="true" name="Instance 2" id="5:34569">
+            <ViewModelInstanceString propertyValue="124" viewModelPropertyId="8:200" id="8:230"/>
+            <ViewModelInstanceString propertyValue="v2" viewModelPropertyId="8:201" id="8:231"/>
+            <ViewModelInstanceString propertyValue="v2" viewModelPropertyId="8:202" id="8:232"/>
+            <ViewModelInstanceString propertyValue="475" viewModelPropertyId="8:203" id="8:233"/>
             <ViewModelInstanceNumber propertyValue="124" viewModelPropertyId="1:33719" id="5:34570"/>
             <ViewModelInstanceString propertyValue="Button Hand" viewModelPropertyId="1:33721" id="5:34571"/>
             <ViewModelInstanceString propertyValue="124_buttonhand_v2" viewModelPropertyId="1:33723" id="5:34572"/>
