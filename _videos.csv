@@ -117,6 +117,6 @@ contraTest_v5,375x812,
 82_carecorner_v3,393x300,393x520, 
 83_trackersetting_v1,326x329,,v_num:mode(0:0-1) 
 84_careheader_v8,393x250,393x852,trigger:"start",v_num:scrollAmount(0:0.0-1.0),font:"NovemberLC-Heavy.otf",txt:headerText("Take a look inside Care: expert answers and women who get it")
-86_carrousel_a_v1,393x206,,
-86_carrousel_b_v1,393x206,,
-86_carrousel_c_v1,393x206,,
+86_carousel_a_v2,393x206,393x206,
+86_carousel_b_v3,393x206,393x206,
+86_carousel_c_v2,393x206,393x206,
