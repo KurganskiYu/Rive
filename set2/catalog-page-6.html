@@ -1,0 +1,223 @@
+<!-- Generated custom catalog; do not edit. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../RiveIcon2.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas0" width="200" height="245"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="08_exercisemonth_v2.html">08 Exercise Month</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas1" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="08_StressLiquid_v2.html">08 Stress Liquid</a></div>
+          <button id="btn1" class="rive-btn" style="margin-left:auto;">Run</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:85.8586%;">
+            <output for="btn1_input0">86</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.02020202%;"></span><span style="left:4.04040404%;"></span><span style="left:6.06060606%;"></span><span style="left:8.08080808%;"></span><span style="left:10.10101010%;"></span><span style="left:12.12121212%;"></span><span style="left:14.14141414%;"></span><span style="left:16.16161616%;"></span><span style="left:18.18181818%;"></span><span style="left:20.20202020%;"></span><span style="left:22.22222222%;"></span><span style="left:24.24242424%;"></span><span style="left:26.26262626%;"></span><span style="left:28.28282828%;"></span><span style="left:30.30303030%;"></span><span style="left:32.32323232%;"></span><span style="left:34.34343434%;"></span><span style="left:36.36363636%;"></span><span style="left:38.38383838%;"></span><span style="left:40.40404040%;"></span><span style="left:42.42424242%;"></span><span style="left:44.44444444%;"></span><span style="left:46.46464646%;"></span><span style="left:48.48484848%;"></span><span style="left:50.50505051%;"></span><span style="left:52.52525253%;"></span><span style="left:54.54545455%;"></span><span style="left:56.56565657%;"></span><span style="left:58.58585859%;"></span><span style="left:60.60606061%;"></span><span style="left:62.62626263%;"></span><span style="left:64.64646465%;"></span><span style="left:66.66666667%;"></span><span style="left:68.68686869%;"></span><span style="left:70.70707071%;"></span><span style="left:72.72727273%;"></span><span style="left:74.74747475%;"></span><span style="left:76.76767677%;"></span><span style="left:78.78787879%;"></span><span style="left:80.80808081%;"></span><span style="left:82.82828283%;"></span><span style="left:84.84848485%;"></span><span style="left:86.86868687%;"></span><span style="left:88.88888889%;"></span><span style="left:90.90909091%;"></span><span style="left:92.92929293%;"></span><span style="left:94.94949495%;"></span><span style="left:96.96969697%;"></span><span style="left:98.98989899%;"></span></span>
+            <input type="range" id="btn1_input0" value="86" min="1" max="100" step="1" aria-label="StressPercent" />
+            <span class="range-hint" aria-hidden="true">StressPercent</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    </div>
+<script>
+
+const r0 = new rive.Rive({
+    src: "../riv/08_exercisemonth_v2.riv",
+    canvas: document.getElementById("canvas0"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r0.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r1 = new rive.Rive({
+    src: "../riv/08_StressLiquid_v2.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
+    const vmi = r1.viewModelInstance;
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn1_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn1_0.value);
+                if (!isNaN(val)) vmi.number("StressPercent").value = val;
+                const rangeControl = inputFieldBtn1_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn1_0.value;
+                    const minimum = Number(inputFieldBtn1_0.min);
+                    const maximum = Number(inputFieldBtn1_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn1_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn1_0.value);
+      if (!isNaN(initVal)) vmi.number("StressPercent").value = initVal;
+    }
+  },
+});
+document.getElementById("btn1").addEventListener("click", () => {
+    const currentVmi = r1.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r1.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+
+// Fire all triggers 3 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 3000);
+</script>
+<div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <a href="catalog-page-2.html"><button class="rive-btn">2</button></a> <a href="catalog-page-3.html"><button class="rive-btn">3</button></a> <a href="catalog-page-4.html"><button class="rive-btn">4</button></a> <a href="catalog-page-5.html"><button class="rive-btn">5</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">6</button></div>
+    </div>
+</body>
+</html>

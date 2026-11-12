@@ -7,6 +7,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import _generate_html as generator
 import catalog_core as core
@@ -174,6 +175,171 @@ class CatalogTests(unittest.TestCase):
         self.table.write_text('src,size,preview\n"unterminated,80x80,\n')
         with self.assertRaises(csv.Error):
             read_catalog(self.root)
+
+
+class CustomCatalogTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        (self.root / "riv").mkdir()
+        (self.root / "pages").mkdir()
+        (self.root / "head.html").write_text(
+            '<!DOCTYPE html>\n<html><head><link href="RiveIcon2.svg">'
+            '<link href="styles.css"></head><body><div class="animation-wrapper">\n',
+            encoding="utf-8",
+        )
+        self.sets = self.root / "_videos_sets.csv"
+        self.descriptions = self.root / "_videos_descriptions.txt"
+        self.descriptions.write_text("# Add descriptions here.\n", encoding="utf-8")
+        patcher = patch.multiple(
+            generator,
+            script_dir=str(self.root),
+            csv_path=str(self.root / "_videos.csv"),
+            names_path=str(self.root / "_videos_names.csv"),
+            sets_path=str(self.sets),
+            descriptions_path=str(self.descriptions),
+            output_html=str(self.root / "index.html"),
+            head_html_path=str(self.root / "head.html"),
+            pages_dir=str(self.root / "pages"),
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        generator.get_html_head.cache_clear()
+        self.addCleanup(generator.get_html_head.cache_clear)
+
+    def write_catalog(self, rows, names):
+        with (self.root / "_videos.csv").open("w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(["src", "size", "preview", "params..."])
+            writer.writerows(rows)
+        with (self.root / "_videos_names.csv").open("w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(["filename", "name"])
+            writer.writerows(names)
+        for row in rows:
+            (self.root / "riv" / f"{row[0]}.riv").write_bytes(b"fixture")
+
+    def generate(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            generator.main()
+
+    def test_custom_content_and_shared_numbers_leave_main_presentation_unchanged(self):
+        self.write_catalog(
+            [
+                ["01_demo_v1", "80x80", "120x120", "artboard:First", "trigger:Go"],
+                ["01_demo_v1", "80x80", "", "artboard:Second", "trigger:Go"],
+                ["02_other_v1", "393xlayout", "", "trigger:Go",
+                 "font:Typeface(Font.otf)", "img:Photo(test.png)"],
+                ["03_unused_v1", "80x80", ""],
+            ],
+            [
+                ["01_demo--First", "First favorite"],
+                ["01_demo--Second", "Second & special"],
+                ["02_other", "Other favorite"],
+                ["03_unused", "Not selected"],
+            ],
+        )
+        self.sets.write_text("client,02,01,1\n", encoding="utf-8")
+        self.descriptions.write_text(
+            "01: A <useful> description, with & punctuation.\n"
+            "02: Another description: with a colon.\n",
+            encoding="utf-8",
+        )
+        self.generate()
+
+        catalog = (self.root / "client" / "index.html").read_text(encoding="utf-8")
+        detail = (self.root / "client" / "01_demo_v1--First.html").read_text(encoding="utf-8")
+        main_catalog = (self.root / "index.html").read_text(encoding="utf-8")
+        main_detail = (self.root / "pages" / "01_demo_v1--First.html").read_text(encoding="utf-8")
+
+        self.assertIn('href="02_other_v1.html">02 Other favorite</a>', catalog)
+        self.assertIn('href="01_demo_v1--Second.html">01 Second &amp; special</a>', catalog)
+        self.assertIn('href="01_demo_v1--First.html">01 First favorite</a>', catalog)
+        self.assertLess(catalog.index("02 Other favorite"), catalog.index("01 Second &amp; special"))
+        self.assertEqual(catalog.count("A &lt;useful&gt; description, with &amp; punctuation."), 2)
+        self.assertIn("A &lt;useful&gt; description, with &amp; punctuation.", detail)
+        self.assertIn("01 First favorite", detail)
+        self.assertFalse((self.root / "client" / "03_unused_v1.html").exists())
+        self.assertNotIn('href="../riv/', catalog + detail)
+        self.assertNotIn('class="riv-file-size"', catalog + detail)
+        self.assertNotIn(">Trigger</button>", catalog + detail)
+        self.assertIn(">Run</button>", catalog)
+        self.assertEqual(detail.count(">Run</button>"), 2)
+        self.assertIn('src: "../riv/01_demo_v1.riv"', catalog)
+        self.assertIn('href="../styles.css"', catalog)
+        self.assertIn('href="../RiveIcon2.svg"', detail)
+        self.assertIn('data-auto-h', catalog)
+        self.assertIn('fetch("../img/test.png")', catalog)
+        self.assertIn('"../fonts/"', catalog)
+        self.assertIn('class="riv-file-size"', main_catalog + main_detail)
+        self.assertIn(">Trigger</button>", main_catalog)
+        self.assertIn('href="../riv/01_demo_v1.riv"', main_detail)
+        self.assertNotIn("A &lt;useful&gt; description", main_catalog + main_detail)
+
+    def test_pagination_and_removing_a_number_remove_only_generated_pages(self):
+        rows = [[f"{number:02}_demo_v1", "80x80", ""] for number in range(1, 11)]
+        names = [[f"{number:02}_demo", f"Demo {number}"] for number in range(1, 11)]
+        self.write_catalog(rows, names)
+        self.sets.write_text("client," + ",".join(str(number) for number in range(1, 11)) + "\n")
+        self.generate()
+
+        output = self.root / "client"
+        first = (output / "index.html").read_text(encoding="utf-8")
+        second = (output / "catalog-page-2.html").read_text(encoding="utf-8")
+        self.assertIn('href="catalog-page-2.html"', first)
+        self.assertIn('href="index.html"', second)
+        self.assertIn('href="09_demo_v1.html"', second)
+        self.assertIn('src: "../riv/09_demo_v1.riv"', second)
+
+        unrelated = output / "notes.html"
+        unrelated.write_text("Keep this file.", encoding="utf-8")
+        self.sets.write_text("client,01\n", encoding="utf-8")
+        self.generate()
+        self.assertFalse((output / "catalog-page-2.html").exists())
+        self.assertFalse((output / "09_demo_v1.html").exists())
+        self.assertTrue((output / "01_demo_v1.html").exists())
+        self.assertEqual(unrelated.read_text(encoding="utf-8"), "Keep this file.")
+
+        self.sets.write_text("client\n", encoding="utf-8")
+        self.generate()
+        self.assertTrue((output / "index.html").exists())
+        self.assertFalse((output / "01_demo_v1.html").exists())
+        self.assertEqual(unrelated.read_text(encoding="utf-8"), "Keep this file.")
+
+    def test_invalid_input_and_directory_collisions_fail_before_rewriting_main(self):
+        self.write_catalog([["01_demo_v1", "80x80", ""]], [["01_demo", "Demo"]])
+        main_page = self.root / "index.html"
+        main_page.write_text("Existing main catalog.", encoding="utf-8")
+        for contents, error in (
+            ("../escape,01\n", "set names"),
+            ("client,99\n", "no animations found"),
+            ("client,01\nCLIENT,01\n", "duplicate set name"),
+            ("CON,01\n", "reserved set name"),
+            ("riv,01\n", "not a generated custom catalog"),
+        ):
+            with self.subTest(contents=contents):
+                self.sets.write_text(contents, encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, error):
+                    self.generate()
+                self.assertEqual(main_page.read_text(encoding="utf-8"), "Existing main catalog.")
+                self.assertEqual((self.root / "riv" / "01_demo_v1.riv").read_bytes(), b"fixture")
+
+        self.sets.write_text("client,01\n", encoding="utf-8")
+        self.descriptions.write_text("01: One description\n1: Another description\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "duplicate number"):
+            self.generate()
+        self.assertEqual(main_page.read_text(encoding="utf-8"), "Existing main catalog.")
+
+    def test_generated_pages_do_not_overwrite_unrelated_files(self):
+        self.write_catalog([["01_demo_v1", "80x80", ""]], [["01_demo", "Demo"]])
+        self.sets.write_text("client,01\n", encoding="utf-8")
+        self.generate()
+        detail = self.root / "client" / "01_demo_v1.html"
+        detail.write_text("Manually written page.", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Cannot replace non-generated file"):
+            self.generate()
+        self.assertEqual(detail.read_text(encoding="utf-8"), "Manually written page.")
 
 
 if __name__ == "__main__":

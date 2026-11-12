@@ -132,6 +132,7 @@ class CopyRecentTests(unittest.TestCase):
             patch("_generate_html.load_csv_rows", return_value=rows),
             patch("_generate_html.assign_page_stems"),
             patch("_generate_html.load_navigation_entries", return_value=[]),
+            patch("_generate_html.load_custom_catalogs", return_value=[]),
             patch("_generate_html.make_animation_page"),
             patch("_generate_html.write_main_page"),
             contextlib.redirect_stdout(output),
@@ -145,6 +146,7 @@ class CopyRecentTests(unittest.TestCase):
         with (
             patch("_generate_html.load_csv_rows", return_value=[]),
             patch("_generate_html.load_navigation_entries", return_value=[]),
+            patch("_generate_html.load_custom_catalogs", return_value=[]),
             contextlib.redirect_stdout(output),
         ):
             main()

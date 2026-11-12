@@ -1,0 +1,555 @@
+<!-- Generated custom catalog; do not edit. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../RiveIcon2.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas0" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="52_tagvessels_v3.html">52 Tag Vessels</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas1" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="52_tagclouds_v4.html">52 Tag Clouds</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn1_input0">tag:</label>
+            <input type="text" id="btn1_input0" value="[tag_name]" style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas2" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="52_tagsnumber_v3.html">52 Tags Number</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:100.0000%;">
+            <output for="btn2_input0">300</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.06896552%;"></span><span style="left:4.13793103%;"></span><span style="left:6.20689655%;"></span><span style="left:8.27586207%;"></span><span style="left:10.34482759%;"></span><span style="left:12.41379310%;"></span><span style="left:14.48275862%;"></span><span style="left:16.55172414%;"></span><span style="left:18.62068966%;"></span><span style="left:20.68965517%;"></span><span style="left:22.75862069%;"></span><span style="left:24.82758621%;"></span><span style="left:26.89655172%;"></span><span style="left:28.96551724%;"></span><span style="left:31.03448276%;"></span><span style="left:33.10344828%;"></span><span style="left:35.17241379%;"></span><span style="left:37.24137931%;"></span><span style="left:39.31034483%;"></span><span style="left:41.37931034%;"></span><span style="left:43.44827586%;"></span><span style="left:45.51724138%;"></span><span style="left:47.58620690%;"></span><span style="left:49.65517241%;"></span><span style="left:51.72413793%;"></span><span style="left:53.79310345%;"></span><span style="left:55.86206897%;"></span><span style="left:57.93103448%;"></span><span style="left:60.00000000%;"></span><span style="left:62.06896552%;"></span><span style="left:64.13793103%;"></span><span style="left:66.20689655%;"></span><span style="left:68.27586207%;"></span><span style="left:70.34482759%;"></span><span style="left:72.41379310%;"></span><span style="left:74.48275862%;"></span><span style="left:76.55172414%;"></span><span style="left:78.62068966%;"></span><span style="left:80.68965517%;"></span><span style="left:82.75862069%;"></span><span style="left:84.82758621%;"></span><span style="left:86.89655172%;"></span><span style="left:88.96551724%;"></span><span style="left:91.03448276%;"></span><span style="left:93.10344828%;"></span><span style="left:95.17241379%;"></span><span style="left:97.24137931%;"></span><span style="left:99.31034483%;"></span></span>
+            <input type="range" id="btn2_input0" value="300" min="10" max="300" step="1" aria-label="tagsNumber" />
+            <span class="range-hint" aria-hidden="true">tagsNumber</span>
+            <span class="range-bound range-min">10</span>
+            <span class="range-bound range-max">300</span>
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas3" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="52_tagliquid_v3.html">52 Tag Liquid</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input0">tag:</label>
+            <input type="text" id="btn3_input0" value="[tag_name]" style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas4" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="52_tagfire_v4.html">52 Tag Fire</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn4_input0">tag:</label>
+            <input type="text" id="btn4_input0" value="[tag_name]" style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas5" width="200" height="316"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="45_activityring_v6.html">45 Activity Ring</a></div>
+          <button id="btn5" class="rive-btn" style="margin-left:auto;">Run</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:31.5789%;">
+            <output for="btn5_input0">35</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.10526316%;"></span><span style="left:4.21052632%;"></span><span style="left:6.31578947%;"></span><span style="left:8.42105263%;"></span><span style="left:10.52631579%;"></span><span style="left:12.63157895%;"></span><span style="left:14.73684211%;"></span><span style="left:16.84210526%;"></span><span style="left:18.94736842%;"></span><span style="left:21.05263158%;"></span><span style="left:23.15789474%;"></span><span style="left:25.26315789%;"></span><span style="left:27.36842105%;"></span><span style="left:29.47368421%;"></span><span style="left:31.57894737%;"></span><span style="left:33.68421053%;"></span><span style="left:35.78947368%;"></span><span style="left:37.89473684%;"></span><span style="left:40.00000000%;"></span><span style="left:42.10526316%;"></span><span style="left:44.21052632%;"></span><span style="left:46.31578947%;"></span><span style="left:48.42105263%;"></span><span style="left:50.52631579%;"></span><span style="left:52.63157895%;"></span><span style="left:54.73684211%;"></span><span style="left:56.84210526%;"></span><span style="left:58.94736842%;"></span><span style="left:61.05263158%;"></span><span style="left:63.15789474%;"></span><span style="left:65.26315789%;"></span><span style="left:67.36842105%;"></span><span style="left:69.47368421%;"></span><span style="left:71.57894737%;"></span><span style="left:73.68421053%;"></span><span style="left:75.78947368%;"></span><span style="left:77.89473684%;"></span><span style="left:80.00000000%;"></span><span style="left:82.10526316%;"></span><span style="left:84.21052632%;"></span><span style="left:86.31578947%;"></span><span style="left:88.42105263%;"></span><span style="left:90.52631579%;"></span><span style="left:92.63157895%;"></span><span style="left:94.73684211%;"></span><span style="left:96.84210526%;"></span><span style="left:98.94736842%;"></span></span>
+            <input type="range" id="btn5_input0" value="35" min="5" max="100" step="1" aria-label="goal" />
+            <span class="range-hint" aria-hidden="true">goal</span>
+            <span class="range-bound range-min">5</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:71.7647%;">
+            <output for="btn5_input1">66</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.35294118%;"></span><span style="left:4.70588235%;"></span><span style="left:7.05882353%;"></span><span style="left:9.41176471%;"></span><span style="left:11.76470588%;"></span><span style="left:14.11764706%;"></span><span style="left:16.47058824%;"></span><span style="left:18.82352941%;"></span><span style="left:21.17647059%;"></span><span style="left:23.52941176%;"></span><span style="left:25.88235294%;"></span><span style="left:28.23529412%;"></span><span style="left:30.58823529%;"></span><span style="left:32.94117647%;"></span><span style="left:35.29411765%;"></span><span style="left:37.64705882%;"></span><span style="left:40.00000000%;"></span><span style="left:42.35294118%;"></span><span style="left:44.70588235%;"></span><span style="left:47.05882353%;"></span><span style="left:49.41176471%;"></span><span style="left:51.76470588%;"></span><span style="left:54.11764706%;"></span><span style="left:56.47058824%;"></span><span style="left:58.82352941%;"></span><span style="left:61.17647059%;"></span><span style="left:63.52941176%;"></span><span style="left:65.88235294%;"></span><span style="left:68.23529412%;"></span><span style="left:70.58823529%;"></span><span style="left:72.94117647%;"></span><span style="left:75.29411765%;"></span><span style="left:77.64705882%;"></span><span style="left:80.00000000%;"></span><span style="left:82.35294118%;"></span><span style="left:84.70588235%;"></span><span style="left:87.05882353%;"></span><span style="left:89.41176471%;"></span><span style="left:91.76470588%;"></span><span style="left:94.11764706%;"></span><span style="left:96.47058824%;"></span><span style="left:98.82352941%;"></span></span>
+            <input type="range" id="btn5_input1" value="66" min="5" max="90" step="1" aria-label="activeMinutes" />
+            <span class="range-hint" aria-hidden="true">activeMinutes</span>
+            <span class="range-bound range-min">5</span>
+            <span class="range-bound range-max">90</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:100.0000%;">
+            <output for="btn5_input2">1.0</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:14.28571429%;"></span><span style="left:28.57142857%;"></span><span style="left:42.85714286%;"></span><span style="left:57.14285714%;"></span><span style="left:71.42857143%;"></span><span style="left:85.71428571%;"></span></span>
+            <input type="range" id="btn5_input2" value="1.0" min="0.3" max="1.0" step="0.1" aria-label="size2mult" />
+            <span class="range-hint" aria-hidden="true">size2mult</span>
+            <span class="range-bound range-min">0.3</span>
+            <span class="range-bound range-max">1.0</span>
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas6" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="41_fatgraph_v3.html">41 Fat Graph</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas7" width="200" height="219"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="39_godraycomment_v6.html">39 God Ray Comment</a></div>
+          <button id="btn7" class="rive-btn" style="margin-left:auto;">Run</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn7_input0">flip:</label>
+            <input type="checkbox" id="btn7_input0" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    </div>
+<script>
+
+const r0 = new rive.Rive({
+    src: "../riv/52_tagvessels_v3.riv",
+    canvas: document.getElementById("canvas0"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r0.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r1 = new rive.Rive({
+    src: "../riv/52_tagclouds_v4.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
+    const vmi = r1.viewModelInstance;
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn1_0.value;
+      inputFieldBtn1_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn1_0.value;
+      });
+    }
+  },
+});
+
+const r2 = new rive.Rive({
+    src: "../riv/52_tagsnumber_v3.riv",
+    canvas: document.getElementById("canvas2"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
+    let inputFieldBtn2_0 = document.getElementById("btn2_input0");
+    if (inputFieldBtn2_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn2_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn2_0.value);
+                if (!isNaN(val)) vmi.number("tagsNumber").value = val;
+                const rangeControl = inputFieldBtn2_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn2_0.value;
+                    const minimum = Number(inputFieldBtn2_0.min);
+                    const maximum = Number(inputFieldBtn2_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn2_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn2_0.value);
+      if (!isNaN(initVal)) vmi.number("tagsNumber").value = initVal;
+    }
+  },
+});
+
+const r3 = new rive.Rive({
+    src: "../riv/52_tagliquid_v3.riv",
+    canvas: document.getElementById("canvas3"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r3.resizeDrawingSurfaceToCanvas();
+    const vmi = r3.viewModelInstance;
+    let inputFieldBtn3_0 = document.getElementById("btn3_input0");
+    if (inputFieldBtn3_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn3_0.value;
+      inputFieldBtn3_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn3_0.value;
+      });
+    }
+  },
+});
+
+const r4 = new rive.Rive({
+    src: "../riv/52_tagfire_v4.riv",
+    canvas: document.getElementById("canvas4"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r4.resizeDrawingSurfaceToCanvas();
+    const vmi = r4.viewModelInstance;
+    let inputFieldBtn4_0 = document.getElementById("btn4_input0");
+    if (inputFieldBtn4_0 && vmi) {
+      vmi.string("tag").value = inputFieldBtn4_0.value;
+      inputFieldBtn4_0.addEventListener("input", () => {
+        vmi.string("tag").value = inputFieldBtn4_0.value;
+      });
+    }
+  },
+});
+
+const r5 = new rive.Rive({
+    src: "../riv/45_activityring_v6.riv",
+    canvas: document.getElementById("canvas5"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r5.resizeDrawingSurfaceToCanvas();
+    const vmi = r5.viewModelInstance;
+    let inputFieldBtn5_0 = document.getElementById("btn5_input0");
+    if (inputFieldBtn5_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn5_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn5_0.value);
+                if (!isNaN(val)) vmi.number("goal").value = val;
+                const rangeControl = inputFieldBtn5_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn5_0.value;
+                    const minimum = Number(inputFieldBtn5_0.min);
+                    const maximum = Number(inputFieldBtn5_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn5_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn5_0.value);
+      if (!isNaN(initVal)) vmi.number("goal").value = initVal;
+    }
+    let inputFieldBtn5_1 = document.getElementById("btn5_input1");
+    if (inputFieldBtn5_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn5_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn5_1.value);
+                if (!isNaN(val)) vmi.number("activeMinutes").value = val;
+                const rangeControl = inputFieldBtn5_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn5_1.value;
+                    const minimum = Number(inputFieldBtn5_1.min);
+                    const maximum = Number(inputFieldBtn5_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn5_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn5_1.value);
+      if (!isNaN(initVal)) vmi.number("activeMinutes").value = initVal;
+    }
+    let inputFieldBtn5_2 = document.getElementById("btn5_input2");
+    if (inputFieldBtn5_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn5_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn5_2.value);
+                if (!isNaN(val)) vmi.number("size2mult").value = val;
+                const rangeControl = inputFieldBtn5_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn5_2.value;
+                    const minimum = Number(inputFieldBtn5_2.min);
+                    const maximum = Number(inputFieldBtn5_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn5_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn5_2.value);
+      if (!isNaN(initVal)) vmi.number("size2mult").value = initVal;
+    }
+  },
+});
+document.getElementById("btn5").addEventListener("click", () => {
+    const currentVmi = r5.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("start");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r5.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "start");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): start");
+    }
+});
+
+const r6 = new rive.Rive({
+    src: "../riv/41_fatgraph_v3.riv",
+    canvas: document.getElementById("canvas6"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r6.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r7 = new rive.Rive({
+    src: "../riv/39_godraycomment_v6.riv",
+    canvas: document.getElementById("canvas7"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r7.resizeDrawingSurfaceToCanvas();
+    const vmi = r7.viewModelInstance;
+    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
+    if (inputFieldBtn7_0 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn7_0.addEventListener("change", () => {
+        vmi.boolean("flip").value = inputFieldBtn7_0.checked;
+      });
+      // Set initial value
+      vmi.boolean("flip").value = inputFieldBtn7_0.checked;
+    }
+  },
+});
+document.getElementById("btn7").addEventListener("click", () => {
+    const currentVmi = r7.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r7.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+
+// Fire all triggers 3 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 3000);
+</script>
+<div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">2</button> <a href="catalog-page-3.html"><button class="rive-btn">3</button></a> <a href="catalog-page-4.html"><button class="rive-btn">4</button></a> <a href="catalog-page-5.html"><button class="rive-btn">5</button></a> <a href="catalog-page-6.html"><button class="rive-btn">6</button></a> <a href="catalog-page-7.html"><button class="rive-btn">7</button></a> <a href="catalog-page-8.html"><button class="rive-btn">8</button></a> <a href="catalog-page-9.html"><button class="rive-btn">9</button></a></div>
+    </div>
+</body>
+</html>

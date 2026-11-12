@@ -1,0 +1,502 @@
+<!-- Generated custom catalog; do not edit. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../RiveIcon2.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+    <div class="animation-row" style="display: flex; gap: 32px; align-items: flex-start;">
+      
+      <div class="animation-container detail-animation custom-animation">
+        <canvas id="main_canvas" width="500" height="500"></canvas>
+        <div class="description">
+          <div class="custom-heading">
+            <div><span>54 Compass 31 Comb</span></div>
+            
+          </div>
+          Size: 500px × 500px<br>State Machine: State Machine 1<br>Artboard: combined<br>Note: Scripting<br>Input: v_num:state1(96:0-100)<br>Input: v_num:state2(80:0-100)<br>Input: v_num:state3(20:0-100)<br>Input: v_num:state4(65:0-100)<br>Input: v_num:state5(0:0-100)<br>Input: v_num:state6(36:0-100)<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:96.0000%;">
+            <output for="btn_main_input0">96</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_main_input0" value="96" min="0" max="100" step="1" aria-label="state1" />
+            <span class="range-hint" aria-hidden="true">state1</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:80.0000%;">
+            <output for="btn_main_input1">80</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_main_input1" value="80" min="0" max="100" step="1" aria-label="state2" />
+            <span class="range-hint" aria-hidden="true">state2</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:20.0000%;">
+            <output for="btn_main_input2">20</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_main_input2" value="20" min="0" max="100" step="1" aria-label="state3" />
+            <span class="range-hint" aria-hidden="true">state3</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:65.0000%;">
+            <output for="btn_main_input3">65</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_main_input3" value="65" min="0" max="100" step="1" aria-label="state4" />
+            <span class="range-hint" aria-hidden="true">state4</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:0.0000%;">
+            <output for="btn_main_input4">0</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_main_input4" value="0" min="0" max="100" step="1" aria-label="state5" />
+            <span class="range-hint" aria-hidden="true">state5</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:36.0000%;">
+            <output for="btn_main_input5">36</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_main_input5" value="36" min="0" max="100" step="1" aria-label="state6" />
+            <span class="range-hint" aria-hidden="true">state6</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        </div>
+        </div>
+      </div>
+
+      
+      <div class="animation-container detail-animation custom-animation">
+        <canvas id="preview_canvas" width="393" height="852"></canvas>
+        <div class="description">
+          <div class="custom-heading">
+            <div>Preview:</div>
+            
+          </div>
+          
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:96.0000%;">
+            <output for="btn_preview_input0">96</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_preview_input0" value="96" min="0" max="100" step="1" aria-label="state1" />
+            <span class="range-hint" aria-hidden="true">state1</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:80.0000%;">
+            <output for="btn_preview_input1">80</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_preview_input1" value="80" min="0" max="100" step="1" aria-label="state2" />
+            <span class="range-hint" aria-hidden="true">state2</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:20.0000%;">
+            <output for="btn_preview_input2">20</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_preview_input2" value="20" min="0" max="100" step="1" aria-label="state3" />
+            <span class="range-hint" aria-hidden="true">state3</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:65.0000%;">
+            <output for="btn_preview_input3">65</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_preview_input3" value="65" min="0" max="100" step="1" aria-label="state4" />
+            <span class="range-hint" aria-hidden="true">state4</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:0.0000%;">
+            <output for="btn_preview_input4">0</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_preview_input4" value="0" min="0" max="100" step="1" aria-label="state5" />
+            <span class="range-hint" aria-hidden="true">state5</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:36.0000%;">
+            <output for="btn_preview_input5">36</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn_preview_input5" value="36" min="0" max="100" step="1" aria-label="state6" />
+            <span class="range-hint" aria-hidden="true">state6</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        </div>
+        </div>
+      </div>
+
+    </div>
+<script>
+
+const mainRive = new rive.Rive({
+  src: "../riv/54_compass31_comb_v4.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true,autoBind: true, artboard: "combined", stateMachines: "State Machine 1",
+  
+
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+                if (!isNaN(val)) vmi.number("state1").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("state1").value = initVal;
+    }
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_1.value);
+                if (!isNaN(val)) vmi.number("state2").value = val;
+                const rangeControl = inputFieldBtn_Main_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_1.value;
+                    const minimum = Number(inputFieldBtn_Main_1.min);
+                    const maximum = Number(inputFieldBtn_Main_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_1.value);
+      if (!isNaN(initVal)) vmi.number("state2").value = initVal;
+    }
+    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
+    if (inputFieldBtn_Main_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_2.value);
+                if (!isNaN(val)) vmi.number("state3").value = val;
+                const rangeControl = inputFieldBtn_Main_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_2.value;
+                    const minimum = Number(inputFieldBtn_Main_2.min);
+                    const maximum = Number(inputFieldBtn_Main_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_2.value);
+      if (!isNaN(initVal)) vmi.number("state3").value = initVal;
+    }
+    let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
+    if (inputFieldBtn_Main_3 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_3.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_3.value);
+                if (!isNaN(val)) vmi.number("state4").value = val;
+                const rangeControl = inputFieldBtn_Main_3.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_3.value;
+                    const minimum = Number(inputFieldBtn_Main_3.min);
+                    const maximum = Number(inputFieldBtn_Main_3.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_3.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_3.value);
+      if (!isNaN(initVal)) vmi.number("state4").value = initVal;
+    }
+    let inputFieldBtn_Main_4 = document.getElementById("btn_main_input4");
+    if (inputFieldBtn_Main_4 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_4.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_4.value);
+                if (!isNaN(val)) vmi.number("state5").value = val;
+                const rangeControl = inputFieldBtn_Main_4.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_4.value;
+                    const minimum = Number(inputFieldBtn_Main_4.min);
+                    const maximum = Number(inputFieldBtn_Main_4.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_4.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_4.value);
+      if (!isNaN(initVal)) vmi.number("state5").value = initVal;
+    }
+    let inputFieldBtn_Main_5 = document.getElementById("btn_main_input5");
+    if (inputFieldBtn_Main_5 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_5.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_5.value);
+                if (!isNaN(val)) vmi.number("state6").value = val;
+                const rangeControl = inputFieldBtn_Main_5.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_5.value;
+                    const minimum = Number(inputFieldBtn_Main_5.min);
+                    const maximum = Number(inputFieldBtn_Main_5.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_5.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_5.value);
+      if (!isNaN(initVal)) vmi.number("state6").value = initVal;
+    }
+  },
+});
+
+const previewRive = new rive.Rive({
+  src: "../riv/54_compass31_comb_v4.riv",
+  canvas: document.getElementById("preview_canvas"),
+  autoplay: true, autoBind: true, artboard: "preview", stateMachines: "State Machine 1",
+  
+
+  onLoad: () => {
+    previewRive.resizeDrawingSurfaceToCanvas();
+    const vmi = previewRive.viewModelInstance;
+    let inputFieldBtn_Preview_0 = document.getElementById("btn_preview_input0");
+    if (inputFieldBtn_Preview_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_0.value);
+                if (!isNaN(val)) vmi.number("state1").value = val;
+                const rangeControl = inputFieldBtn_Preview_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_0.value;
+                    const minimum = Number(inputFieldBtn_Preview_0.min);
+                    const maximum = Number(inputFieldBtn_Preview_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_0.value);
+      if (!isNaN(initVal)) vmi.number("state1").value = initVal;
+    }
+    let inputFieldBtn_Preview_1 = document.getElementById("btn_preview_input1");
+    if (inputFieldBtn_Preview_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_1.value);
+                if (!isNaN(val)) vmi.number("state2").value = val;
+                const rangeControl = inputFieldBtn_Preview_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_1.value;
+                    const minimum = Number(inputFieldBtn_Preview_1.min);
+                    const maximum = Number(inputFieldBtn_Preview_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_1.value);
+      if (!isNaN(initVal)) vmi.number("state2").value = initVal;
+    }
+    let inputFieldBtn_Preview_2 = document.getElementById("btn_preview_input2");
+    if (inputFieldBtn_Preview_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_2.value);
+                if (!isNaN(val)) vmi.number("state3").value = val;
+                const rangeControl = inputFieldBtn_Preview_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_2.value;
+                    const minimum = Number(inputFieldBtn_Preview_2.min);
+                    const maximum = Number(inputFieldBtn_Preview_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_2.value);
+      if (!isNaN(initVal)) vmi.number("state3").value = initVal;
+    }
+    let inputFieldBtn_Preview_3 = document.getElementById("btn_preview_input3");
+    if (inputFieldBtn_Preview_3 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_3.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_3.value);
+                if (!isNaN(val)) vmi.number("state4").value = val;
+                const rangeControl = inputFieldBtn_Preview_3.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_3.value;
+                    const minimum = Number(inputFieldBtn_Preview_3.min);
+                    const maximum = Number(inputFieldBtn_Preview_3.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_3.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_3.value);
+      if (!isNaN(initVal)) vmi.number("state4").value = initVal;
+    }
+    let inputFieldBtn_Preview_4 = document.getElementById("btn_preview_input4");
+    if (inputFieldBtn_Preview_4 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_4.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_4.value);
+                if (!isNaN(val)) vmi.number("state5").value = val;
+                const rangeControl = inputFieldBtn_Preview_4.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_4.value;
+                    const minimum = Number(inputFieldBtn_Preview_4.min);
+                    const maximum = Number(inputFieldBtn_Preview_4.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_4.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_4.value);
+      if (!isNaN(initVal)) vmi.number("state5").value = initVal;
+    }
+    let inputFieldBtn_Preview_5 = document.getElementById("btn_preview_input5");
+    if (inputFieldBtn_Preview_5 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Preview_5.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Preview_5.value);
+                if (!isNaN(val)) vmi.number("state6").value = val;
+                const rangeControl = inputFieldBtn_Preview_5.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Preview_5.value;
+                    const minimum = Number(inputFieldBtn_Preview_5.min);
+                    const maximum = Number(inputFieldBtn_Preview_5.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Preview_5.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Preview_5.value);
+      if (!isNaN(initVal)) vmi.number("state6").value = initVal;
+    }
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>

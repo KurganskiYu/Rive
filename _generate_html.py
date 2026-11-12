@@ -10,7 +10,12 @@ import json
 import tempfile
 import zipfile
 from html import escape as html_escape
+from urllib.parse import quote
 
+from _custom_sets import (
+    CUSTOM_CATALOG_MARKER, load_custom_catalogs, publish_custom_catalog,
+    validate_custom_directory,
+)
 from _navigation import load_navigation_entries, render_navigation, sanitize_for_filename
 from catalog_core import (
     DEFAULT_ARTBOARD, DEFAULT_STATE_MACHINE, INPUT_TYPE_PREFIXES, LAYOUT_KEYWORD,
@@ -22,6 +27,8 @@ from catalog_core import (
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, "_videos.csv")
 names_path = os.path.join(script_dir, "_videos_names.csv")
+sets_path = os.path.join(script_dir, "_videos_sets.csv")
+descriptions_path = os.path.join(script_dir, "_videos_descriptions.txt")
 output_html = os.path.join(script_dir, "index.html")
 head_html_path = os.path.join(script_dir, "head.html")
 pages_dir = os.path.join(script_dir, "pages")
@@ -256,9 +263,16 @@ def make_file_size_html(row):
 
 def make_main_link(row, is_root=True):
     page_name = row.get("page_stem", row["src"]) + ".html"
+    if "_custom_label" in row:
+        prefix = "pages/" if is_root else ""
+        return f'<a class="custom-name" href="{prefix}{quote(page_name, safe="")}">{html_escape(row["_custom_label"])}</a>'
     display_name = get_display_name(row["src"])
     prefix = "pages/" if is_root else ""
     return f'<a href="{prefix}{page_name}" style="color: #888888;">{display_name}</a>'
+
+def make_custom_description(row):
+    description = row.get("_custom_description", "")
+    return f'<p class="custom-description">{html_escape(description)}</p>' if description else ""
 
 def make_range_ticks(minimum, maximum, step):
     intervals = int((Decimal(maximum) - Decimal(minimum)) / Decimal(step))
@@ -443,11 +457,13 @@ def make_main_canvas(idx, row, is_root=True):
     button_id = f"btn{idx}"
     width, height, _scale = catalog_canvas_size(row)
     canvas_ctx = {**row, "width": width, "height": height}
+    custom = "_custom_label" in row
 
     # Build button HTML
     button_html = ""
     if row.get("trigger"):
-        button_html = f'<button id="{button_id}" class="rive-btn" style="margin-left:auto;">Trigger</button>'
+        button_label = "Run" if custom else "Trigger"
+        button_html = f'<button id="{button_id}" class="rive-btn" style="margin-left:auto;">{button_label}</button>'
 
     # Collect input fields (below the row)
     inputs_html = collect_input_fields(row, button_id, control_width_for(canvas_ctx))
@@ -460,17 +476,24 @@ def make_main_canvas(idx, row, is_root=True):
     else:
         inputs_html = ""
 
+    heading_attrs = 'class="custom-heading"' if custom else 'style="display: flex; align-items: center; width: 100%;"'
+    name_style = "" if custom else ' style="white-space: nowrap;"'
+    file_size = "" if custom else make_file_size_html(row)
+    container_class = "animation-container custom-animation" if custom else "animation-container"
+    custom_description = make_custom_description(row)
+    if custom_description:
+        custom_description += "\n        "
     desc = f'''
       <div style="display: flex; flex-direction: column; align-items: stretch;">
-        <div style="display: flex; align-items: center; width: 100%;">
-          <div style="white-space: nowrap;">{make_main_link(row, is_root)}{make_file_size_html(row)}</div>
+        <div {heading_attrs}>
+          <div{name_style}>{make_main_link(row, is_root)}{file_size}</div>
           {button_html}
         </div>
-        {inputs_html}
+        {custom_description}{inputs_html}
       </div>
     '''
     return f'''
-      <div class="animation-container">
+      <div class="{container_class}">
         <canvas {canvas_attrs(canvas_ctx, canvas_id)}></canvas>
         <div class="description">
           {desc}
@@ -863,7 +886,7 @@ def check_preview_exists(row):
     preview_path = os.path.join(script_dir, "riv", preview_file)
     return f'../riv/{preview_file}' if os.path.exists(preview_path) else None
 
-def make_animation_page(row):
+def make_animation_page(row, output_dir=None):
     page_name = row.get("page_stem", row["src"]) + ".html"
     main_rive = f'../riv/{row["src"]}.riv'
     
@@ -883,7 +906,7 @@ def make_animation_page(row):
             "artboard": "preview"
         }
 
-    html_parts = [get_html_head(is_root=False)]
+    html_parts = [CUSTOM_CATALOG_MARKER if "_custom_label" in row else "", get_html_head(is_root=False)]
     # Inject BG button (is_root=False because this is in pages/)
     html_parts.append(get_bg_button_html(is_root=False))
     
@@ -898,25 +921,33 @@ def make_animation_page(row):
     html_parts.append(html_foot)
     
     # Write file
-    with open(os.path.join(pages_dir, page_name), "w", encoding="utf-8") as f:
+    with open(os.path.join(pages_dir if output_dir is None else output_dir, page_name), "w", encoding="utf-8") as f:
         f.write("".join(html_parts))
 
 def generate_detail_animation_html(row, canvas_ctx, canvas_type):
     prefix = f"btn_{canvas_type}"
+    custom = "_custom_label" in row
     if canvas_type == "main":
-        title = f'<span style="white-space: nowrap;"><a href="../riv/{row["src"]}.riv" target="_blank" style="color: white;">{get_display_name(row["src"])}</a>{make_file_size_html(row)}</span>'
-        metadata = make_description_html(row)
+        if custom:
+            title = f'<span>{html_escape(row["_custom_label"])}</span>'
+            metadata = make_custom_description(row) + make_description_html(row)
+        else:
+            title = f'<span style="white-space: nowrap;"><a href="../riv/{row["src"]}.riv" target="_blank" style="color: white;">{get_display_name(row["src"])}</a>{make_file_size_html(row)}</span>'
+            metadata = make_description_html(row)
     else:
         title = "Preview:"
         metadata = ""
-    button = f'<button id="{prefix}" class="rive-btn" style="margin-left:auto;">Trigger</button>' if row.get("trigger") else ""
+    button_label = "Run" if custom else "Trigger"
+    button = f'<button id="{prefix}" class="rive-btn" style="margin-left:auto;">{button_label}</button>' if row.get("trigger") else ""
     inputs = make_animation_inputs(row, prefix, control_width_for(canvas_ctx))
     controls = f'<div class="controls-column" style="margin-top:8px;">{inputs}</div>' if inputs else ""
+    container_class = "animation-container detail-animation" + (" custom-animation" if custom else "")
+    heading_attrs = 'class="custom-heading"' if custom else 'style="display:flex;align-items:center;width:100%;"'
     return f'''
-      <div class="animation-container detail-animation">
+      <div class="{container_class}">
         <canvas {canvas_attrs(canvas_ctx, f"{canvas_type}_canvas")}></canvas>
         <div class="description">
-          <div style="display:flex;align-items:center;width:100%;">
+          <div {heading_attrs}>
             <div>{title}</div>
             {button}
           </div>
@@ -1040,7 +1071,7 @@ const previewRive = new rive.Rive({{
     
     return "".join(js_parts)
 
-def make_pagination_buttons(current_page, total_pages):
+def make_pagination_buttons(current_page, total_pages, custom=False):
     buttons = []
     for i in range(total_pages):
         label = str(i + 1)
@@ -1048,7 +1079,9 @@ def make_pagination_buttons(current_page, total_pages):
         if i == current_page:
             buttons.append(f'<button class="rive-btn" style="background:#e0e0e0;color:#333;">{label}</button>')
         else:
-            if current_page == 0:
+            if custom:
+                target = "index.html" if i == 0 else f"catalog-page-{i + 1}.html"
+            elif current_page == 0:
                 # From root index.html
                 target = "index.html" if i == 0 else f"pages/page{i}.html"
             else:
@@ -1059,19 +1092,24 @@ def make_pagination_buttons(current_page, total_pages):
     
     return '<div style="margin: 24px 0; text-align:center;">' + " ".join(buttons) + "</div>"
 
-def write_main_page(page_rows, page_idx, total_pages, navigation_entries):
-    filename = output_html if page_idx == 0 else os.path.join(pages_dir, f"page{page_idx}.html")
-    is_root = (page_idx == 0)
+def write_main_page(page_rows, page_idx, total_pages, navigation_entries, output_dir=None):
+    custom = output_dir is not None
+    if custom:
+        filename = os.path.join(output_dir, "index.html" if page_idx == 0 else f"catalog-page-{page_idx + 1}.html")
+    else:
+        filename = output_html if page_idx == 0 else os.path.join(pages_dir, f"page{page_idx}.html")
+    is_root = page_idx == 0 and not custom
     
     with open(filename, "w", encoding="utf-8") as f:
         content_parts = [
+            CUSTOM_CATALOG_MARKER if custom else "",
             get_html_head(is_root=is_root),
             get_bg_button_html(is_root=is_root),  # Inject BG button
-            render_navigation(navigation_entries, is_root),
+            "" if custom else render_navigation(navigation_entries, is_root),
             "".join(make_main_canvas(idx, row, is_root) for idx, row in enumerate(page_rows)),
             "</div>\n",
             make_script(page_rows, is_root),
-            make_pagination_buttons(page_idx, total_pages),
+            make_pagination_buttons(page_idx, total_pages, custom),
             html_foot
         ]
         f.write("".join(content_parts))
@@ -1182,6 +1220,24 @@ def resolve_src_dir():
             return p
     return None
 
+def generate_custom_catalogs(catalogs):
+    for name, _ in catalogs:
+        validate_custom_directory(os.path.join(script_dir, name))
+
+    for name, rows in catalogs:
+        output_dir = os.path.join(script_dir, name)
+        with tempfile.TemporaryDirectory(prefix=".custom-catalog-", dir=script_dir) as staging_dir:
+            for row in rows:
+                make_animation_page(row, staging_dir)
+
+            total_pages = max(1, (len(rows) + ANIMATIONS_PER_PAGE - 1) // ANIMATIONS_PER_PAGE)
+            for page_idx in range(total_pages):
+                start = page_idx * ANIMATIONS_PER_PAGE
+                write_main_page(rows[start:start + ANIMATIONS_PER_PAGE], page_idx, total_pages, [], staging_dir)
+
+            publish_custom_catalog(staging_dir, output_dir)
+        print(f"Generated {name}: {len(rows)} animation pages and {total_pages} catalog page(s).")
+
 # Main execution
 def main():
     rows = load_csv_rows(csv_path)[::-1]
@@ -1203,6 +1259,9 @@ def main():
     # sharing one .riv src).
     assign_page_stems(rows)
     navigation_entries = load_navigation_entries(rows, names_path)
+    custom_catalogs = load_custom_catalogs(sets_path, descriptions_path, rows, navigation_entries)
+    for name, _ in custom_catalogs:
+        validate_custom_directory(os.path.join(script_dir, name))
 
     # Generate per-animation pages
     for row in rows:
@@ -1223,6 +1282,8 @@ def main():
         print(f"Generated index.html, {extra_pages} additional {extra_label}, and {len(rows)} animation {animation_label}.")
     else:
         print("No pages generated: the catalog is empty.")
+
+    generate_custom_catalogs(custom_catalogs)
 
 if __name__ == "__main__":
     # Ensure destination riv folder exists

@@ -1,0 +1,197 @@
+<!-- Generated custom catalog; do not edit. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../RiveIcon2.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+      <div class="animation-container detail-animation custom-animation">
+        <canvas id="main_canvas" width="375" height="812"></canvas>
+        <div class="description">
+          <div class="custom-heading">
+            <div><span>09 Sleep Lake</span></div>
+            <button id="btn_main" class="rive-btn" style="margin-left:auto;">Run</button>
+          </div>
+          Size: 375px × 812px<br>State Machine: State Machine 1<br>Artboard: main<br>Trigger: Trigger 1<br>Input: v_num:LakeSize(80:1-100)<br>Input: v_bol:NoAnimation<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:79.7980%;">
+            <output for="btn_main_input0">80</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.02020202%;"></span><span style="left:4.04040404%;"></span><span style="left:6.06060606%;"></span><span style="left:8.08080808%;"></span><span style="left:10.10101010%;"></span><span style="left:12.12121212%;"></span><span style="left:14.14141414%;"></span><span style="left:16.16161616%;"></span><span style="left:18.18181818%;"></span><span style="left:20.20202020%;"></span><span style="left:22.22222222%;"></span><span style="left:24.24242424%;"></span><span style="left:26.26262626%;"></span><span style="left:28.28282828%;"></span><span style="left:30.30303030%;"></span><span style="left:32.32323232%;"></span><span style="left:34.34343434%;"></span><span style="left:36.36363636%;"></span><span style="left:38.38383838%;"></span><span style="left:40.40404040%;"></span><span style="left:42.42424242%;"></span><span style="left:44.44444444%;"></span><span style="left:46.46464646%;"></span><span style="left:48.48484848%;"></span><span style="left:50.50505051%;"></span><span style="left:52.52525253%;"></span><span style="left:54.54545455%;"></span><span style="left:56.56565657%;"></span><span style="left:58.58585859%;"></span><span style="left:60.60606061%;"></span><span style="left:62.62626263%;"></span><span style="left:64.64646465%;"></span><span style="left:66.66666667%;"></span><span style="left:68.68686869%;"></span><span style="left:70.70707071%;"></span><span style="left:72.72727273%;"></span><span style="left:74.74747475%;"></span><span style="left:76.76767677%;"></span><span style="left:78.78787879%;"></span><span style="left:80.80808081%;"></span><span style="left:82.82828283%;"></span><span style="left:84.84848485%;"></span><span style="left:86.86868687%;"></span><span style="left:88.88888889%;"></span><span style="left:90.90909091%;"></span><span style="left:92.92929293%;"></span><span style="left:94.94949495%;"></span><span style="left:96.96969697%;"></span><span style="left:98.98989899%;"></span></span>
+            <input type="range" id="btn_main_input0" value="80" min="1" max="100" step="1" aria-label="LakeSize" />
+            <span class="range-hint" aria-hidden="true">LakeSize</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input1">NoAnimation:</label>
+            <input type="checkbox" id="btn_main_input1" />
+        </div>
+        </div>
+        </div>
+      </div>
+<script>
+
+const mainRive = new rive.Rive({
+  src: "../riv/09_sleeplake_v11.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+  
+
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+                if (!isNaN(val)) vmi.number("LakeSize").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("LakeSize").value = initVal;
+    }
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn_Main_1.addEventListener("change", () => {
+        vmi.boolean("NoAnimation").value = inputFieldBtn_Main_1.checked;
+      });
+      // Set initial value
+      vmi.boolean("NoAnimation").value = inputFieldBtn_Main_1.checked;
+    }
+  },
+});
+
+document.getElementById("btn_main").addEventListener("click", () => {
+    const vmi = mainRive.viewModelInstance;
+    if (vmi) {
+        const vmTrigger = vmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = mainRive.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
+} );
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>

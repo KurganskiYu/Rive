@@ -132,6 +132,29 @@
             margin-top: 8px;
             line-height: 1.4;
         }
+        .custom-animation .description {
+            color: #b8b8b8;
+            width: 0;
+            min-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .custom-heading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+        .custom-heading > div:first-child {
+            min-width: 0;
+        }
+        .custom-name {
+            color: #eee;
+            text-decoration: underline;
+        }
+        .custom-description {
+            margin: 8px 0;
+            white-space: pre-line;
+        }
         /* File-size text displayed beside an animation name. */
         .riv-file-size {
             font-family: 'Roboto Condensed', sans-serif;

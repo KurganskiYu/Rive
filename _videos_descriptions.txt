@@ -1,0 +1,4 @@
+# Add one description per line, starting with its animation number:
+# 01: A description of animation 01, with commas or punctuation.
+#
+
