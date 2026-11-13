@@ -9,3 +9,26 @@
 # Edit _anim_names.csv for names and variant letters; letters are not displayed.
 # Run _generate_html.py to update the catalogs.
 # Removing a set row does not remove its existing published folder.
+# contra1,contra2,75,77,74,71,73,69,crm1,crm2,crm3,crm4,crm5,crm6,60,64,54,53,48,49,46,45,40,34,31,24,13,17,18,14,09,08,06,03
+
+contra1: Interactive health data visualization interface, physics-based simulation. Shows 2-minute heart rate zones as rounds, color and size coded. Dynamic detalization view and statistics transformation.
+contra2: Interactive and dynamic HMI concept. Can be transformed to any mode and any data.
+77: Data-driven animated chart matrix. Uses external data and has an adaptive layout and a parameter to switch animations.
+75: Animated clock with three states and parameters to switch them and change time.
+74: Parametric shape that deforms to indicate the stress level, set by external parameter, animated start. Lake changes color.
+71: Animated chart with a data-driven height, green light, and cap appearance. 
+73: Animated parametric liquid that starts from level 1 and goes to level 2, which are set by parameters.
+69: Parametric and physics-based circle simulation that represents the data of the user's activity. The amount and type of circles are data-driven. Filling the can goal can be set by a parameter. And when the goal is reached, circles fill the can and other extra particles stay outside. Physics connected to phone's motion sensors so the animation can be affected by phone movements.
+crm2: Data-driven simulated infographics that shows the amount of days spent in the sea, playful and dynamic.
+crm3: Animated balance chart that moves the wave depending on the external values.
+crm5: Parametric pattern scatter of user pics, set by external data (image files), dynamically reshaping depending on the amount of people. 
+crm6: Physics-based simulation of countries data. External data is just countries codes. Flag colors are embedded in the animation file.
+60: Animated parametric calendar that uses external data as a simple array. Can we reshape by setting the amount of days and adjust appearance speed by setting a delay parameter.
+64: Animated chart. It changes its state depending on the single value.
+54: Animated shape that represents the condition from calm to aggressive depending on the external data. Colors preset switcher.
+53: Animated parametric clock with two ranges that can be set by external data. Time can be set by parameters.
+48: Flexible combined chart that can be controlled with a set of external parameters.
+46: Active clickable button with animated states and transitions. Boolean parameter to read its pressed state.
+40: Dynamic sliders that allow you to set the balanced values.
+18: Animated onboarding scenario. Follow by clicking Run button.
+09: Parametric lake that changes its shape by external value.
