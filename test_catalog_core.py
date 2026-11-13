@@ -10,6 +10,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import _generate_html as generator
+import _sync_files as sync_files
 import catalog_core as core
 from catalog_cli import read_catalog
 
@@ -20,7 +21,7 @@ class CatalogTests(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
         (self.root / "riv").mkdir()
-        self.table = self.root / "_videos.csv"
+        self.table = self.root / "_anim_list.csv"
 
     def write_rows(self, rows):
         with self.table.open("w", newline="", encoding="utf-8") as file:
@@ -28,7 +29,7 @@ class CatalogTests(unittest.TestCase):
             writer.writerow(["src", "size", "preview", "params..."])
             writer.writerows(rows)
         for row in rows:
-            src = row[0].removesuffix(".riv")
+            src = row[0].removeprefix("-").removesuffix(".riv")
             if "/" not in src:
                 (self.root / "riv" / f"{src}.riv").write_bytes(b"fixture")
 
@@ -67,8 +68,8 @@ class CatalogTests(unittest.TestCase):
         self.write_rows([["01_demo_v1", "80x80", ""]])
         before = self.table.read_bytes()
         read_catalog(self.root)
-        self.assertFalse((self.root / "_videos_names.csv").exists())
-        names = self.root / "_videos_names.csv"
+        self.assertFalse((self.root / "_anim_names.csv").exists())
+        names = self.root / "_anim_names.csv"
         names.write_bytes(b"filename,name\r\n01_demo,Custom name\r\nunused,Retained\r\n")
         names_before = names.read_bytes()
         snapshot = read_catalog(self.root)
@@ -95,6 +96,23 @@ class CatalogTests(unittest.TestCase):
         first = read_catalog(self.root)["entries"][0]["id"]
         self.write_rows([["demo_v2", "80x80", ""]])
         self.assertEqual(first, read_catalog(self.root)["entries"][0]["id"])
+
+    def test_hidden_alphanumeric_id_uses_real_source_and_stable_name(self):
+        self.write_rows([["-crm1_start_v3", "80x80", ""]])
+        names = self.root / "_anim_names.csv"
+        names.write_text("id,name\ncrm1,Welcome\n", encoding="utf-8")
+        entry = read_catalog(self.root)["entries"][0]
+        self.assertEqual((entry["animation_id"], entry["src"], entry["hidden"]),
+                         ("crm1", "crm1_start_v3", True))
+        self.assertEqual(entry["fields"][0], "-crm1_start_v3")
+        self.assertEqual((entry["label"], entry["file_size"]), ("crm1 Welcome", len(b"fixture")))
+        self.assertEqual(sync_files.active_sources(self.table), {"crm1_start_v3"})
+
+        self.write_rows([["crm1_start_v4", "80x80", ""]])
+        renamed = read_catalog(self.root)["entries"][0]
+        self.assertEqual(renamed["id"], entry["id"])
+        self.assertEqual(renamed["label"], "crm1 Welcome")
+        self.assertFalse(renamed["hidden"])
 
     def test_sizes_and_range_precision(self):
         for size, auto_w, auto_h in (
@@ -189,14 +207,14 @@ class CustomCatalogTests(unittest.TestCase):
             '<link href="styles.css"></head><body><div class="animation-wrapper">\n',
             encoding="utf-8",
         )
-        self.sets = self.root / "_videos_sets.csv"
-        self.descriptions = self.root / "_videos_descriptions.txt"
+        self.sets = self.root / "_anim_sets.csv"
+        self.descriptions = self.root / "_anim_descriptions.txt"
         self.descriptions.write_text("# Add descriptions here.\n", encoding="utf-8")
         patcher = patch.multiple(
             generator,
             script_dir=str(self.root),
-            csv_path=str(self.root / "_videos.csv"),
-            names_path=str(self.root / "_videos_names.csv"),
+            csv_path=str(self.root / "_anim_list.csv"),
+            names_path=str(self.root / "_anim_names.csv"),
             sets_path=str(self.sets),
             descriptions_path=str(self.descriptions),
             output_html=str(self.root / "index.html"),
@@ -209,41 +227,45 @@ class CustomCatalogTests(unittest.TestCase):
         self.addCleanup(generator.get_html_head.cache_clear)
 
     def write_catalog(self, rows, names):
-        with (self.root / "_videos.csv").open("w", newline="", encoding="utf-8") as file:
+        with (self.root / "_anim_list.csv").open("w", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
             writer.writerow(["src", "size", "preview", "params..."])
             writer.writerows(rows)
-        with (self.root / "_videos_names.csv").open("w", newline="", encoding="utf-8") as file:
+        with (self.root / "_anim_names.csv").open("w", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
-            writer.writerow(["filename", "name"])
+            writer.writerow(["filename", "name", "variant"])
             writer.writerows(names)
         for row in rows:
-            (self.root / "riv" / f"{row[0]}.riv").write_bytes(b"fixture")
+            source = row[0].removeprefix("-")
+            (self.root / "riv" / f"{source}.riv").write_bytes(b"fixture")
 
     def generate(self):
         with contextlib.redirect_stdout(io.StringIO()):
             generator.main()
 
-    def test_custom_content_and_shared_numbers_leave_main_presentation_unchanged(self):
+    def test_custom_content_uses_variants_without_changing_links_or_labels(self):
         self.write_catalog(
             [
                 ["01_demo_v1", "80x80", "120x120", "artboard:First", "trigger:Go"],
                 ["01_demo_v1", "80x80", "", "artboard:Second", "trigger:Go"],
                 ["02_other_v1", "393xlayout", "", "trigger:Go",
                  "font:Typeface(Font.otf)", "img:Photo(test.png)"],
+                ["-crm1_start_v1", "80x80", "", "trigger:Go"],
                 ["03_unused_v1", "80x80", ""],
             ],
             [
-                ["01_demo--First", "First favorite"],
-                ["01_demo--Second", "Second & special"],
-                ["02_other", "Other favorite"],
-                ["03_unused", "Not selected"],
+                ["01_demo--First", "First favorite", "a"],
+                ["01_demo--Second", "Second & special", "b"],
+                ["02_other", "Other favorite", ""],
+                ["crm1_start", "Hidden favorite", ""],
+                ["03_unused", "Not selected", ""],
             ],
         )
-        self.sets.write_text("client,02,01,1\n", encoding="utf-8")
+        self.sets.write_text("client,02,01a,crm1,01b,01\n", encoding="utf-8")
         self.descriptions.write_text(
-            "01: A <useful> description, with & punctuation.\n"
-            "02: Another description: with a colon.\n",
+            "01: Shared description.\n"
+            "01a: A <useful> description, with & punctuation.\n"
+            "crm1: A hidden animation.\n",
             encoding="utf-8",
         )
         self.generate()
@@ -256,10 +278,22 @@ class CustomCatalogTests(unittest.TestCase):
         self.assertIn('href="02_other_v1.html">02 Other favorite</a>', catalog)
         self.assertIn('href="01_demo_v1--Second.html">01 Second &amp; special</a>', catalog)
         self.assertIn('href="01_demo_v1--First.html">01 First favorite</a>', catalog)
-        self.assertLess(catalog.index("02 Other favorite"), catalog.index("01 Second &amp; special"))
-        self.assertEqual(catalog.count("A &lt;useful&gt; description, with &amp; punctuation."), 2)
+        self.assertIn('href="crm1_start_v1.html">crm1 Hidden favorite</a>', catalog)
+        navigation = catalog.split('<nav class="animation-nav"', 1)[1].split("</nav>", 1)[0]
+        self.assertIn('href="01_demo_v1--First.html">01 First favorite</a>', navigation)
+        self.assertIn('href="crm1_start_v1.html">crm1 Hidden favorite</a>', navigation)
+        self.assertNotIn("03_unused", navigation)
+        self.assertNotIn('href="pages/', navigation)
+        self.assertLess(catalog.index("02 Other favorite"), catalog.index("01 First favorite"))
+        self.assertEqual(catalog.count("A &lt;useful&gt; description, with &amp; punctuation."), 1)
         self.assertIn("A &lt;useful&gt; description, with &amp; punctuation.", detail)
         self.assertIn("01 First favorite", detail)
+        self.assertIn("Shared description.", catalog)
+        self.assertNotIn("Shared description.", detail)
+        self.assertNotIn(">01a ", catalog + detail)
+        self.assertIn("A hidden animation.", catalog)
+        self.assertNotIn("crm1", main_catalog)
+        self.assertFalse((self.root / "pages" / "crm1_start_v1.html").exists())
         self.assertFalse((self.root / "client" / "03_unused_v1.html").exists())
         self.assertNotIn('href="../riv/', catalog + detail)
         self.assertNotIn('class="riv-file-size"', catalog + detail)
@@ -267,6 +301,7 @@ class CustomCatalogTests(unittest.TestCase):
         self.assertIn(">Run</button>", catalog)
         self.assertEqual(detail.count(">Run</button>"), 2)
         self.assertIn('src: "../riv/01_demo_v1.riv"', catalog)
+        self.assertIn('src: "../riv/crm1_start_v1.riv"', catalog)
         self.assertIn('href="../styles.css"', catalog)
         self.assertIn('href="../RiveIcon2.svg"', detail)
         self.assertIn('data-auto-h', catalog)
@@ -277,11 +312,11 @@ class CustomCatalogTests(unittest.TestCase):
         self.assertIn('href="../riv/01_demo_v1.riv"', main_detail)
         self.assertNotIn("A &lt;useful&gt; description", main_catalog + main_detail)
 
-    def test_pagination_and_removing_a_number_remove_only_generated_pages(self):
+    def test_pagination_and_removing_an_id_remove_only_generated_pages(self):
         rows = [[f"{number:02}_demo_v1", "80x80", ""] for number in range(1, 11)]
-        names = [[f"{number:02}_demo", f"Demo {number}"] for number in range(1, 11)]
+        names = [[f"{number:02}", f"Demo {number}"] for number in range(1, 11)]
         self.write_catalog(rows, names)
-        self.sets.write_text("client," + ",".join(str(number) for number in range(1, 11)) + "\n")
+        self.sets.write_text("client," + ",".join(f"{number:02}" for number in range(1, 11)) + "\n")
         self.generate()
 
         output = self.root / "client"
@@ -291,6 +326,10 @@ class CustomCatalogTests(unittest.TestCase):
         self.assertIn('href="index.html"', second)
         self.assertIn('href="09_demo_v1.html"', second)
         self.assertIn('src: "../riv/09_demo_v1.riv"', second)
+        navigation = second.split('<nav class="animation-nav"', 1)[1].split("</nav>", 1)[0]
+        self.assertIn('href="01_demo_v1.html">01 Demo 1</a>', navigation)
+        self.assertIn('href="10_demo_v1.html">10 Demo 10</a>', navigation)
+        self.assertNotIn('href="pages/', navigation)
 
         unrelated = output / "notes.html"
         unrelated.write_text("Keep this file.", encoding="utf-8")
@@ -326,10 +365,103 @@ class CustomCatalogTests(unittest.TestCase):
                 self.assertEqual((self.root / "riv" / "01_demo_v1.riv").read_bytes(), b"fixture")
 
         self.sets.write_text("client,01\n", encoding="utf-8")
-        self.descriptions.write_text("01: One description\n1: Another description\n", encoding="utf-8")
-        with self.assertRaisesRegex(ValueError, "duplicate number"):
+        self.descriptions.write_text("01: One description\n01: Another description\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "duplicate ID"):
             self.generate()
         self.assertEqual(main_page.read_text(encoding="utf-8"), "Existing main catalog.")
+
+    def test_numeric_ids_are_distinct_and_descriptions_follow_the_exact_id(self):
+        self.write_catalog(
+            [["01_leading_v1", "80x80", ""], ["1_plain_v1", "80x80", ""]],
+            [["01", "Leading zero"], ["1", "No leading zero"]],
+        )
+        self.sets.write_text("client,1\n", encoding="utf-8")
+        self.descriptions.write_text("01: Zero description\n1: Plain description\n", encoding="utf-8")
+        self.generate()
+        output = self.root / "client"
+        catalog = (output / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Plain description", catalog)
+        self.assertNotIn("Zero description", catalog)
+        self.assertTrue((output / "1_plain_v1.html").exists())
+        self.assertFalse((output / "01_leading_v1.html").exists())
+
+        self.sets.write_text("client,01\n", encoding="utf-8")
+        self.generate()
+        self.assertTrue((output / "01_leading_v1.html").exists())
+        self.assertFalse((output / "1_plain_v1.html").exists())
+        self.assertIn("Zero description", (output / "index.html").read_text(encoding="utf-8"))
+
+    def test_hiding_a_previously_visible_animation_removes_only_managed_main_pages(self):
+        self.write_catalog([["crm1_start_v1", "80x80", ""]], [["crm1", "Welcome"]])
+        self.sets.write_text("client,crm1\n", encoding="utf-8")
+        self.generate()
+        main_detail = self.root / "pages" / "crm1_start_v1.html"
+        self.assertTrue(main_detail.exists())
+        unrelated = self.root / "pages" / "manual.html"
+        unrelated.write_text("Keep this file.", encoding="utf-8")
+
+        self.write_catalog([["-crm1_start_v1", "80x80", ""]], [["crm1", "Welcome"]])
+        self.generate()
+        self.assertFalse(main_detail.exists())
+        self.assertNotIn("crm1", (self.root / "index.html").read_text(encoding="utf-8"))
+        self.assertTrue((self.root / "client" / "crm1_start_v1.html").exists())
+        self.assertEqual(unrelated.read_text(encoding="utf-8"), "Keep this file.")
+
+    def test_variants_stay_attached_to_files_when_rows_are_reordered_or_added(self):
+        self.write_catalog(
+            [["03_first_v1", "80x80", ""], ["03_second_v1", "80x80", ""]],
+            [["03_first", "First", "a"], ["03_second", "Second", "b"]],
+        )
+        self.sets.write_text("client,03a\n", encoding="utf-8")
+        self.generate()
+        self.write_catalog(
+            [["03_second_v1", "80x80", ""], ["03_new_v1", "80x80", ""],
+             ["03_first_v1", "80x80", ""]],
+            [["03_first", "First", "a"], ["03_second", "Second", "b"]],
+        )
+        self.generate()
+        with (self.root / "_anim_names.csv").open(newline="", encoding="utf-8") as file:
+            names = {row["filename"]: row["variant"] for row in csv.DictReader(file)}
+        self.assertEqual(names, {"03_first": "a", "03_second": "b", "03_new": "c"})
+        output = self.root / "client"
+        self.assertTrue((output / "03_first_v1.html").exists())
+        self.assertFalse((output / "03_second_v1.html").exists())
+        self.sets.write_text("client,03,03b\n", encoding="utf-8")
+        self.generate()
+        self.assertTrue((output / "03_first_v1.html").exists())
+        self.assertTrue((output / "03_second_v1.html").exists())
+        self.assertTrue((output / "03_new_v1.html").exists())
+        self.assertEqual((output / "index.html").read_text().count('class="custom-name"'), 3)
+
+        self.write_catalog(
+            [["03_second_v1", "80x80", ""], ["03_new_v1", "80x80", ""],
+             ["03_fourth_v1", "80x80", ""]],
+            [["03_first", "First", "a"], ["03_second", "Second", "b"], ["03_new", "New", "c"]],
+        )
+        self.sets.write_text("client,03a\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "no animations found for 03a"):
+            self.generate()
+
+    def test_ambiguous_variant_selector_fails_before_writing_main(self):
+        self.write_catalog(
+            [["03_first_v1", "80x80", ""], ["03_second_v1", "80x80", ""],
+             ["03a_other_v1", "80x80", ""]],
+            [["03_first", "First", "a"], ["03_second", "Second", "b"],
+             ["03a_other", "Other", ""]],
+        )
+        self.sets.write_text("client,03a\n", encoding="utf-8")
+        main_page = self.root / "index.html"
+        main_page.write_text("Existing main catalog.", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Ambiguous animation selector"):
+            self.generate()
+        self.assertEqual(main_page.read_text(encoding="utf-8"), "Existing main catalog.")
+
+        self.write_catalog(
+            [["03_first_v1", "80x80", ""], ["03_second_v1", "80x80", ""]],
+            [["03_first", "First", "a"], ["03_second", "Second", "a"]],
+        )
+        with self.assertRaisesRegex(ValueError, "Duplicate variant"):
+            self.generate()
 
     def test_generated_pages_do_not_overwrite_unrelated_files(self):
         self.write_catalog([["01_demo_v1", "80x80", ""]], [["01_demo", "Demo"]])

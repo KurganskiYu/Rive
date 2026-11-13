@@ -131,10 +131,12 @@ class CopyRecentTests(unittest.TestCase):
         with (
             patch("_generate_html.load_csv_rows", return_value=rows),
             patch("_generate_html.assign_page_stems"),
-            patch("_generate_html.load_navigation_entries", return_value=[]),
+            patch("_generate_html.index_animation_ids"),
+            patch("_generate_html.load_navigation_entries", return_value=([], {})),
             patch("_generate_html.load_custom_catalogs", return_value=[]),
             patch("_generate_html.make_animation_page"),
             patch("_generate_html.write_main_page"),
+            patch("_generate_html.remove_stale_main_pages"),
             contextlib.redirect_stdout(output),
         ):
             main()
@@ -145,7 +147,7 @@ class CopyRecentTests(unittest.TestCase):
         output = io.StringIO()
         with (
             patch("_generate_html.load_csv_rows", return_value=[]),
-            patch("_generate_html.load_navigation_entries", return_value=[]),
+            patch("_generate_html.load_navigation_entries", return_value=([], {})),
             patch("_generate_html.load_custom_catalogs", return_value=[]),
             contextlib.redirect_stdout(output),
         ):

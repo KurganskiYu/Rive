@@ -48,8 +48,10 @@ def strip_quotes(value):
 
 
 def parse_csv_row(values: list[str], warn: Callable[[str], None] = print):
+    source = values[0].strip() if len(values) > 0 else ""
     row = {
-        "src": values[0].strip() if len(values) > 0 else "",
+        "src": source[1:] if source.startswith("-") else source,
+        "hidden": source.startswith("-"),
         "size": values[1].strip() if len(values) > 1 else "",
         "preview": values[2].strip() if len(values) > 2 else "",
         "inputs": [],

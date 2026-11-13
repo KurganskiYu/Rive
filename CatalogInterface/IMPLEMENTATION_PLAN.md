@@ -121,7 +121,7 @@ Preserve the maintained generator's existing CLI behavior and import tests.
 
 ## Priority 3: persist group membership
 
-Prefer an additive `_videos_groups.csv`, one entry/group assignment per row,
+Prefer an additive `_anim_groups.csv`, one entry/group assignment per row,
 allowing many groups per animation. Final identity/migration handling must be
 tested before writes are enabled.
 Include the new file in conflict detection and the recoverable save transaction;
@@ -130,7 +130,7 @@ test version changes and shared-artboard entries before committing membership.
 Do not add a third names-table column without updating and testing all consumers:
 the current navigation code explicitly expects `filename,name`.
 
-The existing `_videos.csv` and `_videos_names.csv` remain authoritative for
+The existing `_anim_list.csv` and `_anim_names.csv` remain authoritative for
 configuration and names. Selected 1/2 remain presentation sets with their
 existing public URLs; they are not ownership groups.
 

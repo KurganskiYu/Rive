@@ -1,4 +1,13 @@
 src,size,preview,params...
+-crm1_start_v3,393x852,,txt:name("Andreas"),txt:shipName("AIDA Prima"),txt:dates("Nov 1 – Mar 28")
+-crm2_daysonboard_v5,393x852,,v_num:days(256:1-600),txt:shipName("Norwegian Epic")
+-crm3_seaportdays_v3,393x852,,v_num:seaDays(126:1-600),v_num:portDays(32:1-600)
+-crm4_achievements_v3,393x852,,v_num:illustrationIndex(3:1-22),txt:name("Marcos")
+-crm5_connections_v5,393x852,,v_num:friendsNum(27:1-160)
+-crm6_countries_v6,393x852,,v_num:countries(16:1-200),v_num:countriesNew(16:1-99),txt:codes("WS CA MX GB GR ES BS CH TV TZ UY"),txt:codesNew("AU CU JM HK MA TR US ZA TH WLS")
+-crm7_buttonwrapped_v4,460x140,,
+-contra1_dataviz_v5,375x812,
+-contra2_hmi_v21,1000x358,,
 04_EyeNew_v6,80x80,176x168,
 04_New_v2,80x80,,
 03_loaders_v5,200x200,,artboard:"CircleLoader",trigger:"Trigger 1"
@@ -8,7 +17,7 @@ src,size,preview,params...
 04_PulseWave_full-circle_v7,274x274,,
 01_NightDay_v9,393x852,,
 06_GiftBox_v6,393x614,,trigger:"Trigger 1",txt:text1("25%"),txt:text2("discount for 24 hours")
-River_v1,526x800,,artboard:-
+02_River_v1,526x800,,artboard:-
 04_PulseWaveEye_v9,274x274,360x323,trigger:"Trigger 1"
 08_StressLiquid_v2,375x812,,trigger:"Trigger 1",v_num:StressPercent(86:1-100)
 08_exercisemonth_v2,375x460,,
@@ -55,7 +64,6 @@ River_v1,526x800,,artboard:-
 30_starsfly_v5,393x852,,trigger:"Trigger 1"
 30_starsflystack_v2,393x852,,trigger:"Trigger 1"
 31_parametricparticles_v10,380x320,,v_num:numParticles(120:20-300)
-contraTest_v5,375x812,
 33_healthdataaccess_v6,375x327,,note:"ScreenRu and ScreenEsp artboards for localizations"
 34_cometpluses2_v6,375x812,,v_bol:impact
 35_scatterpluses_v4,375x812,

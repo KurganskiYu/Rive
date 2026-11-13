@@ -14,14 +14,17 @@ final class PersistenceTests: XCTestCase {
         for name in ["catalog_cli.py", "catalog_core.py", "catalog_persistence.py", "_navigation.py"] {
             try FileManager.default.copyItem(at: repository.appendingPathComponent(name), to: root.appendingPathComponent(name))
         }
-        try Data("fixture".utf8).write(to: root.appendingPathComponent("riv/demo_v1.riv"))
-        let table = root.appendingPathComponent("_videos.csv")
-        let original = Data("src,size,preview,params...\r\ndemo_v1,80XLAYOUT,,future:keep,\r\n".utf8)
+        try Data("fixture".utf8).write(to: root.appendingPathComponent("riv/crm1_demo_v1.riv"))
+        let table = root.appendingPathComponent("_anim_list.csv")
+        let original = Data("src,size,preview,params...\r\n-crm1_demo_v1,80XLAYOUT,,future:keep,\r\n".utf8)
         try original.write(to: table)
-        try Data("filename,name\r\ndemo,Original\r\nunused,Preserved\r\n".utf8).write(to: root.appendingPathComponent("_videos_names.csv"))
+        try Data("id,name\r\ncrm1,Original\r\nunused,Preserved\r\n".utf8).write(to: root.appendingPathComponent("_anim_names.csv"))
         let configuration = CatalogConfiguration(root: root, python: URL(fileURLWithPath: "/usr/bin/python3"))
         let snapshot = try await CatalogBridge.load(configuration)
         let entry = try XCTUnwrap(snapshot.entries.first)
+        XCTAssertEqual(entry.animationId, "crm1")
+        XCTAssertEqual(entry.src, "crm1_demo_v1")
+        XCTAssertEqual(entry.displayName, "Original")
         XCTAssertEqual(entry.sizeX, "80")
         XCTAssertEqual(entry.sizeY, "layout")
         let saved = try await CatalogBridge.save(configuration, revision: snapshot.revision,

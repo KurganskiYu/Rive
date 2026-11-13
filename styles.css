@@ -133,7 +133,6 @@
             line-height: 1.4;
         }
         .custom-animation .description {
-            color: #b8b8b8;
             width: 0;
             min-width: 100%;
             overflow-wrap: anywhere;
@@ -141,14 +140,13 @@
         .custom-heading {
             display: flex;
             align-items: center;
-            gap: 8px;
             width: 100%;
         }
         .custom-heading > div:first-child {
             min-width: 0;
         }
         .custom-name {
-            color: #eee;
+            color: #888888;
             text-decoration: underline;
         }
         .custom-description {

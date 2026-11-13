@@ -1,0 +1,11 @@
+# Add descriptions by ID; a variant can have its own description:
+# 03: Shared description.
+# 03a: Description for variant a.
+# IDs must match exactly: 01 and 1 are different.
+# Edit _anim_sets.csv with one set per row: client-name,03a,crm1
+# An ID such as 03 selects every variant; 03a selects only variant a.
+# Prefix a source with - in _anim_list.csv to hide it from the main catalog;
+# hidden animations remain available in custom sets.
+# Edit _anim_names.csv for names and variant letters; letters are not displayed.
+# Run _generate_html.py to update the catalogs.
+# Removing a set row does not remove its existing published folder.

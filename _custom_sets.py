@@ -3,12 +3,14 @@
 import csv
 import os
 import re
+from collections import defaultdict
 from pathlib import Path
+
+from _navigation import animation_id, valid_animation_id
 
 
 CUSTOM_CATALOG_MARKER = "<!-- Generated custom catalog; do not edit. -->\n"
 SET_NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]*\Z")
-NUMBER = re.compile(r"[0-9]+\Z")
 RESERVED_NAMES = {"con", "prn", "aux", "nul"} | {
     f"{prefix}{number}" for prefix in ("com", "lpt") for number in range(1, 10)
 }
@@ -21,30 +23,46 @@ def load_descriptions(path):
         line = line.strip()
         if not line or line.startswith("#"):
             continue
-        number, separator, description = line.partition(":")
-        number, description = number.strip(), description.strip()
-        if not separator or not NUMBER.fullmatch(number) or not description:
-            raise ValueError(f"{path.name}, line {line_number}: expected number: description")
-        key = int(number)
-        if key in descriptions:
-            raise ValueError(f"{path.name}, line {line_number}: duplicate number {number}")
-        descriptions[key] = description
+        identifier, separator, description = line.partition(":")
+        identifier, description = identifier.strip(), description.strip()
+        if not separator or not valid_animation_id(identifier) or not description:
+            raise ValueError(f"{path.name}, line {line_number}: expected ID: description")
+        if identifier in descriptions:
+            raise ValueError(f"{path.name}, line {line_number}: duplicate ID {identifier}")
+        descriptions[identifier] = description
     return descriptions
 
 
-def load_custom_catalogs(sets_path, descriptions_path, rows, navigation_entries):
+def index_animation_ids(rows):
+    by_id = defaultdict(list)
+    for row in rows:
+        identifier = animation_id(row["src"])
+        if not identifier or not valid_animation_id(identifier):
+            raise ValueError(f"Animation {row['src']!r} must start with an ID followed by an underscore")
+        by_id[identifier].append(row)
+    return by_id
+
+
+def load_custom_catalogs(sets_path, descriptions_path, rows, navigation_entries, variants):
     descriptions = load_descriptions(descriptions_path)
     labels = dict(navigation_entries)
-    by_number = {}
-    for row in rows:
-        match = re.match(r"^([0-9]+)_", row["src"])
-        if match:
-            by_number.setdefault(int(match.group(1)), []).append(row)
+    by_id = index_animation_ids(rows)
+    by_variant = {}
+    for identifier, matching_rows in by_id.items():
+        for row in matching_rows:
+            variant = variants[row["page_stem"]]
+            if len(matching_rows) > 1 and not variant:
+                raise ValueError(f"Missing variant for animation ID {identifier}")
+            if variant:
+                selector = identifier + variant
+                if selector in by_variant or selector in by_id:
+                    raise ValueError(f"Ambiguous animation selector {selector!r}")
+                by_variant[selector] = row
 
-    unused_descriptions = descriptions.keys() - by_number.keys()
+    unused_descriptions = descriptions.keys() - (by_id.keys() | by_variant.keys())
     if unused_descriptions:
-        numbers = ", ".join(str(number) for number in sorted(unused_descriptions))
-        print(f"Warning: descriptions have no matching animation: {numbers}")
+        identifiers = ", ".join(sorted(unused_descriptions))
+        print(f"Warning: descriptions have no matching animation: {identifiers}")
 
     catalogs = []
     seen_names = set()
@@ -66,41 +84,52 @@ def load_custom_catalogs(sets_path, descriptions_path, rows, navigation_entries)
                 raise ValueError(f"{location}: duplicate set name {name!r}")
             seen_names.add(name.casefold())
 
-            numbers = []
-            seen_numbers = set()
+            identifiers = []
+            seen_ids = set()
             for value in values[1:]:
                 value = value.strip()
                 if not value:
                     continue
-                if not NUMBER.fullmatch(value):
-                    raise ValueError(f"{location}: invalid animation number {value!r}")
-                number = int(value)
-                if number not in seen_numbers:
-                    numbers.append(number)
-                    seen_numbers.add(number)
-            missing = [number for number in numbers if number not in by_number]
-            if missing:
-                raise ValueError(f"{location}: no animations found for {', '.join(map(str, missing))}")
-
-            selected = [
-                {
-                    **row,
-                    "_custom_label": labels[row["page_stem"]],
-                    "_custom_description": descriptions.get(number, ""),
-                }
-                for number in numbers
-                for row in by_number[number]
+                if not valid_animation_id(value):
+                    raise ValueError(f"{location}: invalid animation ID {value!r}")
+                if value not in seen_ids:
+                    identifiers.append(value)
+                    seen_ids.add(value)
+            missing = [
+                identifier for identifier in identifiers
+                if identifier not in by_id and identifier not in by_variant
             ]
+            if missing:
+                raise ValueError(f"{location}: no animations found for {', '.join(missing)}")
+
+            selected = []
+            seen_pages = set()
+            for identifier in identifiers:
+                matching_rows = by_id[identifier] if identifier in by_id else [by_variant[identifier]]
+                for row in matching_rows:
+                    stem = row["page_stem"]
+                    if stem in seen_pages:
+                        continue
+                    seen_pages.add(stem)
+                    base_id = animation_id(row["src"])
+                    if base_id is None:
+                        raise ValueError(f"Animation {row['src']!r} has no ID")
+                    variant_id = base_id + variants[stem]
+                    selected.append({
+                        **row,
+                        "_custom_label": labels[stem],
+                        "_custom_description": descriptions.get(variant_id, descriptions.get(base_id, "")),
+                    })
             catalogs.append((name, selected))
     return catalogs
 
 
-def is_generated_page(path):
+def is_generated_page(path, marker=CUSTOM_CATALOG_MARKER):
     path = Path(path)
     if path.is_symlink() or not path.is_file():
         return False
     with path.open("rb") as file:
-        return file.readline() == CUSTOM_CATALOG_MARKER.encode("utf-8")
+        return file.readline() == marker.encode("utf-8")
 
 
 def validate_custom_directory(directory):

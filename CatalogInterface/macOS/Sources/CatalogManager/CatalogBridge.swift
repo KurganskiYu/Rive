@@ -3,6 +3,7 @@ import Foundation
 struct CatalogEntry: Decodable, Identifiable, Sendable {
     let id: String
     let src: String
+    let animationId: String?
     let label: String
     let name: String
     let size: String
@@ -21,6 +22,9 @@ struct CatalogEntry: Decodable, Identifiable, Sendable {
     let notes: [String]
 
     var displayName: String {
+        if let animationId, label.hasPrefix(animationId + " ") {
+            return String(label.dropFirst(animationId.count + 1))
+        }
         guard number != nil, let separator = label.firstIndex(of: " ") else { return label }
         return String(label[label.index(after: separator)...])
     }

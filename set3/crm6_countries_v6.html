@@ -1,0 +1,217 @@
+<!-- Generated custom catalog; do not edit. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../RiveIcon2.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+      <div class="animation-container detail-animation custom-animation">
+        <canvas id="main_canvas" width="393" height="852"></canvas>
+        <div class="description">
+          <div class="custom-heading">
+            <div><span style="white-space: nowrap; color: white;">crm6 countries</span></div>
+            
+          </div>
+          Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:countries(16:1-200)<br>Input: v_num:countriesNew(16:1-99)<br>Input: txt:codes("WS CA MX GB GR ES BS CH TV TZ UY")<br>Input: txt:codesNew("AU CU JM HK MA TR US ZA TH WLS")<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:7.5377%;">
+            <output for="btn_main_input0">16</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.01005025%;"></span><span style="left:4.02010050%;"></span><span style="left:6.03015075%;"></span><span style="left:8.04020101%;"></span><span style="left:10.05025126%;"></span><span style="left:12.06030151%;"></span><span style="left:14.07035176%;"></span><span style="left:16.08040201%;"></span><span style="left:18.09045226%;"></span><span style="left:20.10050251%;"></span><span style="left:22.11055276%;"></span><span style="left:24.12060302%;"></span><span style="left:26.13065327%;"></span><span style="left:28.14070352%;"></span><span style="left:30.15075377%;"></span><span style="left:32.16080402%;"></span><span style="left:34.17085427%;"></span><span style="left:36.18090452%;"></span><span style="left:38.19095477%;"></span><span style="left:40.20100503%;"></span><span style="left:42.21105528%;"></span><span style="left:44.22110553%;"></span><span style="left:46.23115578%;"></span><span style="left:48.24120603%;"></span><span style="left:50.25125628%;"></span><span style="left:52.26130653%;"></span><span style="left:54.27135678%;"></span><span style="left:56.28140704%;"></span><span style="left:58.29145729%;"></span><span style="left:60.30150754%;"></span><span style="left:62.31155779%;"></span><span style="left:64.32160804%;"></span><span style="left:66.33165829%;"></span><span style="left:68.34170854%;"></span><span style="left:70.35175879%;"></span><span style="left:72.36180905%;"></span><span style="left:74.37185930%;"></span><span style="left:76.38190955%;"></span><span style="left:78.39195980%;"></span><span style="left:80.40201005%;"></span><span style="left:82.41206030%;"></span><span style="left:84.42211055%;"></span><span style="left:86.43216080%;"></span><span style="left:88.44221106%;"></span><span style="left:90.45226131%;"></span><span style="left:92.46231156%;"></span><span style="left:94.47236181%;"></span><span style="left:96.48241206%;"></span><span style="left:98.49246231%;"></span></span>
+            <input type="range" id="btn_main_input0" value="16" min="1" max="200" step="1" aria-label="countries" />
+            <span class="range-hint" aria-hidden="true">countries</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">200</span>
+        </div>
+        
+        <div class="range-control" style="width:100%;--slider-progress:15.3061%;">
+            <output for="btn_main_input1">16</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.04081633%;"></span><span style="left:4.08163265%;"></span><span style="left:6.12244898%;"></span><span style="left:8.16326531%;"></span><span style="left:10.20408163%;"></span><span style="left:12.24489796%;"></span><span style="left:14.28571429%;"></span><span style="left:16.32653061%;"></span><span style="left:18.36734694%;"></span><span style="left:20.40816327%;"></span><span style="left:22.44897959%;"></span><span style="left:24.48979592%;"></span><span style="left:26.53061224%;"></span><span style="left:28.57142857%;"></span><span style="left:30.61224490%;"></span><span style="left:32.65306122%;"></span><span style="left:34.69387755%;"></span><span style="left:36.73469388%;"></span><span style="left:38.77551020%;"></span><span style="left:40.81632653%;"></span><span style="left:42.85714286%;"></span><span style="left:44.89795918%;"></span><span style="left:46.93877551%;"></span><span style="left:48.97959184%;"></span><span style="left:51.02040816%;"></span><span style="left:53.06122449%;"></span><span style="left:55.10204082%;"></span><span style="left:57.14285714%;"></span><span style="left:59.18367347%;"></span><span style="left:61.22448980%;"></span><span style="left:63.26530612%;"></span><span style="left:65.30612245%;"></span><span style="left:67.34693878%;"></span><span style="left:69.38775510%;"></span><span style="left:71.42857143%;"></span><span style="left:73.46938776%;"></span><span style="left:75.51020408%;"></span><span style="left:77.55102041%;"></span><span style="left:79.59183673%;"></span><span style="left:81.63265306%;"></span><span style="left:83.67346939%;"></span><span style="left:85.71428571%;"></span><span style="left:87.75510204%;"></span><span style="left:89.79591837%;"></span><span style="left:91.83673469%;"></span><span style="left:93.87755102%;"></span><span style="left:95.91836735%;"></span><span style="left:97.95918367%;"></span></span>
+            <input type="range" id="btn_main_input1" value="16" min="1" max="99" step="1" aria-label="countriesNew" />
+            <span class="range-hint" aria-hidden="true">countriesNew</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">99</span>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input2">codes:</label>
+            <input type="text" id="btn_main_input2" value="WS CA MX GB GR ES BS CH TV TZ UY" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input3">codesNew:</label>
+            <input type="text" id="btn_main_input3" value="AU CU JM HK MA TR US ZA TH WLS" style="width:90px;" />
+        </div>
+        </div>
+        </div>
+      </div>
+<script>
+
+const mainRive = new rive.Rive({
+  src: "../riv/crm6_countries_v6.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+  
+
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+                if (!isNaN(val)) vmi.number("countries").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("countries").value = initVal;
+    }
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_1.value);
+                if (!isNaN(val)) vmi.number("countriesNew").value = val;
+                const rangeControl = inputFieldBtn_Main_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_1.value;
+                    const minimum = Number(inputFieldBtn_Main_1.min);
+                    const maximum = Number(inputFieldBtn_Main_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_1.value);
+      if (!isNaN(initVal)) vmi.number("countriesNew").value = initVal;
+    }
+    let inputFieldBtn_Main_2 = document.getElementById("btn_main_input2");
+    if (inputFieldBtn_Main_2 && vmi) {
+      vmi.string("codes").value = inputFieldBtn_Main_2.value;
+      inputFieldBtn_Main_2.addEventListener("input", () => {
+        vmi.string("codes").value = inputFieldBtn_Main_2.value;
+      });
+    }
+    let inputFieldBtn_Main_3 = document.getElementById("btn_main_input3");
+    if (inputFieldBtn_Main_3 && vmi) {
+      vmi.string("codesNew").value = inputFieldBtn_Main_3.value;
+      inputFieldBtn_Main_3.addEventListener("input", () => {
+        vmi.string("codesNew").value = inputFieldBtn_Main_3.value;
+      });
+    }
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>

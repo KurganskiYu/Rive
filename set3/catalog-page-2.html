@@ -1,0 +1,943 @@
+<!-- Generated custom catalog; do not edit. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../RiveIcon2.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+    <nav class="animation-nav" aria-label="Animation pages">
+      <details open>
+        <summary>Animations</summary>
+        <ul>
+          <li><a href="contra1_dataviz_v5.html">contra1 Contra Test</a></li>
+          <li><a href="contra2_hmi_v21.html">contra2 hmi</a></li>
+          <li><a href="75_awakesclock_v3.html">75 Awake Clock</a></li>
+          <li><a href="77_migrainelog_v3.html">77 Migraine Log</a></li>
+          <li><a href="77_chartmatrix_v8.html">77 Chart Matrix</a></li>
+          <li><a href="77_migrainechartmini_v1.html">77 Migraine Chart Mini</a></li>
+          <li><a href="77_migrainechart_v7.html">77 Migraine Chart</a></li>
+          <li><a href="74_fanlake_v3.html">74 Fan Lake</a></li>
+          <li><a href="71_sleeptubes_v6.html">71 Sleep Tubes</a></li>
+          <li><a href="73_stressliquidformat_v2.html">73 Stress Liquid Format</a></li>
+          <li><a href="69_activitycan_v10.html">69 Activity Can</a></li>
+          <li><a href="crm1_start_v3.html">crm1 start</a></li>
+          <li><a href="crm2_daysonboard_v5.html">crm2 daysonboard</a></li>
+          <li><a href="crm3_seaportdays_v3.html">crm3 seaportdays</a></li>
+          <li><a href="crm4_achievements_v3.html">crm4 achievements</a></li>
+          <li><a href="crm5_connections_v5.html">crm5 connections</a></li>
+          <li><a href="crm6_countries_v6.html">crm6 countries</a></li>
+          <li><a href="60_stresscalendar2_v2.html">60 Stress Calendar 2</a></li>
+          <li><a href="64_stressinsight_v3.html">64 Stress Insight</a></li>
+          <li><a href="54_compass31_comb_v4.html">54 Compass 31 Comb</a></li>
+          <li><a href="54_compass31_v4.html">54 Compass 31</a></li>
+          <li><a href="53_insightcardclock_v4.html">53 Insight Card Clock</a></li>
+          <li><a href="48_stressbatterygraph_v11.html">48 Stress Battery Graph</a></li>
+          <li><a href="49_experimentprogressbar_v4.html">49 Experiment Progress Bar</a></li>
+          <li><a href="46_dictationbutton_v7.html">46 Dictation Button</a></li>
+          <li><a href="45_activityring_v6.html">45 Activity Ring</a></li>
+          <li><a href="40_energysliders_v3.html">40 Energy Sliders</a></li>
+          <li><a href="34_cometpluses2_v6.html">34 Comet Pluses 2</a></li>
+          <li><a href="31_parametricparticles_v10.html">31 Parametric Particles</a></li>
+          <li><a href="24_energybyny_v9.html">24 Energy By NY</a></li>
+          <li><a href="13_BatteryReport_v16.html">13 Battery Report</a></li>
+          <li><a href="17_LaborEffect_v5.html">17 Labor Effect</a></li>
+          <li><a href="18_SleepWavesNew_v5.html">18 Sleep Waves New</a></li>
+          <li><a href="14_BatteryWidget_v6.html">14 Battery Widget</a></li>
+          <li><a href="09_sleeplake_widget_v6.html">09 Sleep Lake Widget</a></li>
+          <li><a href="09_sleeplake_v11.html">09 Sleep Lake</a></li>
+          <li><a href="08_LightRay_v2.html">08 Light Ray</a></li>
+          <li><a href="08_Particles_v2.html">08 Particles</a></li>
+          <li><a href="08_Welcome_v3.html">08 Welcome</a></li>
+          <li><a href="08_Recovery_v4.html">08 Recovery</a></li>
+          <li><a href="08_ActivityRecovery_v5.html">08 Activity Recovery</a></li>
+          <li><a href="08_OnboardingStrings_v4.html">08 Onboarding Strings</a></li>
+          <li><a href="08_ExerciseBubbles_v4.html">08 Exercise Bubbles</a></li>
+          <li><a href="08_SleepLines_v5.html">08 Sleep Lines</a></li>
+          <li><a href="08_stressmonth_v1.html">08 Stress Month</a></li>
+          <li><a href="08_exercisemonth_v2.html">08 Exercise Month</a></li>
+          <li><a href="08_StressLiquid_v2.html">08 Stress Liquid</a></li>
+          <li><a href="06_GiftBox_v6.html">06 Gift Box</a></li>
+          <li><a href="03_loaders_v5--WaveLoader.html">03 Wave Loader</a></li>
+          <li><a href="03_loaders_v5--SpiralLoader.html">03 Spiral Loader</a></li>
+          <li><a href="03_loaders_v5--EyeLoader.html">03 Eye Loader</a></li>
+          <li><a href="03_loaders_v5--CircleLoader.html">03 Circle Loader</a></li>
+        </ul>
+      </details>
+    </nav>
+
+      <div class="animation-container custom-animation">
+        <canvas id="canvas0" width="200" height="153"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="71_sleeptubes_v6.html">71 Sleep Tubes</a></div>
+          <button id="btn0" class="rive-btn" style="margin-left:auto;">Run</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:99.0000%;">
+            <output for="btn0_input0">99</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn0_input0" value="99" min="0" max="100" step="1" aria-label="height4" />
+            <span class="range-hint" aria-hidden="true">height4</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input1">green4:</label>
+            <input type="checkbox" id="btn0_input1" checked />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input2">lightGreen4:</label>
+            <input type="checkbox" id="btn0_input2" checked />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input3">orange4:</label>
+            <input type="checkbox" id="btn0_input3" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn0_input4">lightWhite4:</label>
+            <input type="checkbox" id="btn0_input4" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas1" width="200" height="267"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="73_stressliquidformat_v2.html">73 Stress Liquid Format</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:5.0000%;">
+            <output for="btn1_input0">5</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn1_input0" value="5" min="0" max="100" step="1" aria-label="percentFrom" />
+            <span class="range-hint" aria-hidden="true">percentFrom</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:75.0000%;">
+            <output for="btn1_input1">75</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00000000%;"></span><span style="left:4.00000000%;"></span><span style="left:6.00000000%;"></span><span style="left:8.00000000%;"></span><span style="left:10.00000000%;"></span><span style="left:12.00000000%;"></span><span style="left:14.00000000%;"></span><span style="left:16.00000000%;"></span><span style="left:18.00000000%;"></span><span style="left:20.00000000%;"></span><span style="left:22.00000000%;"></span><span style="left:24.00000000%;"></span><span style="left:26.00000000%;"></span><span style="left:28.00000000%;"></span><span style="left:30.00000000%;"></span><span style="left:32.00000000%;"></span><span style="left:34.00000000%;"></span><span style="left:36.00000000%;"></span><span style="left:38.00000000%;"></span><span style="left:40.00000000%;"></span><span style="left:42.00000000%;"></span><span style="left:44.00000000%;"></span><span style="left:46.00000000%;"></span><span style="left:48.00000000%;"></span><span style="left:50.00000000%;"></span><span style="left:52.00000000%;"></span><span style="left:54.00000000%;"></span><span style="left:56.00000000%;"></span><span style="left:58.00000000%;"></span><span style="left:60.00000000%;"></span><span style="left:62.00000000%;"></span><span style="left:64.00000000%;"></span><span style="left:66.00000000%;"></span><span style="left:68.00000000%;"></span><span style="left:70.00000000%;"></span><span style="left:72.00000000%;"></span><span style="left:74.00000000%;"></span><span style="left:76.00000000%;"></span><span style="left:78.00000000%;"></span><span style="left:80.00000000%;"></span><span style="left:82.00000000%;"></span><span style="left:84.00000000%;"></span><span style="left:86.00000000%;"></span><span style="left:88.00000000%;"></span><span style="left:90.00000000%;"></span><span style="left:92.00000000%;"></span><span style="left:94.00000000%;"></span><span style="left:96.00000000%;"></span><span style="left:98.00000000%;"></span></span>
+            <input type="range" id="btn1_input1" value="75" min="0" max="100" step="1" aria-label="percentTo" />
+            <span class="range-hint" aria-hidden="true">percentTo</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas2" width="200" height="187"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="69_activitycan_v10.html">69 Activity Can</a></div>
+          <button id="btn2" class="rive-btn" style="margin-left:auto;">Run</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:31.5789%;">
+            <output for="btn2_input0">35</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.10526316%;"></span><span style="left:4.21052632%;"></span><span style="left:6.31578947%;"></span><span style="left:8.42105263%;"></span><span style="left:10.52631579%;"></span><span style="left:12.63157895%;"></span><span style="left:14.73684211%;"></span><span style="left:16.84210526%;"></span><span style="left:18.94736842%;"></span><span style="left:21.05263158%;"></span><span style="left:23.15789474%;"></span><span style="left:25.26315789%;"></span><span style="left:27.36842105%;"></span><span style="left:29.47368421%;"></span><span style="left:31.57894737%;"></span><span style="left:33.68421053%;"></span><span style="left:35.78947368%;"></span><span style="left:37.89473684%;"></span><span style="left:40.00000000%;"></span><span style="left:42.10526316%;"></span><span style="left:44.21052632%;"></span><span style="left:46.31578947%;"></span><span style="left:48.42105263%;"></span><span style="left:50.52631579%;"></span><span style="left:52.63157895%;"></span><span style="left:54.73684211%;"></span><span style="left:56.84210526%;"></span><span style="left:58.94736842%;"></span><span style="left:61.05263158%;"></span><span style="left:63.15789474%;"></span><span style="left:65.26315789%;"></span><span style="left:67.36842105%;"></span><span style="left:69.47368421%;"></span><span style="left:71.57894737%;"></span><span style="left:73.68421053%;"></span><span style="left:75.78947368%;"></span><span style="left:77.89473684%;"></span><span style="left:80.00000000%;"></span><span style="left:82.10526316%;"></span><span style="left:84.21052632%;"></span><span style="left:86.31578947%;"></span><span style="left:88.42105263%;"></span><span style="left:90.52631579%;"></span><span style="left:92.63157895%;"></span><span style="left:94.73684211%;"></span><span style="left:96.84210526%;"></span><span style="left:98.94736842%;"></span></span>
+            <input type="range" id="btn2_input0" value="35" min="5" max="100" step="1" aria-label="goal" />
+            <span class="range-hint" aria-hidden="true">goal</span>
+            <span class="range-bound range-min">5</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:27.7778%;">
+            <output for="btn2_input1">25</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.22222222%;"></span><span style="left:4.44444444%;"></span><span style="left:6.66666667%;"></span><span style="left:8.88888889%;"></span><span style="left:11.11111111%;"></span><span style="left:13.33333333%;"></span><span style="left:15.55555556%;"></span><span style="left:17.77777778%;"></span><span style="left:20.00000000%;"></span><span style="left:22.22222222%;"></span><span style="left:24.44444444%;"></span><span style="left:26.66666667%;"></span><span style="left:28.88888889%;"></span><span style="left:31.11111111%;"></span><span style="left:33.33333333%;"></span><span style="left:35.55555556%;"></span><span style="left:37.77777778%;"></span><span style="left:40.00000000%;"></span><span style="left:42.22222222%;"></span><span style="left:44.44444444%;"></span><span style="left:46.66666667%;"></span><span style="left:48.88888889%;"></span><span style="left:51.11111111%;"></span><span style="left:53.33333333%;"></span><span style="left:55.55555556%;"></span><span style="left:57.77777778%;"></span><span style="left:60.00000000%;"></span><span style="left:62.22222222%;"></span><span style="left:64.44444444%;"></span><span style="left:66.66666667%;"></span><span style="left:68.88888889%;"></span><span style="left:71.11111111%;"></span><span style="left:73.33333333%;"></span><span style="left:75.55555556%;"></span><span style="left:77.77777778%;"></span><span style="left:80.00000000%;"></span><span style="left:82.22222222%;"></span><span style="left:84.44444444%;"></span><span style="left:86.66666667%;"></span><span style="left:88.88888889%;"></span><span style="left:91.11111111%;"></span><span style="left:93.33333333%;"></span><span style="left:95.55555556%;"></span><span style="left:97.77777778%;"></span></span>
+            <input type="range" id="btn2_input1" value="25" min="0" max="90" step="1" aria-label="zone1" />
+            <span class="range-hint" aria-hidden="true">zone1</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">90</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:33.3333%;">
+            <output for="btn2_input2">30</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.22222222%;"></span><span style="left:4.44444444%;"></span><span style="left:6.66666667%;"></span><span style="left:8.88888889%;"></span><span style="left:11.11111111%;"></span><span style="left:13.33333333%;"></span><span style="left:15.55555556%;"></span><span style="left:17.77777778%;"></span><span style="left:20.00000000%;"></span><span style="left:22.22222222%;"></span><span style="left:24.44444444%;"></span><span style="left:26.66666667%;"></span><span style="left:28.88888889%;"></span><span style="left:31.11111111%;"></span><span style="left:33.33333333%;"></span><span style="left:35.55555556%;"></span><span style="left:37.77777778%;"></span><span style="left:40.00000000%;"></span><span style="left:42.22222222%;"></span><span style="left:44.44444444%;"></span><span style="left:46.66666667%;"></span><span style="left:48.88888889%;"></span><span style="left:51.11111111%;"></span><span style="left:53.33333333%;"></span><span style="left:55.55555556%;"></span><span style="left:57.77777778%;"></span><span style="left:60.00000000%;"></span><span style="left:62.22222222%;"></span><span style="left:64.44444444%;"></span><span style="left:66.66666667%;"></span><span style="left:68.88888889%;"></span><span style="left:71.11111111%;"></span><span style="left:73.33333333%;"></span><span style="left:75.55555556%;"></span><span style="left:77.77777778%;"></span><span style="left:80.00000000%;"></span><span style="left:82.22222222%;"></span><span style="left:84.44444444%;"></span><span style="left:86.66666667%;"></span><span style="left:88.88888889%;"></span><span style="left:91.11111111%;"></span><span style="left:93.33333333%;"></span><span style="left:95.55555556%;"></span><span style="left:97.77777778%;"></span></span>
+            <input type="range" id="btn2_input2" value="30" min="0" max="90" step="1" aria-label="zone2" />
+            <span class="range-hint" aria-hidden="true">zone2</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">90</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:22.2222%;">
+            <output for="btn2_input3">20</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.22222222%;"></span><span style="left:4.44444444%;"></span><span style="left:6.66666667%;"></span><span style="left:8.88888889%;"></span><span style="left:11.11111111%;"></span><span style="left:13.33333333%;"></span><span style="left:15.55555556%;"></span><span style="left:17.77777778%;"></span><span style="left:20.00000000%;"></span><span style="left:22.22222222%;"></span><span style="left:24.44444444%;"></span><span style="left:26.66666667%;"></span><span style="left:28.88888889%;"></span><span style="left:31.11111111%;"></span><span style="left:33.33333333%;"></span><span style="left:35.55555556%;"></span><span style="left:37.77777778%;"></span><span style="left:40.00000000%;"></span><span style="left:42.22222222%;"></span><span style="left:44.44444444%;"></span><span style="left:46.66666667%;"></span><span style="left:48.88888889%;"></span><span style="left:51.11111111%;"></span><span style="left:53.33333333%;"></span><span style="left:55.55555556%;"></span><span style="left:57.77777778%;"></span><span style="left:60.00000000%;"></span><span style="left:62.22222222%;"></span><span style="left:64.44444444%;"></span><span style="left:66.66666667%;"></span><span style="left:68.88888889%;"></span><span style="left:71.11111111%;"></span><span style="left:73.33333333%;"></span><span style="left:75.55555556%;"></span><span style="left:77.77777778%;"></span><span style="left:80.00000000%;"></span><span style="left:82.22222222%;"></span><span style="left:84.44444444%;"></span><span style="left:86.66666667%;"></span><span style="left:88.88888889%;"></span><span style="left:91.11111111%;"></span><span style="left:93.33333333%;"></span><span style="left:95.55555556%;"></span><span style="left:97.77777778%;"></span></span>
+            <input type="range" id="btn2_input3" value="20" min="0" max="90" step="1" aria-label="zone3" />
+            <span class="range-hint" aria-hidden="true">zone3</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">90</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:5.5556%;">
+            <output for="btn2_input4">5</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.22222222%;"></span><span style="left:4.44444444%;"></span><span style="left:6.66666667%;"></span><span style="left:8.88888889%;"></span><span style="left:11.11111111%;"></span><span style="left:13.33333333%;"></span><span style="left:15.55555556%;"></span><span style="left:17.77777778%;"></span><span style="left:20.00000000%;"></span><span style="left:22.22222222%;"></span><span style="left:24.44444444%;"></span><span style="left:26.66666667%;"></span><span style="left:28.88888889%;"></span><span style="left:31.11111111%;"></span><span style="left:33.33333333%;"></span><span style="left:35.55555556%;"></span><span style="left:37.77777778%;"></span><span style="left:40.00000000%;"></span><span style="left:42.22222222%;"></span><span style="left:44.44444444%;"></span><span style="left:46.66666667%;"></span><span style="left:48.88888889%;"></span><span style="left:51.11111111%;"></span><span style="left:53.33333333%;"></span><span style="left:55.55555556%;"></span><span style="left:57.77777778%;"></span><span style="left:60.00000000%;"></span><span style="left:62.22222222%;"></span><span style="left:64.44444444%;"></span><span style="left:66.66666667%;"></span><span style="left:68.88888889%;"></span><span style="left:71.11111111%;"></span><span style="left:73.33333333%;"></span><span style="left:75.55555556%;"></span><span style="left:77.77777778%;"></span><span style="left:80.00000000%;"></span><span style="left:82.22222222%;"></span><span style="left:84.44444444%;"></span><span style="left:86.66666667%;"></span><span style="left:88.88888889%;"></span><span style="left:91.11111111%;"></span><span style="left:93.33333333%;"></span><span style="left:95.55555556%;"></span><span style="left:97.77777778%;"></span></span>
+            <input type="range" id="btn2_input4" value="5" min="0" max="90" step="1" aria-label="zone4" />
+            <span class="range-hint" aria-hidden="true">zone4</span>
+            <span class="range-bound range-min">0</span>
+            <span class="range-bound range-max">90</span>
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas3" width="200" height="434"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="crm1_start_v3.html">crm1 start</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input0">name:</label>
+            <input type="text" id="btn3_input0" value="Andreas" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input1">shipName:</label>
+            <input type="text" id="btn3_input1" value="AIDA Prima" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn3_input2">dates:</label>
+            <input type="text" id="btn3_input2" value="Nov 1 – Mar 28" style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas4" width="200" height="434"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="crm2_daysonboard_v5.html">crm2 daysonboard</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:42.5710%;">
+            <output for="btn4_input0">256</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00333890%;"></span><span style="left:4.00667780%;"></span><span style="left:6.01001669%;"></span><span style="left:8.01335559%;"></span><span style="left:10.01669449%;"></span><span style="left:12.02003339%;"></span><span style="left:14.02337229%;"></span><span style="left:16.02671119%;"></span><span style="left:18.03005008%;"></span><span style="left:20.03338898%;"></span><span style="left:22.03672788%;"></span><span style="left:24.04006678%;"></span><span style="left:26.04340568%;"></span><span style="left:28.04674457%;"></span><span style="left:30.05008347%;"></span><span style="left:32.05342237%;"></span><span style="left:34.05676127%;"></span><span style="left:36.06010017%;"></span><span style="left:38.06343907%;"></span><span style="left:40.06677796%;"></span><span style="left:42.07011686%;"></span><span style="left:44.07345576%;"></span><span style="left:46.07679466%;"></span><span style="left:48.08013356%;"></span><span style="left:50.08347245%;"></span><span style="left:52.08681135%;"></span><span style="left:54.09015025%;"></span><span style="left:56.09348915%;"></span><span style="left:58.09682805%;"></span><span style="left:60.10016694%;"></span><span style="left:62.10350584%;"></span><span style="left:64.10684474%;"></span><span style="left:66.11018364%;"></span><span style="left:68.11352254%;"></span><span style="left:70.11686144%;"></span><span style="left:72.12020033%;"></span><span style="left:74.12353923%;"></span><span style="left:76.12687813%;"></span><span style="left:78.13021703%;"></span><span style="left:80.13355593%;"></span><span style="left:82.13689482%;"></span><span style="left:84.14023372%;"></span><span style="left:86.14357262%;"></span><span style="left:88.14691152%;"></span><span style="left:90.15025042%;"></span><span style="left:92.15358932%;"></span><span style="left:94.15692821%;"></span><span style="left:96.16026711%;"></span><span style="left:98.16360601%;"></span></span>
+            <input type="range" id="btn4_input0" value="256" min="1" max="600" step="1" aria-label="days" />
+            <span class="range-hint" aria-hidden="true">days</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">600</span>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn4_input1">shipName:</label>
+            <input type="text" id="btn4_input1" value="Norwegian Epic" style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas5" width="200" height="434"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="crm3_seaportdays_v3.html">crm3 seaportdays</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:20.8681%;">
+            <output for="btn5_input0">126</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00333890%;"></span><span style="left:4.00667780%;"></span><span style="left:6.01001669%;"></span><span style="left:8.01335559%;"></span><span style="left:10.01669449%;"></span><span style="left:12.02003339%;"></span><span style="left:14.02337229%;"></span><span style="left:16.02671119%;"></span><span style="left:18.03005008%;"></span><span style="left:20.03338898%;"></span><span style="left:22.03672788%;"></span><span style="left:24.04006678%;"></span><span style="left:26.04340568%;"></span><span style="left:28.04674457%;"></span><span style="left:30.05008347%;"></span><span style="left:32.05342237%;"></span><span style="left:34.05676127%;"></span><span style="left:36.06010017%;"></span><span style="left:38.06343907%;"></span><span style="left:40.06677796%;"></span><span style="left:42.07011686%;"></span><span style="left:44.07345576%;"></span><span style="left:46.07679466%;"></span><span style="left:48.08013356%;"></span><span style="left:50.08347245%;"></span><span style="left:52.08681135%;"></span><span style="left:54.09015025%;"></span><span style="left:56.09348915%;"></span><span style="left:58.09682805%;"></span><span style="left:60.10016694%;"></span><span style="left:62.10350584%;"></span><span style="left:64.10684474%;"></span><span style="left:66.11018364%;"></span><span style="left:68.11352254%;"></span><span style="left:70.11686144%;"></span><span style="left:72.12020033%;"></span><span style="left:74.12353923%;"></span><span style="left:76.12687813%;"></span><span style="left:78.13021703%;"></span><span style="left:80.13355593%;"></span><span style="left:82.13689482%;"></span><span style="left:84.14023372%;"></span><span style="left:86.14357262%;"></span><span style="left:88.14691152%;"></span><span style="left:90.15025042%;"></span><span style="left:92.15358932%;"></span><span style="left:94.15692821%;"></span><span style="left:96.16026711%;"></span><span style="left:98.16360601%;"></span></span>
+            <input type="range" id="btn5_input0" value="126" min="1" max="600" step="1" aria-label="seaDays" />
+            <span class="range-hint" aria-hidden="true">seaDays</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">600</span>
+        </div>
+        
+        <div class="range-control" style="width:202px;--slider-progress:5.1753%;">
+            <output for="btn5_input1">32</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00333890%;"></span><span style="left:4.00667780%;"></span><span style="left:6.01001669%;"></span><span style="left:8.01335559%;"></span><span style="left:10.01669449%;"></span><span style="left:12.02003339%;"></span><span style="left:14.02337229%;"></span><span style="left:16.02671119%;"></span><span style="left:18.03005008%;"></span><span style="left:20.03338898%;"></span><span style="left:22.03672788%;"></span><span style="left:24.04006678%;"></span><span style="left:26.04340568%;"></span><span style="left:28.04674457%;"></span><span style="left:30.05008347%;"></span><span style="left:32.05342237%;"></span><span style="left:34.05676127%;"></span><span style="left:36.06010017%;"></span><span style="left:38.06343907%;"></span><span style="left:40.06677796%;"></span><span style="left:42.07011686%;"></span><span style="left:44.07345576%;"></span><span style="left:46.07679466%;"></span><span style="left:48.08013356%;"></span><span style="left:50.08347245%;"></span><span style="left:52.08681135%;"></span><span style="left:54.09015025%;"></span><span style="left:56.09348915%;"></span><span style="left:58.09682805%;"></span><span style="left:60.10016694%;"></span><span style="left:62.10350584%;"></span><span style="left:64.10684474%;"></span><span style="left:66.11018364%;"></span><span style="left:68.11352254%;"></span><span style="left:70.11686144%;"></span><span style="left:72.12020033%;"></span><span style="left:74.12353923%;"></span><span style="left:76.12687813%;"></span><span style="left:78.13021703%;"></span><span style="left:80.13355593%;"></span><span style="left:82.13689482%;"></span><span style="left:84.14023372%;"></span><span style="left:86.14357262%;"></span><span style="left:88.14691152%;"></span><span style="left:90.15025042%;"></span><span style="left:92.15358932%;"></span><span style="left:94.15692821%;"></span><span style="left:96.16026711%;"></span><span style="left:98.16360601%;"></span></span>
+            <input type="range" id="btn5_input1" value="32" min="1" max="600" step="1" aria-label="portDays" />
+            <span class="range-hint" aria-hidden="true">portDays</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">600</span>
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas6" width="200" height="434"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="crm4_achievements_v3.html">crm4 achievements</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:9.5238%;">
+            <output for="btn6_input0">3</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:4.76190476%;"></span><span style="left:9.52380952%;"></span><span style="left:14.28571429%;"></span><span style="left:19.04761905%;"></span><span style="left:23.80952381%;"></span><span style="left:28.57142857%;"></span><span style="left:33.33333333%;"></span><span style="left:38.09523810%;"></span><span style="left:42.85714286%;"></span><span style="left:47.61904762%;"></span><span style="left:52.38095238%;"></span><span style="left:57.14285714%;"></span><span style="left:61.90476190%;"></span><span style="left:66.66666667%;"></span><span style="left:71.42857143%;"></span><span style="left:76.19047619%;"></span><span style="left:80.95238095%;"></span><span style="left:85.71428571%;"></span><span style="left:90.47619048%;"></span><span style="left:95.23809524%;"></span></span>
+            <input type="range" id="btn6_input0" value="3" min="1" max="22" step="1" aria-label="illustrationIndex" />
+            <span class="range-hint" aria-hidden="true">illustrationIndex</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">22</span>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn6_input1">name:</label>
+            <input type="text" id="btn6_input1" value="Marcos" style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas7" width="200" height="434"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="crm5_connections_v5.html">crm5 connections</a></div>
+          
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:16.3522%;">
+            <output for="btn7_input0">27</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.51572327%;"></span><span style="left:5.03144654%;"></span><span style="left:7.54716981%;"></span><span style="left:10.06289308%;"></span><span style="left:12.57861635%;"></span><span style="left:15.09433962%;"></span><span style="left:17.61006289%;"></span><span style="left:20.12578616%;"></span><span style="left:22.64150943%;"></span><span style="left:25.15723270%;"></span><span style="left:27.67295597%;"></span><span style="left:30.18867925%;"></span><span style="left:32.70440252%;"></span><span style="left:35.22012579%;"></span><span style="left:37.73584906%;"></span><span style="left:40.25157233%;"></span><span style="left:42.76729560%;"></span><span style="left:45.28301887%;"></span><span style="left:47.79874214%;"></span><span style="left:50.31446541%;"></span><span style="left:52.83018868%;"></span><span style="left:55.34591195%;"></span><span style="left:57.86163522%;"></span><span style="left:60.37735849%;"></span><span style="left:62.89308176%;"></span><span style="left:65.40880503%;"></span><span style="left:67.92452830%;"></span><span style="left:70.44025157%;"></span><span style="left:72.95597484%;"></span><span style="left:75.47169811%;"></span><span style="left:77.98742138%;"></span><span style="left:80.50314465%;"></span><span style="left:83.01886792%;"></span><span style="left:85.53459119%;"></span><span style="left:88.05031447%;"></span><span style="left:90.56603774%;"></span><span style="left:93.08176101%;"></span><span style="left:95.59748428%;"></span><span style="left:98.11320755%;"></span></span>
+            <input type="range" id="btn7_input0" value="27" min="1" max="160" step="1" aria-label="friendsNum" />
+            <span class="range-hint" aria-hidden="true">friendsNum</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">160</span>
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    </div>
+<script>
+
+const r0 = new rive.Rive({
+    src: "../riv/71_sleeptubes_v6.riv",
+    canvas: document.getElementById("canvas0"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r0.resizeDrawingSurfaceToCanvas();
+    const vmi = r0.viewModelInstance;
+    let inputFieldBtn0_0 = document.getElementById("btn0_input0");
+    if (inputFieldBtn0_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn0_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn0_0.value);
+                if (!isNaN(val)) vmi.number("height4").value = val;
+                const rangeControl = inputFieldBtn0_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn0_0.value;
+                    const minimum = Number(inputFieldBtn0_0.min);
+                    const maximum = Number(inputFieldBtn0_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn0_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn0_0.value);
+      if (!isNaN(initVal)) vmi.number("height4").value = initVal;
+    }
+    let inputFieldBtn0_1 = document.getElementById("btn0_input1");
+    if (inputFieldBtn0_1 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn0_1.addEventListener("change", () => {
+        vmi.boolean("green4").value = inputFieldBtn0_1.checked;
+      });
+      // Set initial value
+      vmi.boolean("green4").value = inputFieldBtn0_1.checked;
+    }
+    let inputFieldBtn0_2 = document.getElementById("btn0_input2");
+    if (inputFieldBtn0_2 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn0_2.addEventListener("change", () => {
+        vmi.boolean("lightGreen4").value = inputFieldBtn0_2.checked;
+      });
+      // Set initial value
+      vmi.boolean("lightGreen4").value = inputFieldBtn0_2.checked;
+    }
+    let inputFieldBtn0_3 = document.getElementById("btn0_input3");
+    if (inputFieldBtn0_3 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn0_3.addEventListener("change", () => {
+        vmi.boolean("orange4").value = inputFieldBtn0_3.checked;
+      });
+      // Set initial value
+      vmi.boolean("orange4").value = inputFieldBtn0_3.checked;
+    }
+    let inputFieldBtn0_4 = document.getElementById("btn0_input4");
+    if (inputFieldBtn0_4 && vmi) {
+      // Update boolean ViewModel variable
+      inputFieldBtn0_4.addEventListener("change", () => {
+        vmi.boolean("lightWhite4").value = inputFieldBtn0_4.checked;
+      });
+      // Set initial value
+      vmi.boolean("lightWhite4").value = inputFieldBtn0_4.checked;
+    }
+  },
+});
+document.getElementById("btn0").addEventListener("click", () => {
+    const currentVmi = r0.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("start");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r0.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "start");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): start");
+    }
+});
+
+const r1 = new rive.Rive({
+    src: "../riv/73_stressliquidformat_v2.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
+    const vmi = r1.viewModelInstance;
+    let inputFieldBtn1_0 = document.getElementById("btn1_input0");
+    if (inputFieldBtn1_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn1_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn1_0.value);
+                if (!isNaN(val)) vmi.number("percentFrom").value = val;
+                const rangeControl = inputFieldBtn1_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn1_0.value;
+                    const minimum = Number(inputFieldBtn1_0.min);
+                    const maximum = Number(inputFieldBtn1_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn1_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn1_0.value);
+      if (!isNaN(initVal)) vmi.number("percentFrom").value = initVal;
+    }
+    let inputFieldBtn1_1 = document.getElementById("btn1_input1");
+    if (inputFieldBtn1_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn1_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn1_1.value);
+                if (!isNaN(val)) vmi.number("percentTo").value = val;
+                const rangeControl = inputFieldBtn1_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn1_1.value;
+                    const minimum = Number(inputFieldBtn1_1.min);
+                    const maximum = Number(inputFieldBtn1_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn1_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn1_1.value);
+      if (!isNaN(initVal)) vmi.number("percentTo").value = initVal;
+    }
+  },
+});
+
+const r2 = new rive.Rive({
+    src: "../riv/69_activitycan_v10.riv",
+    canvas: document.getElementById("canvas2"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
+    let inputFieldBtn2_0 = document.getElementById("btn2_input0");
+    if (inputFieldBtn2_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn2_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn2_0.value);
+                if (!isNaN(val)) vmi.number("goal").value = val;
+                const rangeControl = inputFieldBtn2_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn2_0.value;
+                    const minimum = Number(inputFieldBtn2_0.min);
+                    const maximum = Number(inputFieldBtn2_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn2_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn2_0.value);
+      if (!isNaN(initVal)) vmi.number("goal").value = initVal;
+    }
+    let inputFieldBtn2_1 = document.getElementById("btn2_input1");
+    if (inputFieldBtn2_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn2_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn2_1.value);
+                if (!isNaN(val)) vmi.number("zone1").value = val;
+                const rangeControl = inputFieldBtn2_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn2_1.value;
+                    const minimum = Number(inputFieldBtn2_1.min);
+                    const maximum = Number(inputFieldBtn2_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn2_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn2_1.value);
+      if (!isNaN(initVal)) vmi.number("zone1").value = initVal;
+    }
+    let inputFieldBtn2_2 = document.getElementById("btn2_input2");
+    if (inputFieldBtn2_2 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn2_2.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn2_2.value);
+                if (!isNaN(val)) vmi.number("zone2").value = val;
+                const rangeControl = inputFieldBtn2_2.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn2_2.value;
+                    const minimum = Number(inputFieldBtn2_2.min);
+                    const maximum = Number(inputFieldBtn2_2.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn2_2.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn2_2.value);
+      if (!isNaN(initVal)) vmi.number("zone2").value = initVal;
+    }
+    let inputFieldBtn2_3 = document.getElementById("btn2_input3");
+    if (inputFieldBtn2_3 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn2_3.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn2_3.value);
+                if (!isNaN(val)) vmi.number("zone3").value = val;
+                const rangeControl = inputFieldBtn2_3.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn2_3.value;
+                    const minimum = Number(inputFieldBtn2_3.min);
+                    const maximum = Number(inputFieldBtn2_3.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn2_3.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn2_3.value);
+      if (!isNaN(initVal)) vmi.number("zone3").value = initVal;
+    }
+    let inputFieldBtn2_4 = document.getElementById("btn2_input4");
+    if (inputFieldBtn2_4 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn2_4.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn2_4.value);
+                if (!isNaN(val)) vmi.number("zone4").value = val;
+                const rangeControl = inputFieldBtn2_4.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn2_4.value;
+                    const minimum = Number(inputFieldBtn2_4.min);
+                    const maximum = Number(inputFieldBtn2_4.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn2_4.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn2_4.value);
+      if (!isNaN(initVal)) vmi.number("zone4").value = initVal;
+    }
+  },
+});
+document.getElementById("btn2").addEventListener("click", () => {
+    const currentVmi = r2.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("start");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r2.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "start");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): start");
+    }
+});
+
+const r3 = new rive.Rive({
+    src: "../riv/crm1_start_v3.riv",
+    canvas: document.getElementById("canvas3"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r3.resizeDrawingSurfaceToCanvas();
+    const vmi = r3.viewModelInstance;
+    let inputFieldBtn3_0 = document.getElementById("btn3_input0");
+    if (inputFieldBtn3_0 && vmi) {
+      vmi.string("name").value = inputFieldBtn3_0.value;
+      inputFieldBtn3_0.addEventListener("input", () => {
+        vmi.string("name").value = inputFieldBtn3_0.value;
+      });
+    }
+    let inputFieldBtn3_1 = document.getElementById("btn3_input1");
+    if (inputFieldBtn3_1 && vmi) {
+      vmi.string("shipName").value = inputFieldBtn3_1.value;
+      inputFieldBtn3_1.addEventListener("input", () => {
+        vmi.string("shipName").value = inputFieldBtn3_1.value;
+      });
+    }
+    let inputFieldBtn3_2 = document.getElementById("btn3_input2");
+    if (inputFieldBtn3_2 && vmi) {
+      vmi.string("dates").value = inputFieldBtn3_2.value;
+      inputFieldBtn3_2.addEventListener("input", () => {
+        vmi.string("dates").value = inputFieldBtn3_2.value;
+      });
+    }
+  },
+});
+
+const r4 = new rive.Rive({
+    src: "../riv/crm2_daysonboard_v5.riv",
+    canvas: document.getElementById("canvas4"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r4.resizeDrawingSurfaceToCanvas();
+    const vmi = r4.viewModelInstance;
+    let inputFieldBtn4_0 = document.getElementById("btn4_input0");
+    if (inputFieldBtn4_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn4_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn4_0.value);
+                if (!isNaN(val)) vmi.number("days").value = val;
+                const rangeControl = inputFieldBtn4_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn4_0.value;
+                    const minimum = Number(inputFieldBtn4_0.min);
+                    const maximum = Number(inputFieldBtn4_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn4_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn4_0.value);
+      if (!isNaN(initVal)) vmi.number("days").value = initVal;
+    }
+    let inputFieldBtn4_1 = document.getElementById("btn4_input1");
+    if (inputFieldBtn4_1 && vmi) {
+      vmi.string("shipName").value = inputFieldBtn4_1.value;
+      inputFieldBtn4_1.addEventListener("input", () => {
+        vmi.string("shipName").value = inputFieldBtn4_1.value;
+      });
+    }
+  },
+});
+
+const r5 = new rive.Rive({
+    src: "../riv/crm3_seaportdays_v3.riv",
+    canvas: document.getElementById("canvas5"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r5.resizeDrawingSurfaceToCanvas();
+    const vmi = r5.viewModelInstance;
+    let inputFieldBtn5_0 = document.getElementById("btn5_input0");
+    if (inputFieldBtn5_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn5_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn5_0.value);
+                if (!isNaN(val)) vmi.number("seaDays").value = val;
+                const rangeControl = inputFieldBtn5_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn5_0.value;
+                    const minimum = Number(inputFieldBtn5_0.min);
+                    const maximum = Number(inputFieldBtn5_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn5_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn5_0.value);
+      if (!isNaN(initVal)) vmi.number("seaDays").value = initVal;
+    }
+    let inputFieldBtn5_1 = document.getElementById("btn5_input1");
+    if (inputFieldBtn5_1 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn5_1.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn5_1.value);
+                if (!isNaN(val)) vmi.number("portDays").value = val;
+                const rangeControl = inputFieldBtn5_1.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn5_1.value;
+                    const minimum = Number(inputFieldBtn5_1.min);
+                    const maximum = Number(inputFieldBtn5_1.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn5_1.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn5_1.value);
+      if (!isNaN(initVal)) vmi.number("portDays").value = initVal;
+    }
+  },
+});
+
+const r6 = new rive.Rive({
+    src: "../riv/crm4_achievements_v3.riv",
+    canvas: document.getElementById("canvas6"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r6.resizeDrawingSurfaceToCanvas();
+    const vmi = r6.viewModelInstance;
+    let inputFieldBtn6_0 = document.getElementById("btn6_input0");
+    if (inputFieldBtn6_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn6_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn6_0.value);
+                if (!isNaN(val)) vmi.number("illustrationIndex").value = val;
+                const rangeControl = inputFieldBtn6_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn6_0.value;
+                    const minimum = Number(inputFieldBtn6_0.min);
+                    const maximum = Number(inputFieldBtn6_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn6_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn6_0.value);
+      if (!isNaN(initVal)) vmi.number("illustrationIndex").value = initVal;
+    }
+    let inputFieldBtn6_1 = document.getElementById("btn6_input1");
+    if (inputFieldBtn6_1 && vmi) {
+      vmi.string("name").value = inputFieldBtn6_1.value;
+      inputFieldBtn6_1.addEventListener("input", () => {
+        vmi.string("name").value = inputFieldBtn6_1.value;
+      });
+    }
+  },
+});
+
+const r7 = new rive.Rive({
+    src: "../riv/crm5_connections_v5.riv",
+    canvas: document.getElementById("canvas7"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r7.resizeDrawingSurfaceToCanvas();
+    const vmi = r7.viewModelInstance;
+    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
+    if (inputFieldBtn7_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn7_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn7_0.value);
+                if (!isNaN(val)) vmi.number("friendsNum").value = val;
+                const rangeControl = inputFieldBtn7_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn7_0.value;
+                    const minimum = Number(inputFieldBtn7_0.min);
+                    const maximum = Number(inputFieldBtn7_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn7_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn7_0.value);
+      if (!isNaN(initVal)) vmi.number("friendsNum").value = initVal;
+    }
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+
+// Fire all triggers 3 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 3000);
+</script>
+<div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">2</button> <a href="catalog-page-3.html"><button class="rive-btn">3</button></a> <a href="catalog-page-4.html"><button class="rive-btn">4</button></a> <a href="catalog-page-5.html"><button class="rive-btn">5</button></a> <a href="catalog-page-6.html"><button class="rive-btn">6</button></a> <a href="catalog-page-7.html"><button class="rive-btn">7</button></a></div>
+    </div>
+</body>
+</html>

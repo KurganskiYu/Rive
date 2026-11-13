@@ -1,0 +1,521 @@
+<!-- Generated custom catalog; do not edit. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../RiveIcon2.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+    <nav class="animation-nav" aria-label="Animation pages">
+      <details open>
+        <summary>Animations</summary>
+        <ul>
+          <li><a href="contra1_dataviz_v5.html">contra1 Contra Test</a></li>
+          <li><a href="contra2_hmi_v21.html">contra2 hmi</a></li>
+          <li><a href="75_awakesclock_v3.html">75 Awake Clock</a></li>
+          <li><a href="77_migrainelog_v3.html">77 Migraine Log</a></li>
+          <li><a href="77_chartmatrix_v8.html">77 Chart Matrix</a></li>
+          <li><a href="77_migrainechartmini_v1.html">77 Migraine Chart Mini</a></li>
+          <li><a href="77_migrainechart_v7.html">77 Migraine Chart</a></li>
+          <li><a href="74_fanlake_v3.html">74 Fan Lake</a></li>
+          <li><a href="71_sleeptubes_v6.html">71 Sleep Tubes</a></li>
+          <li><a href="73_stressliquidformat_v2.html">73 Stress Liquid Format</a></li>
+          <li><a href="69_activitycan_v10.html">69 Activity Can</a></li>
+          <li><a href="crm1_start_v3.html">crm1 start</a></li>
+          <li><a href="crm2_daysonboard_v5.html">crm2 daysonboard</a></li>
+          <li><a href="crm3_seaportdays_v3.html">crm3 seaportdays</a></li>
+          <li><a href="crm4_achievements_v3.html">crm4 achievements</a></li>
+          <li><a href="crm5_connections_v5.html">crm5 connections</a></li>
+          <li><a href="crm6_countries_v6.html">crm6 countries</a></li>
+          <li><a href="60_stresscalendar2_v2.html">60 Stress Calendar 2</a></li>
+          <li><a href="64_stressinsight_v3.html">64 Stress Insight</a></li>
+          <li><a href="54_compass31_comb_v4.html">54 Compass 31 Comb</a></li>
+          <li><a href="54_compass31_v4.html">54 Compass 31</a></li>
+          <li><a href="53_insightcardclock_v4.html">53 Insight Card Clock</a></li>
+          <li><a href="48_stressbatterygraph_v11.html">48 Stress Battery Graph</a></li>
+          <li><a href="49_experimentprogressbar_v4.html">49 Experiment Progress Bar</a></li>
+          <li><a href="46_dictationbutton_v7.html">46 Dictation Button</a></li>
+          <li><a href="45_activityring_v6.html">45 Activity Ring</a></li>
+          <li><a href="40_energysliders_v3.html">40 Energy Sliders</a></li>
+          <li><a href="34_cometpluses2_v6.html">34 Comet Pluses 2</a></li>
+          <li><a href="31_parametricparticles_v10.html">31 Parametric Particles</a></li>
+          <li><a href="24_energybyny_v9.html">24 Energy By NY</a></li>
+          <li><a href="13_BatteryReport_v16.html">13 Battery Report</a></li>
+          <li><a href="17_LaborEffect_v5.html">17 Labor Effect</a></li>
+          <li><a href="18_SleepWavesNew_v5.html">18 Sleep Waves New</a></li>
+          <li><a href="14_BatteryWidget_v6.html">14 Battery Widget</a></li>
+          <li><a href="09_sleeplake_widget_v6.html">09 Sleep Lake Widget</a></li>
+          <li><a href="09_sleeplake_v11.html">09 Sleep Lake</a></li>
+          <li><a href="08_LightRay_v2.html">08 Light Ray</a></li>
+          <li><a href="08_Particles_v2.html">08 Particles</a></li>
+          <li><a href="08_Welcome_v3.html">08 Welcome</a></li>
+          <li><a href="08_Recovery_v4.html">08 Recovery</a></li>
+          <li><a href="08_ActivityRecovery_v5.html">08 Activity Recovery</a></li>
+          <li><a href="08_OnboardingStrings_v4.html">08 Onboarding Strings</a></li>
+          <li><a href="08_ExerciseBubbles_v4.html">08 Exercise Bubbles</a></li>
+          <li><a href="08_SleepLines_v5.html">08 Sleep Lines</a></li>
+          <li><a href="08_stressmonth_v1.html">08 Stress Month</a></li>
+          <li><a href="08_exercisemonth_v2.html">08 Exercise Month</a></li>
+          <li><a href="08_StressLiquid_v2.html">08 Stress Liquid</a></li>
+          <li><a href="06_GiftBox_v6.html">06 Gift Box</a></li>
+          <li><a href="03_loaders_v5--WaveLoader.html">03 Wave Loader</a></li>
+          <li><a href="03_loaders_v5--SpiralLoader.html">03 Spiral Loader</a></li>
+          <li><a href="03_loaders_v5--EyeLoader.html">03 Eye Loader</a></li>
+          <li><a href="03_loaders_v5--CircleLoader.html">03 Circle Loader</a></li>
+        </ul>
+      </details>
+    </nav>
+
+      <div class="animation-container custom-animation">
+        <canvas id="canvas0" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="08_ActivityRecovery_v5.html">08 Activity Recovery</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas1" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="08_OnboardingStrings_v4.html">08 Onboarding Strings</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas2" width="200" height="325"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="08_ExerciseBubbles_v4.html">08 Exercise Bubbles</a></div>
+          <button id="btn2" class="rive-btn" style="margin-left:auto;">Run</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas3" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="08_SleepLines_v5.html">08 Sleep Lines</a></div>
+          <button id="btn3" class="rive-btn" style="margin-left:auto;">Run</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas4" width="200" height="245"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="08_stressmonth_v1.html">08 Stress Month</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas5" width="200" height="245"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="08_exercisemonth_v2.html">08 Exercise Month</a></div>
+          
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas6" width="200" height="433"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="08_StressLiquid_v2.html">08 Stress Liquid</a></div>
+          <button id="btn6" class="rive-btn" style="margin-left:auto;">Run</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div class="range-control" style="width:202px;--slider-progress:85.8586%;">
+            <output for="btn6_input0">86</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.02020202%;"></span><span style="left:4.04040404%;"></span><span style="left:6.06060606%;"></span><span style="left:8.08080808%;"></span><span style="left:10.10101010%;"></span><span style="left:12.12121212%;"></span><span style="left:14.14141414%;"></span><span style="left:16.16161616%;"></span><span style="left:18.18181818%;"></span><span style="left:20.20202020%;"></span><span style="left:22.22222222%;"></span><span style="left:24.24242424%;"></span><span style="left:26.26262626%;"></span><span style="left:28.28282828%;"></span><span style="left:30.30303030%;"></span><span style="left:32.32323232%;"></span><span style="left:34.34343434%;"></span><span style="left:36.36363636%;"></span><span style="left:38.38383838%;"></span><span style="left:40.40404040%;"></span><span style="left:42.42424242%;"></span><span style="left:44.44444444%;"></span><span style="left:46.46464646%;"></span><span style="left:48.48484848%;"></span><span style="left:50.50505051%;"></span><span style="left:52.52525253%;"></span><span style="left:54.54545455%;"></span><span style="left:56.56565657%;"></span><span style="left:58.58585859%;"></span><span style="left:60.60606061%;"></span><span style="left:62.62626263%;"></span><span style="left:64.64646465%;"></span><span style="left:66.66666667%;"></span><span style="left:68.68686869%;"></span><span style="left:70.70707071%;"></span><span style="left:72.72727273%;"></span><span style="left:74.74747475%;"></span><span style="left:76.76767677%;"></span><span style="left:78.78787879%;"></span><span style="left:80.80808081%;"></span><span style="left:82.82828283%;"></span><span style="left:84.84848485%;"></span><span style="left:86.86868687%;"></span><span style="left:88.88888889%;"></span><span style="left:90.90909091%;"></span><span style="left:92.92929293%;"></span><span style="left:94.94949495%;"></span><span style="left:96.96969697%;"></span><span style="left:98.98989899%;"></span></span>
+            <input type="range" id="btn6_input0" value="86" min="1" max="100" step="1" aria-label="StressPercent" />
+            <span class="range-hint" aria-hidden="true">StressPercent</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">100</span>
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container custom-animation">
+        <canvas id="canvas7" width="200" height="312"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div class="custom-heading">
+          <div><a class="custom-name" href="06_GiftBox_v6.html">06 Gift Box</a></div>
+          <button id="btn7" class="rive-btn" style="margin-left:auto;">Run</button>
+        </div>
+        
+        <div class="controls-column" style="display:flex;flex-direction:column;align-items:flex-end;margin-top:8px;">
+            
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn7_input0">text1:</label>
+            <input type="text" id="btn7_input0" value="25%" style="width:90px;" />
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn7_input1">text2:</label>
+            <input type="text" id="btn7_input1" value="discount for 24 hours" style="width:90px;" />
+        </div>
+        
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    </div>
+<script>
+
+const r0 = new rive.Rive({
+    src: "../riv/08_ActivityRecovery_v5.riv",
+    canvas: document.getElementById("canvas0"),
+    autoplay: true, autoBind: true,artboard: "activity", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r0.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r1 = new rive.Rive({
+    src: "../riv/08_OnboardingStrings_v4.riv",
+    canvas: document.getElementById("canvas1"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r1.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r2 = new rive.Rive({
+    src: "../riv/08_ExerciseBubbles_v4.riv",
+    canvas: document.getElementById("canvas2"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
+  },
+});
+document.getElementById("btn2").addEventListener("click", () => {
+    const currentVmi = r2.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r2.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
+});
+
+const r3 = new rive.Rive({
+    src: "../riv/08_SleepLines_v5.riv",
+    canvas: document.getElementById("canvas3"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r3.resizeDrawingSurfaceToCanvas();
+    const vmi = r3.viewModelInstance;
+  },
+});
+document.getElementById("btn3").addEventListener("click", () => {
+    const currentVmi = r3.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r3.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
+});
+
+const r4 = new rive.Rive({
+    src: "../riv/08_stressmonth_v1.riv",
+    canvas: document.getElementById("canvas4"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r4.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r5 = new rive.Rive({
+    src: "../riv/08_exercisemonth_v2.riv",
+    canvas: document.getElementById("canvas5"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r5.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r6 = new rive.Rive({
+    src: "../riv/08_StressLiquid_v2.riv",
+    canvas: document.getElementById("canvas6"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r6.resizeDrawingSurfaceToCanvas();
+    const vmi = r6.viewModelInstance;
+    let inputFieldBtn6_0 = document.getElementById("btn6_input0");
+    if (inputFieldBtn6_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn6_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn6_0.value);
+                if (!isNaN(val)) vmi.number("StressPercent").value = val;
+                const rangeControl = inputFieldBtn6_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn6_0.value;
+                    const minimum = Number(inputFieldBtn6_0.min);
+                    const maximum = Number(inputFieldBtn6_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn6_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn6_0.value);
+      if (!isNaN(initVal)) vmi.number("StressPercent").value = initVal;
+    }
+  },
+});
+document.getElementById("btn6").addEventListener("click", () => {
+    const currentVmi = r6.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r6.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
+});
+
+const r7 = new rive.Rive({
+    src: "../riv/06_GiftBox_v6.riv",
+    canvas: document.getElementById("canvas7"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r7.resizeDrawingSurfaceToCanvas();
+    const vmi = r7.viewModelInstance;
+    let inputFieldBtn7_0 = document.getElementById("btn7_input0");
+    if (inputFieldBtn7_0 && vmi) {
+      vmi.string("text1").value = inputFieldBtn7_0.value;
+      inputFieldBtn7_0.addEventListener("input", () => {
+        vmi.string("text1").value = inputFieldBtn7_0.value;
+      });
+    }
+    let inputFieldBtn7_1 = document.getElementById("btn7_input1");
+    if (inputFieldBtn7_1 && vmi) {
+      vmi.string("text2").value = inputFieldBtn7_1.value;
+      inputFieldBtn7_1.addEventListener("input", () => {
+        vmi.string("text2").value = inputFieldBtn7_1.value;
+      });
+    }
+  },
+});
+document.getElementById("btn7").addEventListener("click", () => {
+    const currentVmi = r7.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r7.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+
+// Fire all triggers 3 seconds after page load
+setTimeout(() => {
+  document.querySelectorAll('.rive-btn[id^="btn"]').forEach(btn => {
+    btn.click();
+  });
+}, 3000);
+</script>
+<div style="margin: 24px 0; text-align:center;"><a href="index.html"><button class="rive-btn">1</button></a> <a href="catalog-page-2.html"><button class="rive-btn">2</button></a> <a href="catalog-page-3.html"><button class="rive-btn">3</button></a> <a href="catalog-page-4.html"><button class="rive-btn">4</button></a> <a href="catalog-page-5.html"><button class="rive-btn">5</button></a> <button class="rive-btn" style="background:#e0e0e0;color:#333;">6</button> <a href="catalog-page-7.html"><button class="rive-btn">7</button></a></div>
+    </div>
+</body>
+</html>

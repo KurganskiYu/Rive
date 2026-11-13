@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 from _navigation import (
-    name_key, navigation_labels, parse_navigation_names, resolve_navigation_names,
+    animation_id, name_key, navigation_labels, parse_navigation_names, resolve_navigation_names,
 )
 from catalog_persistence import (
     CatalogConflict, JOURNAL, RecoveryRequired, catalog_lock, read_tables,
@@ -33,12 +33,12 @@ PROTOCOL_VERSION = 1
 
 def read_catalog(root: Path, *, tables=None) -> dict:
     tables = read_tables(root) if tables is None else tables
-    contents = tables["_videos.csv"]
+    contents = tables["_anim_list.csv"]
     if contents is None:
-        raise ValueError("_videos.csv is missing.")
+        raise ValueError("_anim_list.csv is missing.")
     lines = contents.decode("utf-8-sig").splitlines()
     if not lines or next(csv.reader([lines[0]]))[:3] != ["src", "size", "preview"]:
-        raise ValueError("_videos.csv must start with src,size,preview")
+        raise ValueError("_anim_list.csv must start with src,size,preview")
 
     diagnostics = []
     records = []
@@ -62,12 +62,13 @@ def read_catalog(root: Path, *, tables=None) -> dict:
 
     rows = [record[3] for record in reversed(records)]
     assign_page_stems(rows)
-    names_contents = tables["_videos_names.csv"]
+    names_contents = tables["_anim_names.csv"]
     existing = parse_navigation_names(names_contents) if names_contents is not None else []
     resolved_names, catalog = resolve_navigation_names(rows, existing)
     labels = dict(navigation_labels(catalog, resolved_names))
     keys = {row["page_stem"]: key for row, key in catalog}
-    names = dict(resolved_names)
+    names = {key: name for key, name, _ in resolved_names}
+    variants = {key: variant for key, _, variant in resolved_names}
     entries = []
     identities = set()
     for line_number, raw_line, values, row, mode in reversed(records):
@@ -153,8 +154,11 @@ def read_catalog(root: Path, *, tables=None) -> dict:
             "raw_line": raw_line,
             "fields": values,
             "src": src,
+            "animation_id": animation_id(src),
+            "hidden": row["hidden"],
             "label": labels[row["page_stem"]],
             "name": names[keys[row["page_stem"]]],
+            "variant": variants[keys[row["page_stem"]]],
             "name_key": keys[row["page_stem"]],
             "size": row["size"],
             "size_x": "layout" if row["auto_w"] else str(row["width"]),
@@ -197,7 +201,7 @@ def prepare_draft(root, before, request):
         raise ValueError("A draft must contain an edits array.")
     snapshot = read_catalog(root, tables=before)
     entries = {entry["id"]: entry for entry in snapshot["entries"]}
-    lines = before["_videos.csv"].decode("utf-8-sig").splitlines(keepends=True)
+    lines = before["_anim_list.csv"].decode("utf-8-sig").splitlines(keepends=True)
     name_edits = {}
     seen = set()
     for edit in edits:
@@ -225,17 +229,18 @@ def prepare_draft(root, before, request):
                 raise ValueError(f"Row {entry['line']}, name: a single-line string is required.")
             name_edits[entry["line"]] = name
     after = dict(before)
-    after["_videos.csv"] = _encode_like("".join(lines), before["_videos.csv"])
+    after["_anim_list.csv"] = _encode_like("".join(lines), before["_anim_list.csv"])
     draft = read_catalog(root, tables=after)
     old_by_line = {entry["line"]: entry for entry in snapshot["entries"]}
     desired = {}
     for entry in draft["entries"]:
         old = old_by_line[entry["line"]]
         name = name_edits.get(entry["line"], old["name"])
-        if name != entry["name"]:
-            desired[entry["name_key"]] = name
+        variant = old["variant"]
+        if name != entry["name"] or variant != entry["variant"]:
+            desired[entry["name_key"]] = (name, variant)
     if desired:
-        contents = before["_videos_names.csv"]
+        contents = before["_anim_names.csv"]
         existing = parse_navigation_names(contents) if contents is not None else []
         # Resolve legacy repeated names once through the same algorithm as the generator.
         original_rows = []
@@ -245,12 +250,15 @@ def prepare_draft(root, before, request):
             row["page_stem"] = entry["page_stem"]
             original_rows.append(row)
         updated, _ = resolve_navigation_names(original_rows, existing)
-        values = [(key, desired.pop(key, name)) for key, name in updated]
-        values.extend(desired.items())
+        values = [
+            (key, *desired.pop(key, (name, variant))) for key, name, variant in updated
+        ]
+        values.extend((key, name, variant) for key, (name, variant) in desired.items())
+        header = next(csv.reader(io.StringIO(contents.decode("utf-8-sig"), newline=""))) if contents else []
         # Canonical, ordinary name tables can retain every untouched physical line.
         if contents is not None and existing == updated and all(
-            "\n" not in name and "\r" not in name for _, name in existing
-        ):
+            "\n" not in name and "\r" not in name for _, name, _ in existing
+        ) and (len(header) == 3 or not any(variant for _, _, variant in values)):
             name_lines = contents.decode("utf-8-sig").splitlines(keepends=True)
             positions = [index for index, line in enumerate(name_lines[1:], 1) if line.strip()]
             if len(positions) == len(existing):
@@ -258,19 +266,22 @@ def prepare_draft(root, before, request):
                     if old != new:
                         line = name_lines[position]
                         ending = "\r\n" if line.endswith("\r\n") else line[-1:] if line.endswith(("\n", "\r")) else ""
-                        name_lines[position] = _csv_record(new, ending)
+                        name_lines[position] = _csv_record(new if len(header) == 3 else new[:2], ending)
                 if len(values) > len(existing):
                     ending = "\r\n" if b"\r\n" in contents else "\n"
                     if name_lines and not name_lines[-1].endswith(("\r", "\n")):
                         name_lines[-1] += ending
-                    name_lines.extend(_csv_record(value, ending) for value in values[len(existing):])
-                after["_videos_names.csv"] = _encode_like("".join(name_lines), contents)
+                    name_lines.extend(
+                        _csv_record(value if len(header) == 3 else value[:2], ending)
+                        for value in values[len(existing):]
+                    )
+                after["_anim_names.csv"] = _encode_like("".join(name_lines), contents)
             else:
                 raise ValueError("Cannot safely locate names-table rows.")
         else:
             ending = "\r\n" if contents is None or b"\r\n" in contents else "\n"
-            after["_videos_names.csv"] = _encode_like(
-                _csv_record(["filename", "name"], ending)
+            after["_anim_names.csv"] = _encode_like(
+                _csv_record(["filename", "name", "variant"], ending)
                 + "".join(_csv_record(value, ending) for value in values), contents,
             )
         draft = read_catalog(root, tables=after)

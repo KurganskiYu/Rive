@@ -130,7 +130,7 @@ final class CatalogStore: ObservableObject {
             let labels: [(String, String)] = [
                 ("name", entry.displayName), ("fileName", entry.src), ("artboard", entry.artboard),
                 ("sizeX", entry.sizeX), ("sizeY", entry.sizeY),
-                ("numberLabel", entry.number.map { String($0) } ?? ""),
+                ("numberLabel", entry.animationId ?? entry.number.map { String($0) } ?? ""),
                 ("versionLabel", entry.version.map { "v\($0)" } ?? "unknown"),
                 ("newerVersionLabel", ""),
                 ("fileSizeLabel", entry.fileSize.map { String(($0 + 512) / 1024) } ?? "missing"),

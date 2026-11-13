@@ -1,0 +1,130 @@
+filename,name,variant
+crm1_start,,
+crm2_daysonboard,,
+crm3_seaportdays,,
+crm4_achievements,,
+crm5_connections,,
+crm6_countries,,
+crm7_buttonwrapped,,
+contra1_dataviz,Contra Test,
+contra2_hmi,,
+04_EyeNew,Eye New,a
+04_New,New,b
+03_loaders--CircleLoader,Circle Loader,a
+03_loaders--EyeLoader,Eye Loader,b
+03_loaders--SpiralLoader,Spiral Loader,c
+03_loaders--WaveLoader,Wave Loader,d
+04_PulseWave_full-circle,Pulse Wave Full Circle,c
+01_NightDay,Night Day,
+06_GiftBox,Gift Box,
+02_River,River,
+04_PulseWaveEye,Pulse Wave Eye,d
+08_StressLiquid,Stress Liquid,a
+08_exercisemonth,Exercise Month,b
+08_stressmonth,Stress Month,c
+08_SleepLines,Sleep Lines,d
+08_ExerciseBubbles,Exercise Bubbles,e
+08_OnboardingStrings,Onboarding Strings,f
+08_ActivityRecovery,Activity Recovery,g
+08_Recovery,Recovery,h
+08_Welcome,Welcome,i
+08_Particles,Particles,j
+08_LightRay,Light Ray,k
+09_sleeplake,Sleep Lake,a
+09_sleeplake_widget,Sleep Lake Widget,b
+10_GodRay--Ray1,God Ray 1,a
+10_GodRay--Ray2,God Ray 2,b
+10_GodRay_Small,God Ray Small,c
+10_GodRay_Small2,God Ray Small 2,d
+10_GodRay_Pack_p1,God Ray Pack P1,e
+10_GodRay_Pack_p2,God Ray Pack P2,f
+10_GodRay_Pack_p3,God Ray Pack P3,g
+12_flowerparticles,Flower Particles,
+11_TextAnim,Text Animation,a
+11_HeaderTextAnim,Header Text Animation,b
+14_BatteryWidget,Battery Widget,
+13_BatteryReport,Battery Report,
+15_liquidanimation,Liquid Animation,
+16_DragonCat,Dragon Cat,a
+16_dragoncateyes,Dragon Cat Eyes,b
+17_LaborEffect,Labor Effect,
+18_SleepWavesNew,Sleep Waves New,
+19_keyhole,Keyhole,
+20_StressImpact,Stress Impact,
+21_activityhand,Activity Hand,
+22_batteryliquid,Battery Liquid,a
+22_batteryliquidsleep,Battery Liquid Sleep,b
+23_stressfanplus,Stress Fan Plus,
+24_energybyny,Energy By NY,
+25_plusesflight,Pluses Flight,
+26_stressfanimpact,Stress Fan Impact,
+27_stresscontainer,Stress Container,
+28_cometpluses,Comet Pluses,
+29_plustuktuk,Plus Tuk Tuk,
+30_starsfly,Stars Fly,a
+30_starsflystack,Stars Fly Stack,b
+31_parametricparticles,Parametric Particles,
+33_healthdataaccess,Health Data Access,
+34_cometpluses2,Comet Pluses 2,
+35_scatterpluses,Scatter Pluses,
+36_PaywallWave,Paywall Wave,
+37_stresscalendar,Stress Calendar,
+38_stressvessels,Stress Vessels,
+39_godraycomment,God Ray Comment,
+40_energysliders,Energy Sliders,
+41_fatgraph,Fat Graph,
+42_bannerparticlesbutton,Banner Particles Button,a
+42_bannerparticlessand,Banner Particles Sand,b
+42_bannerparticlessandwide,Banner Particles Sand Wide,c
+43_playerbird,Player Bird,
+44_particlesstars,Particles Stars,
+45_activityring,Activity Ring,
+46_dictationbutton,Dictation Button,
+47_activitytags,Activity Tags,
+48_stressbatterygraph,Stress Battery Graph,
+49_experimentprogressbar,Experiment Progress Bar,
+50_energy_liquid,Energy Liquid,a
+50_stress_liquid,Stress Liquid,b
+51_glints,Glints,
+52_tagfire,Tag Fire,a
+52_tagliquid,Tag Liquid,b
+52_tagsnumber,Tags Number,c
+52_tagclouds,Tag Clouds,d
+52_tagvessels,Tag Vessels,e
+53_insightcardclock,Insight Card Clock,
+54_compass31,Compass 31,a
+54_compass31_comb,Compass 31 Comb,b
+55_recoveryreport,Recovery Report,
+56_progressbar2,Progress Bar 2,
+57_energyfill,Energy Fill,
+58_mountain,Mountain,
+59_paymentcomplete,Payment Complete,
+60_stresscalendar2,Stress Calendar 2,
+61_umbrellas,Umbrellas,
+62_patternpill,Pattern Pill,
+63_liquidbluepink,Liquid Blue Pink,
+64_stressinsight,Stress Insight,
+65_healthflower,Health Flower,
+66_dictationbutton2,Dictation Button 2,
+68_dictationfunnel,Dictation Funnel,
+69_activitycan,Activity Can,
+71_sleeptubes,Sleep Tubes,
+72_gradients,Gradients,
+73_stressliquidformat,Stress Liquid Format,
+74_fanlake,Fan Lake,
+75_awakesclock,Awake Clock,
+76_allowaccess,Allow Access,
+77_migrainechart,Migraine Chart,a
+77_migrainechartmini,Migraine Chart Mini,b
+77_chartmatrix,Chart Matrix,c
+78_cardpocket,Card Pocket,
+79_buttonhand,Button Hand,
+77_migrainelog,Migraine Log,d
+80_heartzones,Heart Zones,
+81_rainbowbird,Rainbow Bird,
+82_carecorner,Care Corner,
+83_trackersetting,Tracker Setting,
+84_careheader,Care Header,
+86_carousel_a,,a
+86_carousel_b,,b
+86_carousel_c,,c

@@ -15,7 +15,7 @@ For Some features We better use Rive scripting to implement as I need the less c
 
 So my pipeline looks like this:
 I make Rive animation. Save it as a .riv or .zip file to my project folder.
-Then I edit the _videos.csv file with all the parameters. And then I should also add a name to the _videos_names.csv file.
+Then I edit the _anim_list.csv file with all the parameters. And then I should also add a name to the _anim_names.csv file.
 After that, I run _generate_html.py python script.
 Then I run a local server to check my site if the animation works correctly and all the parameters are binded and working.
 If everything is fine, I'm pushing the repository to the GitHub. And then I wait a bit till the site is updated and check it, and copy a link to this new animation and send it to my colleagues.

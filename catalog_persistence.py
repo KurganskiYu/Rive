@@ -8,7 +8,7 @@ import stat
 import uuid
 from contextlib import contextmanager
 
-TABLES = ("_videos.csv", "_videos_names.csv", "_catalog.json")
+TABLES = ("_anim_list.csv", "_anim_names.csv", "_catalog.json")
 JOURNAL = ".catalog-save.json"
 
 

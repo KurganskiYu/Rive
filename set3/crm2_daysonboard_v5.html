@@ -1,0 +1,177 @@
+<!-- Generated custom catalog; do not edit. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuri's Rive Animations</title>
+    <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../RiveIcon2.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="animation-wrapper">
+
+    <div style="position:fixed; top:10px; left:10px; z-index:9999; display:flex; flex-direction:column; align-items:center;">
+        <canvas id="bg_button_canvas" width="80" height="80"></canvas>
+    </div>
+    <script>
+      (function() {
+        function updatePageBg(mode) {
+            const body = document.body;
+            const label = document.getElementById("bg_debug_label");
+            if (label) label.textContent = "bg: " + mode;
+            console.log("[BG] updatePageBg called with mode:", mode);
+            if (mode === 1) {
+                // Checkered pattern
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage =
+                    "repeating-conic-gradient(#0f0f0f 0% 25%, transparent 0% 50%)";
+                body.style.backgroundSize = "20px 20px";
+                body.style.backgroundPosition = "";
+            } else if (mode === 2) {
+                // Solid black
+                body.style.backgroundColor = "#000000";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            } else if (mode === 3) {
+                // Solid dark gray
+                body.style.backgroundColor = "#121212";
+                body.style.backgroundImage = "none";
+                body.style.backgroundSize = "";
+                body.style.backgroundPosition = "";
+            }
+        }
+
+        // Apply stored background immediately (before Rive loads)
+        let storedBg = localStorage.getItem("page_bg_mode");
+        if (storedBg) {
+            updatePageBg(parseInt(storedBg));
+        }
+
+        const bgRive = new rive.Rive({
+          src: "../bg_button.riv",
+          canvas: document.getElementById("bg_button_canvas"),
+          autoplay: true,
+          artboard: "main",
+          autoBind: true,
+          stateMachines: "State Machine 1",
+          onLoad: () => {
+            bgRive.resizeDrawingSurfaceToCanvas();
+            console.log("[BG] Rive loaded");
+            const vmi = bgRive.viewModelInstance;
+            console.log("[BG] viewModelInstance:", vmi);
+            if (vmi) {
+                const bgNum = vmi.number("bgNum");
+                console.log("[BG] bgNum property:", bgNum);
+                if (bgNum) {
+                    // Initialize based on current stored state or default
+                    let storedBg = localStorage.getItem("page_bg_mode");
+                    let mode = storedBg ? parseInt(storedBg) : 1;
+                    bgNum.value = mode;
+                    updatePageBg(mode);
+                    console.log("[BG] Initial mode set to:", mode, "bgNum.value:", bgNum.value);
+
+                    // Listen for changes from Rive
+                    bgNum.onValueChanged = (val) => {
+                        console.log("[BG] onValueChanged fired:", val);
+                        updatePageBg(val);
+                        localStorage.setItem("page_bg_mode", String(val));
+                    };
+
+                    // Polling fallback: check bgNum.value periodically
+                    let lastVal = bgNum.value;
+                    setInterval(() => {
+                        const cur = bgNum.value;
+                        if (cur !== lastVal) {
+                            console.log("[BG] poll detected change:", lastVal, "->", cur);
+                            lastVal = cur;
+                            updatePageBg(cur);
+                            localStorage.setItem("page_bg_mode", String(cur));
+                        }
+                    }, 200);
+                }
+            }
+          } }); 
+      })();
+    </script>
+    
+      <div class="animation-container detail-animation custom-animation">
+        <canvas id="main_canvas" width="393" height="852"></canvas>
+        <div class="description">
+          <div class="custom-heading">
+            <div><span style="white-space: nowrap; color: white;">crm2 daysonboard</span></div>
+            
+          </div>
+          Size: 393px × 852px<br>State Machine: State Machine 1<br>Artboard: main<br>Input: v_num:days(256:1-600)<br>Input: txt:shipName("Norwegian Epic")<br>
+          <div class="controls-column" style="margin-top:8px;">
+        <div class="range-control" style="width:100%;--slider-progress:42.5710%;">
+            <output for="btn_main_input0">256</output>
+            <span class="range-ticks" aria-hidden="true"><span style="left:2.00333890%;"></span><span style="left:4.00667780%;"></span><span style="left:6.01001669%;"></span><span style="left:8.01335559%;"></span><span style="left:10.01669449%;"></span><span style="left:12.02003339%;"></span><span style="left:14.02337229%;"></span><span style="left:16.02671119%;"></span><span style="left:18.03005008%;"></span><span style="left:20.03338898%;"></span><span style="left:22.03672788%;"></span><span style="left:24.04006678%;"></span><span style="left:26.04340568%;"></span><span style="left:28.04674457%;"></span><span style="left:30.05008347%;"></span><span style="left:32.05342237%;"></span><span style="left:34.05676127%;"></span><span style="left:36.06010017%;"></span><span style="left:38.06343907%;"></span><span style="left:40.06677796%;"></span><span style="left:42.07011686%;"></span><span style="left:44.07345576%;"></span><span style="left:46.07679466%;"></span><span style="left:48.08013356%;"></span><span style="left:50.08347245%;"></span><span style="left:52.08681135%;"></span><span style="left:54.09015025%;"></span><span style="left:56.09348915%;"></span><span style="left:58.09682805%;"></span><span style="left:60.10016694%;"></span><span style="left:62.10350584%;"></span><span style="left:64.10684474%;"></span><span style="left:66.11018364%;"></span><span style="left:68.11352254%;"></span><span style="left:70.11686144%;"></span><span style="left:72.12020033%;"></span><span style="left:74.12353923%;"></span><span style="left:76.12687813%;"></span><span style="left:78.13021703%;"></span><span style="left:80.13355593%;"></span><span style="left:82.13689482%;"></span><span style="left:84.14023372%;"></span><span style="left:86.14357262%;"></span><span style="left:88.14691152%;"></span><span style="left:90.15025042%;"></span><span style="left:92.15358932%;"></span><span style="left:94.15692821%;"></span><span style="left:96.16026711%;"></span><span style="left:98.16360601%;"></span></span>
+            <input type="range" id="btn_main_input0" value="256" min="1" max="600" step="1" aria-label="days" />
+            <span class="range-hint" aria-hidden="true">days</span>
+            <span class="range-bound range-min">1</span>
+            <span class="range-bound range-max">600</span>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:4px;">
+            <label for="btn_main_input1">shipName:</label>
+            <input type="text" id="btn_main_input1" value="Norwegian Epic" style="width:90px;" />
+        </div>
+        </div>
+        </div>
+      </div>
+<script>
+
+const mainRive = new rive.Rive({
+  src: "../riv/crm2_daysonboard_v5.riv",
+  canvas: document.getElementById("main_canvas"),
+  autoplay: true,autoBind: true, artboard: "main", stateMachines: "State Machine 1",
+  
+
+  onLoad: () => {
+    mainRive.resizeDrawingSurfaceToCanvas();
+    const vmi = mainRive.viewModelInstance;
+    let inputFieldBtn_Main_0 = document.getElementById("btn_main_input0");
+    if (inputFieldBtn_Main_0 && vmi) {
+      // Update numeric ViewModel variable
+      inputFieldBtn_Main_0.addEventListener("input", () => {
+        let val = parseFloat(inputFieldBtn_Main_0.value);
+                if (!isNaN(val)) vmi.number("days").value = val;
+                const rangeControl = inputFieldBtn_Main_0.closest(".range-control");
+                if (rangeControl) {
+                    rangeControl.querySelector("output").value = inputFieldBtn_Main_0.value;
+                    const minimum = Number(inputFieldBtn_Main_0.min);
+                    const maximum = Number(inputFieldBtn_Main_0.max);
+                    const progress = maximum === minimum ? 0 : (inputFieldBtn_Main_0.value - minimum) / (maximum - minimum) * 100;
+                    rangeControl.style.setProperty("--slider-progress", `${progress}%`);
+                }
+      });
+      // Set initial value if present
+      let initVal = parseFloat(inputFieldBtn_Main_0.value);
+      if (!isNaN(initVal)) vmi.number("days").value = initVal;
+    }
+    let inputFieldBtn_Main_1 = document.getElementById("btn_main_input1");
+    if (inputFieldBtn_Main_1 && vmi) {
+      vmi.string("shipName").value = inputFieldBtn_Main_1.value;
+      inputFieldBtn_Main_1.addEventListener("input", () => {
+        vmi.string("shipName").value = inputFieldBtn_Main_1.value;
+      });
+    }
+  },
+});
+
+document.querySelectorAll('canvas').forEach(canvas => {
+  if (!canvas.hasAttribute("data-auto-w")) canvas.style.width = canvas.width + "px";
+  if (!canvas.hasAttribute("data-auto-h")) canvas.style.height = canvas.height + "px";
+});
+</script>
+
+    </div>
+</body>
+</html>

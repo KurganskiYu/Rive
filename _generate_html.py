@@ -13,8 +13,8 @@ from html import escape as html_escape
 from urllib.parse import quote
 
 from _custom_sets import (
-    CUSTOM_CATALOG_MARKER, load_custom_catalogs, publish_custom_catalog,
-    validate_custom_directory,
+    CUSTOM_CATALOG_MARKER, index_animation_ids, is_generated_page, load_custom_catalogs,
+    publish_custom_catalog, validate_custom_directory,
 )
 from _navigation import load_navigation_entries, render_navigation, sanitize_for_filename
 from catalog_core import (
@@ -25,13 +25,14 @@ from catalog_core import (
 )
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-csv_path = os.path.join(script_dir, "_videos.csv")
-names_path = os.path.join(script_dir, "_videos_names.csv")
-sets_path = os.path.join(script_dir, "_videos_sets.csv")
-descriptions_path = os.path.join(script_dir, "_videos_descriptions.txt")
+csv_path = os.path.join(script_dir, "_anim_list.csv")
+names_path = os.path.join(script_dir, "_anim_names.csv")
+sets_path = os.path.join(script_dir, "_anim_sets.csv")
+descriptions_path = os.path.join(script_dir, "_anim_descriptions.txt")
 output_html = os.path.join(script_dir, "index.html")
 head_html_path = os.path.join(script_dir, "head.html")
 pages_dir = os.path.join(script_dir, "pages")
+MAIN_CATALOG_MARKER = "<!-- Generated main catalog; do not edit. -->\n"
 os.makedirs(pages_dir, exist_ok=True)
 
 # Cache file reads
@@ -906,7 +907,8 @@ def make_animation_page(row, output_dir=None):
             "artboard": "preview"
         }
 
-    html_parts = [CUSTOM_CATALOG_MARKER if "_custom_label" in row else "", get_html_head(is_root=False)]
+    marker = CUSTOM_CATALOG_MARKER if "_custom_label" in row else MAIN_CATALOG_MARKER
+    html_parts = [marker, get_html_head(is_root=False)]
     # Inject BG button (is_root=False because this is in pages/)
     html_parts.append(get_bg_button_html(is_root=False))
     
@@ -929,7 +931,7 @@ def generate_detail_animation_html(row, canvas_ctx, canvas_type):
     custom = "_custom_label" in row
     if canvas_type == "main":
         if custom:
-            title = f'<span>{html_escape(row["_custom_label"])}</span>'
+            title = f'<span style="white-space: nowrap; color: white;">{html_escape(row["_custom_label"])}</span>'
             metadata = make_custom_description(row) + make_description_html(row)
         else:
             title = f'<span style="white-space: nowrap;"><a href="../riv/{row["src"]}.riv" target="_blank" style="color: white;">{get_display_name(row["src"])}</a>{make_file_size_html(row)}</span>'
@@ -1102,10 +1104,10 @@ def write_main_page(page_rows, page_idx, total_pages, navigation_entries, output
     
     with open(filename, "w", encoding="utf-8") as f:
         content_parts = [
-            CUSTOM_CATALOG_MARKER if custom else "",
+            CUSTOM_CATALOG_MARKER if custom else MAIN_CATALOG_MARKER,
             get_html_head(is_root=is_root),
             get_bg_button_html(is_root=is_root),  # Inject BG button
-            "" if custom else render_navigation(navigation_entries, is_root),
+            render_navigation(navigation_entries, is_root),
             "".join(make_main_canvas(idx, row, is_root) for idx, row in enumerate(page_rows)),
             "</div>\n",
             make_script(page_rows, is_root),
@@ -1226,6 +1228,7 @@ def generate_custom_catalogs(catalogs):
 
     for name, rows in catalogs:
         output_dir = os.path.join(script_dir, name)
+        navigation_entries = [(row["page_stem"], row["_custom_label"]) for row in rows]
         with tempfile.TemporaryDirectory(prefix=".custom-catalog-", dir=script_dir) as staging_dir:
             for row in rows:
                 make_animation_page(row, staging_dir)
@@ -1233,10 +1236,21 @@ def generate_custom_catalogs(catalogs):
             total_pages = max(1, (len(rows) + ANIMATIONS_PER_PAGE - 1) // ANIMATIONS_PER_PAGE)
             for page_idx in range(total_pages):
                 start = page_idx * ANIMATIONS_PER_PAGE
-                write_main_page(rows[start:start + ANIMATIONS_PER_PAGE], page_idx, total_pages, [], staging_dir)
+                write_main_page(
+                    rows[start:start + ANIMATIONS_PER_PAGE],
+                    page_idx, total_pages, navigation_entries, staging_dir,
+                )
 
             publish_custom_catalog(staging_dir, output_dir)
         print(f"Generated {name}: {len(rows)} animation pages and {total_pages} catalog page(s).")
+
+
+def remove_stale_main_pages(expected_names):
+    for name in os.listdir(pages_dir):
+        path = os.path.join(pages_dir, name)
+        if name.lower().endswith(".html") and name not in expected_names and is_generated_page(path, MAIN_CATALOG_MARKER):
+            os.remove(path)
+
 
 # Main execution
 def main():
@@ -1258,28 +1272,43 @@ def main():
     # Give each row a unique detail-page filename (handles multiple artboards
     # sharing one .riv src).
     assign_page_stems(rows)
-    navigation_entries = load_navigation_entries(rows, names_path)
-    custom_catalogs = load_custom_catalogs(sets_path, descriptions_path, rows, navigation_entries)
+    index_animation_ids(rows)
+    navigation_entries, variants = load_navigation_entries(rows, names_path)
+    custom_catalogs = load_custom_catalogs(sets_path, descriptions_path, rows, navigation_entries, variants)
     for name, _ in custom_catalogs:
         validate_custom_directory(os.path.join(script_dir, name))
+    visible_rows = [row for row in rows if not row.get("hidden")]
+    visible_stems = {row.get("page_stem", row["src"]) for row in visible_rows}
+    visible_navigation = [entry for entry in navigation_entries if entry[0] in visible_stems]
 
     # Generate per-animation pages
-    for row in rows:
+    for row in visible_rows:
         make_animation_page(row)
 
     # Generate paginated main pages
-    total_pages = (len(rows) + ANIMATIONS_PER_PAGE - 1) // ANIMATIONS_PER_PAGE
+    total_pages = (len(visible_rows) + ANIMATIONS_PER_PAGE - 1) // ANIMATIONS_PER_PAGE
+    if rows and not total_pages:
+        total_pages = 1
     for page_idx in range(total_pages):
         start = page_idx * ANIMATIONS_PER_PAGE
         end = start + ANIMATIONS_PER_PAGE
-        page_rows = rows[start:end]
-        write_main_page(page_rows, page_idx, total_pages, navigation_entries)
+        page_rows = visible_rows[start:end]
+        write_main_page(page_rows, page_idx, total_pages, visible_navigation)
 
     if total_pages:
+        expected_names = {stem + ".html" for stem in visible_stems}
+        expected_names.update(f"page{page}.html" for page in range(1, total_pages))
+        remove_stale_main_pages(expected_names)
+        for row in rows:
+            if row.get("hidden"):
+                page_name = row.get("page_stem", row["src"]) + ".html"
+                path = os.path.join(pages_dir, page_name)
+                if os.path.lexists(path) and not is_generated_page(path, MAIN_CATALOG_MARKER):
+                    print(f"Warning: remove the unmanaged main page {page_name} if it should not be public.")
         extra_pages = total_pages - 1
         extra_label = "page" if extra_pages == 1 else "pages"
-        animation_label = "page" if len(rows) == 1 else "pages"
-        print(f"Generated index.html, {extra_pages} additional {extra_label}, and {len(rows)} animation {animation_label}.")
+        animation_label = "page" if len(visible_rows) == 1 else "pages"
+        print(f"Generated index.html, {extra_pages} additional {extra_label}, and {len(visible_rows)} animation {animation_label}.")
     else:
         print("No pages generated: the catalog is empty.")
 
