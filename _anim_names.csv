@@ -125,8 +125,10 @@ contra2_hmi,,
 82_carecorner,Care Corner,
 83_trackersetting,Tracker Setting,
 84_careheader,Care Header,
-86_carousel_a,,a
-86_carousel_b,,b
-86_carousel_c,,c
-87_allowaccess2,,
-88_datasafe,,
+86_carousel_a,Carousel A,a
+86_carousel_b,Carousel B,b
+86_carousel_c,Carousel C,c
+87_allowaccess2,Allow Access 2,
+88_datasafe,Data Safe,
+89_energydrain,Energy Drain,
+90_watchfloat,,

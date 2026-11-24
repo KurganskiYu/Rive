@@ -128,5 +128,7 @@ src,size,preview,params...
 86_carousel_a_v4,393x206,,
 86_carousel_b_v5,393x206,,
 86_carousel_c_v4,393x206,,
-87_allowaccess2_v3,375x400,375x812,enum:language(EN:EN|ES|RU)
-88_datasafe_v1,375x460,375x812,
+87_allowaccess2_v4,375x400,375x812,enum:language(EN:EN|ES|RU)
+88_datasafe_v3,375x460,375x812,
+89_energydrain_v1,360x800,375x812,
+90_watchfloat_v1,375x812,375x812,
