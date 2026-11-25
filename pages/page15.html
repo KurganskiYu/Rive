@@ -105,6 +105,7 @@
       <details open>
         <summary>Animations</summary>
         <ul>
+          <li><a href="91_cybermondayhand_v1.html">91 Cyber Monday Hand</a></li>
           <li><a href="90_watchfloat_v2.html">90 watchfloat</a></li>
           <li><a href="89_energydrain_v1.html">89 Energy Drain</a></li>
           <li><a href="88_datasafe_v3.html">88 Data Safe</a></li>
@@ -239,8 +240,8 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div style="white-space: nowrap;"><a href="03_loaders_v5--EyeLoader.html" style="color: #888888;">03 loaders</a><span class="riv-file-size">&nbsp&nbsp;252 KB</span></div>
-          <button id="btn0" class="rive-btn" style="margin-left:auto;">Trigger</button>
+          <div style="white-space: nowrap;"><a href="03_loaders_v5--SpiralLoader.html" style="color: #888888;">03 loaders</a><span class="riv-file-size">&nbsp&nbsp;252 KB</span></div>
+          
         </div>
         
       </div>
@@ -254,7 +255,7 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
-          <div style="white-space: nowrap;"><a href="03_loaders_v5--CircleLoader.html" style="color: #888888;">03 loaders</a><span class="riv-file-size">&nbsp&nbsp;252 KB</span></div>
+          <div style="white-space: nowrap;"><a href="03_loaders_v5--EyeLoader.html" style="color: #888888;">03 loaders</a><span class="riv-file-size">&nbsp&nbsp;252 KB</span></div>
           <button id="btn1" class="rive-btn" style="margin-left:auto;">Trigger</button>
         </div>
         
@@ -269,6 +270,21 @@
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
         <div style="display: flex; align-items: center; width: 100%;">
+          <div style="white-space: nowrap;"><a href="03_loaders_v5--CircleLoader.html" style="color: #888888;">03 loaders</a><span class="riv-file-size">&nbsp&nbsp;252 KB</span></div>
+          <button id="btn2" class="rive-btn" style="margin-left:auto;">Trigger</button>
+        </div>
+        
+      </div>
+    
+        </div>
+      </div>
+    
+      <div class="animation-container">
+        <canvas id="canvas3" width="200" height="200"></canvas>
+        <div class="description">
+          
+      <div style="display: flex; flex-direction: column; align-items: stretch;">
+        <div style="display: flex; align-items: center; width: 100%;">
           <div style="white-space: nowrap;"><a href="04_New_v2.html" style="color: #888888;">04 New</a><span class="riv-file-size">&nbsp&nbsp;2 KB</span></div>
           
         </div>
@@ -279,7 +295,7 @@
       </div>
     
       <div class="animation-container">
-        <canvas id="canvas3" width="200" height="200"></canvas>
+        <canvas id="canvas4" width="200" height="200"></canvas>
         <div class="description">
           
       <div style="display: flex; flex-direction: column; align-items: stretch;">
@@ -298,36 +314,18 @@
 const r0 = new rive.Rive({
     src: "../riv/03_loaders_v5.riv",
     canvas: document.getElementById("canvas0"),
-    autoplay: true, autoBind: true,artboard: "EyeLoader", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "SpiralLoader", stateMachines: "State Machine 1",
     
 
     onLoad: () => {
         r0.resizeDrawingSurfaceToCanvas();
-    const vmi = r0.viewModelInstance;
   },
-});
-document.getElementById("btn0").addEventListener("click", () => {
-    const currentVmi = r0.viewModelInstance;
-    if (currentVmi) {
-        const vmTrigger = currentVmi.trigger("Trigger 1");
-        if (vmTrigger) {
-            vmTrigger.trigger();
-            return;
-        }
-    }
-    const inputs = r0.stateMachineInputs("State Machine 1");
-    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
-    if (smTrigger) {
-        smTrigger.fire();
-    } else {
-        console.warn("Trigger not found (view model or state machine): Trigger 1");
-    }
 });
 
 const r1 = new rive.Rive({
     src: "../riv/03_loaders_v5.riv",
     canvas: document.getElementById("canvas1"),
-    autoplay: true, autoBind: true,artboard: "CircleLoader", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "EyeLoader", stateMachines: "State Machine 1",
     
 
     onLoad: () => {
@@ -354,24 +352,53 @@ document.getElementById("btn1").addEventListener("click", () => {
 });
 
 const r2 = new rive.Rive({
-    src: "../riv/04_New_v2.riv",
+    src: "../riv/03_loaders_v5.riv",
     canvas: document.getElementById("canvas2"),
-    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    autoplay: true, autoBind: true,artboard: "CircleLoader", stateMachines: "State Machine 1",
     
 
     onLoad: () => {
         r2.resizeDrawingSurfaceToCanvas();
+    const vmi = r2.viewModelInstance;
   },
+});
+document.getElementById("btn2").addEventListener("click", () => {
+    const currentVmi = r2.viewModelInstance;
+    if (currentVmi) {
+        const vmTrigger = currentVmi.trigger("Trigger 1");
+        if (vmTrigger) {
+            vmTrigger.trigger();
+            return;
+        }
+    }
+    const inputs = r2.stateMachineInputs("State Machine 1");
+    const smTrigger = inputs && inputs.find(input => input.name === "Trigger 1");
+    if (smTrigger) {
+        smTrigger.fire();
+    } else {
+        console.warn("Trigger not found (view model or state machine): Trigger 1");
+    }
 });
 
 const r3 = new rive.Rive({
-    src: "../riv/04_EyeNew_v6.riv",
+    src: "../riv/04_New_v2.riv",
     canvas: document.getElementById("canvas3"),
     autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
     
 
     onLoad: () => {
         r3.resizeDrawingSurfaceToCanvas();
+  },
+});
+
+const r4 = new rive.Rive({
+    src: "../riv/04_EyeNew_v6.riv",
+    canvas: document.getElementById("canvas4"),
+    autoplay: true, autoBind: true,artboard: "main", stateMachines: "State Machine 1",
+    
+
+    onLoad: () => {
+        r4.resizeDrawingSurfaceToCanvas();
   },
 });
 
